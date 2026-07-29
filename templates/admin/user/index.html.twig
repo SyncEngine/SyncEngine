@@ -47,17 +47,13 @@
 										</button>
 										<ul class="dropdown-menu p-0">
 											<li>
-
-												{#
 												<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-warning btn-subtle"
+												   data-bs-toggle="modal"
+												   data-bs-target="#user-reset-{{ user.id }}"
 												   href="#"
-												   title="{{ 'Reset password'|trans }}"
-												   data-bs-toggle="tooltip"
-												   data-bs-placement="top"
-												   data-bs-title="{{ 'Reset password feature coming soon.'|trans }}">
+												   title="{{ 'Reset password'|trans }}">
 													{% include '_partials/icon.html.twig' with { icon: 'key' } %} {{ 'Reset password'|trans }}
 												</a>
-												#}
 
 												<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-danger btn-subtle"
 												   data-bs-toggle="modal"
@@ -69,6 +65,27 @@
 												</a>
 											</li>
 										</ul>
+									</div>
+
+									<div class="modal" id="user-reset-{{ user.id }}" tabindex="-1" data-bs-backdrop="false">
+										<div class="modal-dialog shadow-lg">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">{{ 'Reset password?'|trans }}</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{{ 'A password reset email will be sent to {email}. The user can then set their own password.'|trans({ email: user.email }) }}
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+													<form method="POST" action="{{ path( 'syncengine_user_reset_password', { id: user.id } ) }}">
+														<input type="hidden" name="_token" value="{{ csrf_token('reset_' ~ user.id) }}">
+														<button type="submit" class="btn btn-warning">{{ 'Reset'|trans }}</button>
+													</form>
+												</div>
+											</div>
+										</div>
 									</div>
 
 									<div class="modal" id="user-delete-{{ user.id }}" tabindex="-1" data-bs-backdrop="false">

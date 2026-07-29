@@ -12,6 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Controller\Auth\ResetPasswordController;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\UserFormType;
 use SyncEngine\Repository\UserRepository;
@@ -107,6 +108,30 @@ class UserController extends AdminController
 				],
 			]
 		);
+	}
+
+	#[Route( '/user/reset-password/{id}', name: 'user_reset_password', methods: [ 'POST' ] )]
+	public function resetPasswordAction(
+		#[MapEntity( id: 'id' )]
+		User $user, Request $request, ResetPasswordController $resetPasswordController
+	): RedirectResponse {
+		$currentUser = $this->getUser();
+		if ( $currentUser instanceof User && $currentUser->getId() === $user->getId() ) {
+			$this->addFlash( 'warning', $this->trans( 'You cannot reset your own password.' ) );
+
+			return $this->redirectToRoute( 'syncengine_users_list' );
+		}
+
+		if ( $this->isCsrfTokenValid( 'reset_' . $user->getId(), $request->request->get( '_token' ) ) ) {
+			try {
+				$resetPasswordController->processSendingPasswordResetEmail( $user );
+				$this->addFlash( 'success', $this->trans( 'Password reset email sent successfully!' ) );
+			} catch ( \Exception $e ) {
+				$this->addFlash( 'error', $this->trans( 'An error occurred while resetting the password.' ) );
+			}
+		}
+
+		return $this->redirectToRoute( 'syncengine_users_list' );
 	}
 
 	#[Route( '/user/delete/{id}', name: 'user_delete', methods: [ 'POST' ] )]
