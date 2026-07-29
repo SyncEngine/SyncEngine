@@ -29,18 +29,31 @@ class ResetPasswordController extends DefaultController
 	public function __construct(
 		private ResetPasswordHelperInterface $resetPasswordHelper,
 		private EntityManagerInterface $entityManager,
+		private MailerInterface $mailer,
 		#[Autowire(param: 'syncengine.mailer.sender' )]
 		protected readonly string $sender,
 	) {}
 
 	#[Route( '/', name: 'request' )]
-	public function request( Request $request, MailerInterface $mailer, TranslatorInterface $translator ): Response
+	public function request( Request $request ): Response
 	{
 		$form = $this->createForm( ResetPasswordRequestFormType::class );
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			return $this->processSendingPasswordResetEmail( $form->get( 'email' )->getData(), $mailer, $translator );
+			$user = $this->entityManager->getRepository( User::class )->findOneBy( [ 'email' => $form->get( 'email' )->getData(), ] );
+
+			if ( ! $user ) {
+				// Just redirect to check mail page, no need to inform that the email does not exist.
+				return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
+			}
+
+			$success = $this->processSendingPasswordResetEmail( $form->get( 'email' )->getData() );
+			if ( $success ) {
+				return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
+			} else {
+				$this->addFlash( 'error', $this->trans( 'An error occurred while sending the password reset email.' ) );
+			}
 		}
 
 		return $this->render( 'auth/reset_password/request.html.twig', [
@@ -48,21 +61,9 @@ class ResetPasswordController extends DefaultController
 		] );
 	}
 
-	private function processSendingPasswordResetEmail( string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator ): RedirectResponse
+	public function processSendingPasswordResetEmail( User $user ): bool
 	{
-		$user = $this->entityManager->getRepository( User::class )->findOneBy( [
-			'email' => $emailFormData,
-		] );
-
-		if ( ! $user ) {
-			return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
-		}
-
-		try {
-			$resetToken = $this->resetPasswordHelper->generateResetToken( $user );
-		} catch ( ResetPasswordExceptionInterface $e ) {
-			return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
-		}
+		$resetToken = $this->resetPasswordHelper->generateResetToken( $user );
 
 		$email = ( new TemplatedEmail() )->from( new Address( $this->sender, 'SyncEngine' ) )
 		                                 ->to( $user->getEmail() )
@@ -72,11 +73,11 @@ class ResetPasswordController extends DefaultController
 			                                 'resetToken' => $resetToken,
 		                                 ] );
 
-		$mailer->send( $email );
+		$this->mailer->send( $email );
 
 		$this->setTokenObjectInSession( $resetToken );
 
-		return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
+		return true;
 	}
 
 	/**
@@ -95,7 +96,7 @@ class ResetPasswordController extends DefaultController
 	}
 
 	#[Route( '/reset/{token:token}', name: 'reset' )]
-	public function reset( Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, ?string $token = null ): Response
+	public function reset( Request $request, UserPasswordHasherInterface $passwordHasher, ?string $token = null ): Response
 	{
 		if ( $token ) {
 			$this->storeTokenInSession( $token );
@@ -111,7 +112,14 @@ class ResetPasswordController extends DefaultController
 		try {
 			$user = $this->resetPasswordHelper->validateTokenAndFetchUser( $token );
 		} catch ( ResetPasswordExceptionInterface $e ) {
-			$this->addFlash( 'reset_password_error', sprintf( '%s - %s', $translator->trans( ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle' ), $translator->trans( $e->getReason(), [], 'ResetPasswordBundle' ) ) );
+			$this->addFlash(
+				'reset_password_error',
+				sprintf(
+					'%s - %s',
+					$this->trans( ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle' ),
+					$this->trans( $e->getReason(), [], 'ResetPasswordBundle' )
+				)
+			);
 
 			return $this->redirectToRoute( 'syncengine_reset_password_request' );
 		}
