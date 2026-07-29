@@ -58,6 +58,7 @@ parameters:
     account-preferences: 'bi bi-person-workspace'
     token: 'bi bi-shield-lock'
     restrict: 'bi bi-shield-slash'
+    scope: 'bi bi-shield-check'
     # System.
     system: 'bi bi-gear-wide-connected'
     system-environment: 'bi bi-motherboard'
