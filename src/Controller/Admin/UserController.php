@@ -92,7 +92,7 @@ class UserController extends AdminController
 
 			$this->addFlash( 'success', $this->trans( 'Successfully edited user!' ) );
 
-			return $this->redirectToRoute( 'syncengine_user_edit', [ 'id' => $user->getId() ] );
+			return $this->redirectToRoute( 'syncengine_users_list' );
 		}
 
 		return $this->render(
