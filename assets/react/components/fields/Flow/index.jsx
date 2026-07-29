@@ -657,6 +657,7 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 	});
 
 	// Resolve overlaps on sorted nodes
+	let hasChanges = false;
 	let changed = true;
 	while ( changed ) {
 		changed = false;
@@ -669,10 +670,16 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 				const overlapAmount = getOverlapAmount( a, b, { spacing, direction } );
 				if ( overlapAmount?.x && overlapAmount?.y ) {
 					sorted[ i ][1] = shiftNode( b, { [axis]: overlapAmount[axis] } );
+					hasChanges = true;
 					changed = true;
 				}
 			}
 		}
+	}
+
+	// Early exit — nothing moved
+	if ( ! hasChanges ) {
+		return nodes;
 	}
 
 	// Restore original order but with updated positions
