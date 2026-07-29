@@ -19,6 +19,7 @@ import Icon from '../../partials/Icon';
 import { parseId } from '../../../utils/globals';
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { suppress } from '../../../utils/events';
+import { HStack } from '../../partials/Stack';
 
 
 export default function StepNode( props ) {
@@ -131,9 +132,9 @@ export default function StepNode( props ) {
 			<LimitedHandle limit={ 1 } type="target" position={ Position.Top } />
 			<InputGroup className={ "p-2 gap-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) }>
 				<InputGroup.Text>{ nodeIndex + 1 }</InputGroup.Text>
-				<div onClick={ suppress }>
+				<HStack className="align-items-center" onClick={ suppress }>
 				{
-					loading ? <LoadingPlaceholder /> :
+					loading ? <div style={{ width: 200 }}><LoadingPlaceholder /></div> :
 						<TagsContext.Provider value={ tags }>
 							<Entity
 								className="nodrag"
@@ -146,7 +147,7 @@ export default function StepNode( props ) {
 							/>
 						</TagsContext.Provider>
 				}
-				</div>
+				</HStack>
 				{ selected &&
 					<DeleteModal callback={ onNodeRemove }>
 						<Button variant="secondary" outline subtle><Icon icon="trash" /></Button>
