@@ -197,8 +197,7 @@ export default function Actions( props ) {
 					);
 				}
 				return (
-							<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) }>
-					</ModalToggle>
+					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) } />
 				);
 
 			case 'request':
