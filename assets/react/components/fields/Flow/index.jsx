@@ -27,7 +27,7 @@ import useGlobal from '../../../hooks/useGlobal';
 import { createRefId, debug } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isEqual } from '../../../utils/conditions';
 
 const edgeIdSeparator = '->';
 const edgeDefaults = {
@@ -480,25 +480,29 @@ function Flow( props ) {
 /**
  * Updates node target/source properties based on current edges.
  * Clears old references and sets new ones from the edge list.
+ * Returns original nodes if nothing changed.
  * @param {Array} nodes - Array of nodes.
  * @param {Array} edges - Array of edges with `source` and `target` properties.
  * @returns {Array} Nodes with updated target/source properties.
  */
 function syncTargetsFromEdges( nodes, edges = [] ) {
-	return nodes.map( node => {
-		// Create new object to avoid mutation, explicitly clear old values
-		return {
-			...node,
-			target: edges.find( edge => edge.source === node.id )?.target ?? null,
-			source: edges.find( edge => edge.target === node.id )?.source ?? null,
-		};
+	if ( ! edges || ! edges.length ) {
+		return nodes;
+	}
+
+	nodes.forEach( ( node, i ) => {
+		node.target = edges.find( edge => edge.source === node.id )?.target ?? null;
+		node.source = edges.find( edge => edge.target === node.id )?.source ?? null;
 	} );
+
+	return nodes;
 }
 
 /**
  * Sorts nodes by following the target chain from the Input node.
  * Input node is always first, then nodes are ordered by target relationships.
  * Any additional root nodes or disconnected nodes are appended at the end.
+ * Returns original nodes if order hasn't changed.
  * @param {Array} nodes - Array of nodes with `id` and `target` properties.
  * @returns {Array} Sorted array of nodes.
  */
@@ -544,22 +548,26 @@ function sortByTargetChain( nodes ) {
 		}
 	});
 
+	// Order hasn't changed, return original nodes to prevent object reference changes.
+	if ( result.length === nodes.length && result.every( ( node, i ) => node.id === nodes[ i ].id ) ) {
+		return nodes;
+	}
+
 	return result;
 }
 
 /**
  * Builds the flow chain by syncing node targets from edges and sorting by target chain.
  * Combines syncTargetsFromEdges and sortByTargetChain operations.
+ * Returns original nodes if nothing changed.
  * @param {Array} nodes - Array of nodes.
  * @param {Array} edges - Array of edges.
  * @returns {Array} Nodes with synced targets, sorted by flow chain.
  */
 export function buildFlowChain( nodes, edges = [] ) {
-	debug( 'buildFlowChain', { nodes, edges } );
-	if ( edges && edges.length ) {
-		nodes = syncTargetsFromEdges( nodes, edges );
-	}
-	return sortByTargetChain( nodes );
+	const result = sortByTargetChain( syncTargetsFromEdges( nodes, edges ) );
+	debug( 'buildFlowChain', { sameRef: result === nodes, sameData: isEqual( result, nodes ), result, nodes, edges } );
+	return result;
 }
 
 /**
@@ -686,11 +694,9 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 		return nodes;
 	}
 
-	// Restore original order but with updated positions
-	const result = nodes.map( (node, originalIdx) => {
-		const updatedNode = sorted.find( ([idx]) => idx === originalIdx );
-		return updatedNode ? updatedNode[1] : { ...node };
+	// Restore original order but with updated positions.
+	return nodes.map( ( node, originalIdx ) => {
+		const updatedNode = sorted.find( ( [ idx ] ) => idx === originalIdx );
+		return updatedNode ? updatedNode[ 1 ] : node;
 	} );
-
-	return result;
 }
