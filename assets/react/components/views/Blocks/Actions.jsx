@@ -240,6 +240,15 @@ export default function Actions( props ) {
 					? createTrigger( { ...action, icon: icon }, variants, { href: link, key: _key } )
 					: <a key={ _key } href={ link }><Icon icon={ icon } className={ linkIconClasses + ' icon-btn' } /></a>
 				)
+
+			default:
+				if ( ! action.action || ( ! action.callback && ! action.component ) ) {
+					return null;
+				}
+				return <React.Fragment key={ action.action + index }>
+					{ action.callback && createTrigger( action, variants, { onClick: action.callback, key: action.action + index } ) }
+					{ action.component }
+				</React.Fragment>;
 		}
 	} );
 
