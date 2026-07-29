@@ -631,6 +631,7 @@ function hasOverlaps( nodes, { spacing = 100 } = {} ) {
 /**
  * Adjusts node positions to prevent overlap, preserving data order.
  * Sorts by position for algorithm correctness, but returns in original order.
+ * Early-exits with unchanged nodes if no shifts occurred.
  *
  * @param {Array} nodes - The array of nodes with `position`, `width`, and `height`.
  * @param {Object} options
@@ -639,6 +640,11 @@ function hasOverlaps( nodes, { spacing = 100 } = {} ) {
  * @returns {Array} New array of nodes with adjusted positions in original order.
  */
 function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} ) {
+	// Early exit — nodes not yet measured by React Flow
+	if ( nodes.some( ( node ) => ! node.measured ) ) {
+		return nodes;
+	}
+
 	const isVertical = direction === 'vertical';
 	const axis = isVertical ? 'y' : 'x';
 
