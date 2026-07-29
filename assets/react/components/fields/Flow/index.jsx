@@ -441,7 +441,11 @@ function Flow( props ) {
 					nodeDefaults,
 					entity,
 					preview,
-					callbacks: {},
+					callbacks: {
+						addNodeBetween,
+						removeEdge,
+						removeNode,
+					},
 				}
 			}>
 				<ReactFlow
