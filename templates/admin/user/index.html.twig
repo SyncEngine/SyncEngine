@@ -1,0 +1,103 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{{ 'Users'|trans }}{% endblock %}
+
+{% block content %}
+	<div class="card my-3">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<div class="d-flex align-items-center gap-2">
+				{% include '_partials/icon.html.twig' with { icon: 'system-users', class: 'lead' } %}
+				{{ 'Users'|trans }}
+			</div>
+			<a class="btn btn-primary btn-subtle" href="{{ path('syncengine_user_create') }}">{{ 'Create'|trans }}</a>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<tr>
+						<th class="col-email">{{ 'Email'|trans }}</th>
+						<th class="col-name">{{ 'Name'|trans }}</th>
+						<th class="col-roles">{{ 'Roles'|trans }}</th>
+						<th class="col-actions text-end">{{ 'Actions'|trans }}</th>
+					</tr>
+					{% for user in users %}
+						<tr>
+							<td class="col-email">{{ user.email }}</td>
+							<td class="col-name">{{ user.name ?: '-' }}</td>
+							<td class="col-roles">
+								{% set userRoles = user.roles %}
+								{% for role in userRoles %}
+									<span class="badge text-bg-secondary me-1">{{ role }}</span>
+								{% endfor %}
+							</td>
+							<td class="col-actions text-end">
+								<div class="d-flex justify-content-end gap-1">
+									<a class="btn btn-primary btn-subtle"
+									   href="{{ path('syncengine_user_edit', {id: user.id}) }}"
+									   title="{{ 'Edit'|trans }}">
+										{% include '_partials/icon.html.twig' with { icon: 'edit' } %}
+									</a>
+
+									<div class="dropdown d-inline-block">
+										<button class="btn btn-outline-secondary"
+										        type="button"
+										        data-bs-toggle="dropdown"
+										        aria-expanded="false">
+											{% include '_partials/icon.html.twig' with { icon: 'ellipsis-vertical' } %}
+										</button>
+										<ul class="dropdown-menu p-0">
+											<li>
+
+												{#
+												<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-warning btn-subtle"
+												   href="#"
+												   title="{{ 'Reset password'|trans }}"
+												   data-bs-toggle="tooltip"
+												   data-bs-placement="top"
+												   data-bs-title="{{ 'Reset password feature coming soon.'|trans }}">
+													{% include '_partials/icon.html.twig' with { icon: 'key' } %} {{ 'Reset password'|trans }}
+												</a>
+												#}
+
+												<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-danger btn-subtle"
+												   data-bs-toggle="modal"
+												   data-bs-target="#user-delete-{{ user.id }}"
+												   href="#"
+												   title="{{ 'Delete'|trans }}"
+												>
+													{% include '_partials/icon.html.twig' with { icon: 'delete' } %} {{ 'Delete'|trans }}
+												</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="modal" id="user-delete-{{ user.id }}" tabindex="-1" data-bs-backdrop="false">
+										<div class="modal-dialog shadow-lg">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">{{ 'Are you sure?'|trans }}</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{{ 'This will delete user {email}'|trans({ email: user.email }) }}
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+													<form method="POST"
+													      action="{{ path( 'syncengine_user_delete', { id: user.id } ) }}">
+														<input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ user.id) }}">
+														<button type="submit" class="btn btn-danger">{{ 'Delete'|trans }}</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

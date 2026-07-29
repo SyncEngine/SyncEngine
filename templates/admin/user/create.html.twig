@@ -1,0 +1,10 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{{ 'New user'|trans }}{% endblock %}
+
+{% block content %}
+	{% include 'admin/_partials/backlink.twig' %}
+	{% include 'admin/_partials/header.twig' with { header: 'New user', icon: 'user' } %}
+	<hr>
+	{% include '_partials/form.html.twig' with { form: form } %}
+{% endblock %}
