@@ -1,16 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
 	BaseEdge,
 	EdgeLabelRenderer,
 	getBezierPath,
-	useReactFlow,
 } from '@xyflow/react';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
-import { createRefId } from '../../../utils/globals';
 import { ButtonGroup } from 'react-bootstrap';
-import { FlowContext, parseEdge, parseNode } from './index';
-import useToggle from '../../../hooks/useToggle';
+import { FlowContext } from './index';
 
 export default function StepEdge({
 	id,
@@ -34,36 +31,26 @@ export default function StepEdge({
 		targetPosition,
 	});
 
-	const { setEdges, setNodes } = useReactFlow();
-
 	const onEdgeRemove = () => {
-		// Remove edge, parent's onEdgesChange will handle updating nodes
-		setEdges( ( edges ) => edges.filter( ( edge ) => edge.id !== id ) );
+		// Goes through the parent's removeEdge callback (see FlowContext),
+		// which is a plain setEdges - onEdgesChange still handles updating
+		// nodes for this one since removing an edge alone doesn't need a
+		// repositioning pass.
+		_FlowContext?.callbacks?.removeEdge?.( id );
 	};
 
 	const onEdgeStepAdd = () => {
-		const newNodeId = createRefId();
 		const posX = ( sourceX + targetX ) / 2;
 		const posY = ( sourceY + targetY ) / 2 - 25;
 
-		const newNode = parseNode( {
-			id: newNodeId,
-			position: { x: posX, y: posY },
-			origin: [ 0.5, 0.0 ],
-		}, _FlowContext?.nodeDefaults );
-
-		// Add node first
-		setNodes( ( nodes ) => nodes.concat( newNode ) );
-
-		// Update edges, parent's onEdgesChange will handle updating all nodes
-		setEdges(( edges ) => {
-			const current = edges.find( ( edge ) => edge.id === id );
-			return [
-				...edges.filter( ( edge ) => edge.id !== id ),
-				parseEdge( { source: current.source, target: newNodeId } ),
-				parseEdge( { source: newNodeId, target: current.target } ),
-			];
-		});
+		// Goes through the parent's addNodeBetween callback (see
+		// FlowContext) instead of calling useReactFlow().setNodes/setEdges
+		// directly here. A direct call bypasses the parent's
+		// onNodesChange/onEdgesChange entirely, so the new node would never
+		// get laid out with the rest of the chain - it would land at this
+		// raw midpoint, overlapping its neighbours, until some later
+		// unrelated change happened to fix it.
+		_FlowContext?.callbacks?.addNodeBetween?.( id, { x: posX, y: posY } );
 	}
 
 	return (

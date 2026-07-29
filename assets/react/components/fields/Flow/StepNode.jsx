@@ -5,7 +5,7 @@ import { InputGroup } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { ParentContext } from '../../../context/ParentContext';
-import { FlowContext, parseEdge } from './index';
+import { FlowContext } from './index';
 import LimitedHandle from './LimitedHandle';
 import Entity from '../Entity';
 
@@ -37,26 +37,14 @@ export default function StepNode( props ) {
 		preview = _FlowContext?.preview ?? false,
 	} = data;
 
-	const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
+	const { getNodes, getEdges } = useReactFlow();
 	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
 	const [ selectedEntity, entityCallbacks, loading ] = useEntity( entity, data[ entity ], [], {} );
 	const tagsContext = useContext( TagsContext );
 
 	const onNodeRemove = useCallback( () => {
-		const currentEdges = getEdges();
-		const previous = currentEdges.find( ( edge ) => edge.target === id );
-		const next = currentEdges.find( ( edge ) => edge.source === id );
-
-		// Remove old connected edges and try to build the new edge based on previous/next.
-		const connectedEdges = currentEdges.filter( e => e.target === id || e.source === id );
-		let newEdges = currentEdges.filter( e => ! connectedEdges.includes( e ) );
-		if ( previous && next ) {
-			newEdges = [ ...newEdges, parseEdge( { source: previous.source, target: next.target } ) ];
-		}
-
-		setNodes( ( nodes ) => nodes.filter( ( node ) => node.id !== id ) );
-		setEdges( newEdges );
-	}, [ id, getEdges, setNodes, setEdges, _FlowContext ] );
+		_FlowContext?.callbacks?.removeNode?.( id );
+	}, [ id, _FlowContext ] );
 
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;

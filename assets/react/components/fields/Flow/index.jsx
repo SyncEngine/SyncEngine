@@ -307,6 +307,53 @@ function Flow( props ) {
 		[ nodes, edges ],
 	);
 
+	const addNodeBetween = useCallback( ( edgeId, position ) => {
+		setEdges( ( eds ) => {
+			const current = eds.find( ( edge ) => edge.id === edgeId );
+			if ( ! current ) {
+				return eds;
+			}
+
+			const newNodeId = createRefId();
+			const newNode = parseNode( {
+				id: newNodeId,
+				position,
+				origin: [ 0.5, 0.0 ],
+			}, nodeDefaults );
+
+			const newEdges = [
+				...eds.filter( ( edge ) => edge.id !== edgeId ),
+				parseEdge( { source: current.source, target: newNodeId } ),
+				parseEdge( { source: newNodeId, target: current.target } ),
+			];
+
+			setNodes( ( nds ) => buildFlowChain( nds.concat( newNode ), newEdges ) );
+
+			return newEdges;
+		} );
+	}, [ nodeDefaults ] );
+
+	const removeEdge = useCallback( ( edgeId ) => {
+		setEdges( ( eds ) => eds.filter( ( edge ) => edge.id !== edgeId ) );
+	}, [] );
+
+	const removeNode = useCallback( ( nodeId ) => {
+		setEdges( ( eds ) => {
+			const previous = eds.find( ( edge ) => edge.target === nodeId );
+			const next = eds.find( ( edge ) => edge.source === nodeId );
+			const connectedEdges = eds.filter( ( edge ) => edge.target === nodeId || edge.source === nodeId );
+
+			let newEdges = eds.filter( ( edge ) => ! connectedEdges.includes( edge ) );
+			if ( previous && next ) {
+				newEdges = [ ...newEdges, parseEdge( { source: previous.source, target: next.target } ) ];
+			}
+
+			setNodes( ( nds ) => buildFlowChain( nds.filter( ( node ) => node.id !== nodeId ), newEdges ) );
+
+			return newEdges;
+		} );
+	}, [] );
+
 	const onConnectEnd = useCallback(
 		( event, connectionState ) => {
 			// when a connection is dropped on the pane it's not valid
