@@ -1,10 +1,9 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
 	addEdge,
-	applyNodeChanges,
 	applyEdgeChanges,
+	applyNodeChanges,
 	Background,
-	BaseEdge,
 	Controls,
 	getConnectedEdges,
 	getIncomers,
@@ -182,11 +181,9 @@ function Flow( props ) {
 
 	// Resolve overlapping node positions without updating targets
 	const resolveLayoutOverlaps = useCallback( ( nodes ) => {
-		debug( 'Checked layout overlaps' );
-		if ( ! hasOverlaps( nodes, { spacing } ) ) {
-			return nodes;
-		}
-		return resolveOverlaps( nodes, { spacing } );
+		const result = resolveOverlaps( nodes, { spacing } );
+		debug( 'Checked layout overlaps', { sameRef: result === nodes, sameData: isEqual( result, nodes ) } );
+		return result;
 	}, [ spacing ] );
 
 	const [ theme ] = useState( app.theme.getTheme() );
@@ -637,6 +634,11 @@ function hasOverlaps( nodes, { spacing = 100 } = {} ) {
 function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} ) {
 	// Early exit — nodes not yet measured by React Flow
 	if ( nodes.some( ( node ) => ! node.measured ) ) {
+		return nodes;
+	}
+
+	// @todo Remove as redundant performance-wise?
+	if ( ! hasOverlaps( nodes, { spacing } ) ) {
 		return nodes;
 	}
 
