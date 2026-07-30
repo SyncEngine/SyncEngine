@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Connection;
@@ -66,6 +67,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/create', name: 'connection_create' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$connection = ConnectionModel::create();
@@ -97,6 +99,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/edit/{id}', name: 'connection_edit' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Connection $connection, Request $request ): Response
 	{
 		$form = $this->form( $connection, $request );

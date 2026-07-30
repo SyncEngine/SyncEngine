@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Storage;
@@ -54,6 +55,7 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storage/create', name: 'storage_create' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$storage = StorageModel::create();
@@ -85,6 +87,7 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storage/edit/{id}', name: 'storage_edit' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Storage $storage, Request $request ): Response
 	{
 		$form = $this->form( $storage, $request );

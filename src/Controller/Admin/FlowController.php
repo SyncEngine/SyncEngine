@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Flow;
@@ -54,6 +55,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/create', name: 'flow_create' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$flow = FlowModel::create();
@@ -85,6 +87,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/edit/{id}', name: 'flow_edit' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Flow $flow, Request $request ): Response
 	{
 		$form = $this->form( $flow, $request );
@@ -108,6 +111,9 @@ class FlowController extends EntityController
 						'title'   => $this->trans( 'Edit' ),
 						'current' => true,
 					],
+				],
+				'onboarding' => [
+					'sequence' => 'flow_edit',
 				],
 			]
 		);

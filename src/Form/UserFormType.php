@@ -51,6 +51,8 @@ class UserFormType extends AbstractType
 			->add( 'roles', ChoiceType::class, [
 				'choices'  => [
 					'Admin' => 'ROLE_ADMIN',
+					'Editor' => 'ROLE_EDITOR',
+					'Viewer' => 'ROLE_VIEWER',
 				],
 				'multiple' => true,
 				'expanded' => true,

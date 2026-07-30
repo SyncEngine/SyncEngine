@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Routine;
@@ -54,6 +55,7 @@ class RoutineController extends EntityController
 	}
 
 	#[Route( '/routine/create', name: 'routine_create' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$routine = RoutineModel::create();
@@ -85,6 +87,7 @@ class RoutineController extends EntityController
 	}
 
 	#[Route( '/routine/edit/{id}', name: 'routine_edit' )]
+	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Routine $routine, Request $request ): Response
 	{
 		$form = $this->form( $routine, $request );

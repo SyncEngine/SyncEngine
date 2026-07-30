@@ -34,7 +34,15 @@ abstract class EntityController extends AbstractAdminController
 		$action = $request->request->get( 'action' );
 		$return = [];
 
-		// @todo access validations.
+		// @todo Better scope/permission based access validations.
+		if ( in_array( $action, [ 'delete', 'form', 'create', 'edit', 'export' ] ) ) {
+			if ( ! $this->isGranted( 'ROLE_EDITOR' ) ) {
+				$return['success'] = false;
+				$return['error']   = $this->trans( 'Access denied.' );
+
+				return $return;
+			}
+		}
 
 		switch ( $action ) {
 			case 'delete':

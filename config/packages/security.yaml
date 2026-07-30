@@ -50,6 +50,12 @@ security:
             form_login:
                 enable_csrf: true
 
+    role_hierarchy:
+        ROLE_API: ROLE_USER
+        ROLE_VIEWER: ROLE_USER
+        ROLE_EDITOR: ROLE_VIEWER
+        ROLE_ADMIN: [ROLE_EDITOR, ROLE_API]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
@@ -58,8 +64,9 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/account, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_VIEWER }
         - { path: ^/system, roles: ROLE_ADMIN }
+        - { path: ^/users, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }
 
 when@test:
