@@ -14,12 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Framework\ModuleRegistryManager;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
 
-class ModuleController extends AdminController
+class ModuleController extends AbstractAdminController
 {
 
 	public function __construct(

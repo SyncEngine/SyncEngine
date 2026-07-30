@@ -12,13 +12,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Controller\Auth\ResetPasswordController;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\UserFormType;
 use SyncEngine\Repository\UserRepository;
 
 #[IsGranted( 'ROLE_ADMIN' )]
-class UserController extends AdminController
+class UserController extends AbstractAdminController
 {
 	#[Route( '/users', name: 'users_list' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_users_list', label: 'Users', icon: 'system-users' )]

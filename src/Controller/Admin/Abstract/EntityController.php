@@ -6,12 +6,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use SyncEngine\Controller\Admin\AdminController;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Exportable;
 
-abstract class EntityController extends AdminController
+abstract class EntityController extends AbstractAdminController
 {
 	protected function _handleJsonRequest( EntityModel $model, Request $request ): JsonResponse
 	{

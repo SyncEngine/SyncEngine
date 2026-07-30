@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Form\EnvironmentFormType;
 use SyncEngine\Service\Env;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\System;
 
-class SystemController extends AdminController
+class SystemController extends AbstractAdminController
 {
 	public function __construct(
 		private readonly KernelInterface $kernel,
