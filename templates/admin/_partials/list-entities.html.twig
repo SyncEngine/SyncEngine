@@ -56,7 +56,7 @@
 		) %}
 
 		{% if 'columns' === prop %}
-			{% set actionsColumn = columns.actions|merge({ actions: groupActions }) %}\
+			{% set actionsColumn = columns.actions|merge({ actions: groupActions }) %}
 			{% if actionsColumn.actions %}
 				{% set columns = columns|merge({ actions: actionsColumn }) %}
 			{% else %}
