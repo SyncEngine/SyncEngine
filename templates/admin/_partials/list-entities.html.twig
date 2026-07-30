@@ -20,10 +20,13 @@
 		},
 	},
 } %}
-{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'buttons', actions: [ 'link', 'edit', 'export' ] } } %}
+
+{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'buttons', actions: [ 'link', 'edit', 'export' ]  } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
 {% set columns = columns|merge( lastColumns ) %}
+
+{% set header = header ?? {} %}
 
 {% set footer = footer ?? {
 	actions: [
@@ -31,6 +34,41 @@
 		'pagination'
 	]
 } %}
+
+{# @todo Create custom Twig filter #}
+{% if not is_granted( 'ROLE_EDITOR' ) %}
+	{% set actionGroups = {
+		columns: columns.actions.actions ?? {},
+		header: header.actions ?? {},
+		footer: footer.actions ?? {},
+	} %}
+
+	{% set protectedActions = [ 'create', 'edit', 'export', 'delete', 'link' ] %}
+
+	{% for prop, group in actionGroups %}
+		{% set groupActions = group|filter((value, key) =>
+			key not in protectedActions
+			and (
+				value is iterable
+					? (value.action ?? null) not in protectedActions
+					: value not in protectedActions
+			)
+		) %}
+
+		{% if 'columns' === prop %}
+			{% set actionsColumn = columns.actions|merge({ actions: groupActions }) %}\
+			{% if actionsColumn.actions %}
+				{% set columns = columns|merge({ actions: actionsColumn }) %}
+			{% else %}
+				{% set columns = columns|filter( ( column, key ) => key !== 'actions' ) %}
+			{% endif %}
+		{% elseif header is defined and 'header' === prop %}
+			{% set header = header|merge({ actions: groupActions }) %}
+		{% elseif footer is defined and 'footer' === prop %}
+			{% set footer = footer|merge({ actions: groupActions }) %}
+		{% endif %}
+	{% endfor %}
+{% endif %}
 
 {% set query = query ?? { limit: 10, total: true, relations: true } %}
 
