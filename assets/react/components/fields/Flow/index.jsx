@@ -169,7 +169,7 @@ function Flow( props ) {
 	}, [] );
 
 	const nodeDefaults = useMemo(
-		() => ({ data: { entity: entity, onChange: onNodeChange, preview: preview } }),
+		() => ( { data: { entity: entity, onChange: onNodeChange, preview: preview } } ),
 		[ entity, onNodeChange, preview ]
 	);
 
@@ -433,23 +433,25 @@ function Flow( props ) {
 	const edgeTypes = { step: StepEdge };
 	const nodeTypes = { step: StepNode };
 
+	const flowContextValue = useMemo( () => {
+		return {
+			nodeDefaults,
+			preview,
+			loading,
+			entity,
+			entities,
+			entityCallbacks,
+			callbacks: {
+				addNodeBetween,
+				removeEdge,
+				removeNode,
+			}
+		}
+	}, [ nodeDefaults, preview, loading, entity, entities, entityCallbacks, addNodeBetween, removeEdge, removeNode ] )
+
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
-			<FlowContext.Provider value={
-				{
-					nodeDefaults,
-					preview,
-					loading,
-					entity,
-					entities,
-					entityCallbacks,
-					callbacks: {
-						addNodeBetween,
-						removeEdge,
-						removeNode,
-					},
-				}
-			}>
+			<FlowContext.Provider value={ flowContextValue }>
 				<ReactFlow
 					className="bg-transparent"
 					colorMode={ theme === 'dark' ? 'dark' : 'light' }
