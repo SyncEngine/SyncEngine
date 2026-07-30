@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useGlobal from './useGlobal';
 import { fetchPost } from '../utils/fetch';
-import { isEmpty, validate } from '../utils/conditions';
+import { isArray, isEmpty, validate } from '../utils/conditions';
 import { deepClone, mapGetIndex, objectMergeDepth } from '../utils/data';
 import { isTag } from '../utils/tags';
 
@@ -288,6 +288,10 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		let items = entities;
 		if ( global && app.entities[ type ] ) {
 			items = Object.values( app.entities[ type ] );
+		}
+
+		if ( ! isArray( items ) ) {
+			return null;
 		}
 
 		if ( isNaN( id_or_ref ) ) {
