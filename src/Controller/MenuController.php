@@ -6,6 +6,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Service\Menu\MenuLoader;
 
 class MenuController extends DefaultController
@@ -44,8 +45,9 @@ class MenuController extends DefaultController
 
 		// @todo filter according to the security
 		foreach ( $loader->getMenuItems( $menuName )->all() as $item ) {
+			/** @var MenuItem $item */
 			$link = $this->generateUrl( $item->getRoute(), $item->getParameters() );
-			if ( $isAdmin or ! str_contains( $link, "admin" ) ) {
+			if ( $isAdmin or ! str_contains( $link, "system" ) ) {
 				$items[] = [
 					'name'     => $item->getRoute(),
 					'link'     => $link,
