@@ -32,6 +32,7 @@ function parseValue( val ) {
 }
 
 export default function Entity( props ) {
+	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
 	const {
 		selectable = true,
@@ -194,8 +195,13 @@ export default function Entity( props ) {
 					onAsyncSearch={ searchEntities }
 				/>
 				:
-				<InputGroup.Text>
-					<Info type={ entityType } item={ ( selectedEntity && choices ) ? choicesCallbacks.get( selectedEntity ) ?? {} : {} } />
+				selectedEntity ?
+					<InputGroup.Text>
+						<Info type={ entityType } item={ choicesCallbacks.get( selectedEntity ) ?? {} } />
+					</InputGroup.Text>
+				:
+				<InputGroup.Text className="text-muted">
+					{ t( 'No {entityType} selected', { entityType } ) }
 				</InputGroup.Text>
 			}
 			{ actions }
