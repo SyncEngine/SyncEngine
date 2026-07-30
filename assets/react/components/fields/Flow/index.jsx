@@ -204,15 +204,19 @@ function Flow( props ) {
 	// Custom onNodesChange: only parse on structural changes (add/remove)
 	const onNodesChange = useCallback( ( changes ) => {
 		// Check if this is a structural change requiring reference updates
-		const hasStructuralChange = changes.some( c => c.type === 'add' || c.type === 'remove' );
+		const _hasStructuralChange = hasStructuralChange( changes );
+		const _hasDimensionChange = hasDimensionChange( changes );
 
 		setNodes( ( nds ) => {
 			let updated = applyNodeChanges( changes, nds );
 
 			// Only validate and update references on structural changes
-			if ( hasStructuralChange ) {
+			if ( _hasStructuralChange ) {
 				validateFlow( updated );
 				updated = buildFlowChain( updated, getEdges() );
+			}
+			if ( _hasDimensionChange ) {
+				updated = resolveLayoutOverlaps( updated );
 			}
 
 			return updated;
@@ -221,14 +225,11 @@ function Flow( props ) {
 
 	// Custom onEdgesChange: only update node references on structural changes (add/remove)
 	const onEdgesChange = useCallback( ( changes ) => {
-		// Check if edges were actually added/removed (not just selected)
-		const hasStructuralChange = changes.some( c => c.type === 'add' || c.type === 'remove' );
-
 		setEdges( ( eds ) => {
 			const updated = applyEdgeChanges( changes, eds );
 
 			// Only update node targets when edges structure changes
-			if ( hasStructuralChange ) {
+			if ( hasStructuralChange( changes ) ) {
 				setNodes( ( nds ) => buildFlowChain( nds, updated ) );
 			}
 
@@ -473,6 +474,14 @@ function Flow( props ) {
 			</FlowContext.Provider>
 		</div>
 	);
+}
+
+function hasStructuralChange( changes ) {
+	return changes.some( c => c.type === 'add' || c.type === 'remove' );
+}
+
+function hasDimensionChange( changes ) {
+	return changes.some( c => c.type === 'dimensions' && c.dimensions );
 }
 
 /**
