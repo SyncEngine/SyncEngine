@@ -94,6 +94,17 @@ export default function EntityModal( props ) {
 				buttonClose: t('Close'),
 				handleSubmit: null,
 			} );
+		} else if ( response.error || response.errors ) {
+			setModal( {
+				size: 'md',
+				body: (
+					<>
+						<p className="text-danger">{ response.error ?? response.errors }</p>
+					</>
+				),
+				buttonClose: t('Close'),
+				handleSubmit: null,
+			} );
 		}
 	}
 
