@@ -19,6 +19,7 @@ use SyncEngine\Form\UserFormType;
 use SyncEngine\Repository\UserRepository;
 
 #[IsGranted( 'ROLE_ADMIN' )]
+#[Route('/system')]
 class UserController extends AbstractAdminController
 {
 	#[Route( '/users', name: 'users_list' )]

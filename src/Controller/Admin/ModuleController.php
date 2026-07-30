@@ -20,6 +20,7 @@ use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
 
+#[Route('/system')]
 class ModuleController extends AbstractAdminController
 {
 
