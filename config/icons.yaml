@@ -66,6 +66,7 @@ parameters:
     system-processes: 'bi bi-terminal'
     system-processes-manager: 'bi bi-cpu-fill'
     system-processes-config: 'bi bi-cpu'
+    system-users: 'bi bi-people'
     docs: 'bi bi-book'
     git: 'bi bi-git'
     github: 'bi bi-github'
