@@ -657,16 +657,11 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 		return nodes;
 	}
 
-	// @todo Remove as redundant performance-wise?
-	if ( ! hasOverlaps( nodes, { spacing } ) ) {
-		return nodes;
-	}
-
 	const isVertical = direction === 'vertical';
 	const axis = isVertical ? 'y' : 'x';
 
 	// Create index map to restore original order later
-	const indexMap = nodes.map( (node, idx) => [idx, { ...node }] );
+	const indexMap = nodes.map( (node, idx) => [ idx, node ] );
 
 	// Sort by position for algorithm to work correctly (top-to-bottom)
 	const sorted = indexMap.sort( ( [, a], [, b] ) => {
@@ -694,7 +689,7 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 	// Resolve overlaps on sorted nodes
 	let hasChanges = false;
 	let changed = true;
-	while ( changed ) {
+	do {
 		changed = false;
 		for ( let i = 0; i < sorted.length; i ++ ) {
 			// Check for overlaps with all previous nodes (now that they're sorted)
@@ -703,14 +698,18 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 				const b = sorted[ i ][1];
 
 				const overlapAmount = getOverlapAmount( a, b, { spacing, direction } );
+				// Only shift node if the current node overlaps on both axis.
+				// If either axis is below 1 then the node doesn't actually overlap.
 				if ( overlapAmount?.x && overlapAmount?.y ) {
+					// If it overlaps, only shift in the globally preferred direction.
 					sorted[ i ][1] = shiftNode( b, { [axis]: overlapAmount[axis] } );
 					hasChanges = true;
 					changed = true;
+					break; // Stop loop to re-check from the beginning after shifting
 				}
 			}
 		}
-	}
+	} while ( changed );
 
 	// Early exit — nothing moved
 	if ( ! hasChanges ) {
