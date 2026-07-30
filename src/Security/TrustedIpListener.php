@@ -27,6 +27,8 @@ class TrustedIpListener
 
 		$ips = array_map( 'trim', explode( ',', $this->trustedIps ) );
 
+		$ips[] = '127.0.0.1';
+
 		if ( ! IpUtils::checkIp( $request->getClientIp(), $ips ) ) {
 			throw new AccessDeniedHttpException();
 		}
