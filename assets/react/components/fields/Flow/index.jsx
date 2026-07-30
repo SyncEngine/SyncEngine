@@ -151,10 +151,14 @@ function Flow( props ) {
 		preview = false,
 	} = props;
 
+	// Track drag/resize state to avoid parsing during user interactions
+	const isInteractingRef = useRef( false );
+
 	const [ entities, entityCallbacks, loading ] = useEntities( entity, {}, {} );
 
 	const onNodeChange = useCallback( ( id, changes ) => {
 		setNodes( ( nodes ) =>
+			// For some reason we need to return a full new array for changes to appear.
 			nodes.map( ( node ) => {
 				if ( node.id === id ) {
 					return { ...node, data: { ...node.data, ...changes } };
@@ -171,6 +175,7 @@ function Flow( props ) {
 
 	const value = useMemo(
 		() => parseValue( objectToMappable( props.value || [] ), nodeDefaults ),
+		// @todo Detect actual value changes?
 		[ props.value, nodeDefaults ]
 	);
 
@@ -196,10 +201,8 @@ function Flow( props ) {
 		validateFlow( rebuilt );
 		return resolveLayoutOverlaps( rebuilt );
 	} );
-	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
-	// Track drag/resize state to avoid parsing during user interactions
-	const isInteractingRef = React.useRef( false );
+	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
 	// Custom onNodesChange: only parse on structural changes (add/remove)
 	const onNodesChange = useCallback( ( changes ) => {
