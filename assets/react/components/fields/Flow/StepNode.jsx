@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Position, useReactFlow } from '@xyflow/react';
 import { InputGroup } from 'react-bootstrap';
@@ -12,6 +12,7 @@ import Entity from '../Entity';
 import useEntity from '../../../hooks/useEntity';
 
 import DeleteModal from '../../modals/DeleteModal';
+import EntitySelectorModal from '../../modals/EntitySelectorModal';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
@@ -41,6 +42,7 @@ export default function StepNode( props ) {
 	const { getNodes, getEdges } = useReactFlow();
 	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
 	const [ selectedEntity, entityCallbacks, loading ] = useEntity( entity, data[ entity ], [], {} );
+	const [ showSelector, setShowSelector ] = useState( false );
 	const tagsContext = useContext( TagsContext );
 
 	const onNodeRemove = useCallback( () => {
@@ -54,6 +56,14 @@ export default function StepNode( props ) {
 		entityCallbacks.set( entityId );
 		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
 	}, [ onChange, data, entity ] );
+
+	const handleConfigUpdate = useCallback( newValue => {
+		handleChange( { id: data[ entity ], ...newValue } );
+	}, [ handleChange, data, entity ] );
+
+	const handleSet = useCallback( ( entityId ) => {
+		handleChange( { id: parseId( entityId ), ...( data.config ?? {} ) } );
+	}, [ handleChange, data ] )
 
 	const nodes = getNodes().filter( node => node.type !== 'input' );
 	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
@@ -73,6 +83,27 @@ export default function StepNode( props ) {
 
 	const actions = [ 'edit' ];
 	if ( ! selectedEntity ) {
+		actions.push( {
+			action: 'select',
+			callback: () => setShowSelector( true ),
+			button: true,
+			variant: 'outline-' + entity,
+			icon: 'list',
+			label: t( 'Select' ),
+			component: (
+				<>
+					{ showSelector && (
+						<EntitySelectorModal
+							entity={ entity }
+							onSelect={ ( entity ) => {
+								handleSet( entity.id );
+								setShowSelector( false );
+							} }
+							onClose={ () => setShowSelector( false ) }
+						/>
+					) }
+				</>
+		) } );
 		actions.push( 'create' );
 	} else {
 		const configAction = { action: 'config' };
@@ -140,8 +171,10 @@ export default function StepNode( props ) {
 								className="nodrag"
 								entity={ entity }
 								value={ { id: data[ entity ], ...( data.config ?? {} ), } }
-								//selectable={ isEmpty( data[ entity ] ) } @todo, prevent re-selection if config is made?
-								onChange={ handleChange }
+								query={ false }
+								choices={ _FlowContext?.entities ?? {} }
+								selectable={ false }
+								onChange={ handleConfigUpdate }
 								actions={ actions }
 								config={ 'entity:_step.fields' }
 							/>
