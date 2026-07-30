@@ -267,7 +267,7 @@ class ModuleController extends AbstractAdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$this->moduleRegistryManager->disableModule( $package );
+		$this->moduleRegistryManager->disableModule( $package, $this->trans( 'Disabled manually' ) );
 
 		if ( ! $this->_refreshContainer() ) {
 			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module disable.' ) );
