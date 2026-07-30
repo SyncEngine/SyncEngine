@@ -27,6 +27,7 @@ import { createRefId, debug } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isEqual } from '../../../utils/conditions';
+import useEntities from '../../../hooks/useEntities';
 
 const edgeIdSeparator = '->';
 const edgeDefaults = {
@@ -149,6 +150,8 @@ function Flow( props ) {
 		entity,
 		preview = false,
 	} = props;
+
+	const [ entities, entityCallbacks, loading ] = useEntities( entity, {}, {} );
 
 	const onNodeChange = useCallback( ( id, changes ) => {
 		setNodes( ( nodes ) =>
@@ -431,8 +434,11 @@ function Flow( props ) {
 			<FlowContext.Provider value={
 				{
 					nodeDefaults,
-					entity,
 					preview,
+					loading,
+					entity,
+					entities,
+					entityCallbacks,
 					callbacks: {
 						addNodeBetween,
 						removeEdge,

@@ -39,9 +39,12 @@ export default function StepNode( props ) {
 		preview = _FlowContext?.preview ?? false,
 	} = data;
 
+	const loading = _FlowContext?.loading;
+	const entityCallbacks = _FlowContext?.entityCallbacks;
+
 	const { getNodes, getEdges } = useReactFlow();
 	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
-	const [ selectedEntity, entityCallbacks, loading ] = useEntity( entity, data[ entity ], [], {} );
+	const [ selectedEntity, setSelectedEntity ] = useState( data[ entity ] );
 	const [ showSelector, setShowSelector ] = useState( false );
 	const tagsContext = useContext( TagsContext );
 
@@ -53,8 +56,8 @@ export default function StepNode( props ) {
 		const entityId = newValue.id;
 		delete newValue.id;
 		// @todo only set if actually changed?
-		entityCallbacks.set( entityId );
 		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
+		setSelectedEntity( entityId );
 	}, [ onChange, data, entity ] );
 
 	const handleConfigUpdate = useCallback( newValue => {
@@ -170,7 +173,7 @@ export default function StepNode( props ) {
 							<Entity
 								className="nodrag"
 								entity={ entity }
-								value={ { id: data[ entity ], ...( data.config ?? {} ), } }
+								value={ { id: selectedEntity, ...( data.config ?? {} ), } }
 								query={ false }
 								choices={ _FlowContext?.entities ?? {} }
 								selectable={ false }
