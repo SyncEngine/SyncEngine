@@ -87,7 +87,7 @@ class ExecuteContext extends Context
 	public function registerTrace( TraceModel $trace ): void
 	{
 		if ( isset( $this->trace ) ) {
-			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Trace' ] );
+			throw new \LogicException( 'Trace already set. Please create a new context.' );
 		}
 
 		$this->trace = $trace;
@@ -101,7 +101,7 @@ class ExecuteContext extends Context
 	public function registerRequest( Request $request ): void
 	{
 		if ( isset( $this->request ) ) {
-			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Request' ] );
+			throw new \LogicException( 'Request already set. Please create a new context.' );
 		}
 
 		$this->request = $request;

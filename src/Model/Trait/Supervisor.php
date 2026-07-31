@@ -39,7 +39,7 @@ trait Supervisor
 	{
 		$icon = '';
 
-		if ( is_callable( $this, 'getIcon' ) ) {
+		if ( is_callable( [ $this, 'getIcon' ] ) ) {
 			$icon = $this->getIcon();
 		}
 
