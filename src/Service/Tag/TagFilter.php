@@ -8,7 +8,7 @@ use SyncEngine\Service\Format\DateTimeFormatter;
 
 trait TagFilter
 {
-	protected function filterCount( $value ): string
+	protected function filterCount( $value ): int
 	{
 		if ( ! is_countable( $value ) ) {
 			return 0;

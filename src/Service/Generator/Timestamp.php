@@ -6,7 +6,7 @@ use SyncEngine\Service\Interface\GeneratorInterface;
 
 class Timestamp implements GeneratorInterface
 {
-	public function generate( string $from = '', null|int|string $baseTimestamp = null ): string
+	public function generate( string $from = '', null|int|string $baseTimestamp = null ): int
 	{
 		if ( is_string( $baseTimestamp ) ) {
 			if ( empty( $baseTimestamp ) ) {
@@ -19,7 +19,7 @@ class Timestamp implements GeneratorInterface
 		}
 
 		if ( $from ) {
-			return strtotime( $from, $baseTimestamp );
+			return strtotime( $from, $baseTimestamp ) ?: 0;
 		}
 		return time();
 	}

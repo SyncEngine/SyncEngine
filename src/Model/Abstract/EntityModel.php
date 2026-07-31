@@ -198,14 +198,9 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	}
 
 	/**
-	 * @throws \Exception
-	 *
-	 * @param $entity
-	 * @psalm-param object<T> $entity
-	 *
-	 * @return static
+	 * @param T|null $entity
 	 */
-	public static function create( $entity = null ): static
+	public static function create( ?object $entity = null ): static
 	{
 		if ( ! $entity ) {
 			$class  = static::getEntityClass();
