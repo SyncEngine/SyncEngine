@@ -34,9 +34,9 @@ interface Configurable
 	public function setConfig( $value, $key = null ): void;
 
 	/**
-	 * @param  array  $config
+	 * @param  iterable  $config
 	 *
 	 * @return void
 	 */
-	public function updateConfig( array $config ): void;
+	public function updateConfig( iterable $config ): void;
 }

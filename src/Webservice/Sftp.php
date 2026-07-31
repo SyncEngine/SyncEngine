@@ -157,7 +157,7 @@ class Sftp extends Ftp
 	 *
 	 * @return false|array
 	 */
-	public function _nlist( $client, $directory = '.' ): false|array
+	public function _nlist( $client, $directory = '.' )
 	{
 		return $client->nlist( $directory );
 	}
@@ -166,7 +166,7 @@ class Sftp extends Ftp
 	 * @param seclibSFTP $client
 	 * @param $directory
 	 *
-	 * @return false|string
+	 * @return bool
 	 */
 	public function _mkdir( $client, $directory )
 	{
