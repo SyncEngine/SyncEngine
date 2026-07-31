@@ -16,8 +16,8 @@ interface Configurable
 	/**
 	 * Returns the configuration data.
 	 *
-	 * @param  null  $key
-	 * @param  null  $default
+	 * @param  string|string[]|null  $key
+	 * @param  mixed  $default
 	 *
 	 * @return mixed
 	 */
@@ -26,8 +26,8 @@ interface Configurable
 	/**
 	 * Sets the configuration data.
 	 *
-	 * @param mixed $value
-	 * @param string|null $key
+	 * @param  mixed  $value
+	 * @param  string|string[]|null  $key
 	 *
 	 * @return void
 	 */

@@ -173,7 +173,7 @@ class WorkerRegistry
 			$fs->touch( $file );
 		}
 
-		$fs->dumpFile( $file, time() );
+		$fs->dumpFile( $file, (string) time() );
 	}
 
 	public function registerWorker( Worker $worker ): void

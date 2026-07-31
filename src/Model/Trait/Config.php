@@ -20,6 +20,14 @@ trait Config
 		}
 	}
 
+	/**
+	 * Returns the configuration data.
+	 *
+	 * @param  string|string[]|null  $key
+	 * @param  mixed  $default
+	 *
+	 * @return mixed
+	 */
 	public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( ! isset( $this->config ) ) {
@@ -36,6 +44,14 @@ trait Config
 		return $value;
 	}
 
+	/**
+	 * Sets the configuration data.
+	 *
+	 * @param  mixed  $value
+	 * @param  string|string[]|null  $key
+	 *
+	 * @return void
+	 */
 	public function setConfig( $value, $key = null ): void
 	{
 		if ( ! isset( $this->config ) ) {

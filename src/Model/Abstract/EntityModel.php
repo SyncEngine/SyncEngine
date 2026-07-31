@@ -199,6 +199,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	/**
 	 * @param T|null $entity
+	 * @return static<T>
 	 */
 	public static function create( ?object $entity = null ): static
 	{
