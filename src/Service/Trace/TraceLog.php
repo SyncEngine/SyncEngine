@@ -11,7 +11,7 @@ class TraceLog extends ResourceData
 {
 	public static function create( $resource = [], string|TraceLogType $type = 'log', ?TraceContext $context = null ): static
 	{
-		if ( $resource instanceof TraceLog ) {
+		if ( $resource instanceof static ) {
 			return $resource;
 		}
 

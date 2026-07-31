@@ -22,7 +22,7 @@ use SyncEngine\Model\StorageModel;
 )]
 class FixConditionsOperatorContains extends Command
 {
-	private $map = [
+	private array $map = [
 		'in'            => 'contains',
 		'not_in'        => 'not_contains',
 		'in_strict'     => 'contains_strict',

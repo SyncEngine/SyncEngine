@@ -8,7 +8,7 @@ use SyncEngine\Model\StorageModel;
 
 abstract class AbstractStorageBlueprint extends BlueprintModel
 {
-	protected $storageType = '';
+	protected string $storageType = '';
 
 	public function init(): void
 	{

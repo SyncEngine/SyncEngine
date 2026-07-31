@@ -275,7 +275,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 	final public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( empty( $this->config ) ) {
-			$this->buildConfig( null );
+			$this->buildConfig();
 		}
 
 		return $this->_getConfig( $key, $default );

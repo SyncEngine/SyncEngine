@@ -20,7 +20,7 @@ use SyncEngine\Model\TaskModel;
 )]
 class FixDevTryToAttemptTask extends Command
 {
-	private $map = [
+	private array $map = [
 		'SyncEngine/TryCatch:TryCatch' => 'Attempt',
 	];
 

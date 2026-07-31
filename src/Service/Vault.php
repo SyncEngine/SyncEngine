@@ -162,6 +162,9 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 		return $this->update( $name, null );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function list( bool $reveal = false ): array
 	{
 		$secrets = $this->get();

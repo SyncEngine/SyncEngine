@@ -34,7 +34,7 @@ readonly class IterationData implements \ArrayAccess
 			$current = $index + 1;
 		}
 
-		return new self(
+		return new static(
 			index: $index,
 			current: $current,
 			size: $size,

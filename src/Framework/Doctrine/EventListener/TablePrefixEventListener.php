@@ -4,6 +4,7 @@ namespace SyncEngine\Framework\Doctrine\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -45,7 +46,7 @@ class TablePrefixEventListener
 		}
 	}
 
-	private function prefixJoinTable( $classMetadata, string $fieldName, array $mapping ): void
+	private function prefixJoinTable( $classMetadata, string $fieldName, array|AssociationMapping $mapping ): void
 	{
 		$tableName = $mapping['joinTable']['name'];
 

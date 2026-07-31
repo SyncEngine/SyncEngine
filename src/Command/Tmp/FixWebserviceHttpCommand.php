@@ -18,7 +18,7 @@ use SyncEngine\Model\ConnectionModel;
 )]
 class FixWebserviceHttpCommand extends Command
 {
-	private $map = [
+	private array $map = [
 		'Http'        => 'HttpMultistep',
 		'NoAuth'      => 'Http',
 		'Basic'       => 'HttpBasic',

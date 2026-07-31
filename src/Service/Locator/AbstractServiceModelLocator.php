@@ -11,7 +11,7 @@ use SyncEngine\Model\ModuleModel;
  */
 abstract class AbstractServiceModelLocator implements LocatorInterface
 {
-	private $services;
+	private array $services;
 
 	public function __construct(
 		protected readonly ServiceLocator $container,

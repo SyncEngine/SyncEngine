@@ -66,7 +66,12 @@ class AccountController extends EntityController
 	public function renderEdit(
 		Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher,
 	): Response {
+		/** @var User $user */
 		$user = $this->getUser();
+
+		if ( ! $user instanceof User ) {
+			return $this->redirectToRoute( 'admin_login' );
+		}
 
 		$form = $this->formAccount( $user, $request, $entityManager, $userPasswordHasher );
 
@@ -176,7 +181,12 @@ class AccountController extends EntityController
 	#[Route( '/account/tokens', name: 'account_tokens' )]
 	public function renderTokens(): Response
 	{
+		/** @var User $user */
 		$user = $this->getUser();
+
+		if ( ! $user instanceof User ) {
+			return $this->redirectToRoute( 'admin_login' );
+		}
 
 		$apiTokens = $user->getApiTokens();
 
@@ -205,7 +215,12 @@ class AccountController extends EntityController
 	public function renderTokensCreate(
 		Request $request, EntityManagerInterface $entityManager,
 	): Response {
+		/** @var User $user */
 		$user = $this->getUser();
+
+		if ( ! $user instanceof User ) {
+			return $this->redirectToRoute( 'admin_login' );
+		}
 
 		$form = $this->formApiToken( new ApiToken(), $user, $request, $entityManager );
 
@@ -242,7 +257,12 @@ class AccountController extends EntityController
 	public function renderTokensEdit(
 		#[MapEntity(id: 'id')] ApiToken $apiToken, Request $request, EntityManagerInterface $entityManager,
 	): Response {
+		/** @var User $user */
 		$user = $this->getUser();
+
+		if ( ! $user instanceof User ) {
+			return $this->redirectToRoute( 'admin_login' );
+		}
 
 		$form = $this->formApiToken( $apiToken, $user, $request, $entityManager );
 
