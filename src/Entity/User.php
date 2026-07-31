@@ -38,6 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column( nullable: true )]
 	protected ?array $settings = [];
 
+	/** @var Collection<int, ApiToken> */
 	#[ORM\OneToMany( mappedBy: 'user', targetEntity: ApiToken::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	private Collection $apiTokens;
 

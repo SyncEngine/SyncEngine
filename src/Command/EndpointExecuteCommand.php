@@ -205,8 +205,7 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	public function getContextInfo( ExecuteEvent $event ): string
 	{
-		$name = $event->getEventName();
-		/** @var EngineModel|ServiceModel $model */
+		$name  = $event->getEventName();
 		$model = $event->getExecuteContext()->getCurrent( $name );
 
 		if ( $model instanceof TaskModel ) {

@@ -7,7 +7,7 @@ use SyncEngine\Model\ModuleModel;
 
 class Modules
 {
-	public function __construct( private ServiceLocator $container ) {}
+	public function __construct( private readonly ServiceLocator $container ) {}
 
 	/**
 	 * @todo Move to a service?

@@ -71,6 +71,14 @@ class HooksController extends DefaultController
 		return $event->getHtml();
 	}
 
+	/**
+	 * @template T of HookEvent
+	 *
+	 * @param  T       $event
+	 * @param  string  $hookName
+	 *
+	 * @return T
+	 */
 	public function doHook( HookEvent $event, string $hookName ): HookEvent
 	{
 		$this->dispatcher->dispatch( $event, 'syncengine.hook.' . $event->getHookType() . '.' . $hookName );

@@ -29,6 +29,10 @@ abstract class EntityController extends AbstractAdminController
 		return $this->json( $response );
 	}
 
+	/**
+	 * @todo Return DTO?
+	 * @return array<string, mixed>
+	 */
 	protected function _handleRequest( EntityModel $model, Request $request ): array
 	{
 		$action = $request->request->get( 'action' );

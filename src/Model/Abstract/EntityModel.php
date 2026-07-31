@@ -308,6 +308,9 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return $repository->count( $query['where'] ?? [] );
 	}
 
+	/**
+	 * @return EntityRepository<T>
+	 */
 	public static function getRepository( ?EntityManagerInterface $entityManager = null ): EntityRepository
 	{
 		if ( ! $entityManager ) {
@@ -326,6 +329,10 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return static::getModelClass( $entity );
 	}
 
+	/**
+	 * @param class-string|object $entity
+	 * @return \ReflectionClass
+	 */
 	public static function getEntityReflection( $entity ): \ReflectionClass
 	{
 		if ( is_object( $entity ) ) {
@@ -345,8 +352,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	}
 
 	/**
-	 * @return string
-	 * @psalm-return class-string<T>
+	 * @return class-string<T>
 	 */
 	abstract public static function getEntityClass(): string;
 }

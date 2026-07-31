@@ -13,7 +13,6 @@ use SyncEngine\Service\ModelExporter;
 
 /**
  * @template T of EngineEntity
- * @extends EngineModel<T>
  *
  * @method int|null getId()
  * @method setId( int $id )

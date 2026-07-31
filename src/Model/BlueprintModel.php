@@ -18,6 +18,9 @@ use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ConfigData;
 
+/**
+ * @extends ServiceModel<BlueprintModel>
+ */
 class BlueprintModel extends ServiceModel implements Configurable
 {
 	use Config {

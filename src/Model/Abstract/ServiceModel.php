@@ -7,6 +7,9 @@ use SyncEngine\Model\Trait\Module;
 use SyncEngine\Service\Locator\AbstractServiceModelLocator;
 use SyncEngine\Service\Locator\Modules;
 
+/**
+ * @template T of ServiceModel
+ */
 abstract class ServiceModel extends AbstractModel
 {
 	use Module;
@@ -46,6 +49,9 @@ abstract class ServiceModel extends AbstractModel
 		);
 	}
 
+	/**
+	 * @return AbstractServiceModelLocator<T>
+	 */
 	public static function getServiceModelLocator(): AbstractServiceModelLocator
 	{
 		if ( ! static::SERVICE ) {

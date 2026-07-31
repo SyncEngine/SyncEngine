@@ -24,7 +24,9 @@ use SyncEngine\Structure\Data\ResourceData;
  * @method setName( string $name )
  * @method Trace getEntity()
  * @method \DateTimeImmutable|null getCreated()
+ * @method setCreated( \DateTimeImmutable $created )
  * @method \DateTimeImmutable|null getModified()
+ * @method setModified( \DateTimeImmutable $modified )
  */
 class TraceModel extends EntityModel
 {
