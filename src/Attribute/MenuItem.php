@@ -17,11 +17,6 @@ class MenuItem
 		protected array $parameters = []
 	) {}
 
-	public function setRoute( string $route ): static
-	{
-		$this->route = $route;
-	}
-
 	public function getMenu(): string
 	{
 		return $this->menu;
