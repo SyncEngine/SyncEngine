@@ -7,9 +7,6 @@ use SyncEngine\Model\Trait\Module;
 use SyncEngine\Service\Locator\AbstractServiceModelLocator;
 use SyncEngine\Service\Locator\Modules;
 
-/**
- * @template T of ServiceModel
- */
 abstract class ServiceModel extends AbstractModel
 {
 	use Module;
@@ -19,17 +16,37 @@ abstract class ServiceModel extends AbstractModel
 	 */
 	const SERVICE = '';
 
+	/**
+	 * @throws \ErrorException
+	 *
+	 * @param  string  $name
+	 *
+	 * @return static|null
+	 */
 	public static function create( string $name ): ?static
 	{
-		// @todo Factory.
 		return static::getServiceModelLocator()->get( $name );
 	}
 
+	/**
+	 * @throws \ErrorException
+	 *
+	 * @param  string  $name
+	 *
+	 * @return static|null
+	 */
 	public static function get( string $name ): ?static
 	{
 		return static::getServiceModelLocator()->get( $name );
 	}
 
+	/**
+	 * @throws \ErrorException
+	 *
+	 * @param  string  $name
+	 *
+	 * @return static[]|null
+	 */
 	public static function getAll(): ?array
 	{
 		return static::getServiceModelLocator()->getAll();
@@ -50,7 +67,7 @@ abstract class ServiceModel extends AbstractModel
 	}
 
 	/**
-	 * @return AbstractServiceModelLocator<T>
+	 * @return AbstractServiceModelLocator<static>
 	 */
 	public static function getServiceModelLocator(): AbstractServiceModelLocator
 	{

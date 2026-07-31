@@ -18,18 +18,21 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 		protected readonly Modules $modulesService,
 	) {}
 
+	/**
+	 * @param  T  $service
+	 * @return bool
+	 */
 	abstract public function validate( ServiceModel $service ): bool;
 
 	/**
-	 * @return ServiceModel::class
+	 * @return T::class
 	 */
 	abstract public function getModelClass(): string;
 
 	/**
 	 * @param string $name
 	 *
-	 * @return ?ServiceModel
-	 * @psalm-return ?ServiceModel<T>
+	 * @return ?T
 	 */
 	public function get( $name ): ?ServiceModel
 	{
@@ -55,8 +58,7 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 	}
 
 	/**
-	 * @return ServiceModel[]
-	 * @psalm-return ServiceModel<T>[]
+	 * @return T[]
 	 */
 	public function getAll(): array
 	{
@@ -75,8 +77,7 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 	}
 
 	/**
-	 * @return ServiceModel[]
-	 * @psalm-return ServiceModel<T>[]
+	 * @return T[]
 	 */
 	public function getAllFromModule( ModuleModel|string $module ): array
 	{
