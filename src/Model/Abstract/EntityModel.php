@@ -20,7 +20,7 @@ use SyncEngine\Service\ModelNormalizer;
 abstract class EntityModel extends AbstractModel implements Persistable
 {
 	/**
-	 * @var object<T>
+	 * @var T
 	 */
 	protected object $entity;
 
@@ -53,7 +53,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	}
 
 	/**
-	 * @return object<T>|null
+	 * @return T|null
 	 */
 	public function getEntity(): ?object
 	{
@@ -239,7 +239,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = $repository->findOneBy( [ 'ref' => $entity ] );
 		} else {
 			// Only keep valid columns for get query.
-			$props  = array_map( fn($i) => $i->name, ( new \ReflectionClass( static::getEntityClass() ) )?->getProperties() );
+			$props  = array_map( fn($i) => $i->name, ( new \ReflectionClass( static::getEntityClass() ) )->getProperties() );
 			$entity = array_intersect_key( $entity, array_flip( $props ) );
 			if ( ! empty( $entity ) ) {
 				$entity = $repository->findOneBy( $entity );
@@ -326,7 +326,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	/**
 	 * @param class-string|object $entity
 	 */
-	public static function getEntityReflection( $entity ): \ReflectionClass
+	public static function getEntityReflection( string|object $entity ): \ReflectionClass
 	{
 		if ( is_object( $entity ) ) {
 			$entity = get_class( $entity );
@@ -335,7 +335,10 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return DefaultController::getEntityManager()->getClassMetadata( $entity )->getReflectionClass();
 	}
 
-	public static function getEntityRealClass( $entity ): string
+	/**
+	 * @param class-string|object $entity
+	 */
+	public static function getEntityRealClass( string|object $entity ): string
 	{
 		if ( is_object( $entity ) ) {
 			$entity = get_class( $entity );

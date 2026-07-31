@@ -44,9 +44,11 @@ trait ClientHttp
 	}
 
 	/**
-	 * @param  array{ query: array, headers: array, body: array, format: string|array }  $config
+	 * { query: array, headers: array, body: array, format: string|array, timeout: int|float|string }
 	 *
-	 * @return array
+	 * @param  array  $config
+	 *
+	 * @return array<string, mixed>
 	 */
 	public function getClientOptions( array $config = [] ): array
 	{
@@ -145,7 +147,7 @@ trait ClientHttp
 			$filename  = $info['filename'];
 			$extension = $info['extension'] ?? null;
 		} else {
-			$info = pathinfo( $response?->getInfo( 'url' ) );
+			$info = pathinfo( $response->getInfo( 'url' ) );
 			if ( isset( $info['extension'] )
 			     && in_array(
 				     $info['extension'],

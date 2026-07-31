@@ -20,6 +20,7 @@ use SyncEngine\Model\TraceModel;
 )]
 class FixTraceDirCommand extends Command
 {
+	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
 	public function __construct( DefaultController $controller )
 	{
 		parent::__construct();

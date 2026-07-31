@@ -263,8 +263,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function cleanStaleRuns(): bool
 	{
+		/** @var TraceRepository $repository */
 		$repository = TraceModel::getRepository();
-		if ( ! $repository || ! $this->getId() ) {
+		if ( ! $this->getId() ) {
 			return false;
 		}
 
@@ -277,7 +278,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		if ( ! empty( $staleRows ) ) {
 			$now           = new \DateTimeImmutable();
-			$entityManager = $repository->getEntityManager();
+			$entityManager = $repository->getEntityManager(); // @phpstan-ignore method.protected
 
 			foreach ( $repository->findBy( [ 'id' => array_column( $staleRows, 'id' ) ] ) as $trace ) {
 				$trace->setStatus( TraceStatus::STOPPED->value );

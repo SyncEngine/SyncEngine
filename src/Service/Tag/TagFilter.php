@@ -62,8 +62,8 @@ trait TagFilter
 	protected function filterDate( $value, string $format = '', string $timezone = '' ): string
 	{
 		$formatter = new DateTimeFormatter( [
-			DateTimeFormatter::FORMAT    => $format ?? null,
-			DateTimeFormatter::TIMEZONE  => $timezone ?? null,
+			DateTimeFormatter::FORMAT    => $format ?: null,
+			DateTimeFormatter::TIMEZONE  => $timezone ?: null,
 		] );
 
 		return $formatter->format( $value );

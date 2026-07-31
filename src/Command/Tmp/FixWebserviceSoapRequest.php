@@ -21,6 +21,7 @@ use SyncEngine\Webservice\Soap;
 )]
 class FixWebserviceSoapRequest extends Command
 {
+	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
 	public function __construct( DefaultController $controller )
 	{
 		parent::__construct();
@@ -56,7 +57,7 @@ class FixWebserviceSoapRequest extends Command
 		}
 
 		foreach ( $config as $k => $v ) {
-			if ( 'Soap' === $config['_class'] ?? '' ) {
+			if ( 'Soap' === ( $config['_class'] ?? '' ) ) {
 				return $this->updateConfig( $config );
 			}
 

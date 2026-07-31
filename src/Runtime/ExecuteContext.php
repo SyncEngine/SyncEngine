@@ -423,8 +423,9 @@ class ExecuteContext extends Context
 	public function offsetGet( mixed $offset ): mixed
 	{
 		if ( is_int( $offset ) ) {
-			parent::offsetGet( $offset );
+			return parent::offsetGet( $offset );
 		}
+
 		switch ( $offset ) {
 			case 'cache':
 				return $this->getCache();

@@ -202,7 +202,7 @@ class System
 
 		$schemaTool = new SchemaTool( $entityManager );
 		$metadata   = $entityManager->getMetadataFactory()->getAllMetadata();
-		$sql        = $schemaTool->getUpdateSchemaSql( $metadata, true );
+		$sql        = $schemaTool->getUpdateSchemaSql( $metadata );
 
 		$queries = [];
 		$skipped = [];

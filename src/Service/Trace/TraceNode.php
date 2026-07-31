@@ -16,7 +16,7 @@ class TraceNode extends ResourceData
 		if ( is_array( $resource ) || $resource instanceof ResourceData ) {
 			$ref    = $resource['_ref']; // @todo Validate item.
 			$name   = $resource['_label'] ?? '';
-			$type   = ( $type ? $type . ':' : '' ) . $resource['_class'] ?? '';
+			$type   = ( $type ? $type . ':' : '' ) . ( $resource['_class'] ?? '' );
 			$config = $resource;
 		} elseif ( is_object( $resource ) ) {
 			$ref    = $resource->getRef();

@@ -264,7 +264,7 @@ trait ClientFiles
 			$filepath         = dirname( $remote_file );
 			$originalFilename = basename( $remote_file );
 
-			$directory = $this->_nlist( $client, $filepath ?? '.' );
+			$directory = $this->_nlist( $client, $filepath ?: '.' );
 			$filename  = $this->createUniqueFilename( $originalFilename, $directory );
 
 			if ( $filename !== $originalFilename ) {

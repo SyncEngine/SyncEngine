@@ -109,7 +109,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 			$currentRoute = $request->attributes->get( '_route' );
 
 			if ( 'syncengine_install_repair' === $currentRoute && str_contains( $exception->getMessage(), '.user' ) ) {
-				$this->tokenStorage?->setToken( null );
+				$this->tokenStorage->setToken( null );
 				$this->rememberMeService?->clearRememberMeCookie();
 			}
 

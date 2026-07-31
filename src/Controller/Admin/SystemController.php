@@ -231,24 +231,28 @@ class SystemController extends AbstractAdminController
 					'badge' => $version,
 				],
 			];
-			$params   = $connection->getParams() ?? [];
-			if ( isset( $params['driver'] ) ) {
-				$database[] = [
-					'text'  => 'Database Driver',
-					'badge' => $params['driver'],
-				];
-			}
-			if ( isset( $params['charset'] ) ) {
-				$database[] = [
-					'text'  => 'Database Charset',
-					'badge' => $params['charset'],
-				];
-			}
-			if ( isset( $params['host'] ) ) {
-				$database[] = [
-					'text'  => 'Database Host',
-					'badge' => $params['host'],
-				];
+			try {
+				$params   = $connection->getParams();
+				if ( isset( $params['driver'] ) ) {
+					$database[] = [
+						'text'  => 'Database Driver',
+						'badge' => $params['driver'],
+					];
+				}
+				if ( isset( $params['charset'] ) ) {
+					$database[] = [
+						'text'  => 'Database Charset',
+						'badge' => $params['charset'],
+					];
+				}
+				if ( isset( $params['host'] ) ) {
+					$database[] = [
+						'text'  => 'Database Host',
+						'badge' => $params['host'],
+					];
+				}
+			} catch ( \Throwable $e ) {
+				// Do nothing.
 			}
 			$database[] = [
 				'text'  => 'Database Name',
@@ -323,7 +327,7 @@ class SystemController extends AbstractAdminController
 		$form = $this->createForm( EnvironmentFormType::class );
 
 		if ( false !== $saveLabel ) {
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? $this->trans( 'Save' ) ] );
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?: $this->trans( 'Save' ) ] );
 		}
 
 		$form->handleRequest( $request );

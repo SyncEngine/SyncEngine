@@ -17,21 +17,21 @@ use SyncEngine\Service\ModelExporter;
  * @extends EntityModel<T>
  *
  * @method null|int getId()
- * @method self setId( int $id )
+ * @method $this setId( int $id )
  * @method null|string getRef()
- * @method self setRef( string $ref )
+ * @method $this setRef( string $ref )
  * @method null|string getName()
- * @method self setName( string $name )
+ * @method $this setName( string $name )
  * @method null|string getDescription()
- * @method self setDescription( ?string $description )
+ * @method $this setDescription( ?string $description )
  * @method null|\DateTimeImmutable getCreated()
- * @method self setCreated( \DateTimeImmutable $created )
+ * @method $this setCreated( \DateTimeImmutable $created )
  * @method null|\DateTimeImmutable getModified()
- * @method self setModified( \DateTimeImmutable $modified )
+ * @method $this setModified( \DateTimeImmutable $modified )
  * @method null|string getIcon()
- * @method self setIcon( string $icon )
+ * @method $this setIcon( string $icon )
  * @method null|string getSupervisor()
- * @method self setSupervisor( ?string $supervisor )
+ * @method $this setSupervisor( ?string $supervisor )
  */
 abstract class EngineModel extends EntityModel implements Exportable, Configurable
 {

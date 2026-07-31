@@ -3,10 +3,10 @@
 namespace SyncEngine\Structure\Data;
 
 /**
- * @implements \ArrayAccess<int, ?array>
- * @implements \SeekableIterator<int, ?array>
+ * @template T of array|null
  *
- * @template T
+ * @implements \ArrayAccess<int, T>
+ * @implements \SeekableIterator<int, T>
  */
 class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator
 {

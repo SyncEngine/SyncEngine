@@ -2,7 +2,13 @@
 
 namespace SyncEngine\Form\Fields\Interface;
 
-interface FieldConfigInterface
+use SyncEngine\Form\Fields\AbstractFieldType;
+
+/**
+ * @see AbstractFieldType
+ * @extends \IteratorAggregate<string, mixed>
+ */
+interface FieldConfigInterface extends \IteratorAggregate
 {
 	public function getName(): string;
 

@@ -165,7 +165,7 @@ class ModuleRegistryManager
 		];
 
 		$file = $throwable->getFile();
-		if ( is_string( $file ) && $file ) {
+		if ( $file ) {
 			$segments[] = $file;
 		}
 
@@ -322,9 +322,6 @@ class ModuleRegistryManager
 
 		// Read current registry
 		$status = $this->getModuleStatus();
-		if ( ! is_array( $status ) ) {
-			$status = [];
-		}
 
 		// Ensure structure exists
 		if ( ! isset( $status['manual'] ) || ! is_array( $status['manual'] ) ) {

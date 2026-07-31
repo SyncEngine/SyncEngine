@@ -105,7 +105,7 @@ class FieldCollection extends AbstractCollection
 	{
 		$validator = new ConditionsValidator();
 		foreach ( $this as $field ) {
-			if ( ! $conditions || $validator->validate( $field, $conditions ) ) {
+			if ( ! $conditions || $validator->validate( $conditions, $field ) ) {
 				if ( is_callable( $changes ) ) {
 					$changes( $field );
 					continue;

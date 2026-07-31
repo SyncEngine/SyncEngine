@@ -88,8 +88,7 @@ class MenuLoader
 
 		$items = [];
 		foreach ( $menuItems as $attribute ) {
-			/** @var MenuItem $item */
-			$items[] = $attribute->newInstance();
+			$items[] = $attribute->newInstance(); // Returns MenuItem.
 		}
 
 		return $items;

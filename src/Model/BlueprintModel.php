@@ -18,9 +18,6 @@ use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ConfigData;
 
-/**
- * @extends ServiceModel<BlueprintModel>
- */
 class BlueprintModel extends ServiceModel implements Configurable
 {
 	use Config {
@@ -162,21 +159,19 @@ class BlueprintModel extends ServiceModel implements Configurable
 			if ( method_exists( $model, 'fetchConfigDependencies' ) ) {
 				$model->fetchConfigDependencies();
 			}
-			// @todo Use interfaces?
-			if ( method_exists( $model, 'updateConfig' ) ) {
-				// Remove actual config and enforce blueprint class before storing in DB.
-				$model->updateConfig(
-					$this->clearConfig(
-						array_replace_recursive(
-							$model->getConfig(),
-							static::initBlueprintConfig(),
-							$this->isFile() ?
-								[ '_blueprint' => [ '_class' => $this->getClassLocator() ] ]
-								: []
-						)
+
+			// Remove actual config and enforce blueprint class before storing in DB.
+			$model->updateConfig(
+				$this->clearConfig(
+					array_replace_recursive(
+						$model->getConfig(),
+						static::initBlueprintConfig(),
+						$this->isFile() ?
+							[ '_blueprint' => [ '_class' => $this->getClassLocator() ] ]
+							: []
 					)
-				);
-			}
+				)
+			);
 		}
 
 		$this->afterUpdate();
@@ -189,7 +184,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 		array_shift( $template );
 
 		if ( $template ) {
-			/** @var ModelImporter $importer */
 			foreach ( $template as $key => $value ) {
 				// Do not override existing config or data.
 				// @todo Improve importer to only import if non-existend yet but do recurse into dependencies.
@@ -442,7 +436,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		];
 	}
 
-	final public static function getSupervisorRef(): ?string
+	final public static function getSupervisorRef(): string
 	{
 		return self::getModelName() . ':' . static::_getClassLocator();
 	}

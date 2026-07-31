@@ -132,7 +132,7 @@ abstract class EntityController extends AbstractAdminController
 	 * @param T $model
 	 * @param array<string, mixed>|null $query
 	 *
-	 * @return T[]
+	 * @return array[] // Normalized entity models.
 	 */
 	protected function _handleActionList( EntityModel $model, ?array $query ): array
 	{
@@ -227,7 +227,7 @@ abstract class EntityController extends AbstractAdminController
 		$query = array_merge( $defaults, $query );
 
 		$page = $request->query->get( 'page' );
-		if ( $page ) {
+		if ( is_numeric( $page ) ) {
 			$query['offset'] = ( $page - 1 ) * $query['limit'];
 		}
 

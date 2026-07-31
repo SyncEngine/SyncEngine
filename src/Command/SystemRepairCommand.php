@@ -19,6 +19,7 @@ use SyncEngine\Service\System;
 )]
 class SystemRepairCommand extends Command
 {
+	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
 	public function __construct( private readonly System $system, DefaultController $controller ) {
 		parent::__construct();
 	}

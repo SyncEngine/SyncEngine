@@ -160,7 +160,7 @@ class ExecutePreview extends Execute
 		$return['Return'] = $result instanceof ResourceData ? $result->normalize() : [];
 
 		if ( $this->previewContext->getTrace() ) {
-			$return['Trace'] = [ $this->previewContext->getTrace()?->end()->getCurrentTrace()->normalize() ];
+			$return['Trace'] = [ $this->previewContext->getTrace()->end()->getCurrentTrace()->normalize() ];
 		}
 
 		if ( ! empty( $this->parsedConfig ) ) {

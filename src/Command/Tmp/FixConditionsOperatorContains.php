@@ -29,6 +29,7 @@ class FixConditionsOperatorContains extends Command
 		'not_in_strict' => 'not_contains_strict',
 	];
 
+	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
 	public function __construct( DefaultController $controller )
 	{
 		parent::__construct();

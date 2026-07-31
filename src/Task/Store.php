@@ -122,7 +122,7 @@ class Store extends TaskModel
 				}
 			}
 		} else {
-			$value = $data->get( $key ?? null );
+			$value = $data->get( $key );
 
 			if ( null === $value ) {
 				if ( 'override' !== $not_found ) {

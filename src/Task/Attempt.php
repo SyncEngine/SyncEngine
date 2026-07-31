@@ -174,7 +174,7 @@ class Attempt extends TaskModel
 						$trace = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
 					}
 
-					$message = (string) $trace->getMessage() ?? $trace->getException()?->getMessage();
+					$message = (string) ( $trace->getMessage() ?? $trace->getException()?->getMessage() );
 					if ( $info ) {
 						$trace->setInfo( $info );
 					}
@@ -198,7 +198,7 @@ class Attempt extends TaskModel
 					$trace = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
 				}
 
-				$message = (string) $trace->getMessage() ?? $trace->getException()?->getMessage();
+				$message = (string) ( $trace->getMessage() ?? $trace->getException()?->getMessage() );
 				if ( $info ) {
 					$trace->setInfo( $info );
 				}

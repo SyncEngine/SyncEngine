@@ -18,7 +18,8 @@ class SchemaConverter
 	}
 
 	/**
-	 * @param  array{ key: string, column: array }  $definitions
+	 * @param  array{ key: string, column: array }  $targetDefinitions
+	 * @param  array{ key: string, column: array }  $sourceDefinitions
 	 *
 	 * @return SchemaConverter
 	 */

@@ -128,7 +128,7 @@ trait ClientSoap
 				'both' => 'WSDL_CACHE_BOTH',
 				default => 'WSDL_CACHE_NONE', // 'none'
 			};
-			if ( isset( $cacheConstant ) && defined( $cacheConstant ) ) {
+			if ( defined( $cacheConstant ) ) {
 				$options['cache_wsdl'] = constant( $cacheConstant );
 			}
 

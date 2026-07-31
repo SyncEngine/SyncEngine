@@ -8,14 +8,9 @@ trait UpdateConfigCommandTrait
 	 * Pass a key to only replace the value of that key.
 	 * Pass `true` for $key to find and replace the key.
 	 *
-	 * @param $config
-	 * @param $find
-	 * @param $replace
-	 * @param callable $key
-	 *
 	 * @return array|mixed
 	 */
-	protected function findReplaceRecursive( $config, $find, $replace, ?callable $condition = null )
+	protected function findReplaceRecursive( $config, $find, $replace, ?callable $condition = null ): mixed
 	{
 		if ( ! is_iterable( $config ) ) {
 			if ( $config === $find ) {
@@ -45,11 +40,11 @@ trait UpdateConfigCommandTrait
 	 * @param $config
 	 * @param $find
 	 * @param $replace
-	 * @param callable $key
+	 * @param callable $condition
 	 *
 	 * @return array|mixed
 	 */
-	protected function findReplaceKeyRecursive( $config, $find, $replace, ?callable $condition = null )
+	protected function findReplaceKeyRecursive( $config, $find, $replace, ?callable $condition = null ): mixed
 	{
 		if ( ! is_iterable( $config ) ) {
 			return $config;
@@ -57,7 +52,7 @@ trait UpdateConfigCommandTrait
 
 		foreach ( $config as $k => $v ) {
 			if ( is_iterable( $v ) ) {
-				$config[ $k ] = $this->findReplaceKeyRecursive( $v, $find, $replace );
+				$config[ $k ] = $this->findReplaceKeyRecursive( $v, $find, $replace, $condition );
 			}
 
 			if ( $k === $find && ( ! $condition || $condition( $k, $v, $config ) ) ) {

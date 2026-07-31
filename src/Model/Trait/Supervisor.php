@@ -29,7 +29,7 @@ trait Supervisor
 	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
 		$supervisor = $this->getSupervisor();
-		if ( $supervisor instanceof Configurable ) {
+		if ( $supervisor instanceof Configurable && method_exists($supervisor, 'getConfigDependencies') ) {
 			return $supervisor->getConfigDependencies( $recursive );
 		}
 		return $this->_getConfigDependencies( $recursive );

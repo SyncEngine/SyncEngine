@@ -129,11 +129,9 @@ class ApiEndpointController extends AbstractApiController
 							if ( $realPath && is_file( $realPath ) ) {
 								// Validate against the BlobStore directory to prevent exposing files outside of the configured directory.
 								$blobStore = BlobStore::getInstance();
-								if ( $blobStore instanceof BlobStore ) {
-									$blobDir = realpath( $blobStore->getDirectory() );
-									if ( $blobDir && str_starts_with( $realPath, $blobDir ) ) {
-										return new BinaryFileResponse( $realPath );
-									}
+								$blobDir   = realpath( $blobStore->getDirectory() );
+								if ( $blobDir && str_starts_with( $realPath, $blobDir ) ) {
+									return new BinaryFileResponse( $realPath );
 								} else {
 									// @todo When BlobStore is unavailable, validate against a configured allowed directory
 									return new JsonResponse( [ 'message' => $this->trans( 'File not found' ) ], Response::HTTP_NOT_FOUND );
@@ -285,16 +283,15 @@ class ApiEndpointController extends AbstractApiController
 			}
 		}
 
-		$stream = $blob->getStream();
+		$resource = $blob->getResource();
 		$contentType = $blob->getMimeType() ?? ( new MimeTypes() )->guessMimeType( $blob->getFilename() );
 		$contentLength = $blob->getSize();
 		$filename = $blob->getFilename();
 
 		return new StreamedResponse(
-			function () use ( $stream, $contentType, $contentLength, $filename ) {
-				$stream->rewind();
+			function () use ( $resource ) {
 				$outputStream = fopen( 'php://output', 'wb' );
-				stream_copy_to_stream( $stream, $outputStream );
+				stream_copy_to_stream( $resource, $outputStream );
 			},
 			Response::HTTP_OK,
 			[

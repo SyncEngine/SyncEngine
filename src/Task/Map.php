@@ -151,10 +151,7 @@ class Map extends TaskModel
 		$mapSource     = $mapConfig['map_source'] ?? '';
 		$convertSchema = $config['convert_schema'] ?? true;
 
-		/** @var SchemaConverter $schema */
 		$schema = null;
-		/** @var MapData $mapper */
-		$mapper = null;
 
 		switch ( $mapSource ) {
 			case 'storage':

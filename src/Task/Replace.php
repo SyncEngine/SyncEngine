@@ -64,9 +64,7 @@ class Replace extends TaskModel
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		if ( ! is_iterable( $data ) ) {
-			$context->addError( $this->trans( 'Data not iterable' ) );
-
+		if ( $data->isEmpty() ) {
 			return $data;
 		}
 

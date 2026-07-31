@@ -72,7 +72,7 @@ class EndpointContinueCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		$last_iteration    = count( $trace->getTraceFiles() ?? [] );
+		$last_iteration    = count( $trace->getTraceFiles() );
 		$current_iteration = $last_iteration - 1; // nextIteration() will advance by 1 again.
 
 		// Store the counter on the trace so parallel runs stay isolated.

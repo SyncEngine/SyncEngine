@@ -135,7 +135,7 @@ class Loop extends TaskModel
 
 		$service = $context->getExecuteService();
 
-		if ( $service && $action ) {
+		if ( $action ) {
 			$context->next();
 
 			switch ( $config['method'] ?? '' ) {

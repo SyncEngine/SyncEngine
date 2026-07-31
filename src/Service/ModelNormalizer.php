@@ -25,7 +25,7 @@ use SyncEngine\Structure\Data\ConfigData;
 
 class ModelNormalizer
 {
-	private $serializer;
+	private ?Serializer $serializer = null;
 	private static ?string $runningRef = null;
 	private static array $normalized = [];
 	private static array $tagRefs = [];

@@ -90,9 +90,7 @@ class Result
 
 		if ( $exception instanceof ClientException ) {
 			$response = $exception->getResponse();
-		}
 
-		if ( isset( $response ) && $response instanceof ResponseInterface ) {
 			$data['Content'] = $response->getContent( false );
 			$data['Headers'] = $response->getHeaders( false );
 			$data['Info']    = $response->getInfo();
@@ -131,8 +129,8 @@ class Result
 				if ( is_array( $response->info ) ) {
 					return $response->info;
 				}
-				if ( is_callable( [ $response->info, 'all' ] ) ) {
-					return $this->info->all();
+				if ( method_exists( $response->info, 'all' ) ) {
+					return $response->info->all();
 				}
 			}
 		}

@@ -12,7 +12,7 @@ trait Format
 		return ( new DataFormatter() )->encode( $format, $data, $config );
 	}
 
-	public function decodeFormat( string|iterable|CodecModel $format, string $data, iterable $config = [] ): iterable|string
+	public function decodeFormat( string|iterable|CodecModel $format, string $data, iterable $config = [] ): mixed
 	{
 		return ( new DataFormatter() )->decode( $format, $data, $config );
 	}

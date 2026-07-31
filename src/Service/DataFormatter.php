@@ -24,7 +24,7 @@ class DataFormatter
 		}
 	}
 
-	public function decode( string|iterable|CodecModel $format, string $data, iterable $config = [] ): iterable|string
+	public function decode( string|iterable|CodecModel $format, string $data, iterable $config = [] ): mixed
 	{
 		try {
 			return $this->getEncoder( $format, $config )?->decode( $data ) ?? $data;

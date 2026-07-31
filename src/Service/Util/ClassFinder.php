@@ -51,12 +51,7 @@ class ClassFinder
 			$class_name = rtrim( $namespace, '\\' ) . '\\' . $file_name;
 
 			if ( class_exists( $class_name ) ) {
-				try {
-					$classes[] = $class_name;
-				} catch ( \Throwable $e ) {
-					// @todo Notice?
-					continue;
-				}
+				$classes[] = $class_name;
 			}
 		}
 
@@ -90,12 +85,7 @@ class ClassFinder
 			$class_name = rtrim( $namespace, '\\' ) . "\\" . $file_name . "\\" . $file_name;
 
 			if ( class_exists( $class_name ) ) {
-				try {
-					$classes[] = $class_name;
-				} catch ( \Throwable $e ) {
-					// @todo Notice?
-					continue;
-				}
+				$classes[] = $class_name;
 			}
 		}
 

@@ -43,8 +43,6 @@ abstract class ServiceModel extends AbstractModel
 	/**
 	 * @throws \ErrorException
 	 *
-	 * @param  string  $name
-	 *
 	 * @return static[]|null
 	 */
 	public static function getAll(): ?array

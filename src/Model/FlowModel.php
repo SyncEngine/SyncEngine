@@ -75,6 +75,7 @@ class FlowModel extends EngineModel implements Taggable
 	 */
 	public function getSequence(): SequenceData
 	{
+		/** @var SequenceData<StepModel> */
 		return new SequenceData(
 			$this->getStepsConfig(),
 			function( $config, $ref ) {

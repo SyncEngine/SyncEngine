@@ -9,9 +9,6 @@ use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Locator\Codecs;
 
-/**
- * @extends ServiceModel<CodecModel>
- */
 abstract class CodecModel extends ServiceModel implements Configurable
 {
 	use Config;

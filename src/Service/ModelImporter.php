@@ -28,9 +28,6 @@ class ModelImporter
 		$this->done = [];
 		$this->data = $data;
 		foreach ( $data as $ref => $fields ) {
-			if ( isset( $this->done[ $ref ] ) ) {
-				continue;
-			}
 			$this->importRef( $ref, $fields );
 		}
 

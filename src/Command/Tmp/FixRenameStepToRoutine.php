@@ -63,7 +63,7 @@ class FixRenameStepToRoutine extends Command
 			}
 		}
 
-		$output?->writeln( "Renamed 'step' to 'routine' in entity configs." );
+		$output->writeln( "Renamed 'step' to 'routine' in entity configs." );
 
 		return Command::SUCCESS;
 	}
@@ -80,12 +80,12 @@ class FixRenameStepToRoutine extends Command
 			$count = (int) $conn->fetchOne( "SELECT COUNT(*) FROM $to" );
 
 			if ( $count > 0 ) {
-				$output?->writeln( "<error>Table '$to' already exists and is not empty ($count rows). Skipping rename — manual intervention required.</error>" );
+				$output->writeln( "<error>Table '$to' already exists and is not empty ($count rows). Skipping rename — manual intervention required.</error>" );
 				return false;
 			}
 
 			// Target table exists but is empty: migrate data from source then truncate source.
-			$output?->writeln( "<comment>Table '$to' already exists but is empty. Migrating data from '$from'...</comment>" );
+			$output->writeln( "<comment>Table '$to' already exists but is empty. Migrating data from '$from'...</comment>" );
 
 			$columns = implode( ', ', array_map(
 				fn( $col ) => $col->getName(),
@@ -97,7 +97,7 @@ class FixRenameStepToRoutine extends Command
 			$migrated = (int) $conn->fetchOne( "SELECT COUNT(*) FROM $to" );
 
 			$schemaManager->dropTable( $from );
-			$output?->writeln( "Migrated $migrated rows from '$from' into '$to' and dropped '$from'." );
+			$output->writeln( "Migrated $migrated rows from '$from' into '$to' and dropped '$from'." );
 
 			return true;
 		}

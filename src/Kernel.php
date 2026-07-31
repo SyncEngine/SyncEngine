@@ -34,7 +34,7 @@ class Kernel extends BaseKernel
 
 		$container->registerAttributeForAutoconfiguration(
 			MenuItem::class,
-			static function (
+			static function ( // @phpstan-ignore argument.type
 				ChildDefinition $definition, MenuItem $attribute, \ReflectionClass|\ReflectionMethod $reflector
 			): void {
 				$args = [];

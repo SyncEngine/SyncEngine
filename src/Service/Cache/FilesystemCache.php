@@ -11,7 +11,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class FilesystemCache implements CacheInterface
 {
 	private FilesystemAdapter $cacheAdapter;
-	private readonly ?KernelInterface $kernel;
+	private readonly ?KernelInterface $kernel; // @phpstan-ignore property.unusedType
 
 	public function __construct(
 		private int $defaultLifetime = 0,

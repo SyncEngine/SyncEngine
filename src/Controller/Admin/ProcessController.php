@@ -153,7 +153,7 @@ class ProcessController extends DefaultController
 		$form = $this->createForm( ProcessManagerFormType::class );
 
 		if ( false !== $saveLabel ) {
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? $this->trans( 'Save' ) ] );
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?: $this->trans( 'Save' ) ] );
 		}
 
 		$form->handleRequest( $request );

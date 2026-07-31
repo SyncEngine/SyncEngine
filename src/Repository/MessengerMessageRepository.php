@@ -99,7 +99,7 @@ class MessengerMessageRepository
 
 		foreach ( $params as $key => $value ) {
 			if ( isset( $types[ $key ] ) && $types[ $key ] === ArrayParameterType::STRING ) {
-				$stmt->bindValue( $key, $value, ArrayParameterType::STRING );
+				$stmt->bindValue( $key, $value, ArrayParameterType::STRING ); // @phpstan-ignore argument.type
 			} else {
 				$stmt->bindValue( $key, $value );
 			}

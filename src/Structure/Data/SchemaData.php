@@ -122,7 +122,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			throw new InvalidConfigException( 'Invalid column configuration for ' . $name );
 		}
 
-		$column?->setConfig( $config );
+		$column->setConfig( $config );
 
 		$this->columns[ $name ] = $column;
 

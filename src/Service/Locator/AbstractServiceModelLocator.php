@@ -29,7 +29,7 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 	abstract public function validate( ServiceModel $service ): bool;
 
 	/**
-	 * @return T::class
+	 * @return class-string<T>
 	 */
 	abstract public function getModelClass(): string;
 

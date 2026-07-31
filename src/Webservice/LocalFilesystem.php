@@ -72,6 +72,9 @@ class LocalFilesystem extends WebserviceModel
 				return scandir( $this->getRootPath( $directory ) );
 			}
 
+			/**
+			 * @return string[]
+			 */
 			public function scandir( $directory = '.', $type = null ): array
 			{
 				$path    = $this->getRootPath( $directory );

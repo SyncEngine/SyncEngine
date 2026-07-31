@@ -9,7 +9,7 @@ use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
 use SyncEngine\Structure\ValueObject\Blob;
 
 /**
- * @extends \ArrayObject<mixed, mixed>
+ * @extends \ArrayObject<int|string, mixed>
  */
 class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stringable
 {
@@ -58,7 +58,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		$resource = $this->_getResource();
 
 		if ( $this->isKey( $key ) ) {
-			return $this->_existsRecursive( $this->parseKey( $key ), $resource ) ?? false;
+			return $this->_existsRecursive( $this->parseKey( $key ), $resource );
 		}
 
 		return ! empty( $resource );
@@ -248,7 +248,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	 *
 	 * @return mixed
 	 */
-	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
+	protected function _combineRecursive( $data, $resource, $recursive, $mode ): mixed
 	{
 		if ( ! is_iterable( $resource ) || ! is_iterable( $data ) ) {
 			switch ( $mode ) {

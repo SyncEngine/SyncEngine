@@ -167,7 +167,7 @@ class Trigger extends TaskModel
 
 		$service = $context->getExecuteService();
 
-		if ( $service && $action ) {
+		if ( $action ) {
 
 			$key       = $config['key'] ?? null;
 			$variables = $config['variables'] ?? [];

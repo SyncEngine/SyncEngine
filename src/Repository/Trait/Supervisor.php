@@ -3,9 +3,10 @@
 namespace SyncEngine\Repository\Trait;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use SyncEngine\Model\Interface\Supervisable;
 
 /**
- * @extends ServiceEntityRepository
+ * @extends ServiceEntityRepository<Supervisable>
  */
 trait Supervisor
 {

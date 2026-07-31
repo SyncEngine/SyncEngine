@@ -19,6 +19,7 @@ use SyncEngine\Model\ConnectionModel;
 )]
 class FixAutomationActionsConfig extends Command
 {
+	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
 	public function __construct( DefaultController $controller )
 	{
 		parent::__construct();

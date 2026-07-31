@@ -25,9 +25,7 @@ use SyncEngine\Structure\Data\ResourceData;
  */
 class TraceModel extends EntityModel
 {
-	/**
-	 * @var ResourceData<TraceData>
-	 */
+	/** @var ResourceData<TraceData> $traceData  */
 	private ResourceData $traceData;
 	private ?TraceStatus $status;
 	private ?AutomationModel $automation;

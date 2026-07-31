@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use SyncEngine\Entity\User;
 
 class UserLocaleSubscriber implements EventSubscriberInterface
 {
@@ -31,10 +32,12 @@ class UserLocaleSubscriber implements EventSubscriberInterface
 
 	public function onLoginSuccess( LoginSuccessEvent $event ): void
 	{
-		$user = $event->getUser();
+		/** @var ?User $user */
+		$user   = $event->getUser();
+		$locale = $user->getLocale();
 
-		if ( null !== $user->getLocale() ) {
-			$event->getRequest()->getSession()->set( '_locale', $user->getLocale() );
+		if ( null !== $locale ) {
+			$event->getRequest()->getSession()->set( '_locale', $locale );
 		}
 	}
 

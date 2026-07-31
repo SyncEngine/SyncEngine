@@ -53,7 +53,7 @@ class EngineEntity
 		return $this->ref;
 	}
 
-	public function setRef( string $ref ): self
+	public function setRef( string $ref ): static
 	{
 		$this->ref = $ref;
 
@@ -89,7 +89,7 @@ class EngineEntity
 		return $this->icon;
 	}
 
-	public function setIcon( string $icon ): self
+	public function setIcon( string $icon ): static
 	{
 		$this->icon = $icon;
 
@@ -101,7 +101,7 @@ class EngineEntity
 		return $this->name;
 	}
 
-	public function setName( string $name ): self
+	public function setName( string $name ): static
 	{
 		$this->name = $name;
 
@@ -113,7 +113,7 @@ class EngineEntity
 		return $this->description;
 	}
 
-	public function setDescription( ?string $description ): self
+	public function setDescription( ?string $description ): static
 	{
 		$this->description = $description;
 
@@ -125,7 +125,7 @@ class EngineEntity
 		return $this->supervisor;
 	}
 
-	public function setSupervisor( ?string $supervisor ): self
+	public function setSupervisor( ?string $supervisor ): static
 	{
 		$this->supervisor = $supervisor;
 
@@ -137,7 +137,7 @@ class EngineEntity
 		return (array) $this->config;
 	}
 
-	public function setConfig( array $config ): self
+	public function setConfig( array $config ): static
 	{
 		$this->config = $config;
 
@@ -149,7 +149,7 @@ class EngineEntity
 		return (array) $this->data;
 	}
 
-	public function setData( array $data ): self
+	public function setData( array $data ): static
 	{
 		$this->data = $data;
 

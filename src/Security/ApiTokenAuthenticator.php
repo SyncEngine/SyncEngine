@@ -155,7 +155,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			$hosts = $restrictions['host'] ?? '';
 			if ( $hosts && $hosts = array_map( 'trim', explode( ',', $hosts ) ) ) {
 				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
-				if ( ! $host || ! is_string( $host ) ) {
+				if ( ! $host ) {
 					return in_array( 'localhost', $hosts ) && IpUtils::isPrivateIp( $request->getClientIp() );
 				}
 				if ( ! $this->validateHost( $host, $hosts ) ) {

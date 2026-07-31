@@ -117,10 +117,10 @@ class ModelExporter
 
 		if ( is_array( $value ) ) {
 			if ( $model instanceof Supervisable && $model->getSupervisor() instanceof BlueprintModel ) {
-				$value['_blueprint'] = $this->parseConfigFields( $value['_blueprint'], $model->getSupervisor()->getFields() ?? [] );
+				$value['_blueprint'] = $this->parseConfigFields( $value['_blueprint'], $model->getSupervisor()->getFields() ?: [] );
 			}
 			if ( method_exists( $model, 'getFields' ) ) {
-				$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
+				$value = $this->parseConfigFields( $value, $model->getFields() ?: [] );
 			} else {
 				$value = $this->normalize( $value );
 			}
