@@ -275,16 +275,21 @@ class BlueprintModel extends ServiceModel implements Configurable
 	final public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( empty( $this->config ) ) {
-			$this->setConfig();
+			$this->buildConfig( null );
 		}
 
 		return $this->_getConfig( $key, $default );
 	}
 
+	final public function setConfig( $value, $key = null ): void
+	{
+		throw new \ErrorException( 'Set config not allowed in blueprint, use buildConfig' );
+	}
+
 	/**
 	 * The blueprint config is the actual parsed configuration based on the entity blueprint config and blueprint template.
 	 */
-	final public function setConfig(): void
+	final public function buildConfig(): void
 	{
 		$config = $this->getParsedTemplate( '_supervisable', 'config' );
 		$config = $this->parseConfig( $config );
