@@ -119,7 +119,8 @@ class Blob
 			return fopen( $filename, $mode );
 		}
 
-		return $stream->getStream();
+		// Similar return as fopen.
+		return false;
 	}
 
 	/**
