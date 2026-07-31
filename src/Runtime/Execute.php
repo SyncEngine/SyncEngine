@@ -82,8 +82,7 @@ class Execute
 			$request = $data->get();
 			$data    = null;
 		} elseif ( ! empty( $data ) ) {
-			// Will trigger error because of return type.
-			return $data;
+			throw new ExecuteException( 'Invalid data type for fetch', $data );
 		}
 
 		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
