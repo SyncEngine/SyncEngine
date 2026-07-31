@@ -80,7 +80,7 @@ class Sftp extends Ftp
 	 *
 	 * @return ?seclibSFTP
 	 */
-	public function getClient( array $config ): ?object
+	public function getClient( array $config = [] ): ?object
 	{
 		$host     = $this->getRequestUrl( $config );
 		$password = $this->getPassword( $config );

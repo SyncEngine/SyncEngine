@@ -21,7 +21,7 @@ trait ClientSoap
 		return $this->client;
 	}
 
-	public function setClient( $client ): void
+	public function setClient( \soapClient $client ): void
 	{
 		$this->client = $client;
 	}

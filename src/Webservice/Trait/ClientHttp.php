@@ -38,7 +38,7 @@ trait ClientHttp
 		return $this->client;
 	}
 
-	public function setClient( $client ): void
+	public function setClient( HttpClientInterface $client ): void
 	{
 		$this->client = $client;
 	}

@@ -11,7 +11,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Exportable;
 
 /**
- * @template T of EntityModel<object>
+ * @template T of EntityModel
  */
 abstract class EntityController extends AbstractAdminController
 {

@@ -70,7 +70,7 @@ class Ftp extends WebserviceModel
 	 *
 	 * @return \FTP\Connection|null
 	 */
-	public function getClient( array $config ): ?object
+	public function getClient( array $config = [] ): ?object
 	{
 		$timeout = (int) ( $config['timeout'] ?? 10 );
 

@@ -15,7 +15,7 @@ use SyncEngine\Runtime\ExecuteContext;
 class AutomationBatchHandler
 {
 	public function __construct(
-		// Load required to instantiate container.
+		// @phpstan-ignore-nextLine Property is never read, only written - required to trigger DI container initialization
 		private readonly DefaultController $controller,
 		private readonly Execute           $executeService
 	) {}

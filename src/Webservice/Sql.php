@@ -353,7 +353,7 @@ class Sql extends WebserviceModel
 		}
 	}
 
-	public function getClient( array $config ): \PDO|\mysqli
+	public function getClient( array $config = [] ): \PDO|\mysqli
 	{
 		return match ( $config['driver'] ) {
 			'mysqli' => $this->getMysqliConnection( $config ),

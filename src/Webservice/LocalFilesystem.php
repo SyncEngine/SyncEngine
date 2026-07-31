@@ -38,12 +38,7 @@ class LocalFilesystem extends WebserviceModel
 		return $config['root'] ?? '';
 	}
 
-	/**
-	 * @param $config
-	 *
-	 * @return object
-	 */
-	public function getClient( array $config )
+	public function getClient( array $config = [] ): object
 	{
 		$root = $this->getRequestUrl( $config );
 

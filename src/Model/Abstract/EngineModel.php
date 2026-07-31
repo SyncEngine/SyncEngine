@@ -13,7 +13,8 @@ use SyncEngine\Service\ModelExporter;
 
 /**
  * @template T of EngineEntity
- * @extends EntityModel<EngineEntity>
+ *
+ * @extends EntityModel<T>
  *
  * @method null|int getId()
  * @method self setId( int $id )
@@ -40,7 +41,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 	/**
 	 * @inheritDoc
-	 * @param  EngineEntity|null  $entity
+	 * @param  T|null  $entity
 	 */
 	public function __construct( ?EngineEntity $entity = null )
 	{
