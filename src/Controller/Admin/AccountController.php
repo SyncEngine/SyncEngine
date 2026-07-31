@@ -92,7 +92,7 @@ class AccountController extends EntityController
 	}
 
 	private function formAccount(
-		UserInterface|User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher,
+		User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher,
 	): FormInterface {
 		$form = $this->createForm( AccountFormType::class, $user )->add(
 			'update',

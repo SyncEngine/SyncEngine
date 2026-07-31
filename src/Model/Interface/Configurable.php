@@ -22,4 +22,21 @@ interface Configurable
 	 * @return mixed
 	 */
 	public function getConfig( $key = null, $default = null ): mixed;
+
+	/**
+	 * Sets the configuration data.
+	 *
+	 * @param mixed $value
+	 * @param string|null $key
+	 *
+	 * @return void
+	 */
+	public function setConfig( $value, $key = null ): void;
+
+	/**
+	 * @param  array  $config
+	 *
+	 * @return void
+	 */
+	public function updateConfig( array $config ): void;
 }

@@ -152,7 +152,13 @@ class ModelExporter
 				$value    = [];
 				foreach ( $iterable as $relKey => $relation ) {
 					$modelClass = EntityModel::getEntityModelClass( $relation );
-					if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
+					// @todo Should be instance of EngineModel?
+					if (
+						method_exists( $relation, 'getRef' ) &&
+						method_exists( $relation, 'getId' ) &&
+						class_exists( $modelClass ) &&
+						is_subclass_of( $modelClass, EntityModel::class )
+					) {
 						$relRef = $relation->getRef();
 						if ( ! isset( self::$dependencies[ $relRef ] ) ) {
 							self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
@@ -165,7 +171,13 @@ class ModelExporter
 				}
 			} else {
 				$modelClass = EntityModel::getEntityModelClass( $value );
-				if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
+				// @todo Should be instance of EngineModel?
+				if (
+					method_exists( $value, 'getRef' ) &&
+					method_exists( $value, 'getId' ) &&
+					class_exists( $modelClass ) &&
+					is_subclass_of( $modelClass, EntityModel::class )
+				) {
 					$valRef = $value->getRef();
 					if ( ! isset( self::$dependencies[ $valRef ] ) ) {
 						self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );

@@ -14,6 +14,27 @@ use SyncEngine\Service\ModelExporter;
 /**
  * @template T of EngineEntity
  * @extends EngineModel<T>
+ *
+ * @method int|null getId()
+ * @method setId( int $id )
+ * @method string|null getRef()
+ * @method setRef( string $ref )
+ * @method string getName()
+ * @method setName( string $name )
+ * @method string|null getDescription()
+ * @method setDescription( string $description )
+ * @method \DateTimeImmutable|null getCreated()
+ * @method setCreated( \DateTimeImmutable $created )
+ * @method \DateTimeImmutable|null getModified()
+ * @method setModified( \DateTimeImmutable $modified )
+ * @method string|null getIcon()
+ * @method setIcon( string $icon )
+ * @method string|null getSupervisor()
+ * @method setSupervisor( string $supervisor )
+ * @method array getConfig()
+ * @method setConfig( array $config )
+ * @method array getData()
+ * @method setData( array $data )
  */
 abstract class EngineModel extends EntityModel implements Exportable, Configurable
 {

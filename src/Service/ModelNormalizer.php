@@ -325,7 +325,7 @@ class ModelNormalizer
 		if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityModel->getId() ] ) ) {
 
 			$dependencies[ $entity . ':' . $entityModel->getId() ] = $entityModel;
-			if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+			if ( $recursive && method_exists( $entityModel, 'getConfigDependencies' ) ) {
 				$dependencies = $entityModel->getConfigDependencies( $dependencies );
 			}
 		}

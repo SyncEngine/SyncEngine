@@ -45,4 +45,8 @@ interface FieldConfigInterface
 	public function isReadonly(): bool;
 
 	public function setReadonly( bool $readonly ): self;
+
+	public function set( string $prop, mixed $value ): static;
+
+	public function get( string $prop ): mixed;
 }

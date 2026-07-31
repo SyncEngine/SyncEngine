@@ -143,13 +143,7 @@ class Result
 	public function __call( string $name, array $arguments )
 	{
 		if ( ! is_callable( [ $this->response, $name ] ) ) {
-
-			throw new \ErrorException(
-				$this->trans(
-					'Method not found: {name}',
-					[ 'name' => __CLASS__ . '::' . $name ]
-				)
-			);
+			throw new \ErrorException( 'Method not found: ' . __CLASS__ . '::' . $name );
 		}
 
 		return call_user_func_array( [ $this->response, $name ], $arguments );

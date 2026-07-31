@@ -7,6 +7,7 @@ use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
+use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\ModuleModel;
 
@@ -28,7 +29,7 @@ trait Supervisor
 	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
 		$supervisor = $this->getSupervisor();
-		if ( $supervisor ) {
+		if ( $supervisor instanceof Configurable ) {
 			return $supervisor->getConfigDependencies( $recursive );
 		}
 		return $this->_getConfigDependencies( $recursive );

@@ -4,6 +4,7 @@ namespace SyncEngine\Command\Tmp;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,6 +34,7 @@ class RunDevUpdates extends Command
 			'2027-07-28' => 'syncengine:execute:dev:update:config-webservice-soap-request',
 		];
 
+		/** @var QuestionHelper $helper */
 		$helper = $this->getHelper( 'question' );
 
 		foreach ( $commands as $date => $commandName ) {

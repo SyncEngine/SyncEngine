@@ -14,6 +14,8 @@ use SyncEngine\Service\ModelNormalizer;
 
 /**
  * @template T of object
+ *
+ * @method int|null getId()
  */
 abstract class EntityModel extends AbstractModel implements Persistable
 {
