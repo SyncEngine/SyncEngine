@@ -112,7 +112,7 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		}
 
 		$timezone = $this->getTimezone( $context );
-		if ( $timezone ) {
+		if ( $timezone && is_callable( [ $var, 'setTimezone' ] ) ) {
 			$var = $var->setTimezone( $timezone );
 		}
 
