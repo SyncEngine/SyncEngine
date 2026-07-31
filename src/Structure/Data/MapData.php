@@ -5,6 +5,10 @@ namespace SyncEngine\Structure\Data;
 use SyncEngine\Structure\Collection\AbstractCollection;
 use Traversable;
 
+/**
+ * @implements \ArrayAccess<mixed, array>
+ * @implements \IteratorAggregate<mixed, array>
+ */
 class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 {
 	private array $map = [];

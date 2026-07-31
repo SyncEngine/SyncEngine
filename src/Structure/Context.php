@@ -2,6 +2,9 @@
 
 namespace SyncEngine\Structure;
 
+/**
+ * @implements \ArrayAccess<mixed, mixed>
+ */
 class Context implements \ArrayAccess
 {
 	protected array $context = [];

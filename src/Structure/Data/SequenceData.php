@@ -3,6 +3,9 @@
 namespace SyncEngine\Structure\Data;
 
 /**
+ * @implements \ArrayAccess<int, ?array>
+ * @implements \SeekableIterator<int, ?array>
+ *
  * @template T
  */
 class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator

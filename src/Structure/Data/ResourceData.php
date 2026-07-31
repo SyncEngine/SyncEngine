@@ -8,6 +8,9 @@ use SyncEngine\Structure\Data\Trait\BlobTrait;
 use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
 use SyncEngine\Structure\ValueObject\Blob;
 
+/**
+ * @extends \ArrayObject<mixed, mixed>
+ */
 class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stringable
 {
 	use ArrayUtilsTrait;
@@ -193,7 +196,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * Insert value only if it does not exist.
 	 *
-	 * @param  array|\ArrayObject  $data
+	 * @param  iterable|object  $data
 	 * @param  bool                $recursive
 	 *
 	 * @return $this
@@ -208,7 +211,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * Replace only if new value is not empty.
 	 *
-	 * @param  array|\ArrayObject  $data
+	 * @param  iterable|object  $data
 	 * @param  bool                $recursive
 	 *
 	 * @return $this
@@ -223,7 +226,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * Replace with new values.
 	 *
-	 * @param  array|\ArrayObject  $data
+	 * @param  iterable|object  $data
 	 * @param  bool                $recursive
 	 *
 	 * @return $this
@@ -238,8 +241,8 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * // @todo Should ResourceData be immutable?
 	 *
-	 * @param  array|\ArrayObject          $data
-	 * @param  array|\ArrayObject          $resource
+	 * @param  iterable|object             $data
+	 * @param  iterable|object             $resource
 	 * @param  bool                        $recursive
 	 * @param  "replace"|"merge"|"insert"  $mode
 	 *
@@ -303,7 +306,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	}
 
 	/**
-	 * @param  array|\ArrayObject  $data
+	 * @param  iterable|object  $data
 	 *
 	 * @return array
 	 */

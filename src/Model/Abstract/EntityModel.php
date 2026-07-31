@@ -327,7 +327,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	/**
 	 * @param class-string|object $entity
-	 * @return \ReflectionClass
+	 * @return \ReflectionClass<object>
 	 */
 	public static function getEntityReflection( $entity ): \ReflectionClass
 	{

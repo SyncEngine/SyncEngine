@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\Api\Abstract\AbstractApiController;
+use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\ConnectionModel;
@@ -247,6 +248,9 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 	}
 
+	/**
+	 * @param  EngineModel<EngineEntity>  $model
+	 */
 	private function setModelValuesByArray( EngineModel $model, array $data ): true|JsonResponse
 	{
 		$errors  = [];

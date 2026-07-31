@@ -7,10 +7,12 @@ use SyncEngine\Model\ModuleModel;
 
 class Modules
 {
+	/**
+	 * @param  ServiceLocator<ModuleModel>  $container
+	 */
 	public function __construct( private readonly ServiceLocator $container ) {}
 
 	/**
-	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
 	public function get( string $moduleName, string $vendor = '' ): ?ModuleModel
@@ -30,7 +32,6 @@ class Modules
 	}
 
 	/**
-	 * @todo Move to a service?
 	 * @return ModuleModel[]
 	 */
 	public function getAll(): array

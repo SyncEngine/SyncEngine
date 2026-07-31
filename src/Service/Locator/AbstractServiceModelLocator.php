@@ -13,6 +13,10 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 {
 	private array $services;
 
+	/**
+	 * @param  ServiceLocator<T>  $container
+	 * @param  Modules            $modulesService
+	 */
 	public function __construct(
 		protected readonly ServiceLocator $container,
 		protected readonly Modules $modulesService,

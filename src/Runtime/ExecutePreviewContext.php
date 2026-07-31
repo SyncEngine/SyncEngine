@@ -9,6 +9,9 @@ use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
 class ExecutePreviewContext extends ExecuteContext
 {
+	/**
+	 * @param  EntityModel<object>  $scope
+	 */
 	public function initScope( EntityModel $scope ): void
 	{
 		if ( $scope instanceof AutomationModel ) {

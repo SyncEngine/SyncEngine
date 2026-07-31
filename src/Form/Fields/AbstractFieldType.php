@@ -5,6 +5,8 @@ namespace SyncEngine\Form\Fields;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
 /**
+ * @extends \ArrayObject<string, mixed>
+ *
  * @psalm-type FieldConfigData array(
  *     name?: string|null
  *     label?: string|null

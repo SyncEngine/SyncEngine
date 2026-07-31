@@ -5,6 +5,9 @@ namespace SyncEngine\Structure\Data;
 use Iterator;
 use LogicException;
 
+/**
+ * @implements \ArrayAccess<mixed, mixed>
+ */
 readonly class IterationData implements \ArrayAccess
 {
 	protected function __construct(

@@ -13,6 +13,9 @@ use SyncEngine\Service\Cache\FilesystemCache;
 
 class MenuLoader
 {
+	/**
+	 * @param  ServiceLocator<object>  $container
+	 */
 	public function __construct(
 		private readonly ServiceLocator $container,
 		private readonly FilesystemCache $cache,
@@ -71,7 +74,7 @@ class MenuLoader
 	}
 
 	/**
-	 * @param  ReflectionMethod|ReflectionClass  $reflection
+	 * @param  ReflectionMethod|ReflectionClass<object>  $reflection
 	 *
 	 * @return MenuItem[]
 	 */

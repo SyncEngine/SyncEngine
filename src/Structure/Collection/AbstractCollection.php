@@ -4,6 +4,8 @@ namespace SyncEngine\Structure\Collection;
 
 /**
  * @template T
+ *
+ * @implements CollectionInterface<mixed, T>
  */
 abstract class AbstractCollection implements CollectionInterface
 {

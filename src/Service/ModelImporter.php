@@ -133,6 +133,9 @@ class ModelImporter
 		return $model;
 	}
 
+	/**
+	 * @param  EntityModel<object>  $model
+	 */
 	public function setMethodValue( $value, string $method, EntityModel $model, object $entity ): void
 	{
 		try {

@@ -190,6 +190,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			return $cachedActive;
 		}
 
+		/** @var TraceRepository $repository */
 		$repository = TraceModel::getRepository();
 		if ( ! $repository instanceof TraceRepository ) {
 			return $cachedActive;

@@ -12,6 +12,10 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Structure\Collection\AbstractCollection;
 use Traversable;
 
+/**
+ * @implements \ArrayAccess<string, ?ColumnModel>
+ * @implements \IteratorAggregate<string, ?ColumnModel>
+ */
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 {
 	private array $schema = [];
