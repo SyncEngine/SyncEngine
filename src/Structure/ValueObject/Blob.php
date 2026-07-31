@@ -3,6 +3,7 @@
 namespace SyncEngine\Structure\ValueObject;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\MimeTypes;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\Trait\Ref;
 
@@ -39,7 +40,7 @@ class Blob
 		return $blob;
 	}
 
-	public static function fromFile( \SplFileInfo $file): self
+	public static function fromFile( \SplFileInfo $file ): self
 	{
 		try {
 			if ( $file instanceof UploadedFile ) {
@@ -49,7 +50,11 @@ class Blob
 			} else {
 				$filename  = $file->getFilename();
 				$extension = $file->getExtension();
-				$mimeType  = $file->getMimeType();
+				if ( is_callable( [ $file, 'getMimeType' ] ) ) {
+					$mimeType  = $file->getMimeType();
+				} else {
+					$mimeType = MimeTypes::getDefault()->guessMimeType( $file->getRealPath() );
+				}
 			}
 
 			$data = $file->openFile();
