@@ -15,6 +15,9 @@ use SyncEngine\Entity\Storage;
 use SyncEngine\Form\StorageFormType;
 use SyncEngine\Model\StorageModel;
 
+/**
+ * @extends EntityController<StorageModel>
+ */
 class StorageController extends EntityController
 {
 	#[Route( '/json/storage', 'json_storage' )]

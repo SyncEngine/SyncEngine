@@ -10,8 +10,14 @@ use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Exportable;
 
+/**
+ * @template T of EntityModel<object>
+ */
 abstract class EntityController extends AbstractAdminController
 {
+	/**
+	 * @param T $model
+	 */
 	protected function _handleJsonRequest( EntityModel $model, Request $request ): JsonResponse
 	{
 		$response = $this->_handleRequest( $model, $request );
@@ -30,6 +36,8 @@ abstract class EntityController extends AbstractAdminController
 	}
 
 	/**
+	 * @param T $model
+	 *
 	 * @todo Return DTO?
 	 * @return array<string, mixed>
 	 */
@@ -120,7 +128,13 @@ abstract class EntityController extends AbstractAdminController
 		return $return;
 	}
 
-	protected function _handleActionList( $model, $query ): array
+	/**
+	 * @param T $model
+	 * @param array<string, mixed>|null $query
+	 *
+	 * @return T[]
+	 */
+	protected function _handleActionList( EntityModel $model, ?array $query ): array
 	{
 		$results = $model::getAll( $query );
 
@@ -136,11 +150,22 @@ abstract class EntityController extends AbstractAdminController
 		return $results;
 	}
 
-	protected function _handleActionTotal( $model, $query ): int
+	/**
+	 * @param  T  $model
+	 * @param  array<string, mixed>|null   $query
+	 *
+	 * @return int
+	 */
+	protected function _handleActionTotal( EntityModel $model, ?array $query ): int
 	{
 		return $model::getTotalCount( $query );
 	}
 
+	/**
+	 * @param  T $model
+	 *
+	 * @return FormInterface
+	 */
 	protected function _handleForm( EntityModel $model, FormInterface|string $form, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $model instanceof EngineModel ) {

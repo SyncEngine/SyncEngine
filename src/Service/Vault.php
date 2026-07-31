@@ -8,6 +8,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
 
+/**
+ * @implements \ArrayAccess<string, string>
+ */
 class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 {
 	private string $env = 'SYNCENGINE_VAULT';
@@ -130,7 +133,7 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 
 		// Debug.
 
-		$success = $this->system->runCommand( $command, $args, false );
+		$success = $this->system->runCommand( $command, $args, silent: false );
 		$this->lastMessage = $success['status'];
 
 		return $success['success'];

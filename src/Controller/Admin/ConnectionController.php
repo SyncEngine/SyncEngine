@@ -16,6 +16,9 @@ use SyncEngine\Form\ConnectionFormType;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Vault;
 
+/**
+ * @extends EntityController<ConnectionModel>
+ */
 class ConnectionController extends EntityController
 {
 	public static function getSubscribedServices(): array

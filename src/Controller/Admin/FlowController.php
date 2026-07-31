@@ -15,6 +15,9 @@ use SyncEngine\Entity\Flow;
 use SyncEngine\Form\FlowFormType;
 use SyncEngine\Model\FlowModel;
 
+/**
+ * @extends EntityController<FlowModel>
+ */
 class FlowController extends EntityController
 {
 	#[Route( '/json/flow', 'json_flow' )]

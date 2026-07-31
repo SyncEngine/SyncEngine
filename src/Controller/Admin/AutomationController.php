@@ -15,6 +15,9 @@ use SyncEngine\Entity\Automation;
 use SyncEngine\Form\AutomationFormType;
 use SyncEngine\Model\AutomationModel;
 
+/**
+ * @extends EntityController<AutomationModel>
+ */
 class AutomationController extends EntityController
 {
 	#[Route( '/json/automation', 'json_automation' )]

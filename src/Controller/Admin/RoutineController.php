@@ -15,6 +15,9 @@ use SyncEngine\Entity\Routine;
 use SyncEngine\Form\RoutineFormType;
 use SyncEngine\Model\RoutineModel;
 
+/**
+ * @extends EntityController<RoutineModel>
+ */
 class RoutineController extends EntityController
 {
 	#[Route( '/json/routine', 'json_routine' )]

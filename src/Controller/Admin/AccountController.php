@@ -10,9 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Attribute\MenuItem;
-use SyncEngine\Controller\Admin\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
@@ -21,7 +20,7 @@ use SyncEngine\Form\PreferencesFormType;
 use SyncEngine\Service\Generator\Token;
 use SyncEngine\Service\Preferences;
 
-class AccountController extends EntityController
+class AccountController extends AbstractAdminController
 {
 	#[Route( '/account', name: 'account_index' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_account_index', label: 'Account', icon: 'account' )]

@@ -9,6 +9,9 @@ use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 
+/**
+ * @extends EntityController<TraceModel>
+ */
 class TraceController extends EntityController
 {
 	#[Route( '/json/trace', 'json_trace' )]
