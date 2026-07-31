@@ -18,11 +18,6 @@ use SyncEngine\Structure\Data\ResourceData;
 /**
  * @extends EntityModel<Trace>
  *
- * @method int getId()
- * @method setId( int $id )
- * @method string getName()
- * @method setName( string $name )
- * @method Trace getEntity()
  * @method \DateTimeImmutable|null getCreated()
  * @method setCreated( \DateTimeImmutable $created )
  * @method \DateTimeImmutable|null getModified()

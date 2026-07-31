@@ -13,13 +13,6 @@ use SyncEngine\Structure\Data\SchemaData;
 
 /**
  * @extends EngineModel<Routine>
- *
- * @method int getId()
- * @method setId( int $id )
- * @method string getName()
- * @method setName( string $name )
- * @method string getDescription()
- * @method setDescription( string $description )
  */
 class RoutineModel extends EngineModel implements Taggable, Supervisable
 {

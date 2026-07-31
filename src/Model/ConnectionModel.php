@@ -17,13 +17,6 @@ use SyncEngine\Webservice\Helper\Result;
 
 /**
  * @extends EngineModel<Connection>
- *
- * @method int getId()
- * @method setId( int $id )
- * @method string getName()
- * @method setName( string $name )
- * @method string getDescription()
- * @method setDescription( string $description )
  */
 class ConnectionModel extends EngineModel implements Taggable
 {

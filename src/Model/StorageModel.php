@@ -20,13 +20,7 @@ use SyncEngine\Structure\Data\SchemaData;
 /**
  * @extends EngineModel<Storage>
  *
- * @method int getId()
- * @method setId( int $id )
- * @method string getName()
- * @method setName( string $name )
- * @method string getDescription()
- * @method setDescription( string $description )
- * @method string getType()
+ * @method ?string getType()
  */
 class StorageModel extends EngineModel implements Taggable, Supervisable
 {

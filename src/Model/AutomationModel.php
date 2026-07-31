@@ -27,16 +27,10 @@ use SyncEngine\Task\Trigger;
 /**
  * @extends EngineModel<Automation>
  *
- * @method int getId()
- * @method setId( int $id )
- * @method string getName()
- * @method setName( string $name )
- * @method string getDescription()
- * @method setDescription( string $description )
- * @method string getEndpoint()
+ * @method null|string getEndpoint()
  * @method Collection<int, Trace> getTraces()
- * @method addTrace( Trace $trace )
- * @method removeTrace( Trace $trace )
+ * @method self addTrace( Trace $trace )
+ * @method self removeTrace( Trace $trace )
  */
 class AutomationModel extends EngineModel implements Taggable, Supervisable
 {
