@@ -131,7 +131,7 @@ class Result
 				if ( is_array( $response->info ) ) {
 					return $response->info;
 				}
-				if ( is_callable( $response->info, 'all' ) ) {
+				if ( is_callable( [ $response->info, 'all' ] ) ) {
 					return $this->info->all();
 				}
 			}
