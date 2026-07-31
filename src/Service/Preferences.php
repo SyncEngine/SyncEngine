@@ -16,7 +16,7 @@ class Preferences implements SettingsInterface
 
 	private function getUser(): ?User
 	{
-		/** @var User */
+		/** @var ?User */
 		return $this->security->getUser();
 	}
 

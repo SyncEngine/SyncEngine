@@ -19,6 +19,9 @@ use SyncEngine\Security\Scope\ScopeRegistry;
  * enables future ownership checks (e.g., $subject->getOwner() === $user)
  * without changing the voter interface.
  */
+/**
+ * @extends Voter<string, mixed>
+ */
 class ApiTokenScopeVoter extends Voter
 {
 	const PREFIX = 'syncengine:api:';

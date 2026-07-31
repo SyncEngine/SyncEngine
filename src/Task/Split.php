@@ -221,7 +221,7 @@ class Split extends TaskModel
 
 					$start = (int) ( $config['index_start'] ?? 0 );
 					for ( $i = $start, $num = $start + count( $value ); $i < $num; $i ++ ) {
-						$index_key = str_replace( '{*index*}', $i, $indexed );
+						$index_key = str_replace( '{*index*}', (string) $i, $indexed );
 
 						$data->set( $value[ $i - $start ], $index_key );
 					}

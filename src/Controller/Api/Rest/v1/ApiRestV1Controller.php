@@ -30,7 +30,7 @@ class ApiRestV1Controller extends AbstractApiController
 	#[Route( '/{entity:entity}', name: 'list_entities', methods: [ 'GET' ] )]
 	public function list_entities( Request $request, string $entity ): JsonResponse
 	{
-		/** @var class-string<EngineModel> $model */
+		/** @var class-string<EngineModel<EngineEntity>> $model */
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
@@ -67,7 +67,7 @@ class ApiRestV1Controller extends AbstractApiController
 	#[Route( '/{entity:entity}/{id:id}', name: 'get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
 	public function get_entity( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
-		/** @var class-string<EngineModel> $model */
+		/** @var class-string<EngineModel<EngineEntity>> $model */
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
@@ -106,7 +106,7 @@ class ApiRestV1Controller extends AbstractApiController
 	#[Route( '/{entity:entity}', name: 'create_entity', methods: [ 'POST' ] )]
 	public function create_entity( Request $request, string $entity ): JsonResponse
 	{
-		/** @var class-string<EngineModel> $model */
+		/** @var class-string<EngineModel<EngineEntity>> $model */
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
@@ -160,7 +160,7 @@ class ApiRestV1Controller extends AbstractApiController
 	] )]
 	public function update_entity( Request $request, string $entity, int $id ): JsonResponse
 	{
-		/** @var class-string<EngineModel> $model */
+		/** @var class-string<EngineModel<EngineEntity>> $model */
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
@@ -218,7 +218,7 @@ class ApiRestV1Controller extends AbstractApiController
 	#[Route( '/{entity:entity}/{id:id}', name: 'delete_entity', requirements: [ 'id' => '\d+' ], methods: [ 'DELETE' ] )]
 	public function delete_entity( Request $request, string $entity, int $id ): JsonResponse
 	{
-		/** @var class-string<EngineModel> $model */
+		/** @var class-string<EngineModel<EngineEntity>> $model */
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {

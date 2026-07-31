@@ -27,8 +27,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	/**
 	 * @throws \Exception
 	 *
-	 * @param  object|null  $entity
-	 * @psalm-param object<T> $entity
+	 * @param  T|null  $entity
 	 */
 	public function __construct( ?object $entity = null )
 	{
@@ -199,7 +198,6 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	/**
 	 * @param T|null $entity
-	 * @return static<T>
 	 */
 	public static function create( ?object $entity = null ): static
 	{
@@ -327,7 +325,6 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	/**
 	 * @param class-string|object $entity
-	 * @return \ReflectionClass<object>
 	 */
 	public static function getEntityReflection( $entity ): \ReflectionClass
 	{

@@ -6,8 +6,10 @@ use SyncEngine\Structure\Collection\AbstractCollection;
 use Traversable;
 
 /**
- * @implements \ArrayAccess<mixed, array>
- * @implements \IteratorAggregate<mixed, array>
+ * @todo make target a generic type?
+ *
+ * @implements \ArrayAccess<string, array<string>>
+ * @implements \IteratorAggregate<string, string>
  */
 class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 {
@@ -31,6 +33,9 @@ class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return array_keys( $this->getMap() );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getTargets(): array
 	{
 		$targets = [];
@@ -40,6 +45,9 @@ class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return $targets;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getTarget( string $source ): array
 	{
 		return $this->map[ $source ] ?? [];
@@ -60,6 +68,9 @@ class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return $this->map;
 	}
 
+	/**
+	 * @return Traversable<string, string>
+	 */
 	public function getIterator(): Traversable
 	{
 		foreach ( $this->map as $source => $targets ) {

@@ -385,6 +385,10 @@ class Execute
 		$context->setCurrent( ResourceData::create(), 'step' );
 
 		foreach ( $flow->getSequence() as $step ) {
+			if ( ! $step instanceof StepModel ) {
+				$context->addError( 'Invalid step in flow', $step );
+				continue;
+			}
 			$data = $this->executeStep( $step, $context, $data );
 		}
 

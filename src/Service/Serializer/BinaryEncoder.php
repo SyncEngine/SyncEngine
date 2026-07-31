@@ -14,7 +14,7 @@ class BinaryEncoder implements CodecInterface
 		if ( 'base64' === $format ) {
 			return base64_encode( $data );
 		}
-		return base_convert( unpack( 'H*', $data ), 16, 2 );
+		return base_convert( implode( '', unpack( 'H*', $data ) ), 16, 2 );
 	}
 
 	public function decode( string $data, string $format, array $context = [] ): false|string

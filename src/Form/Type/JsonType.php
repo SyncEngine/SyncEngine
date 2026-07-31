@@ -15,6 +15,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @implements DataTransformerInterface<mixed, mixed>
+ */
 class JsonType extends TextareaType implements DataTransformerInterface
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
@@ -31,14 +34,14 @@ class JsonType extends TextareaType implements DataTransformerInterface
 		$builder->addModelTransformer( $this );
 	}
 
-	public function transform( mixed $data ): mixed
+	public function transform( mixed $value ): mixed
 	{
 		// Model data should not be transformed
-		return json_encode( $data );
+		return json_encode( $value );
 	}
 
-	public function reverseTransform( mixed $data ): mixed
+	public function reverseTransform( mixed $value ): mixed
 	{
-		return json_decode( $data, true );
+		return json_decode( $value, true );
 	}
 }

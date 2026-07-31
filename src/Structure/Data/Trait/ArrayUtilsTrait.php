@@ -11,14 +11,14 @@ trait ArrayUtilsTrait
 		return $resource instanceof \ArrayObject ? $resource->getArrayCopy() : $resource;
 	}
 
-	public static function values( array|\ArrayObject $resource = [] ): array
+	public static function values( iterable $resource = [] ): array
 	{
-		return array_values( static::data( $resource ) );
+		return array_values( (array) static::data( $resource ) );
 	}
 
-	public static function keys( array|\ArrayObject $resource = [] ): array
+	public static function keys( iterable $resource = [] ): array
 	{
-		return array_keys( static::data( $resource ) );
+		return array_keys( (array) static::data( $resource ) );
 	}
 
 	public function isEmpty(): bool
