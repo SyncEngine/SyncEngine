@@ -13,7 +13,7 @@ class ExecuteStopException extends \ErrorException
 		parent::__construct(
 			$message,
 			$code,
-			$previous
+			previous: $previous
 		);
 	}
 
