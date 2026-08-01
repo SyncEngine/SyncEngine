@@ -173,6 +173,10 @@ export default function BlueprintControl( props ) {
 
 			return (
 				<VStack gap={2}>
+					<HStack className="justify-content-between my-2">
+						<h6 className="mb-0">{ t('Select a blueprint or configure manually') }</h6>
+					</HStack>
+
 					{ useAdvancedSelection && selectedModule && (
 						<Breadcrumb className="mb-0">
 							<Breadcrumb.Item
