@@ -32,6 +32,14 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		foreach ( $config as $key => $value ) {
 			$this->set( $key, $value );
 		}
+
+		if ( ! parent::offsetExists( 'type' ) ) {
+			$type = $this->getType();
+			// Type statically declared.
+			if ( $type ) {
+				$this->setType( $type );
+			}
+		}
 	}
 
 	public function set( string $prop, mixed $value ): static
