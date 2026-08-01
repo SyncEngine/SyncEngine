@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
@@ -26,6 +27,17 @@ class Sftp extends Ftp
 
 	public function getAuthFields(): FieldCollection
 	{
+		if ( ! class_exists( 'phpseclib3\Net\SFTP' ) ) {
+			return new FieldCollection(
+				[
+					'warning' => [
+						'type' => 'html',
+						'html' => '<div class="alert alert-warning">' . $this->trans( '{type} extension is not available', [ 'type' => 'SFTP (phpseclib3)' ] ) . '</div>',
+					],
+				]
+			);
+		}
+
 		return new FieldCollection( [
 			'host'         => [
 				'label' => $this->trans( 'Host' ),
@@ -82,6 +94,10 @@ class Sftp extends Ftp
 	 */
 	public function getClient( array $config = [] ): ?object
 	{
+		if ( ! class_exists( 'phpseclib3\Net\SFTP' ) ) {
+			throw new InvalidException( $this->trans( '{type} extension is not available', [ 'type' => 'SFTP (phpseclib3)' ] ) );
+		}
+
 		$host     = $this->getRequestUrl( $config );
 		$password = $this->getPassword( $config );
 
@@ -101,7 +117,12 @@ class Sftp extends Ftp
 		return $client;
 	}
 
-	public function getPassword( array $config ): string|PrivateKey
+	/**
+	 * @param  array  $config
+	 *
+	 * @return string|PrivateKey
+	 */
+	public function getPassword( array $config ): string|object
 	{
 		if ( 'private_key' === $config['auth_method'] ) {
 			$keyPass = ! empty( $config['key_password'] ) ? $config['key_password'] : null;

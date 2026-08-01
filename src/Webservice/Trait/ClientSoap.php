@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice\Trait;
 
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\Trait\Format;
@@ -13,7 +14,14 @@ trait ClientSoap
 
 	protected \SoapClient $client;
 
-	public function getClient( array $config = [] ): \SoapClient
+	/**
+	 * @throws InvalidConfigException
+	 *
+	 * @param  array  $config
+	 *
+	 * @return \SoapClient
+	 */
+	public function getClient( array $config = [] ): object
 	{
 		// @todo Reuse existing client if WSDL is the same?
 		$this->client = $this->createSoapClient( $config );
@@ -21,13 +29,30 @@ trait ClientSoap
 		return $this->client;
 	}
 
-	public function setClient( \soapClient $client ): void
+	/**
+	 * @param  \SoapClient  $client
+	 *
+	 * @return void
+	 */
+	public function setClient( object $client ): void
 	{
 		$this->client = $client;
 	}
 
-	protected function createSoapClient( array $config ): \SoapClient
+	/**
+	 * @throws InvalidConfigException
+	 * @throws \SoapFault
+	 *
+	 * @param  array  $config
+	 *
+	 * @return \SoapClient
+	 */
+	protected function createSoapClient( array $config ): object
 	{
+		if ( ! class_exists( 'SoapClient' ) ) {
+			throw new InvalidException( $this->trans( '{type} extension is not available', [ 'type' => 'SOAP (ext-soap)' ] ) );
+		}
+
 		$wsdlUrl = $this->getWsdlUrl( $config );
 		$options = $this->getSoapClientOptions( $config );
 		$location = $this->getLocation( $config );

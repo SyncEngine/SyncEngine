@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice;
 
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
@@ -30,7 +31,7 @@ class Soap extends WebserviceModel
 				[
 					'warning' => [
 						'type' => 'html',
-						'html' => '<div class="alert alert-warning">' . $this->trans( 'SOAP extension is not available' ) . '</div>',
+						'html' => '<div class="alert alert-warning">' . $this->trans( '{type} extension is not available', [ 'type' => 'SOAP (ext-soap)' ] ) . '</div>',
 					],
 				]
 			);
@@ -88,10 +89,21 @@ class Soap extends WebserviceModel
 		return $this->request( $config, [ $operation => $body ] );
 	}
 
-	protected function request( array $config, array $args, ?\SoapClient $soapClient = null ): Result
+	/**
+	 * @param  array        $config
+	 * @param  array        $args
+	 * @param  \SoapClient|null  $soapClient
+	 *
+	 * @return Result
+	 */
+	protected function request( array $config, array $args, ?object $soapClient = null ): Result
 	{
+		if ( ! class_exists( \SoapClient::class ) ) {
+			throw new InvalidException( "SOAP extension is not available." );
+		}
+
 		try {
-			if ( ! $soapClient ) {
+			if ( ! $soapClient instanceof \SoapClient ) {
 				$soapClient = $this->getClient( $config );
 			}
 

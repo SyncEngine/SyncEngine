@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
@@ -27,6 +28,17 @@ class Ftp extends WebserviceModel
 
 	public function getAuthFields(): FieldCollection
 	{
+		if ( ! function_exists( 'ftp_connect' ) || ! class_exists( '\FTP\Connection' ) ) {
+			return new FieldCollection(
+				[
+					'warning' => [
+						'type' => 'html',
+						'html' => '<div class="alert alert-warning">' . $this->trans( '{type} extension is not available', [ 'type' => 'FTP (ext-ftp)' ] ) . '</div>',
+					],
+				]
+			);
+		}
+
 		return new FieldCollection( [
 			'host'     => [
 				'label' => $this->trans( 'Host' ),
@@ -72,6 +84,10 @@ class Ftp extends WebserviceModel
 	 */
 	public function getClient( array $config = [] ): ?object
 	{
+		if ( ! function_exists( 'ftp_connect' ) || ! class_exists( '\FTP\Connection' ) ) {
+			throw new InvalidException( $this->trans( '{type} extension is not available', [ 'type' => 'FTP (ext-ftp)' ] ) );
+		}
+
 		$timeout = (int) ( $config['timeout'] ?? 10 );
 
 		$ref = $config['connection']?->getRef();

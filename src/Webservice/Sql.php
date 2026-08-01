@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
@@ -26,6 +27,25 @@ class Sql extends WebserviceModel
 
 	public function getAuthFields(): FieldCollection
 	{
+		$choices = [];
+		if ( class_exists( 'mysqli' ) ) {
+			$choices['mysqli'] = $this->trans( 'MySQLi' );
+		}
+		if ( class_exists( 'PDO' ) ) {
+			$choices['pdo'] = $this->trans( 'PDO' );
+		}
+
+		if ( empty ( $choices ) ) {
+			return new FieldCollection(
+				[
+					'warning' => [
+						'type' => 'html',
+						'html' => '<div class="alert alert-warning">' . $this->trans( 'No database extensions are available, please install one of the following: {options}', [ 'options' => 'ext-pdo, ext-mysqli' ] ) . '</div>',
+					],
+				]
+			);
+		}
+
 		return new FieldCollection( [
 			'host'     => [
 				'label' => $this->trans( 'Host' ),
@@ -34,10 +54,7 @@ class Sql extends WebserviceModel
 			'driver'   => [
 				'label'   => $this->trans( 'Select database driver' ),
 				'type'    => 'select',
-				'choices' => [
-					'mysqli' => $this->trans( 'MySQLi' ),
-					'pdo'    => $this->trans( 'PDO' ),
-				],
+				'choices' => $choices,
 			],
 			'database' => [
 				'label' => $this->trans( 'Database' ),
@@ -119,8 +136,15 @@ class Sql extends WebserviceModel
 		);
 	}
 
-	public function getMysqliConnection( array $config ): \mysqli
+	/**
+	 * @return \mysqli
+	 */
+	public function getMysqliConnection( array $config ): object
 	{
+		if ( ! class_exists( 'mysqli' ) ) {
+			throw new InvalidException( $this->trans( '{type} extension is not available', [ 'type' => 'MySQLi (ext-mysqli)' ] ) );
+		}
+
 		$ref = $this->getClientReference( array_merge( $config, [ 'driver' => 'mysqli' ] ) );
 
 		if ( $this->fetchClient( $ref ) instanceof \mysqli ) {
@@ -138,8 +162,19 @@ class Sql extends WebserviceModel
 		return $mysqli;
 	}
 
-	public function getPdoConnection( array $config, $options = [] ): \PDO
+	/**
+	 * @return \PDO
+	 */
+	public function getPdoConnection( array $config, $options = [] ): object
 	{
+		if ( ! class_exists( 'PDO' ) ) {
+			throw new InvalidException( $this->trans( '{type} extension is not available', [ 'type' => 'PDO (ext-pdo)' ] ) );
+		}
+
+		if ( empty( $options ) ) {
+			$options = [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ];
+		}
+
 		$ref = $this->getClientReference( array_merge( $config, [ 'driver' => 'pdo' ] ) );
 
 		if ( $this->fetchClient( $ref ) instanceof \PDO ) {
@@ -353,11 +388,18 @@ class Sql extends WebserviceModel
 		}
 	}
 
-	public function getClient( array $config = [] ): \PDO|\mysqli
+	/**
+	 * @throws AuthResultException
+	 *
+	 * @param  array  $config
+	 *
+	 * @return \PDO|\mysqli|null
+	 */
+	public function getClient( array $config = [] ): ?object
 	{
 		return match ( $config['driver'] ) {
 			'mysqli' => $this->getMysqliConnection( $config ),
-			default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
+			default => $this->getPdoConnection( $config ),
 		};
 	}
 }
