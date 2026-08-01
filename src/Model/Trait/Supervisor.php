@@ -39,10 +39,6 @@ trait Supervisor
 	{
 		$icon = '';
 
-		if ( is_callable( [ $this, 'getIcon' ] ) ) {
-			$icon = $this->getIcon();
-		}
-
 		if ( ! $icon && $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getIcon' ] ) ) {
 			$icon = $this->getEntity()->getIcon();
 		}
