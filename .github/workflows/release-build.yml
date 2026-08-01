@@ -33,6 +33,8 @@ jobs:
 
       - name: Install JS dependencies
         run: npm ci
+        env:
+          NODE_ENV: production
 
       - name: Build assets with Webpack Encore
         run: npm run build
