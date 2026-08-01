@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Badge, Breadcrumb, ListGroup, Stack } from 'react-bootstrap';
+import { Badge, Breadcrumb, ListGroup } from 'react-bootstrap';
 
 import useBlueprints from '../../../hooks/useBlueprints';
 
@@ -12,6 +12,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { suppress } from '../../../utils/events';
+import { HStack, VStack } from '../../partials/Stack';
 
 export default function BlueprintControl( props ) {
 	const { t } = useTranslation();
@@ -171,7 +172,7 @@ export default function BlueprintControl( props ) {
 				: null;
 
 			return (
-				<Stack gap={2}>
+				<VStack gap={2}>
 					{ useAdvancedSelection && selectedModule && (
 						<Breadcrumb className="mb-0">
 							<Breadcrumb.Item
@@ -207,7 +208,7 @@ export default function BlueprintControl( props ) {
 					) }
 
 					{ ! useAdvancedSelection && (
-						<Stack gap={1}>
+						<VStack gap={1}>
 							<small className="text-muted px-1">
 								{ !! blueprints.length ? t('Available blueprints') : t('No blueprints available') }
 							</small>
@@ -218,54 +219,54 @@ export default function BlueprintControl( props ) {
 									</ListGroup.Item>
 								) ) }
 							</ListGroup>
-						</Stack>
+						</VStack>
 					) }
 
 					{ useAdvancedSelection && isRootSelection && blueprintsWithoutModule.length > 0 && (
 						<ListGroup>
 							<ListGroup.Item action onClick={ (e) => { suppress( e ); selectModule( CUSTOM_MODULE_KEY ) } }>
-								<Stack direction="horizontal" className="justify-content-between align-items-center">
+								<HStack className="justify-content-between align-items-center">
 									<Info inline item={ { name: t('Custom'), description: t('User defined blueprints') } } type="info" />
 									<Badge bg="secondary">{ blueprintsWithoutModule.length }</Badge>
-								</Stack>
+								</HStack>
 							</ListGroup.Item>
 						</ListGroup>
 					) }
 
 					{ useAdvancedSelection && isRootSelection && (
-						<Stack gap={1}>
+						<VStack gap={1}>
 							<small className="text-muted px-1">{ t('Modules') }</small>
 							<ListGroup>
 								{ modulesList.map( ( item ) => (
 									<ListGroup.Item key={ item.key } action onClick={ (e) => { suppress( e ); selectModule( item.key ) } }>
-										<Stack direction="horizontal" className="justify-content-between align-items-center">
+										<HStack className="justify-content-between align-items-center">
 											<Info item={ item } type="info" />
 											<Badge bg="secondary">{ item.count }</Badge>
-										</Stack>
+										</HStack>
 									</ListGroup.Item>
 								) ) }
 							</ListGroup>
-						</Stack>
+						</VStack>
 					) }
 
 					{ showTypeCategories && (
-						<Stack gap={1}>
+						<VStack gap={1}>
 							<small className="text-muted px-1">{ t('{name} Types', { name: selectedModuleLabel }) }</small>
 							<ListGroup>
 								{ typesList.map( ( item ) => (
 									<ListGroup.Item key={ item.name } action onClick={ (e) => { suppress( e ); selectType( item.name ) } }>
-										<Stack direction="horizontal" className="justify-content-between align-items-center">
+										<HStack className="justify-content-between align-items-center">
 											<Info item={ { name: item.name, icon: item.icon } } type="info" />
 											<Badge bg="secondary">{ item.count }</Badge>
-										</Stack>
+										</HStack>
 									</ListGroup.Item>
 								) ) }
 							</ListGroup>
-						</Stack>
+						</VStack>
 					) }
 
 					{ showUntypedBlueprints && (
-						<Stack gap={1}>
+						<VStack gap={1}>
 							<small className="text-muted px-1">{ t('Other') }</small>
 							<ListGroup>
 								{ blueprintsWithoutType.map( ( item ) => (
@@ -274,11 +275,11 @@ export default function BlueprintControl( props ) {
 									</ListGroup.Item>
 								) ) }
 							</ListGroup>
-						</Stack>
+						</VStack>
 					) }
 
 					{ showBlueprintList && (
-						<Stack gap={1}>
+						<VStack gap={1}>
 							<ListGroup>
 								{ filteredBlueprints.map( ( item ) => (
 									<ListGroup.Item key={ item.value } action onClick={ (e) => { suppress( e ); selectBlueprint( item.value ) } }>
@@ -286,15 +287,15 @@ export default function BlueprintControl( props ) {
 									</ListGroup.Item>
 								) ) }
 							</ListGroup>
-						</Stack>
+						</VStack>
 					) }
-				</Stack>
+				</VStack>
 			)
 		}
 	}
 
 	return (
-		<Stack gap={2}>
+		<VStack gap={2}>
 			{ /*
 			<InputGroup>
 				<ConfirmModal trigger="onChange" callback={ selectBlueprint } text={ t('You will loose your current configuration') }>
@@ -307,7 +308,7 @@ export default function BlueprintControl( props ) {
 			*/ }
 			<Info item={ blueprint } type="info" badge={ blueprint.version } />
 			<Fields gap={3} name={ entity.ref } fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
-		</Stack>
+		</VStack>
 	);
 }
 
