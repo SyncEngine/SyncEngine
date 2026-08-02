@@ -71,9 +71,11 @@ trait RecursiveOffsetTrait
 						continue;
 					}
 				} elseif ( ! strlen( $current ) > 0 ) {
-					// Open a quote
-					$inQuote = true;
-					continue;
+					// Open a quote only if there is a closing quote later.
+					if ( str_contains( substr( $input, $i + 1 ), $this->enclose ) ) {
+						$inQuote = true;
+						continue;
+					}
 				}
 			}
 
