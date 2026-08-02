@@ -676,4 +676,36 @@ class ResourceDataTest extends TestCase
 
 		$this->assertEquals( $expected, $data->replace( $new )->get() );
 	}
+
+	public function testUnclosedQuote()
+	{
+		$resource = new ResourceData( [
+			'foo' => [
+				'"b' => [
+					'c' => '"value',
+				],
+			],
+		] );
+
+		$this->assertEquals( '"value', $resource->get( 'foo."b.c' ) );
+
+		$resource = new ResourceData( [
+			'root' => [
+				'"' => 'end_quote',
+			],
+		] );
+
+		$this->assertEquals( 'end_quote', $resource->get( 'root."' ) );
+
+		$resource = new ResourceData( [
+			'foo' => [
+				'"b' => '"literal',
+				'c' => 'cval',
+				'd' => 'dval',
+			],
+		] );
+
+		$this->assertEquals( '"literal', $resource->get( 'foo."b' ) );
+		$this->assertEquals( 'cval', $resource->get( 'foo.c' ) );
+	}
 }
