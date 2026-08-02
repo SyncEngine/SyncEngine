@@ -23,8 +23,24 @@ class ModelImporter
 		$this->translator = $translator;
 	}
 
-	public function import( array $data ): array
+	public function getErrors(): array
 	{
+		return $this->errors;
+	}
+
+	public function import( array $data ): false|array
+	{
+		$refs = array_keys( $data );
+		foreach ( $refs as $ref ) {
+			if ( str_contains( $ref, '.' ) ) {
+				$this->errors[] = $this->translator->trans( 'Dots (.) in refs are forbidden: {ref}', [ 'ref' => $ref ] );
+			}
+		}
+
+		if ( ! empty( $this->errors ) ) {
+			return false;
+		}
+
 		$this->done = [];
 		$this->data = $data;
 		foreach ( $data as $ref => $fields ) {
@@ -33,7 +49,8 @@ class ModelImporter
 
 		// @todo Find a way to keep track of recursive imports (blueprints).
 		if ( ! empty( $this->errors ) ) {
-			return $this->errors;
+			$this->em->rollback();
+			return false;
 		}
 
 		$this->em->flush();
@@ -43,6 +60,12 @@ class ModelImporter
 
 	public function importRef( $ref, $fields )
 	{
+		if ( str_contains( $ref, '.' ) ) {
+			$this->errors[] = $this->translator->trans( 'Dots (.) in refs are forbidden: {ref}', [ 'ref' => $ref ] );
+
+			return null;
+		}
+
 		// Already running.
 		if ( isset( $this->done[ $ref ] ) ) {
 			return $this->done[ $ref ];
@@ -190,7 +213,7 @@ class ModelImporter
 		} catch ( \TypeError $e ) {
 			$message = [
 				$e->getMessage(),
-				...$this->errors
+				...$this->errors,
 			];
 			throw new \TypeError( implode( ' || ', $message ), $e->getCode(), $e );
 		}
