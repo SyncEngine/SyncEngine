@@ -17,8 +17,8 @@ function deepClone( obj, options = { cloneReactElement: false } ) {
 	if ( Array.isArray( obj ) ) {
 		const newO = [];
 		for ( let i = 0; i < obj.length; i += 1 ) {
-			const val = ! obj[i] || typeof obj[i] !== 'object' ? obj[i] : deepClone( obj[i] );
-			newO[i] = val === undefined ? null : val;
+			const val = ! obj[ i ] || typeof obj[ i ] !== 'object' ? obj[ i ] : deepClone( obj[ i ] );
+			newO[ i ] = val === undefined ? null : val;
 		}
 		return newO;
 	}
@@ -29,11 +29,11 @@ function deepClone( obj, options = { cloneReactElement: false } ) {
 
 	const newO = {};
 	for ( const i of Object.keys( obj ) ) {
-		const val = ! obj[i] || typeof obj[i] !== 'object' ? obj[i] : deepClone( obj[i] );
+		const val = ! obj[ i ] || typeof obj[ i ] !== 'object' ? obj[ i ] : deepClone( obj[ i ] );
 		if ( val === undefined ) {
 			continue;
 		}
-		newO[i] = val;
+		newO[ i ] = val;
 	}
 	return newO;
 }
@@ -68,7 +68,12 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 			continue;
 		}
 		if ( valueProp ) {
-			if ( force || 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) || React.isValidElement( obj[ key ] ) ) {
+			if (
+				force ||
+				'object' !== typeof obj[ key ] ||
+				Array.isArray( obj[ key ] ) ||
+				React.isValidElement( obj[ key ] )
+			) {
 				const value = obj[ key ];
 				obj[ key ] = {};
 				obj[ key ][ valueProp ] = value;
@@ -125,13 +130,15 @@ function objectMerge( target, ...sources ) {
  * @return {{}}
  */
 function objectMergeDepth( target, depth, ...sources ) {
-	if ( ! sources.length ) return target;
+	if ( ! sources.length ) {
+		return target;
+	}
 
-	if ( -1 !== depth ) {
+	if ( - 1 !== depth ) {
 		if ( 1 > depth ) {
 			return target;
 		}
-		depth--;
+		depth --;
 	}
 
 	const source = sources.shift();
@@ -325,12 +332,12 @@ function mapFilter( data, filters ) {
 
 	// Support key as second and value as third param.
 	if ( 'object' !== typeof filters ) {
-		if ( ! arguments[2] ) {
+		if ( ! arguments[ 2 ] ) {
 			return data;
 		}
 		let key = filters;
 		filters = {};
-		filters[ key ] = arguments[2];
+		filters[ key ] = arguments[ 2 ];
 	}
 
 	return data.filter( ( value ) => {
@@ -361,8 +368,8 @@ function mapFilter( data, filters ) {
  * @return {{}}
  */
 function mapGroupBy( list, key, fallback ) {
-	return list.reduce( function( rv, x ) {
-		const group = x[key] || fallback || '';
+	return list.reduce( function ( rv, x ) {
+		const group = x[ key ] || fallback || '';
 		( rv[ group ] = rv[ group ] || [] ).push( x );
 		return rv;
 	}, {} );
@@ -375,7 +382,7 @@ function mapGroupBy( list, key, fallback ) {
  * @param {boolean} desc Sort order
  * @return {[{}]}
  */
-function mapSortBy( list, key, desc ) {
+function mapSortBy( list, key, desc = false ) {
 	return list.sort( ( a, b ) => {
 		let keyA = a[ key ];
 		let keyB = b[ key ];
