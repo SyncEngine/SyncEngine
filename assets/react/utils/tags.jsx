@@ -195,7 +195,60 @@ function getTagPart( tag, index ) {
 }
 
 function getTagParts( tag ) {
-	return trimTag( tag ).split( TAG_SEPARATOR );
+	const trimmed = trimTag( tag );
+	const len = trimmed.length;
+	const result = [];
+	let current = '';
+	let inQuote = false;
+	let escape = false;
+
+	for ( let i = 0; i < len; i++ ) {
+		const char = trimmed[ i ];
+		const next = trimmed[ i + 1 ] ?? null;
+
+		if ( escape ) {
+			current += char;
+			escape = false;
+			continue;
+		}
+
+		if ( char === '\\' ) {
+			escape = true;
+			continue;
+		}
+
+		if ( char === TAG_ENCLOSURE_CHAR ) {
+			if ( inQuote ) {
+				if ( next === TAG_SEPARATOR || next === null ) {
+					result.push( current );
+					current = '';
+					inQuote = false;
+					continue;
+				}
+			} else if ( current.length === 0 ) {
+				if ( trimmed.slice( i + 1 ).includes( TAG_ENCLOSURE_CHAR ) ) {
+					inQuote = true;
+					continue;
+				}
+			}
+		}
+
+		if ( char === TAG_SEPARATOR && ! inQuote ) {
+			if ( current.length > 0 ) {
+				result.push( current );
+				current = '';
+			}
+			continue;
+		}
+
+		current += char;
+	}
+
+	if ( current.length > 0 ) {
+		result.push( current );
+	}
+
+	return result;
 }
 
 function isTag( string, validateTagChars = true ) {
