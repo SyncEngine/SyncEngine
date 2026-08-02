@@ -104,6 +104,18 @@ describe('parseTag', () => {
 	it('looks up nested key with dot notation', () => {
 		expect(parseTag('user.name', { user: { name: 'John' } })).toBe('John');
 	});
+	it('looks up quoted key with dots', () => {
+		const resource = { foo: { bar: { 'test.test': 'value' } } };
+		expect(parseTag('foo.bar."test.test"', resource)).toBe('value');
+	});
+	it('looks up quoted key at end', () => {
+		const resource = { foo: { bar: 'barval', 'b.c': 'bvalue' } };
+		expect(parseTag('foo."b.c"', resource)).toBe('bvalue');
+	});
+	it('does not match unclosed quote as quoted key', () => {
+		const resource = { foo: { '"b': { c: '"value' } } };
+		expect(parseTag('foo."b.c', resource)).toBe('"value');
+	});
 	it('returns empty string for missing key', () => {
 		expect(parseTag('missing', { name: 'John' })).toBe('');
 	});
@@ -140,6 +152,33 @@ describe('getTagParts', () => {
 	});
 	it('trims outer whitespace only', () => {
 		expect(getTagParts(' a . b ')).toEqual(['a ', ' b']);
+	});
+	it('treats quoted string as single part', () => {
+		expect(getTagParts('foo.bar."test.test".final')).toEqual(['foo', 'bar', 'test.test', 'final']);
+	});
+	it('handles multiple quoted segments', () => {
+		expect(getTagParts('"a.b"."c.d"')).toEqual(['a.b', 'c.d']);
+	});
+	it('handles quoted segment at start', () => {
+		expect(getTagParts('"test".b.c')).toEqual(['test', 'b', 'c']);
+	});
+	it('handles quoted segment at end', () => {
+		expect(getTagParts('a.b."test"')).toEqual(['a', 'b', 'test']);
+	});
+	it('handles unquoted segment after quoted', () => {
+		expect(getTagParts('"a.b".c')).toEqual(['a.b', 'c']);
+	});
+	it('handles escape sequences', () => {
+		expect(getTagParts('a.b\\\'s.c')).toEqual(['a', "b's", 'c']);
+	});
+	it('handles quoted segment with escape', () => {
+		expect(getTagParts('"a.b\\"c".d')).toEqual(['a.b"c', 'd']);
+	});
+	it('preserves unclosed quote as literal', () => {
+		expect(getTagParts('a."b.c.d')).toEqual(['a', '"b', 'c', 'd']);
+	});
+	it('preserves unclosed quote at end', () => {
+		expect(getTagParts('a.b."')).toEqual(['a', 'b', '"']);
 	});
 });
 
