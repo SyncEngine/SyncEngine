@@ -21,6 +21,7 @@ export default class extends Controller {
 				root = document.createElement( 'div' );
 				root.id = this.element.id + '_root';
 				root.classList.add( 'react-root' );
+				root.setAttribute( 'data-controlled-by', this.element.id );
 
 				if ( this.element.nextSibling.tagName && 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
 					this.element.nextSibling.after( root );

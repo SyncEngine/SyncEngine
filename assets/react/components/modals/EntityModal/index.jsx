@@ -143,7 +143,7 @@ export default function EntityModal( props ) {
 		const response = await fetchPost( endpoint, data );
 
 		if ( response.html ) {
-			openModal( response );
+			formRef.current.updateHtml( response.html.content );
 		}
 
 		if ( response.success ) {
