@@ -61,12 +61,17 @@ class AutomationController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
+		$response   = new Response();
 		$automation = AutomationModel::create();
 		$form       = $this->form( $automation, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
 
-			return $this->redirectToRoute( 'syncengine_automation_edit', [ 'id' => $automation->getId() ] );
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
+
+				return $this->redirectToRoute( 'syncengine_automation_edit', [ 'id' => $automation->getId() ] );
+			}
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render(
@@ -85,7 +90,8 @@ class AutomationController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -93,9 +99,16 @@ class AutomationController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Automation $automation, Request $request ): Response
 	{
-		$form = $this->form( $automation, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully edited automation!' ) );
+		$response = new Response();
+		$form     = $this->form( $automation, $request );
+
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully edited automation!' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
 		}
 
 		return $this->render(
@@ -114,7 +127,8 @@ class AutomationController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 

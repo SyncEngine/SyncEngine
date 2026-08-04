@@ -61,12 +61,17 @@ class RoutineController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
-		$routine = RoutineModel::create();
-		$form = $this->form( $routine, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created routine!' ) );
+		$response = new Response();
+		$routine  = RoutineModel::create();
+		$form     = $this->form( $routine, $request );
 
-			return $this->redirectToRoute( 'syncengine_routine_edit', [ 'id' => $routine->getId() ] );
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully created routine!' ) );
+
+				return $this->redirectToRoute( 'syncengine_routine_edit', [ 'id' => $routine->getId() ] );
+			}
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render(
@@ -85,7 +90,8 @@ class RoutineController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -93,9 +99,16 @@ class RoutineController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Routine $routine, Request $request ): Response
 	{
-		$form = $this->form( $routine, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully edited routine!' ) );
+		$response = new Response();
+		$form     = $this->form( $routine, $request );
+
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully edited routine!' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
 		}
 
 		return $this->render(
@@ -114,7 +127,8 @@ class RoutineController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 

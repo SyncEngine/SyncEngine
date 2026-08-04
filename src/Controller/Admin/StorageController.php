@@ -61,12 +61,17 @@ class StorageController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
-		$storage = StorageModel::create();
-		$form    = $this->form( $storage, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
+		$response = new Response();
+		$storage  = StorageModel::create();
+		$form     = $this->form( $storage, $request );
 
-			return $this->redirectToRoute( 'syncengine_storage_edit', [ 'id' => $storage->getId() ] );
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
+
+				return $this->redirectToRoute( 'syncengine_storage_edit', [ 'id' => $storage->getId() ] );
+			}
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render(
@@ -85,7 +90,8 @@ class StorageController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -93,9 +99,16 @@ class StorageController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Storage $storage, Request $request ): Response
 	{
-		$form = $this->form( $storage, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully edited storage!' ) );
+		$response = new Response();
+		$form     = $this->form( $storage, $request );
+
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully edited storage!' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
 		}
 
 		return $this->render(
@@ -114,7 +127,8 @@ class StorageController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 

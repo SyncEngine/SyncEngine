@@ -74,6 +74,16 @@ class AccountController extends AbstractAdminController
 
 		$form = $this->formAccount( $user, $request, $entityManager, $userPasswordHasher );
 
+		$response = new Response();
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Account updated successfully.' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
+		}
+
 		return $this->render(
 			'admin/index.html.twig',
 			[
@@ -91,7 +101,8 @@ class AccountController extends AbstractAdminController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -132,6 +143,16 @@ class AccountController extends AbstractAdminController
 	): Response {
 		$form = $this->formPreferences( $preferences, $request );
 
+		$response = new Response();
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Preferences updated successfully.' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
+		}
+
 		return $this->render(
 			'admin/index.html.twig',
 			[
@@ -149,7 +170,8 @@ class AccountController extends AbstractAdminController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 

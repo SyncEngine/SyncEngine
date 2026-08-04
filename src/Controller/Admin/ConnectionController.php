@@ -73,12 +73,17 @@ class ConnectionController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
+		$response   = new Response();
 		$connection = ConnectionModel::create();
 		$form       = $this->form( $connection, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 
-			return $this->redirectToRoute( 'syncengine_connection_edit', [ 'id' => $connection->getId() ] );
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
+
+				return $this->redirectToRoute( 'syncengine_connection_edit', [ 'id' => $connection->getId() ] );
+			}
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render(
@@ -97,7 +102,8 @@ class ConnectionController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -105,9 +111,16 @@ class ConnectionController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Connection $connection, Request $request ): Response
 	{
-		$form = $this->form( $connection, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
+		$response = new Response();
+		$form     = $this->form( $connection, $request );
+
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully edited connection!' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
 		}
 
 		return $this->render(
@@ -126,7 +139,8 @@ class ConnectionController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 

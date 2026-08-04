@@ -61,12 +61,17 @@ class FlowController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderCreate( Request $request ): Response
 	{
-		$flow = FlowModel::create();
-		$form = $this->form( $flow, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
+		$response = new Response();
+		$flow     = FlowModel::create();
+		$form     = $this->form( $flow, $request );
 
-			return $this->redirectToRoute( 'syncengine_flow_edit', [ 'id' => $flow->getId() ] );
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully created flow!' ) );
+
+				return $this->redirectToRoute( 'syncengine_flow_edit', [ 'id' => $flow->getId() ] );
+			}
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render(
@@ -85,7 +90,8 @@ class FlowController extends EntityController
 						'current' => true,
 					],
 				],
-			]
+			],
+			$response
 		);
 	}
 
@@ -93,9 +99,16 @@ class FlowController extends EntityController
 	#[IsGranted( 'ROLE_EDITOR' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Flow $flow, Request $request ): Response
 	{
-		$form = $this->form( $flow, $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully edited flow!' ) );
+		$response = new Response();
+		$form     = $this->form( $flow, $request );
+
+		if ( $form->isSubmitted() ) {
+			if ( $form->isValid() ) {
+				$this->addFlash( 'success', $this->trans( 'Successfully edited flow!' ) );
+				$response->setStatusCode( Response::HTTP_ACCEPTED );
+			} else {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
+			}
 		}
 
 		return $this->render(
@@ -118,7 +131,8 @@ class FlowController extends EntityController
 				'onboarding' => [
 					'sequence' => 'flow_edit',
 				],
-			]
+			],
+			$response
 		);
 	}
 
