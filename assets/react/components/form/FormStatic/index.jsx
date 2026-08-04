@@ -16,7 +16,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 		parentRef,
 	} = props;
 
-	const contextRef = createRefId();
+	const contextRef = parentRef.current.key ?? createRefId();
 	const tagsContext = useContext( TagsContext );
 	const parentContext = useContext( ParentContext );
 	const containerContext = useContext( ContainerContext );
@@ -62,7 +62,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 
 	return (
 		<>
-			<div id={ 'form_' + type + '_' + contextRef } ref={ ref } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
+			<div key={ contextRef } id={ 'form_' + type + '_' + contextRef } ref={ ref } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);
