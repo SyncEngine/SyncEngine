@@ -1,7 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Service;
-
+namespace SyncEngine\Tests\Structure\Data;
 
 use PHPUnit\Framework\TestCase;
 use SyncEngine\Structure\Data\ResourceData;
@@ -11,29 +10,37 @@ class ResourceDataTest extends TestCase
 	public function getResource()
 	{
 		$data = [
-			'foo' => 'bar',
-			'null' => null,
-			'array' => [
-				'foo' => 'bar',
+			'foo'          => 'bar',
+			'null'         => null,
+			'array'        => [
+				'foo'  => 'bar',
 				'null' => null,
 			],
-			'objectProp' => new class {
+			'objectProp'   => new class {
 				public $foo = 'bar';
 				public $null = null;
 			},
 			'objectMethod' => new class {
 				private $foo = 'bar';
 				private $null = null;
-				public function getFoo() {
+
+				public function getFoo()
+				{
 					return $this->foo;
 				}
-				public function setFoo( $value ) {
+
+				public function setFoo( $value )
+				{
 					$this->foo = $value;
 				}
-				public function getNull() {
+
+				public function getNull()
+				{
 					return $this->null;
 				}
-				public function setNull( $value ) {
+
+				public function setNull( $value )
+				{
 					$this->null = $value;
 				}
 			},
@@ -181,9 +188,9 @@ class ResourceDataTest extends TestCase
 
 		$this->assertEquals( 'newerValue', $testObjectMethod );
 
-		$expected = $original;
-		$expected['foo'] = 'newValue';
-		$expected['array']['foo'] = 'newerValue';
+		$expected                    = $original;
+		$expected['foo']             = 'newValue';
+		$expected['array']['foo']    = 'newerValue';
 		$expected['objectProp']->foo = 'newerValue';
 		$expected['objectMethod']->setFoo( 'newerValue' );
 
@@ -248,20 +255,20 @@ class ResourceDataTest extends TestCase
 		 */
 
 		$expected = [
-			'root' => [
-				'12"' => 'root12',
-				'12.7"' => 'root127',
-				'12.7" foo' => 'root127foo',
-				'"12' => 'rootp12',
-				'"12.7' => 'rootp127',
+			'root'  => [
+				'12"'         => 'root12',
+				'12.7"'       => 'root127',
+				'12.7" foo'   => 'root127foo',
+				'"12'         => 'rootp12',
+				'"12.7'       => 'rootp127',
 				'"12.7" foo"' => 'rootw127foo',
 			],
 			'root2' => [
-				'12"' => [ 'nested' => 'root12nest', ],
-				'12.7"' => [ 'nested' => 'root127nest', ],
-				'12.7" foo' => [ 'nested' => 'root127foonest', ],
-				'"12' => [ 'nested' => 'rootp12nest', ],
-				'"12.7' => [ 'nested' => 'rootp127nest', ],
+				'12"'         => [ 'nested' => 'root12nest', ],
+				'12.7"'       => [ 'nested' => 'root127nest', ],
+				'12.7" foo'   => [ 'nested' => 'root127foonest', ],
+				'"12'         => [ 'nested' => 'rootp12nest', ],
+				'"12.7'       => [ 'nested' => 'rootp127nest', ],
 				'"12.7" foo"' => [ 'nested' => 'rootw127foonest', ],
 			],
 		];
@@ -301,7 +308,7 @@ class ResourceDataTest extends TestCase
 
 		/** Brackets */
 
-		$resource = new ResourceData( [] );
+		$resource                  = new ResourceData( [] );
 		$resource->encloseBrackets = true;
 
 		$resource->set( 'root12', 'root.[12"]' );
@@ -338,7 +345,7 @@ class ResourceDataTest extends TestCase
 		 * Combinations
 		 */
 
-		$resource = new ResourceData( [] );
+		$resource                  = new ResourceData( [] );
 		$resource->encloseBrackets = true;
 
 		$resource->set( 'enclosed', 'root.tag."56"".[v@al"ue].chi@ld[12"]' );
@@ -350,9 +357,9 @@ class ResourceDataTest extends TestCase
 						'v@al"ue' => [
 							'chi@ld' => [
 								'12"' => 'enclosed',
-							]
-						]
-					]
+							],
+						],
+					],
 				],
 			],
 		];
@@ -366,26 +373,28 @@ class ResourceDataTest extends TestCase
 
 	public function testLoop(): void
 	{
-		$resource = new ResourceData( [
-			'products' => [
-				[
-					'id' => 1,
-					'name' => 'One',
+		$resource = new ResourceData(
+			[
+				'products' => [
+					[
+						'id'   => 1,
+						'name' => 'One',
+					],
+					[
+						'id'   => 2,
+						'name' => 'Two',
+					],
+					[
+						'id'   => 3,
+						'name' => 'Three',
+					],
+					[
+						'id'   => 4,
+						'name' => 'Four',
+					],
 				],
-				[
-					'id' => 2,
-					'name' => 'Two',
-				],
-				[
-					'id' => 3,
-					'name' => 'Three',
-				],
-				[
-					'id' => 4,
-					'name' => 'Four',
-				],
-			],
-		] );
+			]
+		);
 
 		$expected = [
 			'One',
@@ -402,23 +411,23 @@ class ResourceDataTest extends TestCase
 
 		$expected = [
 			[
-				'id' => 1,
-				'name' => 'One',
+				'id'     => 1,
+				'name'   => 'One',
 				'status' => 'visible',
 			],
 			[
-				'id' => 2,
-				'name' => 'Two',
+				'id'     => 2,
+				'name'   => 'Two',
 				'status' => 'visible',
 			],
 			[
-				'id' => 3,
-				'name' => 'Three',
+				'id'     => 3,
+				'name'   => 'Three',
 				'status' => 'visible',
 			],
 			[
-				'id' => 4,
-				'name' => 'Four',
+				'id'     => 4,
+				'name'   => 'Four',
 				'status' => 'visible',
 			],
 		];
@@ -428,77 +437,81 @@ class ResourceDataTest extends TestCase
 
 	public function testAppend()
 	{
-		$data = new ResourceData( [
+		$data = new ResourceData(
 			[
-				'id' => 1,
-				'name' => 'One',
-			],
-			[
-				'id' => 2,
-				'name' => 'Two',
-			],
-			[
-				'id' => 3,
-				'name' => 'Three',
-			],
-			[
-				'id' => 4,
-				'name' => 'Four',
-			],
-		] );
+				[
+					'id'   => 1,
+					'name' => 'One',
+				],
+				[
+					'id'   => 2,
+					'name' => 'Two',
+				],
+				[
+					'id'   => 3,
+					'name' => 'Three',
+				],
+				[
+					'id'   => 4,
+					'name' => 'Four',
+				],
+			]
+		);
 
-		$append = new ResourceData( [
+		$append = new ResourceData(
 			[
-				'id' => 1,
-				'name' => 'One',
-			],
-			[
-				'id' => 2,
-				'name' => 'Two',
-			],
-			[
-				'id' => 3,
-				'name' => 'Three',
-			],
-			[
-				'id' => 4,
-				'name' => 'Four',
-			],
-		] );
+				[
+					'id'   => 1,
+					'name' => 'One',
+				],
+				[
+					'id'   => 2,
+					'name' => 'Two',
+				],
+				[
+					'id'   => 3,
+					'name' => 'Three',
+				],
+				[
+					'id'   => 4,
+					'name' => 'Four',
+				],
+			]
+		);
 
 		$data->append( $append );
 
 		$expected = [
 			[
-				'id' => 1,
+				'id'   => 1,
 				'name' => 'One',
 			],
 			[
-				'id' => 2,
+				'id'   => 2,
 				'name' => 'Two',
 			],
 			[
-				'id' => 3,
+				'id'   => 3,
 				'name' => 'Three',
 			],
 			[
-				'id' => 4,
+				'id'   => 4,
 				'name' => 'Four',
 			],
 			[
-				'id' => 1,
+				'id'   => 1,
 				'name' => 'One',
 			],
 			[
-				'id' => 2,
+				'id'   => 2,
 				'name' => 'Two',
 			],
 			[
-				'id' => 3,
+				'id'   => 3,
 				'name' => 'Three',
 			],
 			[
-				'id' => 4,
+				'id'   => 4,
 				'name' => 'Four',
 			],
 		];
@@ -508,43 +521,47 @@ class ResourceDataTest extends TestCase
 
 	public function testInsert()
 	{
-		$data = new ResourceData( [
-			'_1' => [
-				'id' => 1,
-				'name' => 'One',
-			],
-			'_2' => [
-				'id' => 2,
-				'name' => 'Two',
-			],
-			'_3' => [
-				'id' => 3,
-				'name' => 'Three',
-			],
-			'_4' => [
-				'id' => 4,
-				'name' => 'Four',
-			],
-		] );
+		$data = new ResourceData(
+			[
+				'_1' => [
+					'id'   => 1,
+					'name' => 'One',
+				],
+				'_2' => [
+					'id'   => 2,
+					'name' => 'Two',
+				],
+				'_3' => [
+					'id'   => 3,
+					'name' => 'Three',
+				],
+				'_4' => [
+					'id'   => 4,
+					'name' => 'Four',
+				],
+			]
+		);
 
-		$new = new ResourceData( [
-			'_1' => [
-				'id' => 10,
-				'name' => 'Ten',
-			],
-			'_2' => [
-				'id' => 20,
-				'name' => 'Twenty',
-			],
-			'_3' => [
-				'id' => 30,
-				'name' => 'Thirty',
-			],
-			'_4' => [
-				'id' => 40,
-				'name' => 'Forty',
-			],
-		] );
+		$new = new ResourceData(
+			[
+				'_1' => [
+					'id'   => 10,
+					'name' => 'Ten',
+				],
+				'_2' => [
+					'id'   => 20,
+					'name' => 'Twenty',
+				],
+				'_3' => [
+					'id'   => 30,
+					'name' => 'Thirty',
+				],
+				'_4' => [
+					'id'   => 40,
+					'name' => 'Forty',
+				],
+			]
+		);
 
 		// Does not override anything.
 		$this->assertEquals( $data->get(), $data->insert( $new )->get() );
@@ -557,21 +574,25 @@ class ResourceDataTest extends TestCase
 		// @todo Should ResourceData be immutable?
 		$this->assertEquals( 8, $data->count() );
 
-		$data = new ResourceData( [
-			'foo' => 'bar',
-			'one' => 'two',
-			'test' => 'case',
-		] );
+		$data = new ResourceData(
+			[
+				'foo'  => 'bar',
+				'one'  => 'two',
+				'test' => 'case',
+			]
+		);
 
-		$new = new ResourceData( [
-			'foo' => 'BAR',
-			'one' => null,
-			'case' => 'test',
-		] );
+		$new = new ResourceData(
+			[
+				'foo'  => 'BAR',
+				'one'  => null,
+				'case' => 'test',
+			]
+		);
 
 		$expected = [
-			'foo' => 'bar',
-			'one' => 'two',
+			'foo'  => 'bar',
+			'one'  => 'two',
 			'test' => 'case',
 			'case' => 'test',
 		];
@@ -581,43 +602,47 @@ class ResourceDataTest extends TestCase
 
 	public function testMerge()
 	{
-		$data = new ResourceData( [
-			'_1' => [
-				'id' => 1,
-				'name' => 'One',
-			],
-			'_2' => [
-				'id' => 2,
-				'name' => 'Two',
-			],
-			'_3' => [
-				'id' => 3,
-				'name' => 'Three',
-			],
-			'_4' => [
-				'id' => 4,
-				'name' => 'Four',
-			],
-		] );
+		$data = new ResourceData(
+			[
+				'_1' => [
+					'id'   => 1,
+					'name' => 'One',
+				],
+				'_2' => [
+					'id'   => 2,
+					'name' => 'Two',
+				],
+				'_3' => [
+					'id'   => 3,
+					'name' => 'Three',
+				],
+				'_4' => [
+					'id'   => 4,
+					'name' => 'Four',
+				],
+			]
+		);
 
-		$new = new ResourceData( [
-			'_1' => [
-				'id' => 10,
-				'name' => 'Ten',
-			],
-			'_2' => [
-				'id' => 20,
-				'name' => 'Twenty',
-			],
-			'_3' => [
-				'id' => 30,
-				'name' => 'Thirty',
-			],
-			'_4' => [
-				'id' => 40,
-				'name' => 'Forty',
-			],
-		] );
+		$new = new ResourceData(
+			[
+				'_1' => [
+					'id'   => 10,
+					'name' => 'Ten',
+				],
+				'_2' => [
+					'id'   => 20,
+					'name' => 'Twenty',
+				],
+				'_3' => [
+					'id'   => 30,
+					'name' => 'Thirty',
+				],
+				'_4' => [
+					'id'   => 40,
+					'name' => 'Forty',
+				],
+			]
+		);
 
 		// Overrides because the keys are the same.
 		$this->assertEquals( $new->get(), $data->merge( $new )->get() );
@@ -630,21 +655,25 @@ class ResourceDataTest extends TestCase
 		// @todo Should ResourceData be immutable?
 		$this->assertEquals( 8, $data->count() );
 
-		$data = new ResourceData( [
-			'foo' => 'bar',
-			'one' => 'two',
-			'test' => 'case',
-		] );
+		$data = new ResourceData(
+			[
+				'foo'  => 'bar',
+				'one'  => 'two',
+				'test' => 'case',
+			]
+		);
 
-		$new = new ResourceData( [
-			'foo' => 'BAR',
-			'one' => null,
-			'case' => 'test',
-		] );
+		$new = new ResourceData(
+			[
+				'foo'  => 'BAR',
+				'one'  => null,
+				'case' => 'test',
+			]
+		);
 
 		$expected = [
-			'foo' => 'BAR',
-			'one' => 'two',
+			'foo'  => 'BAR',
+			'one'  => 'two',
 			'test' => 'case',
 			'case' => 'test',
 		];
@@ -655,21 +684,25 @@ class ResourceDataTest extends TestCase
 	public function testReplace()
 	{
 
-		$data = new ResourceData( [
-			'foo' => 'bar',
-			'one' => 'two',
-			'test' => 'case',
-		] );
+		$data = new ResourceData(
+			[
+				'foo'  => 'bar',
+				'one'  => 'two',
+				'test' => 'case',
+			]
+		);
 
-		$new = new ResourceData( [
-			'foo' => 'BAR',
-			'one' => null,
-			'case' => 'test',
-		] );
+		$new = new ResourceData(
+			[
+				'foo'  => 'BAR',
+				'one'  => null,
+				'case' => 'test',
+			]
+		);
 
 		$expected = [
-			'foo' => 'BAR',
-			'one' => null,
+			'foo'  => 'BAR',
+			'one'  => null,
 			'test' => 'case',
 			'case' => 'test',
 		];
@@ -679,31 +712,37 @@ class ResourceDataTest extends TestCase
 
 	public function testUnclosedQuote()
 	{
-		$resource = new ResourceData( [
-			'foo' => [
-				'"b' => [
-					'c' => '"value',
+		$resource = new ResourceData(
+			[
+				'foo' => [
+					'"b' => [
+						'c' => '"value',
+					],
 				],
-			],
-		] );
+			]
+		);
 
 		$this->assertEquals( '"value', $resource->get( 'foo."b.c' ) );
 
-		$resource = new ResourceData( [
-			'root' => [
-				'"' => 'end_quote',
-			],
-		] );
+		$resource = new ResourceData(
+			[
+				'root' => [
+					'"' => 'end_quote',
+				],
+			]
+		);
 
 		$this->assertEquals( 'end_quote', $resource->get( 'root."' ) );
 
-		$resource = new ResourceData( [
-			'foo' => [
-				'"b' => '"literal',
-				'c' => 'cval',
-				'd' => 'dval',
-			],
-		] );
+		$resource = new ResourceData(
+			[
+				'foo' => [
+					'"b' => '"literal',
+					'c'  => 'cval',
+					'd'  => 'dval',
+				],
+			]
+		);
 
 		$this->assertEquals( '"literal', $resource->get( 'foo."b' ) );
 		$this->assertEquals( 'cval', $resource->get( 'foo.c' ) );
@@ -711,15 +750,19 @@ class ResourceDataTest extends TestCase
 
 	public function testReplaceWithDotInKeyName(): void
 	{
-		$data = new ResourceData( [
-			'name' => 'original',
-			'foo'  => 'bar',
-		] );
+		$data = new ResourceData(
+			[
+				'name' => 'original',
+				'foo'  => 'bar',
+			]
+		);
 
 		// Key 'item.with.dots' should be a literal key, not a nested path
-		$source = new ResourceData( [
-			'item.with.dots' => 'replaced',
-		] );
+		$source = new ResourceData(
+			[
+				'item.with.dots' => 'replaced',
+			]
+		);
 
 		$data->replace( $source );
 
@@ -731,14 +774,18 @@ class ResourceDataTest extends TestCase
 
 	public function testMergeWithDotInKeyName(): void
 	{
-		$data = new ResourceData( [
-			'name' => 'original',
-		] );
+		$data = new ResourceData(
+			[
+				'name' => 'original',
+			]
+		);
 
-		$source = new ResourceData( [
-			'item.with.dots' => 'merged',
-			'foo.bar'        => 'also merged',
-		] );
+		$source = new ResourceData(
+			[
+				'item.with.dots' => 'merged',
+				'foo.bar'        => 'also merged',
+			]
+		);
 
 		$data->merge( $source );
 
@@ -749,16 +796,20 @@ class ResourceDataTest extends TestCase
 
 	public function testInsertWithDotInKeyName(): void
 	{
-		$data = new ResourceData( [
-			'item.with.dots' => 'existing',
-			'foo.bar'        => 'existing2',
-		] );
+		$data = new ResourceData(
+			[
+				'item.with.dots' => 'existing',
+				'foo.bar'        => 'existing2',
+			]
+		);
 
-		$source = new ResourceData( [
-			'item.with.dots' => 'should not override',
-			'foo.bar'        => 'should not override2',
-			'new.key'        => 'inserted',
-		] );
+		$source = new ResourceData(
+			[
+				'item.with.dots' => 'should not override',
+				'foo.bar'        => 'should not override2',
+				'new.key'        => 'inserted',
+			]
+		);
 
 		$data->insert( $source );
 
@@ -771,19 +822,23 @@ class ResourceDataTest extends TestCase
 
 	public function testReplaceRecursiveWithDotInKeyName(): void
 	{
-		$data = new ResourceData( [
-			'config' => [
-				'name'         => 'original',
-				'nested.value' => 'nestedOriginal',
-			],
-		] );
+		$data = new ResourceData(
+			[
+				'config' => [
+					'name'         => 'original',
+					'nested.value' => 'nestedOriginal',
+				],
+			]
+		);
 
-		$source = new ResourceData( [
-			'config' => [
-				'name'         => 'replaced',
-				'nested.value' => 'nestedReplaced',
-			],
-		] );
+		$source = new ResourceData(
+			[
+				'config' => [
+					'name'         => 'replaced',
+					'nested.value' => 'nestedReplaced',
+				],
+			]
+		);
 
 		$data->replace( $source, true );
 
@@ -795,19 +850,23 @@ class ResourceDataTest extends TestCase
 
 	public function testMergeRecursiveWithDotInKeyName(): void
 	{
-		$data = new ResourceData( [
-			'config' => [
-				'name' => 'original',
-				'foo'  => 'bar',
-			],
-		] );
+		$data = new ResourceData(
+			[
+				'config' => [
+					'name' => 'original',
+					'foo'  => 'bar',
+				],
+			]
+		);
 
-		$source = new ResourceData( [
-			'config' => [
-				'name.with.dots' => 'merged',
-				'foo'            => 'replaced',
-			],
-		] );
+		$source = new ResourceData(
+			[
+				'config' => [
+					'name.with.dots' => 'merged',
+					'foo'            => 'replaced',
+				],
+			]
+		);
 
 		$data->merge( $source, true );
 
