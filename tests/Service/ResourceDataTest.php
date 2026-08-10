@@ -708,4 +708,111 @@ class ResourceDataTest extends TestCase
 		$this->assertEquals( '"literal', $resource->get( 'foo."b' ) );
 		$this->assertEquals( 'cval', $resource->get( 'foo.c' ) );
 	}
+
+	public function testReplaceWithDotInKeyName(): void
+	{
+		$data = new ResourceData( [
+			'name' => 'original',
+			'foo'  => 'bar',
+		] );
+
+		// Key 'item.with.dots' should be a literal key, not a nested path
+		$source = new ResourceData( [
+			'item.with.dots' => 'replaced',
+		] );
+
+		$data->replace( $source );
+
+		$this->assertTrue( $data->has( '"item.with.dots"' ) );
+		$this->assertEquals( 'replaced', $data->get( '"item.with.dots"' ) );
+		$this->assertFalse( $data->has( [ 'item', 'with', 'dots' ] ) );
+		$this->assertEquals( 'bar', $data->get( 'foo' ) );
+	}
+
+	public function testMergeWithDotInKeyName(): void
+	{
+		$data = new ResourceData( [
+			'name' => 'original',
+		] );
+
+		$source = new ResourceData( [
+			'item.with.dots' => 'merged',
+			'foo.bar'        => 'also merged',
+		] );
+
+		$data->merge( $source );
+
+		$this->assertEquals( 'merged', $data->get( '"item.with.dots"' ) );
+		$this->assertEquals( 'also merged', $data->get( '"foo.bar"' ) );
+		$this->assertEquals( 'original', $data->get( 'name' ) );
+	}
+
+	public function testInsertWithDotInKeyName(): void
+	{
+		$data = new ResourceData( [
+			'item.with.dots' => 'existing',
+			'foo.bar'        => 'existing2',
+		] );
+
+		$source = new ResourceData( [
+			'item.with.dots' => 'should not override',
+			'foo.bar'        => 'should not override2',
+			'new.key'        => 'inserted',
+		] );
+
+		$data->insert( $source );
+
+		// Existing keys should remain unchanged
+		$this->assertEquals( 'existing', $data->get( '"item.with.dots"' ) );
+		$this->assertEquals( 'existing2', $data->get( '"foo.bar"' ) );
+		// New key should be inserted
+		$this->assertEquals( 'inserted', $data->get( '"new.key"' ) );
+	}
+
+	public function testReplaceRecursiveWithDotInKeyName(): void
+	{
+		$data = new ResourceData( [
+			'config' => [
+				'name'         => 'original',
+				'nested.value' => 'nestedOriginal',
+			],
+		] );
+
+		$source = new ResourceData( [
+			'config' => [
+				'name'         => 'replaced',
+				'nested.value' => 'nestedReplaced',
+			],
+		] );
+
+		$data->replace( $source, true );
+
+		$this->assertEquals( 'replaced', $data->get( 'config.name' ) );
+		// The key 'nested.value' should remain a literal key, not become nested
+		$this->assertEquals( 'nestedReplaced', $data->get( 'config."nested.value"' ) );
+		$this->assertFalse( $data->has( [ 'config', 'nested', 'value' ] ) );
+	}
+
+	public function testMergeRecursiveWithDotInKeyName(): void
+	{
+		$data = new ResourceData( [
+			'config' => [
+				'name' => 'original',
+				'foo'  => 'bar',
+			],
+		] );
+
+		$source = new ResourceData( [
+			'config' => [
+				'name.with.dots' => 'merged',
+				'foo'            => 'replaced',
+			],
+		] );
+
+		$data->merge( $source, true );
+
+		$this->assertEquals( 'merged', $data->get( 'config."name.with.dots"' ) );
+		$this->assertEquals( 'replaced', $data->get( 'config.foo' ) );
+		$this->assertFalse( $data->has( [ 'config', 'name', 'with', 'dots' ] ) );
+	}
 }
