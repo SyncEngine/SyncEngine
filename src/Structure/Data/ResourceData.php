@@ -265,7 +265,13 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		}
 
 		foreach ( $data as $key => $value ) {
-			if ( ! isset( $resource[ $key ] ) ) {
+			if ( $resource instanceof self ) {
+				// Skip tags handling.
+				if ( ! $resource->has( '"' . $key . '"' ) ) {
+					$resource->setByKey( $value, $key );
+					continue;
+				}
+			} elseif ( ! isset( $resource[ $key ] ) ) {
 				$resource[ $key ] = $value;
 				continue;
 			}
@@ -276,13 +282,23 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 
 			switch ( $mode ) {
 				case 'replace':
-					$resource[ $key ] = $value;
+					if ( $resource instanceof self ) {
+						// Skip tags handling.
+						$resource->setByKey( $value, $key );
+					} else {
+						$resource[ $key ] = $value;
+					}
 				break;
 				case 'merge':
 					if ( is_int( $key ) ) {
 						$resource[] = $value;
 					} elseif ( isset( $value ) ) {
-						$resource[ $key ] = $value;
+						if ( $resource instanceof self ) {
+							// Skip tags handling.
+							$resource->setByKey( $value, $key );
+						} else {
+							$resource[ $key ] = $value;
+						}
 					}
 				break;
 				case 'insert':
