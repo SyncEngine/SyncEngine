@@ -149,7 +149,7 @@ class Map extends TaskModel
 	{
 		$mapConfig     = $config['map'];
 		$mapSource     = $mapConfig['map_source'] ?? '';
-		$convertSchema = $config['convert_schema'] ?? true;
+		$convertSchema = $mapConfig['convert_schema'] ?? true;
 
 		$schema = null;
 
