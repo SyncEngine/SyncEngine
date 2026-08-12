@@ -62,6 +62,18 @@ class Replace extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to replace
+	 *     @property string $action Action: value, key, both
+	 *     @property bool $recursive Replace recursively
+	 *     @property array $params Grid of find/replace entries
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( $data->isEmpty() ) {

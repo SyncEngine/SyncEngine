@@ -61,6 +61,17 @@ class Extract extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to extract from
+	 *     @property string $column_key Column to extract
+	 *     @property string $target_key Target column for results
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$column_key = $config['column_key'] ?? null;

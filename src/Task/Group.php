@@ -63,6 +63,17 @@ class Group extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to group
+	 *     @property string $group_by Column name/key to group by
+	 *     @property string $default_group Default group key
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['group_by'] ) ) {

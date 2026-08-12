@@ -51,6 +51,17 @@ class Retrieve extends AbstractRequest
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to pass
+	 *     @property array $connection Connection entity config
+	 *     @property array $response Nested getResponseFields() config
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = ConfigData::create( $config->get( 'connection', [] ) );

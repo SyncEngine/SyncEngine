@@ -145,6 +145,24 @@ class Map extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to map
+	 *     @property string $action Action: key, value
+	 *     @property bool $mapped_only Only return mapped items
+	 *     @property bool $remove_keys Remove old keys
+	 *     @property array $map Mapper config
+	 *     @property string $map.map_source Map source: "", storage
+	 *     @property array $map.storage Storage entity config
+	 *     @property array $map.schema Source/target schema entities
+	 *     @property bool $map.convert_schema Convert column types to schema
+	 *     @property array $map.manual Manual map entries
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$mapConfig     = $config['map'];

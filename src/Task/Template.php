@@ -43,6 +43,15 @@ class Template extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $template Twig template (jinja2 syntax)
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['template'] ) ) {

@@ -68,6 +68,18 @@ class Sort extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to sort
+	 *     @property string $method Sort method: key, value, column
+	 *     @property string $sort_by Column name/key to sort by (when method=column)
+	 *     @property string $sort_order Sort order: ASC, DESC, NASC, NDESC
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['method'] ) ) {

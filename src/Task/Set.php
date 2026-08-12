@@ -121,6 +121,21 @@ class Set extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name
+	 *     @property bool $reorder Reorder data
+	 *     @property bool $force Force if invalid
+	 *     @property string $set Set method: params, schema, both
+	 *     @property array $schema Schema entity config
+	 *     @property array $params Grid of key/value/column entries
+	 *     @property bool $strict Remove columns not defined in schema (top-level sibling of schema)
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key     = $config['key'] ?? null;

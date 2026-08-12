@@ -83,6 +83,20 @@ class Store extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name
+	 *     @property string $action Action: set, get
+	 *     @property array $storage Storage entity config
+	 *     @property string $path Storage column key/path
+	 *     @property string $method Method: replace, merge, append
+	 *     @property string $not_found Not found action: override, skip
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['storage'] ) ) {

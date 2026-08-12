@@ -66,6 +66,18 @@ class Trace extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $trace Trace type: log, error
+	 *     @property string $message Message text
+	 *     @property string|array $info Extra info
+	 *     @property string $include_data Include data key: ""=No, "."=Yes
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['message'] ) ) {

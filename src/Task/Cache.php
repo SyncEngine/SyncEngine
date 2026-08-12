@@ -101,6 +101,21 @@ class Cache extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $action     Action to perform: set, get, clear
+	 *     @property string $source     Source of value: data, manual
+	 *     @property string $key        Key/Column name
+	 *     @property string $manual     Manual cache value
+	 *     @property string $tag        Cache tag reference/path
+	 *     @property string $method     Method: replace, merge, append
+	 *     @property string $not_found  Action if tag not found: override, skip
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key       = $config['key'] ?? null;

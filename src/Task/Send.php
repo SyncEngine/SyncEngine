@@ -52,6 +52,18 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to send
+	 *     @property array $connection Connection entity config
+	 *     @property bool $retrieve Retrieve response data
+	 *     @property array $retrieve Nested getResponseFields() config
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = ConfigData::create( $config->get( 'connection', [] ) );

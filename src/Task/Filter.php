@@ -64,6 +64,17 @@ class Filter extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to filter
+	 *     @property string $method Filter method: valid, invalid
+	 *     @property array $conditions Conditions grid (required, taggable)
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['conditions'] ) ) {

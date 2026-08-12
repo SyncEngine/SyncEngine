@@ -63,6 +63,18 @@ class Attempt extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property array $actions Actions to attempt
+	 *     @property array $catch Catch errors repeater
+	 *     @property array $catch[].conditions Error conditions
+	 *     @property array $catch[].actions Catch actions
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$actions = $config['actions'];

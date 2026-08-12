@@ -97,6 +97,21 @@ class Loop extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to loop
+	 *     @property string $method Loop method: "", batch
+	 *     @property int $batch Batch size
+	 *     @property string $action Action: flow, routine, tasks
+	 *     @property array $flow Flow entity config
+	 *     @property array $routine Routine entity config
+	 *     @property array $tasks Tasks config
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key  = $config['key'] ?? null;

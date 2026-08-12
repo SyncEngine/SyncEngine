@@ -177,6 +177,28 @@ class Merge extends TaskModel
 		] );
 	}
 
+	/**
+	 * @param  ConfigData $config {
+	 *     @property string $key Key / Column name to merge
+	 *     @property string $action Action: value, key, both
+	 *     @property string $key_method Key merge method: columns, indexed, regex
+	 *     @property array $columns Column keys to merge
+	 *     @property string $regex_key Regex to match keys (top-level sibling of separator)
+	 *     @property string $index_key Indexed key template
+	 *     @property int $index_start Index start value
+	 *     @property string $merge_method Merge method: merge, replace, insert
+	 *     @property string $separator Separator: comma, semicolon, space, tab, nl
+	 *     @property string $value_template Value template
+	 *     @property bool $remove Remove original column key(s)
+	 *     @property bool $unique Only keep unique values
+	 *     @property bool $preserve_keys Preserve column keys
+	 *     @property bool $keep_empty Keep empty values
+	 * }
+	 * @param  ExecuteContext  $context
+	 * @param  ExecuteData     $data
+	 *
+	 * @return ExecuteData
+	 */
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
