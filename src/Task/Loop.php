@@ -98,15 +98,22 @@ class Loop extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to loop
-	 *     @property string $method Loop method: "", batch
-	 *     @property int $batch Batch size
-	 *     @property string $action Action: flow, routine, tasks
-	 *     @property array $flow Flow entity config
-	 *     @property array $routine Routine entity config
-	 *     @property array $tasks Tasks config
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to loop
+	 *     key: string,
+	 *     // Loop method: "", batch
+	 *     method: string,
+	 *     // Batch size
+	 *     batch: int,
+	 *     // Action: flow, routine, tasks
+	 *     action: string,
+	 *     // Flow entity config
+	 *     flow: array,
+	 *     // Routine entity config
+	 *     routine: array,
+	 *     // Tasks config
+	 *     tasks: array
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

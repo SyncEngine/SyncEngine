@@ -66,12 +66,17 @@ class Choose extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property array $options Options repeater with conditions/tasks
-	 *     @property array $options[].conditions Condition entries
-	 *     @property array $options[].tasks Task entries
-	 *     @property array $default Default tasks
-	 * }
+	 * @param ConfigData<array{
+	 *     // Options repeater with conditions/tasks
+	 *     options: array<int, array{
+	 *         // Conditions used to determine whether the task should run.
+	 *         conditions: array,
+	 *         // Tasks executed when the conditions match.
+	 *         tasks: array
+	 *     }>,
+	 *     // Default tasks.
+	 *     default: array
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

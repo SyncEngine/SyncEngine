@@ -64,12 +64,17 @@ class Attempt extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property array $actions Actions to attempt
-	 *     @property array $catch Catch errors repeater
-	 *     @property array $catch[].conditions Error conditions
-	 *     @property array $catch[].actions Catch actions
-	 * }
+	 * @param ConfigData<array{
+	 *     // Actions to attempt
+	 *     actions: array,
+	 *     // Catch errors repeater
+	 *     catch: array<int, array{
+	 *         // Conditions used to determine whether the catch action should run.
+	 *         conditions: array,
+	 *         // Actions executed when the conditions match.
+	 *         actions: array
+	 *     }>
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

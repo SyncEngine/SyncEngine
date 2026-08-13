@@ -53,12 +53,19 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to send
-	 *     @property array $connection Connection entity config
-	 *     @property bool $retrieve Retrieve response data
-	 *     @property array $retrieve Nested getResponseFields() config
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to send
+	 *     key: string,
+	 *     // Connection entity config
+	 *     connection: array,
+	 *     // Retrieve response data (with nested getResponseFields() config)
+	 *     retrieve: array{
+	 *         param: string,
+	 *         key: string,
+	 *         action: string,
+	 *         action_recursive: bool
+	 *     }
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

@@ -62,11 +62,14 @@ class Extract extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to extract from
-	 *     @property string $column_key Column to extract
-	 *     @property string $target_key Target column for results
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to extract from
+	 *     key: string,
+	 *     // Column to extract
+	 *     column_key: string,
+	 *     // Target column for results
+	 *     target_key: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

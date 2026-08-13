@@ -63,12 +63,16 @@ class Replace extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to replace
-	 *     @property string $action Action: value, key, both
-	 *     @property bool $recursive Replace recursively
-	 *     @property array $params Grid of find/replace entries
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to replace
+	 *     key: string,
+	 *     // Action: value, key, both
+	 *     action: string,
+	 *     // Replace recursively
+	 *     recursive: bool,
+	 *     // Grid of find/replace entries
+	 *     params: array<int, array{find: string, replace: string}>
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

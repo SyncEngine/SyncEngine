@@ -65,11 +65,14 @@ class Index extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to index
-	 *     @property string $method Method: list, assoc
-	 *     @property string $index_key New index key template
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to index
+	 *     key: string,
+	 *     // Method: list, assoc
+	 *     method: string,
+	 *     // New index key template
+	 *     index_key: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

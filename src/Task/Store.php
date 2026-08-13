@@ -84,14 +84,20 @@ class Store extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name
-	 *     @property string $action Action: set, get
-	 *     @property array $storage Storage entity config
-	 *     @property string $path Storage column key/path
-	 *     @property string $method Method: replace, merge, append
-	 *     @property string $not_found Not found action: override, skip
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name
+	 *     key: string,
+	 *     // Action: set, get
+	 *     action: string,
+	 *     // Storage entity config
+	 *     storage: array,
+	 *     // Storage column key/path
+	 *     path: string,
+	 *     // Method: replace, merge, append
+	 *     method: string,
+	 *     // Not found action: override, skip
+	 *     not_found: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

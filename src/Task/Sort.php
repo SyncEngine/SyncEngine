@@ -69,12 +69,16 @@ class Sort extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to sort
-	 *     @property string $method Sort method: key, value, column
-	 *     @property string $sort_by Column name/key to sort by (when method=column)
-	 *     @property string $sort_order Sort order: ASC, DESC, NASC, NDESC
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to sort
+	 *     key: string,
+	 *     // Sort method: key, value, column
+	 *     method: string,
+	 *     // Column name/key to sort by (when method=column)
+	 *     sort_by: string,
+	 *     // Sort order: ASC, DESC, NASC, NDESC
+	 *     sort_order: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

@@ -52,11 +52,19 @@ class Retrieve extends AbstractRequest
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to pass
-	 *     @property array $connection Connection entity config
-	 *     @property array $response Nested getResponseFields() config
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to pass
+	 *     key: string,
+	 *     // Connection entity config
+	 *     connection: array,
+	 *     // Nested getResponseFields() config
+	 *     response: array{
+	 *         param: string,
+	 *         key: string,
+	 *         action: string,
+	 *         action_recursive: bool
+	 *     }
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

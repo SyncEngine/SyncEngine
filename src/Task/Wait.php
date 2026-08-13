@@ -33,9 +33,10 @@ class Wait extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property int|float $seconds Seconds to wait (uses sleep())
-	 * }
+	 * @param ConfigData<array{
+	 *     // Seconds to wait (uses sleep())
+	 *     seconds: int|float
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

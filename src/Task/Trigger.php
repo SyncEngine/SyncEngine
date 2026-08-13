@@ -120,18 +120,28 @@ class Trigger extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property bool $async Run async (experimental), shown when action=automation && override_data empty
-	 *     @property bool $pass_data Pass current data
-	 *     @property bool $override_data Override current data, shown when async empty
-	 *     @property string $key Key / Column name for pass_data, shown when pass_data=true
-	 *     @property array $variables Variables to set for triggered execution (always available)
-	 *     @property string $action Action: automation, flow, routine, tasks
-	 *     @property array $automation Automation entity config, shown when action=automation
-	 *     @property array $flow Flow entity config, shown when action=flow
-	 *     @property array $routine Routine entity config, shown when action=routine
-	 *     @property array $tasks Tasks config, shown when action=tasks
-	 * }
+	 * @param ConfigData<array{
+	 *     // Run async (experimental), shown when action=automation && override_data empty
+	 *     async: bool,
+	 *     // Pass current data
+	 *     pass_data: bool,
+	 *     // Override current data, shown when async empty
+	 *     override_data: bool,
+	 *     // Key / Column name for pass_data, shown when pass_data=true
+	 *     key: string,
+	 *     // Variables to set for triggered execution (always available)
+	 *     variables: array,
+	 *     // Action: automation, flow, routine, tasks
+	 *     action: string,
+	 *     // Automation entity config, shown when action=automation
+	 *     automation: array,
+	 *     // Flow entity config, shown when action=flow
+	 *     flow: array,
+	 *     // Routine entity config, shown when action=routine
+	 *     routine: array,
+	 *     // Tasks config, shown when action=tasks
+	 *     tasks: array
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

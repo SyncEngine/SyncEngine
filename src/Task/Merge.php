@@ -178,22 +178,36 @@ class Merge extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to merge
-	 *     @property string $action Action: value, key, both
-	 *     @property string $key_method Key merge method: columns, indexed, regex
-	 *     @property array $columns Column keys to merge
-	 *     @property string $regex_key Regex to match keys (top-level sibling of separator)
-	 *     @property string $index_key Indexed key template
-	 *     @property int $index_start Index start value
-	 *     @property string $merge_method Merge method: merge, replace, insert
-	 *     @property string $separator Separator: comma, semicolon, space, tab, nl
-	 *     @property string $value_template Value template
-	 *     @property bool $remove Remove original column key(s)
-	 *     @property bool $unique Only keep unique values
-	 *     @property bool $preserve_keys Preserve column keys
-	 *     @property bool $keep_empty Keep empty values
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to merge
+	 *     key: string,
+	 *     // Action: value, key, both
+	 *     action: string,
+	 *     // Key merge method: columns, indexed, regex
+	 *     key_method: string,
+	 *     // Grid (list of arrays with columns: key)
+	 *     columns: array<int, array{key: string}>,
+	 *     // Regex to match keys (top-level sibling of separator)
+	 *     regex_key: string,
+	 *     // Indexed key template
+	 *     index_key: string,
+	 *     // Index start value
+	 *     index_start: int,
+	 *     // Merge method: merge, replace, insert
+	 *     merge_method: string,
+	 *     // Separator: comma, semicolon, space, tab, nl
+	 *     separator: string,
+	 *     // Value template
+	 *     value_template: string,
+	 *     // Remove original column key(s)
+	 *     remove: bool,
+	 *     // Only keep unique values
+	 *     unique: bool,
+	 *     // Preserve column keys
+	 *     preserve_keys: bool,
+	 *     // Keep empty values
+	 *     keep_empty: bool
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

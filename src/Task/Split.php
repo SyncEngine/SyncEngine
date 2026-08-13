@@ -137,18 +137,28 @@ class Split extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to split
-	 *     @property string $action Action: value, key, both
-	 *     @property string $key_method Column key split method: columns, indexed
-	 *     @property array $columns Column key names grid
-	 *     @property string $index_key Indexed key template
-	 *     @property int $index_start Index start value
-	 *     @property bool $remove Remove original key(s)
-	 *     @property string $separator Separator: comma, semicolon, space, tab, nl, regex
-	 *     @property array $column Column definition config
-	 *     @property string $regex_split Regular expression for splitting (top-level sibling of separator)
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to split
+	 *     key: string,
+	 *     // Action: value, key, both
+	 *     action: string,
+	 *     // Column key split method: columns, indexed
+	 *     key_method: string,
+	 *     // Grid (list of arrays with columns: index, key)
+	 *     columns: array<int, array{index: int|string, key: string}>,
+	 *     // Indexed key template
+	 *     index_key: string,
+	 *     // Index start value
+	 *     index_start: int,
+	 *     // Remove original key(s)
+	 *     remove: bool,
+	 *     // Separator: comma, semicolon, space, tab, nl, regex
+	 *     separator: string,
+	 *     // ColumnModel definition config
+	 *     column: array,
+	 *     // Regular expression for splitting (top-level sibling of separator)
+	 *     regex_split: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

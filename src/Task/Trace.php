@@ -67,12 +67,16 @@ class Trace extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $trace Trace type: log, error
-	 *     @property string $message Message text
-	 *     @property string|array $info Extra info
-	 *     @property string $include_data Include data key: ""=No, "."=Yes
-	 * }
+	 * @param ConfigData<array{
+	 *     // Trace type: log, error
+	 *     trace: string,
+	 *     // Message text
+	 *     message: string,
+	 *     // Extra info
+	 *     info: string|array,
+	 *     // Include data key: ""=No, "."=Yes
+	 *     include_data: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

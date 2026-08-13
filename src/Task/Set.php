@@ -122,15 +122,22 @@ class Set extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name
-	 *     @property bool $reorder Reorder data
-	 *     @property bool $force Force if invalid
-	 *     @property string $set Set method: params, schema, both
-	 *     @property array $schema Schema entity config
-	 *     @property array $params Grid of key/value/column entries
-	 *     @property bool $strict Remove columns not defined in schema (top-level sibling of schema)
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name
+	 *     key: string,
+	 *     // Reorder data
+	 *     reorder: bool,
+	 *     // Force if invalid
+	 *     force: bool,
+	 *     // Set method: params, schema, both
+	 *     set: string,
+	 *     // Schema entity config
+	 *     schema: array,
+	 *     // Grid (list of arrays with columns: key, value, column)
+	 *     params: array<int, array{key: string, value: mixed, column: array}>,
+	 *     // Remove columns not defined in schema (top-level sibling of schema)
+	 *     strict: bool
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

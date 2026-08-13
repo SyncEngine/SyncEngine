@@ -64,11 +64,14 @@ class Group extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $key Key / Column name to group
-	 *     @property string $group_by Column name/key to group by
-	 *     @property string $default_group Default group key
-	 * }
+	 * @param ConfigData<array{
+	 *     // Key / Column name to group
+	 *     key: string,
+	 *     // Column name/key to group by
+	 *     group_by: string,
+	 *     // Default group key
+	 *     default_group: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *

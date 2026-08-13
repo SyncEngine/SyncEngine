@@ -44,9 +44,10 @@ class Template extends TaskModel
 	}
 
 	/**
-	 * @param  ConfigData $config {
-	 *     @property string $template Twig template (jinja2 syntax)
-	 * }
+	 * @param ConfigData<array{
+	 *     // Twig template (jinja2 syntax)
+	 *     template: string
+	 * }> $config
 	 * @param  ExecuteContext  $context
 	 * @param  ExecuteData     $data
 	 *
