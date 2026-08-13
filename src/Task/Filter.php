@@ -114,11 +114,12 @@ class Filter extends TaskModel
 		$validator = new ConditionsValidator();
 
 		// @todo Opt-out of preserve keys?
-		foreach ( $rows as $index => $row ) {
+		$index = 0;
+		foreach ( $rows as $_key => $row ) {
 
 			$row_conditions = $this->replace_wildcards( $conditions, [
-				'{*index*}' => $index,
-				'{*key*}'   => $index,
+				'{*index*}' => $index, // The current position in the list (0-based)
+				'{*key*}'   => $_key, // The current key in the list (numeric for lists, string for associative arrays)
 			] );
 
 			//dd( $row, $row_conditions );
@@ -131,8 +132,9 @@ class Filter extends TaskModel
 			$valid = ( $keepValid ) ? $valid : ! $valid;
 
 			if ( ! $valid ) {
-				unset( $rows[ $index ] );
+				unset( $rows[ $_key ] );
 			}
+			$index++;
 		}
 
 		$data->set( $isList ? array_values( $rows ) : $rows, $key );
