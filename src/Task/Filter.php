@@ -104,8 +104,8 @@ class Filter extends TaskModel
 		}
 
 		$conditions = $config['conditions'];
-		foreach ( $conditions as &$condition ) {
-			$condition['source'] = ( $condition['source'] ?? '{{ row }}' ) ?: '{{ row }}';
+		foreach ( $conditions as $_key => $condition ) {
+			$conditions[ $_key ]['source'] = ( $condition['source'] ?? '{{ row }}' ) ?: '{{ row }}';
 		}
 
 		$keepValid  = 'invalid' !== $config['method'];
