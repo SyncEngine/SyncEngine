@@ -116,8 +116,15 @@ class Filter extends TaskModel
 		// @todo Opt-out of preserve keys?
 		foreach ( $rows as $index => $row ) {
 
+			$row_conditions = $this->replace_wildcards( $conditions, [
+				'{*index*}' => $index,
+				'{*key*}'   => $index,
+			] );
+
+			//dd( $row, $row_conditions );
+
 			$valid = $validator->validate(
-				$context->parseTag( $conditions, [ 'row' => $row ] ),
+				$context->parseTag( $row_conditions, [ 'row' => $row ] ),
 				$row
 			);
 
@@ -136,7 +143,22 @@ class Filter extends TaskModel
 	public function getTags(): array
 	{
 		return [
-			'row' => '_input',
+			'row'   => '_input',
 		];
+	}
+
+	private function replace_wildcards( iterable $data, array $wildcards ): iterable {
+		foreach ( $data as $index => $value ) {
+			if ( is_iterable( $value ) ) {
+				$data[ $index ] = $this->replace_wildcards( $value, $wildcards );
+				continue;
+			}
+
+			if ( is_string( $value ) ) {
+				$data[ $index ] = str_replace( array_keys( $wildcards ), $wildcards, $value );
+			}
+		}
+
+		return $data;
 	}
 }
