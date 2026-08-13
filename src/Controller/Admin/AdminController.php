@@ -38,12 +38,12 @@ class AdminController extends AbstractAdminController
 		return $this->render(
 			'admin/dashboard.html.twig',
 			[
-				'traces'    => [
+				'traces'     => [
 					'query' => $query,
 					'items' => [],
 					'total' => TraceModel::getTotalCount( $query ),
 				],
-				'messenger' => [
+				'messenger'  => [
 					'items' => $messengerItems,
 					'total' => $totalMessenger,
 					'query' => [
@@ -53,7 +53,7 @@ class AdminController extends AbstractAdminController
 				],
 				'onboarding' => [
 					'sequence' => 'admin_dashboard',
-				]
+				],
 			]
 		);
 	}

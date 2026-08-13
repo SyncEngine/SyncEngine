@@ -5,20 +5,20 @@ namespace SyncEngine\Form\Fields;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
 /**
- * @extends \ArrayObject<string, mixed>
+ * @extends \ArrayObject<string, array>
  *
- * @psalm-type FieldConfigData array(
- *     name?: string|null
- *     label?: string|null
- *     description?: string|null
- *     type?: string|null
- *     help?: string|array|null
- *     default?: mixed
- *     conditions?: iterable|null
- *     required?: bool|null
- *     disabled?: bool|null
- *     readonly?: bool|null
- * )
+ * @psalm-type FieldConfigData array{
+ *     name?: string|null,
+ *     label?: string|null,
+ *     description?: string|null,
+ *     type?: string|null,
+ *     help?: string|array|null,
+ *     default?: mixed,
+ *     conditions?: iterable|null,
+ *     required?: bool|null,
+ *     disabled?: bool|null,
+ *     readonly?: bool|null,
+ * }
  */
 class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 {
