@@ -340,7 +340,7 @@ class AccountController extends AbstractAdminController
 			$saveLabel = $this->trans( 'Update' );
 		}
 
-		$form = $this->createForm( ApiTokenFormType::class, $apiToken )->add(
+		$form = $this->createForm( ApiTokenFormType::class, $apiToken, [ 'user' => $user ] )->add(
 			'update',
 			SubmitType::class,
 			[ 'label' => $saveLabel ]
