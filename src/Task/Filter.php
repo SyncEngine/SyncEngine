@@ -118,8 +118,9 @@ class Filter extends TaskModel
 		foreach ( $rows as $_key => $row ) {
 
 			$row_conditions = $this->replace_wildcards( $conditions, [
-				'{*index*}' => $index, // The current position in the list (0-based)
-				'{*key*}'   => $_key, // The current key in the list (numeric for lists, string for associative arrays)
+				'{*index*}'   => $index, // 0-based position in the list
+				'{*current*}' => $index + 1, // 1-based position in the list
+				'{*key*}'     => $_key, // The current key in the list (numeric for lists, string for associative arrays)
 			] );
 
 			//dd( $row, $row_conditions );
