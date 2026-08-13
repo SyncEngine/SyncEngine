@@ -133,4 +133,157 @@ class FilterTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $returnData );
 	}
+
+	public function testWildcardKey(): void
+	{
+		$context = $this->getContext();
+
+		$data = [
+			'alpha' => [ 'name' => 'alpha' ],
+			'beta'  => [ 'name' => 'beta' ],
+			'gamma' => [ 'name' => 'gamma' ],
+		];
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'key'      => 'name',
+					'operator' => 'eq',
+					'compare'  => '{*key*}',
+				]
+			],
+		];
+
+		$expected = [
+			'alpha' => [ 'name' => 'alpha' ],
+			'beta'  => [ 'name' => 'beta' ],
+			'gamma' => [ 'name' => 'gamma' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'source'   => '{*key*}',
+					'operator' => 'eq',
+					'compare'  => 'gamma',
+				]
+			],
+		];
+
+		$expected = [
+			'gamma' => [ 'name' => 'gamma' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+	}
+
+	public function testWildcardIndex(): void
+	{
+		$context = $this->getContext();
+
+		$data = [
+			[ 'id' => 0, 'name' => 'First' ],
+			[ 'id' => 1, 'name' => 'Second' ],
+			[ 'id' => 2, 'name' => 'Third' ],
+		];
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'key'      => 'id',
+					'operator' => 'eq',
+					'compare'  => '{*index*}',
+				]
+			],
+		];
+
+		$expected = [
+			[ 'id' => 0, 'name' => 'First' ],
+			[ 'id' => 1, 'name' => 'Second' ],
+			[ 'id' => 2, 'name' => 'Third' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'source'   => '{*index*}',
+					'operator' => 'eq',
+					'compare'  => '1',
+				]
+			],
+		];
+
+		$expected = [
+			[ 'id' => 1, 'name' => 'Second' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+	}
+
+	public function testWildcardCurrent(): void
+	{
+		$context = $this->getContext();
+
+		$data = [
+			[ 'id' => 1, 'name' => 'First' ],
+			[ 'id' => 2, 'name' => 'Second' ],
+			[ 'id' => 3, 'name' => 'Third' ],
+		];
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'key'      => 'id',
+					'operator' => 'eq',
+					'compare'  => '{*current*}',
+				]
+			],
+		];
+
+		$expected = [
+			[ 'id' => 1, 'name' => 'First' ],
+			[ 'id' => 2, 'name' => 'Second' ],
+			[ 'id' => 3, 'name' => 'Third' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+
+		$config = [
+			'key'        => '',
+			'method'     => 'valid',
+			'conditions' => [
+				[
+					'source'   => '{*current*}',
+					'operator' => 'eq',
+					'compare'  => '3',
+				]
+			],
+		];
+
+		$expected = [
+			[ 'id' => 3, 'name' => 'Third' ],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+		$this->assertEquals( $expected, $returnData );
+	}
 }
