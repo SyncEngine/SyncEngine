@@ -301,6 +301,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		foreach ( $keys as &$key ) {
 			$key = explode( '.', (string) $key )[0];
 		}
+		unset( $key ); // Remove reference to avoid accidental modifications.
 
 		return array_unique( $keys );
 	}
@@ -333,6 +334,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 			foreach ( $columns as &$column ) {
 				$column = $column[ $key ] ?? '';
 			}
+			unset( $column ); // Remove reference to avoid accidental modifications.
 		}
 
 		return $columns;

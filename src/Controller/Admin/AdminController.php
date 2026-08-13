@@ -33,6 +33,7 @@ class AdminController extends AbstractAdminController
 				$item['automation'] = AutomationModel::get( $item['body']['automationId'] )?->normalize( false, false );
 			}
 		}
+		unset( $item ); // Remove reference to avoid accidental modifications.
 
 		return $this->render(
 			'admin/dashboard.html.twig',

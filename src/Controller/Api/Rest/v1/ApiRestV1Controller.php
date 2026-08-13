@@ -54,6 +54,7 @@ class ApiRestV1Controller extends AbstractApiController
 			foreach ( $list as &$entityItem ) {
 				$entityItem = $entityItem->normalize();
 			}
+			unset( $entityItem ); // Remove reference to avoid accidental modifications.
 		} catch ( \Exception $e ) {
 			return $this->json(
 				[ 'message' => $this->trans( $e->getMessage() ) ],

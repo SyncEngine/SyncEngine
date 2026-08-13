@@ -20,6 +20,7 @@ class SerializationSanitizer
 			foreach ( $data as &$value ) {
 				$value = $this->sanitize( $value, $options );
 			}
+			unset( $value ); // Remove reference to avoid accidental modifications.
 		}
 
 		if ( is_resource( $data ) && ! empty( $options[ self::SANITIZE_RESOURCE ] ) ) {

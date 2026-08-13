@@ -111,6 +111,7 @@ class SandboxController extends DefaultController
 					// Nope.
 				}
 			}
+			unset( $param ); // Remove reference to avoid accidental modifications.
 			$result['Params'] = $params;
 
 			$status = $result['success'] ? Response::HTTP_OK : Response::HTTP_PARTIAL_CONTENT;
