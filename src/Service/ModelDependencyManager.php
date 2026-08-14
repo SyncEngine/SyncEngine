@@ -114,6 +114,48 @@ class ModelDependencyManager
 						}
 					break;
 
+					case 'flow':
+					case 'sequence':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							foreach ( $value as $step ) {
+								$id = null;
+								if ( is_array( $step ) ) {
+									$id = $step['id'] ?? $step[ $entity ] ?? null;
+								} elseif ( is_numeric( $step ) ) {
+									$id = $step;
+								} else {
+									continue;
+								}
+
+								if ( $id ) {
+									$dependencies = $this->getEntityDependency( $entity, $id, $dependencies );
+								}
+
+								$stepConfig = $step['config'] ?? [];
+								if ( $stepConfig && 'routine' === $entity ) {
+									$routine = RoutineModel::get( $id );
+									if ( $routine ) {
+										if ( isset( $stepConfig['input'] ) ) {
+											$dependencies = $this->getConfigDependencies(
+												$stepConfig['input'],
+												$routine->getInputSchema()->getFields(),
+												$dependencies
+											);
+										}
+										if ( isset( $stepConfig['variables'] ) ) {
+											$dependencies = $this->getConfigDependencies(
+												$stepConfig['variables'],
+												$routine->getVariableSchema()->getFields(),
+												$dependencies
+											);
+										}
+									}
+								}
+							}
+						}
+					break;
+
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
 							$taskModel = TaskModel::get( $taskConfig['_class'] );

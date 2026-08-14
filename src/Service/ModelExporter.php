@@ -12,6 +12,7 @@ use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Model\Interface\Supervisable;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -225,6 +226,43 @@ class ModelExporter
 								$value[ $index ] = $this->parseConfigEntity( $entity, $id );
 							}
 							$config[ $name ] = $value;
+						}
+					break;
+
+					case 'flow':
+					case 'sequence':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							foreach ( $value as $index => $step ) {
+								$id = null;
+								if ( is_numeric( $step ) ) {
+									$value[ $index ] = $this->parseConfigEntity( $entity, $step );
+									continue;
+								} elseif ( ! is_array( $step ) ) {
+									continue;
+								}
+
+								if ( isset( $step[ $entity ] ) ) {
+									$id = $step[ $entity ];
+									$value[ $index ][ $entity ] = $this->parseConfigEntity( $entity, $id );
+								} elseif ( isset( $step['id'] ) ) {
+									$id = $step['id'];
+									$value[ $index ]['id'] = $this->parseConfigEntity( $entity, $id );
+								}
+
+								$stepConfig = $step['config'] ?? [];
+								if ( $stepConfig && 'routine' === $entity ) {
+									$routine = RoutineModel::get( $id );
+									if ( $routine ) {
+										if ( isset( $stepConfig['input'] ) ) {
+											$stepConfig['input'] = $this->parseConfigFields( $stepConfig['input'], $routine->getInputSchema()->getFields() );
+										}
+										if ( isset( $stepConfig['variables'] ) ) {
+											$stepConfig['variables'] = $this->parseConfigFields( $stepConfig['variables'], $routine->getVariableSchema()->getFields() );
+										}
+									}
+								}
+							}
 						}
 					break;
 
