@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Tests\Service;
 
+use SyncEngine\Column\Text;
 use SyncEngine\Entity\Flow;
 use SyncEngine\Entity\Routine;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
@@ -409,14 +410,174 @@ class ModelDependencyManagerTest extends BaseTestCase
 	}
 
 	// --------------------------------------------------------------------
+	//  Flow dependency scanning
+	// --------------------------------------------------------------------
+
+	public function testGetDependenciesWithFlowNumericSteps(): void
+	{
+		$routine1 = $this->createRoutine( 'numeric_step_r1_' . uniqid() );
+		$routine2 = $this->createRoutine( 'numeric_step_r2_' . uniqid() );
+
+		$flow = FlowModel::create();
+		/** @var FlowModel $flow */
+		$flow->setName( 'numeric_steps_flow_' . uniqid() );
+		// Set config directly to preserve numeric IDs (setSteps() normalizes them).
+		$flow->setConfig( [ 'steps' => [ $routine1->getId(), $routine2->getId() ] ] );
+		$flow->save( true );
+
+		$manager = $this->getManager();
+		$dependencies = $manager->getDependencies( $flow );
+
+		$this->assertArrayHasKey( 'routine:' . $routine1->getId(), $dependencies );
+		$this->assertArrayHasKey( 'routine:' . $routine2->getId(), $dependencies );
+	}
+
+	public function testGetDependenciesWithFlowArraySteps(): void
+	{
+		$storage = $this->createStorage( 'array_step_storage_' . uniqid(), 'schema', [ 'col1' => 'string' ] );
+
+
+		// Input schema with a schema-type field for the second routine.
+		$inputSchema = [
+			[
+				'key'    => 'storage_ref',
+				'column' => [
+					'_class' => Text::_getClassLocator()
+				],
+			],
+		];
+		$routine = $this->createRoutine( 'array_step_routine_' . uniqid(), $inputSchema );
+
+		$flow = FlowModel::create();
+		/** @var FlowModel $flow */
+		$flow->setName( 'array_steps_flow_' . uniqid() );
+		// Use array step format with routine key and input config containing storage ref.
+		// The vault tag {{ storage.* }} is extracted by TagExtractor regardless of field types.
+		$flow->setConfig( [
+			'steps' => [
+				[
+					'routine' => $routine->getId(),
+					'config'  => [
+						'input' => [
+							'storage_ref' => '{{ storage.' . $storage->getId() . ' }}',
+						],
+					],
+				],
+			],
+		] );
+		$flow->save( true );
+
+		$manager = $this->getManager();
+		$dependencies = $manager->getDependencies( $flow );
+
+		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
+		$this->assertArrayHasKey( 'storage:' . $storage->getId(), $dependencies );
+	}
+
+	public function testGetDependenciesWithFlowMixedSteps(): void
+	{
+		$storage = $this->createStorage( 'mixed_storage_' . uniqid(), 'schema', [ 'col' => 'text' ] );
+
+		// Input schema with a schema-type field for the second routine.
+		$inputSchema = [
+			[
+				'key'    => 'storage_ref',
+				'column' => [
+					'_class' => Text::_getClassLocator()
+				],
+			],
+		];
+
+		$routine1 = $this->createRoutine( 'mixed_r1_' . uniqid() );
+		$routine2 = $this->createRoutine( 'mixed_r2_' . uniqid(), $inputSchema );
+
+		$flow = FlowModel::create();
+		/** @var FlowModel $flow */
+		$flow->setName( 'mixed_steps_flow_' . uniqid() );
+		// Mix of numeric ID and array step.
+		$flow->setConfig( [
+			'steps' => [
+				$routine1->getId(),
+				[
+					'routine' => $routine2->getId(),
+					'config'  => [
+						'input' => [
+							'storage_ref' => '{{ storage.' . $storage->getId() . ' }}',
+						],
+					],
+				],
+			],
+		] );
+		$flow->save( true );
+
+		$manager = $this->getManager();
+		$dependencies = $manager->getDependencies( $flow );
+
+		$this->assertArrayHasKey( 'routine:' . $routine1->getId(), $dependencies );
+		$this->assertArrayHasKey( 'routine:' . $routine2->getId(), $dependencies );
+		$this->assertArrayHasKey( 'storage:' . $storage->getId(), $dependencies );
+	}
+
+	public function testGetConfigDependenciesFlowType(): void
+	{
+		$routine = $this->createRoutine( 'flow_type_routine_' . uniqid() );
+
+		$fields = new FieldCollection( [
+			'steps' => [
+				'name'     => 'steps',
+				'type'     => 'flow',
+				'entity'   => 'routine',
+				'required' => true,
+			],
+		] );
+
+		$config = [
+			'steps' => [
+				$routine->getId(),
+			],
+		];
+
+		$manager = $this->getManager();
+		$dependencies = $manager->getConfigDependencies( $config, $fields, false );
+
+		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
+	}
+
+	public function testGetConfigDependenciesSequenceType(): void
+	{
+		$routine = $this->createRoutine( 'sequence_type_routine_' . uniqid() );
+
+		$fields = new FieldCollection( [
+			'steps' => [
+				'name'     => 'steps',
+				'type'     => 'sequence',
+				'entity'   => 'routine',
+				'required' => true,
+			],
+		] );
+
+		$config = [
+			'steps' => [
+				$routine->getId(),
+			],
+		];
+
+		$manager = $this->getManager();
+		$dependencies = $manager->getConfigDependencies( $config, $fields, false );
+
+		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
+	}
+
+	// --------------------------------------------------------------------
 	//  Helpers
 	// --------------------------------------------------------------------
 
-	private function createRoutine( string $name ): RoutineModel
+	private function createRoutine( string $name, array $inputSchema = [] ): RoutineModel
 	{
 		$routine = RoutineModel::create();
 		$routine->setName( $name );
-		$routine->setConfig( [
+
+		$config = [
 			'tasks' => [
 				[
 					'_class' => \SyncEngine\Task\Set::_getClassLocator(),
@@ -424,8 +585,15 @@ class ModelDependencyManagerTest extends BaseTestCase
 					'params' => [],
 				],
 			],
-		] );
+		];
+
+		if ( $inputSchema ) {
+			$config['schema']['input']['manual'] = $inputSchema;
+		}
+
+		$routine->setConfig( $config );
 		$routine->save( true );
+
 		return $routine;
 	}
 
