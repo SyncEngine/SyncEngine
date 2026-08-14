@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
@@ -54,8 +55,9 @@ class DefaultController extends AbstractController
 				Tasks::class => '?'.Tasks::class,
 				Webservices::class => '?'.Webservices::class,
 				Blueprints::class => '?'.Blueprints::class,
-				ModelNormalizer::class => '?'.ModelNormalizer::class,
-				ModelExporter::class => '?'.ModelExporter::class,
+				ModelNormalizer::class       => '?'.ModelNormalizer::class,
+				ModelDependencyManager::class => '?'.ModelDependencyManager::class,
+				ModelExporter::class         => '?'.ModelExporter::class,
 				ModelImporter::class => '?'.ModelImporter::class,
 			]
 		);

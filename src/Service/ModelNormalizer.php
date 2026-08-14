@@ -7,28 +7,26 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Normalizable;
-use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\RoutineModel;
-use SyncEngine\Model\StorageModel;
-use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\Tag\TagExtractor;
-use SyncEngine\Structure\Data\ConfigData;
 
 class ModelNormalizer
 {
+	public function __construct(
+		private ?ModelDependencyManager $dependencyManager = null,
+	) {
+		// Allow not passing a dependency manager for testing purposes or non-Model normalization.
+		if ( ! $this->dependencyManager ) {
+			$this->dependencyManager = new ModelDependencyManager();
+		}
+	}
+
 	private ?Serializer $serializer = null;
 	private static ?string $runningRef = null;
 	private static array $normalized = [];
-	private static array $tagRefs = [];
 
 	private function start( string $ref ): void
 	{
@@ -42,7 +40,6 @@ class ModelNormalizer
 		if ( $ref === self::$runningRef ) {
 			self::$runningRef = null;
 			self::$normalized = [];
-			self::$tagRefs    = [];
 		}
 	}
 
@@ -167,202 +164,19 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
-	public function getConfigDependencies( ConfigData|array $config = [], FieldCollection|array $fields = [], array|bool $recursive = false ): array
-	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
-		if ( ! $config || ! $fields ) {
-			return $dependencies;
-		}
-
-		// @todo Refactor to use Field type objects instead of raw arrays
-		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
-
-		foreach ( $fields as $key => $field ) {
-			if ( ! is_array( $field ) ) {
-				continue;
-			}
-
-			$name  = $field['name'] ?? $key;
-			$value = $config[ $name ] ?? null;
-
-			// Parse subfields from fields config.
-			if ( ! empty( $field['type'] ) && $value ) {
-				switch ( $field['type'] ) {
-					case 'entity':
-						$entity = $field['entity'] ?? '';
-						if ( $entity ) {
-							$dependencies = $this->getEntityDependency( $entity, $value, $dependencies );
-						}
-					break;
-					case 'entities':
-						$entity = $field['entity'] ?? '';
-						if ( $entity ) {
-							foreach ( $value as $id ) {
-								$dependencies = $this->getEntityDependency( $entity, $id, $dependencies );
-							}
-						}
-					break;
-
-					case 'tasks':
-						foreach ( $value as $taskConfig ) {
-							$taskModel = TaskModel::get( $taskConfig['_class'] );
-							if ( $taskModel ) {
-								$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
-							} else {
-								// @todo Error.
-							}
-						}
-					break;
-
-					case 'webservice':
-						$webserviceModel = WebserviceModel::get( $value['_class'] );
-						if ( $webserviceModel ) {
-							$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
-						} else {
-							// @todo Error.
-						}
-					break;
-
-					case 'repeater':
-						foreach ( $value as $repeaterConfig ) {
-							$dependencies = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'] ?? [], $dependencies );
-						}
-						unset( $field['fieldset'] );
-					break;
-
-					case 'schema':
-						if ( is_array( $value ) ) {
-							$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
-						}
-					break;
-				}
-			}
-
-			if ( ! empty( $field['nested'] ) ) {
-				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
-				unset( $field['nested'] );
-			}
-
-			// @todo Check for specific keys?
-			$dependencies = $this->getConfigDependencies( $config, $field, $dependencies );
-		}
-
-		// @todo Autowiring.
-		$tagExtractor = new TagExtractor();
-		$tags = $tagExtractor->extractTags( $config, 'storage' );
-		if ( $tags ) {
-			foreach ( $tags as $tag ) {
-				$ref = $tagExtractor->getTagPart( $tag, 1 );
-				if ( ! $ref ) {
-					continue;
-				}
-
-				// Get the already parsed ref.
-				if ( isset( self::$tagRefs[ $ref ] ) ) {
-					$ref = self::$tagRefs[ $ref ];
-				}
-
-				if ( ! isset( static::$tagRefs[ $ref ] ) ) {
-					$storageModel = StorageModel::get( $ref );
-					if ( ! $storageModel ) {
-						self::$tagRefs[ $ref ] = false;
-						continue;
-					}
-
-					// Cache ref/id and point it to the actual ref.
-					self::$tagRefs[ $ref ] = $storageModel->getRef();
-
-					// @todo Create utility for adding dependencies?
-					if ( ! isset( $dependencies[ 'storage:' . $storageModel->getId() ] ) ) {
-						$dependencies[ 'storage:' . $storageModel->getId() ] = $storageModel;
-						if ( $recursive ) {
-							$dependencies = $storageModel->getConfigDependencies( $dependencies );
-						}
-					}
-				}
-			}
-		}
-
-		ksort( $dependencies );
-
-		return $dependencies;
-	}
-
-	public function getConfigSchemaDependencies( array $config = [], array|bool $recursive = false )
-	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
-		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
-			$dependencies = $this->getEntityDependency( 'storage', $config['storage'], $dependencies );
-		} else {
-			foreach ( $config as $value ) {
-				if ( is_array( $value ) ) {
-					$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
-				}
-			}
-		}
-
-		return $dependencies;
-	}
-
-	public function getEntityDependency( string $entity, mixed $id, array|bool $recursive = [] )
-	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
-		$entityModel = EntityModel::get( $id, $entity );
-		$entity      = strtolower( $entity );
-
-		if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityModel->getId() ] ) ) {
-
-			$dependencies[ $entity . ':' . $entityModel->getId() ] = $entityModel;
-			if ( $recursive && method_exists( $entityModel, 'getConfigDependencies' ) ) {
-				$dependencies = $entityModel->getConfigDependencies( $dependencies );
-			}
-		}
-
-		return $dependencies;
-	}
-
 	public function getDependents( $model ): array
 	{
 		$dependents = [];
 
-		$modelClass = EntityModel::getEntityReflection( $model->getEntity() )->getShortName();
+		// Delegate raw lookup to ModelDependencyManager.
+		$rawDependents = $this->dependencyManager->getDependents( $model );
 
-		$configModels = [
-			'automation' => AutomationModel::class,
-			//'connection' => ConnectionModel::class,
-			'flow'       => FlowModel::class,
-			'routine'    => RoutineModel::class,
-			'storage'    => StorageModel::class,
-		];
-
-		foreach ( $configModels as $name => $configModel ) {
-			$results = $configModel::getAll( [
-				'search' => [
-					'config' => '"' . strtolower( $modelClass ) . ':' . $model->getId() . '"',
-				],
-			] );
-
-			if ( $results ) {
-				foreach ( $results as $dependent ) {
-					$ref = $dependent->getRef();
-					if ( ! isset( static::$normalized[ $ref ] ) ) {
-						static::$normalized[ $ref ] = $dependent->normalize( false, false );
-					}
-					$dependents[] = static::$normalized[ $ref ];
-				}
+		foreach ( $rawDependents as $dependent ) {
+			$ref = $dependent->getRef();
+			if ( ! isset( static::$normalized[ $ref ] ) ) {
+				static::$normalized[ $ref ] = $dependent->normalize( false, false );
 			}
+			$dependents[] = static::$normalized[ $ref ];
 		}
 
 		return $dependents;

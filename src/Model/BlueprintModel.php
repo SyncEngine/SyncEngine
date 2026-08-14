@@ -11,8 +11,8 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Service\ModelImporter;
-use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Locator\Blueprints;
 use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
@@ -196,10 +196,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 	}
 
 	public function getConfigDependencies( bool|array $recursive = false ): array {
-		/** @var ModelNormalizer $normalizer */
-		$normalizer = $this->getContainer()->get( ModelNormalizer::class );
+		/** @var ModelDependencyManager $dependencyManager */
+		$dependencyManager = $this->getContainer()->get( ModelDependencyManager::class );
 
-		$dependencies = $normalizer->getConfigDependencies(
+		$dependencies = $dependencyManager->getConfigDependencies(
 			$this->getBlueprintConfig(),
 			$this->getConfigFields(),
 			$recursive
@@ -209,7 +209,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			if ( empty( $template['_entity'] ) ) {
 				continue;
 			}
-			$dependencies = $normalizer->getEntityDependency( $template['_entity'], $ref, $dependencies );
+			$dependencies = $dependencyManager->getEntityDependency( $template['_entity'], $ref, $dependencies );
 		}
 
 		return $dependencies;

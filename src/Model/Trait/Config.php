@@ -4,7 +4,7 @@ namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Structure\Data\ConfigData;
 
 trait Config
@@ -91,7 +91,7 @@ trait Config
 
 	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
-		return $this->getContainer()->get( ModelNormalizer::class )->getConfigDependencies(
+		return $this->getContainer()->get( ModelDependencyManager::class )->getConfigDependencies(
 			$this->getConfig(),
 			$this->getConfigFields(),
 			$recursive
