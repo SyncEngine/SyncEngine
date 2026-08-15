@@ -5,6 +5,7 @@ namespace SyncEngine\Model\Abstract;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Exception\NotAllowedException;
 use SyncEngine\Exception\NotFoundException;
@@ -68,6 +69,12 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		// Create ref if not set yet.
 		if ( method_exists( $this, 'createRef' ) ) {
 			$this->createRef( false );
+		}
+
+		if ( method_exists( $this, 'getRef' ) ) {
+			if ( str_contains( $this->getRef(), '.' ) ) {
+				throw new InvalidConfigException( 'Ref cannot contain dots(.)' );
+			}
 		}
 
 		if ( $this instanceof Configurable ) {
