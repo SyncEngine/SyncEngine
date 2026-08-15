@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Exception\InvalidParameterException;
+use SyncEngine\Exception\NotFoundException;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
@@ -95,6 +96,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 *
 	 * @throws \Psr\Container\ContainerExceptionInterface
 	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 * @throws NotFoundException
 	 *
 	 * @param  bool  $flush
 	 * @param  EntityManagerInterface|null  $entityManager
@@ -103,9 +105,11 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 */
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
-		if ( $this->entity->getId() ) {
-			$this->save( $flush, $entityManager );
+		if ( ! $this->entity->getId() ) {
+			throw new NotFoundException( 'Cannot update entity that does not yet exist.' );
 		}
+
+		$this->save( $flush, $entityManager );
 	}
 
 	/**
