@@ -20,16 +20,27 @@ abstract class EntityController extends AbstractAdminController
 	 */
 	protected function _handleJsonRequest( EntityModel $model, Request $request ): JsonResponse
 	{
-		$response = $this->_handleRequest( $model, $request );
+		try {
+			$response = $this->_handleRequest( $model, $request );
 
-		if ( ! $response ) {
-			if ( method_exists( $model, 'handleRequest' ) ) {
-				$response = $model->handleRequest( $request );
-				if ( $response instanceof JsonResponse ) {
-					return $response;
+			if ( ! $response ) {
+				if ( method_exists( $model, 'handleRequest' ) ) {
+					$response = $model->handleRequest( $request );
+					if ( $response instanceof JsonResponse ) {
+						return $response;
+					}
 				}
+				return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 			}
-			return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
+		} catch ( \Exception $e ) {
+			$response = [
+				'success' => false,
+				'error'   => $e->getMessage(),
+			];
+
+			if ( $this->getParameter( 'kernel.debug' ) ) {
+				$response['exception'] = $e;
+			}
 		}
 
 		return $this->json( $response );
