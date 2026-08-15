@@ -24,7 +24,8 @@
 {% set defaultActions = {
 	'link': { label: 'Edit'|trans, dropdown: true },
 	'edit': { label: 'Quick Edit'|trans },
-	'export': { label: 'Export'|trans, dropdown: true }
+	'export': { label: 'Export'|trans, dropdown: true },
+	'delete': { label: 'Delete'|trans, dropdown: true },
 } %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'grouped', actions: defaultActions } } %}
 
