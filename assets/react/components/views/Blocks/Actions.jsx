@@ -73,7 +73,7 @@ export default function Actions( props ) {
 		view,
 		buttons = ( 'grouped' === view || 'dropdown' === view || 'buttons' === view ),
 		subtle = true,
-		dropdownVariant = 'secondary',
+		dropdownVariant = variant ?? 'secondary',
 		dropdownTrigger,
 	} = props;
 
@@ -286,7 +286,12 @@ export default function Actions( props ) {
 			: <Icon icon="toolbar-menu" />;
 
 		actionElements.push(
-			<DropdownButton title={ trigger } as={ ButtonGroup } variant={ dropdownVariant } placement="left">
+			<DropdownButton
+				title={ trigger }
+				variant={ dropdownVariant.startsWith( 'outline-' ) ? dropdownVariant : 'outline-' + dropdownVariant }
+				className={ subtle ? 'btn-subtle' : '' }
+				key="dropdown"
+			>
 				{ dropdownElements }
 			</DropdownButton>
 		);
