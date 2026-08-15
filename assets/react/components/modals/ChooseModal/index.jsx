@@ -34,6 +34,7 @@ export function getTriggerProps( trigger, callback ) {
 export default function ChooseModal( props ) {
 	const { t } = useTranslation();
 	const [ open, setOpen ] = useState( isEmpty( props.children ) );
+	const [ error, setError ] = useState( null );
 
 	const {
 		header = '',
@@ -48,18 +49,38 @@ export default function ChooseModal( props ) {
 	const handleClose = useCallback( ( e ) => {
 		suppress( e );
 		setOpen(false);
+		setError( null );
 		if ( isFunction( onClose ) ) {
 			onClose();
 		}
-	}, [ setOpen ] );
+	}, [ setOpen, onClose ] );
 
 	const handleOpen = useCallback( ( e ) => {
 		suppress( e );
 		setOpen(true);
+		setError( null );
 		if ( isFunction( onOpen ) ) {
 			onOpen();
 		}
-	}, [ setOpen ] );
+	}, [ setOpen, onOpen ] );
+
+	const getErrorFromResult = ( result ) => {
+		if ( ! result ) {
+			return null;
+		}
+		if ( 'string' === typeof result ) {
+			return result;
+		}
+		if ( 'object' === typeof result ) {
+			if ( result.error ) {
+				return result.error;
+			}
+			if ( result.errors ) {
+				return Array.isArray( result.errors ) ? result.errors.join( '\n' ) : String( result.errors );
+			}
+		}
+		return null;
+	};
 
 	const getTrigger = () => {
 		if ( isEmpty( props.children ) ) {
@@ -78,6 +99,9 @@ export default function ChooseModal( props ) {
 				{ text &&
 					<Modal.Body>{ text }</Modal.Body>
 				}
+				{ error &&
+				  <Modal.Body><div className="alert alert-danger m-0">{ error }</div></Modal.Body>
+				}
 				<Modal.Footer>
 					{ cancel &&
 						<Button variant="secondary" outline onClick={ handleClose } autoFocus>
@@ -92,7 +116,21 @@ export default function ChooseModal( props ) {
 							callback,
 						} = option;
 
-						const onClick = ( e ) => { callback( option.callbackProps ); handleClose( e ); };
+						const onClick = async ( e ) => {
+							setError( null );
+							try {
+								const result = await callback( option.callbackProps );
+								const errorMsg = getErrorFromResult( result );
+								if ( errorMsg ) {
+									setError( errorMsg );
+									return;
+								}
+							} catch ( thrown ) {
+								setError( thrown?.message ?? String( thrown ) );
+								return;
+							}
+							handleClose( e );
+						};
 
 						return (
 							<Button key={ option.key ?? index } variant={ variant } onClick={ onClick }>
