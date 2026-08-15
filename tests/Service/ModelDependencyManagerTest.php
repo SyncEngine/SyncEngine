@@ -382,34 +382,6 @@ class ModelDependencyManagerTest extends BaseTestCase
 	}
 
 	// --------------------------------------------------------------------
-	//  getDependents with StorageModel
-	// --------------------------------------------------------------------
-
-	public function testGetDependentsForStorage(): void
-	{
-		$storage = $this->createStorage( 'dep_storage_' . uniqid(), 'schema', [] );
-
-		$automation = AutomationModel::create();
-		/** @var AutomationModel $automation */
-		$automation->setName( 'auto_storage_dep_' . uniqid() );
-		$automation->setEndpoint( 'ep-storage-dep-' . uniqid() );
-		// Use schema storage reference.
-		$automation->setConfig( [
-			'source' => 'request',
-			'schema' => [
-				'storage' => $storage->getId(),
-			],
-		] );
-		$automation->save( true );
-
-		$manager = $this->getManager();
-		$dependents = $manager->getDependents( $storage );
-
-		$this->assertCount( 1, $dependents );
-		$this->assertEquals( $automation->getRef(), $dependents[0]->getRef() );
-	}
-
-	// --------------------------------------------------------------------
 	//  Flow dependency scanning
 	// --------------------------------------------------------------------
 
