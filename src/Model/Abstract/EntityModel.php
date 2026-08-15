@@ -6,11 +6,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Exception\InvalidParameterException;
+use SyncEngine\Exception\NotAllowedException;
 use SyncEngine\Exception\NotFoundException;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Repository\Interface\Searchable;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Service\ModelNormalizer;
 
 /**
@@ -171,6 +173,11 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	{
 		if ( ! $this->hasEntity() ) {
 			return false; // @todo Or return true?
+		}
+
+		$manager = $this->getContainer()->get( ModelDependencyManager::class ) ?? new ModelDependencyManager();
+		if ( $manager->hasDependents( $this ) ) {
+			throw new NotAllowedException( 'Cannot delete entity with dependents.' );
 		}
 
 		if ( ! $entityManager ) {
