@@ -20,6 +20,8 @@ import ResponseTabContent from '../../services/ResponseTabs/Content';
 import PreviewModal from '../../modals/PreviewModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
+import DropdownItem from 'react-bootstrap/DropdownItem';
+import Label from '../../form/Label';
 
 function getVariants( button, variant, outline, subtle ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -33,11 +35,13 @@ function getVariants( button, variant, outline, subtle ) {
 	}
 }
 
-function createTrigger( action, variants, buttonProps = {} ) {
+function createTrigger( action, variants, buttonProps = {}, dropdown = false ) {
 	let iconClasses = '';
 
 	let trigger = action.label ?? action.action;
-	if ( action.icon ) {
+	if ( dropdown ) {
+		trigger = <Label as="span" icon={ action.icon }>{ trigger }</Label>;
+	} else if ( action.icon ) {
 		iconClasses = variants.icon ? ' link-' + variants.icon : '';
 		if ( ! variants.button ) {
 			iconClasses += ' icon-btn';
@@ -50,7 +54,9 @@ function createTrigger( action, variants, buttonProps = {} ) {
 		}
 	}
 
-	return variants.button ? <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps } key={ buttonProps.key ?? undefined }>{ trigger }</Button> : trigger;
+	const Elemt = dropdown ? DropdownItem : Button;
+
+	return variants.button ? <Elemt variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps } key={ buttonProps.key ?? undefined }>{ trigger }</Elemt> : trigger;
 }
 
 export default function Actions( props ) {
@@ -67,7 +73,12 @@ export default function Actions( props ) {
 		view,
 		buttons = ( 'grouped' === view || 'dropdown' === view || 'buttons' === view ),
 		subtle = true,
+		dropdownVariant = 'secondary',
+		dropdownTrigger,
 	} = props;
+
+	let primaryElements = [];
+	let dropdownElements = [];
 
 	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
 
@@ -79,6 +90,7 @@ export default function Actions( props ) {
 			action = {
 				action: action,
 				button: buttons,
+				dropdown: false,
 			};
 		} else if ( 'boolean' === typeof action.label ) {
 			if ( ! action.label ) {
@@ -87,6 +99,7 @@ export default function Actions( props ) {
 			action = {
 				action: action.action,
 				button: buttons,
+				dropdown: false,
 			}
 		} else {
 			// Remove ref.
@@ -126,7 +139,7 @@ export default function Actions( props ) {
 				const createAction = ( ! variants.button && ! action.icon ) ? { ...action, icon: 'add' } : action;
 				return (
 					<EntityModal key={ action.action } action="create" savable { ...action }>
-						{ createTrigger( createAction, variants ) }
+						{ createTrigger( createAction, variants, {}, action.dropdown ) }
 					</EntityModal>
 				)
 
@@ -136,7 +149,7 @@ export default function Actions( props ) {
 				}
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
-						{ createTrigger( { ...action, icon: action.icon ?? 'edit' }, variants ) }
+						{ createTrigger( { ...action, icon: action.icon ?? 'edit' }, variants, {}, action.dropdown ) }
 					</EntityModal>
 				)
 
@@ -146,7 +159,7 @@ export default function Actions( props ) {
 				}
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
-						{ createTrigger( { ...action, icon: action.icon ?? 'export' }, variants ) }
+						{ createTrigger( { ...action, icon: action.icon ?? 'export' }, variants, {}, action.dropdown ) }
 					</ExportModal>
 				)
 
@@ -157,7 +170,7 @@ export default function Actions( props ) {
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
 						{ ( 'link' === variants.button )
 							? <Button variant="link"><Icon icon={ action.icon ?? 'delete' } className={ "link-" + deleteVariant } /></Button>
-							: variants.button && createTrigger( { ...action, icon: action.icon ?? 'delete' }, { ...variants, button: deleteVariant } )
+							: variants.button && createTrigger( { ...action, icon: action.icon ?? 'delete' }, { ...variants, button: deleteVariant }, {}, action.dropdown )
 						}
 					</DeleteModal>
 				)
@@ -192,12 +205,12 @@ export default function Actions( props ) {
 							onSave={ action.callback }
 							{ ...previewProps }
 						>
-								{ createTrigger( action, variants ) }
+								{ createTrigger( action, variants, {}, action.dropdown ) }
 						</PreviewModal>
 					);
 				}
 				return (
-					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) } />
+					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, {}, action.dropdown ) } />
 				);
 
 			case 'request':
@@ -206,13 +219,13 @@ export default function Actions( props ) {
 				}
 				return (
 					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
-						{ createTrigger( action, variants ) }
+						{ createTrigger( action, variants, {}, action.dropdown ) }
 					</RequestModal>
 				)
 
 			case 'modal':
 				return (
-					<ModalToggle key={ action.action + index } trigger={ createTrigger( action, variants ) } raw modalProps={ { size: "lg", expandable: true } }>
+					<ModalToggle key={ action.action + index } trigger={ createTrigger( action, variants, {}, action.dropdown ) } raw modalProps={ { size: "lg", expandable: true } }>
 						{
 							action.title && <Modal.Header closeButton expandButton>
 								<Modal.Title>
@@ -236,7 +249,7 @@ export default function Actions( props ) {
 				const linkIconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				const _key = action.action + index;
 				return link && ( variants.button
-					? createTrigger( { ...action, icon: icon }, variants, { href: link, key: _key } )
+					? createTrigger( { ...action, icon: icon }, variants, { href: link, key: _key }, action.dropdown )
 					: <a key={ _key } href={ link }><Icon icon={ icon } className={ linkIconClasses + ' icon-btn' } /></a>
 				)
 
@@ -245,11 +258,39 @@ export default function Actions( props ) {
 					return null;
 				}
 				return <React.Fragment key={ action.action + index }>
-					{ action.callback && createTrigger( action, variants, { onClick: action.callback, key: action.action + index } ) }
+					{ action.callback && createTrigger( action, variants, { onClick: action.callback, key: action.action + index }, action.dropdown ) }
 					{ action.component }
 				</React.Fragment>;
 		}
 	} );
+
+	// Split into primary and dropdown groups.
+	actionElements.forEach( ( el, i ) => {
+		const action = objectToMappable( actions, 'action', 'label' )[ i ];
+		if ( ! el ) {
+			return;
+		}
+		if ( action && true === action.dropdown ) {
+			dropdownElements.push( el );
+		} else {
+			primaryElements.push( el );
+		}
+	} );
+
+	actionElements = primaryElements;
+
+	// Append dropdown if any actions are marked for it.
+	if ( dropdownElements.length ) {
+		const trigger = dropdownTrigger
+			? dropdownTrigger
+			: <Icon icon="toolbar-menu" />;
+
+		actionElements.push(
+			<DropdownButton title={ trigger } as={ ButtonGroup } variant={ dropdownVariant } placement="left">
+				{ dropdownElements }
+			</DropdownButton>
+		);
+	}
 
 	switch ( view ) {
 		case 'grouped':
@@ -318,4 +359,6 @@ Actions.propTypes = {
 	view: PropTypes.string,
 	buttons: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
 	subtle: PropTypes.bool,
+	dropdownVariant: PropTypes.string,
+	dropdownTrigger: PropTypes.oneOfType( [ PropTypes.node, PropTypes.string ] ),
 };
