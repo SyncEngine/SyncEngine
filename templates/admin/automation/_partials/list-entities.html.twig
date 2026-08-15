@@ -34,7 +34,7 @@
 {% set lastColumns = {
 	actions: {
 		label: 'Actions'|trans,
-		view: 'buttons',
+		view: 'grouped',
 		actions: {
 			reset: {
 				conditions: {
@@ -52,9 +52,12 @@
 					action: 'reset',
 				},
 			},
-			link: 'Link'|trans,
-			edit: 'Edit'|trans,
-			export: 'Export'|trans
+			link: { label: 'Edit'|trans, dropdown: true },
+			edit: { label: 'Quick Edit'|trans },
+			export: {
+				label: 'Export'|trans,
+				dropdown: true
+			}
 		}
 	}
 } %}
