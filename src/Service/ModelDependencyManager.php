@@ -172,6 +172,13 @@ class ModelDependencyManager
 							$stack = $this->getConfigSchemaDependencies( $value, $stack );
 						}
 					break;
+
+					case 'mapper':
+						$mapFields = $field['config'] ?? [];
+						if ( is_array( $value ) && is_array( $mapFields ) ) {
+							$stack = $this->getConfigDependencies( $value, $mapFields, $stack, $recurse );
+						}
+					break;
 				}
 			}
 

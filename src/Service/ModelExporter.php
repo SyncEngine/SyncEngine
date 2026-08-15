@@ -298,6 +298,13 @@ class ModelExporter
 							$value = $this->parseConfigSchema( $value );
 						}
 					break;
+
+					case 'mapper':
+						$mapFields = $field['config'] ?? [];
+						if ( is_array( $value ) && is_array( $mapFields ) ) {
+							$value = $this->parseConfigFields( $value, $mapFields );
+						}
+					break;
 				}
 			}
 
