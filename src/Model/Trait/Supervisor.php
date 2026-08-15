@@ -26,13 +26,13 @@ trait Supervisor
 		$this->initSupervisor();
 	}
 
-	public function getConfigDependencies( array|bool $recursive = false ): array
+	public function getConfigDependencies( bool $recurse = false, array $recurseStack = [] ): array
 	{
 		$supervisor = $this->getSupervisor();
 		if ( $supervisor instanceof Configurable && method_exists($supervisor, 'getConfigDependencies') ) {
-			return $supervisor->getConfigDependencies( $recursive );
+			return $supervisor->getConfigDependencies( $recurse, $recurseStack );
 		}
-		return $this->_getConfigDependencies( $recursive );
+		return $this->_getConfigDependencies( $recurse, $recurseStack );
 	}
 
 	public function getIcon(): string

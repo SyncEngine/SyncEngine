@@ -195,21 +195,22 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	public function getConfigDependencies( bool|array $recursive = false ): array {
+	public function getConfigDependencies( bool $recurse = false, array $recurseStack = []  ): array {
 		/** @var ModelDependencyManager $dependencyManager */
 		$dependencyManager = $this->getContainer()->get( ModelDependencyManager::class );
 
 		$dependencies = $dependencyManager->getConfigDependencies(
 			$this->getBlueprintConfig(),
 			$this->getConfigFields(),
-			$recursive
+			$recurseStack,
+			$recurse
 		);
 
 		foreach ( $this->getTemplate() as $ref => $template ) {
 			if ( empty( $template['_entity'] ) ) {
 				continue;
 			}
-			$dependencies = $dependencyManager->getEntityDependency( $template['_entity'], $ref, $dependencies );
+			$dependencies = $dependencyManager->getEntityDependency( $template['_entity'], $ref, $dependencies, $recurse );
 		}
 
 		return $dependencies;

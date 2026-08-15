@@ -7,6 +7,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
@@ -27,16 +28,11 @@ class ModelDependencyManager
 	private array $dependentCache = [];
 
 	/**
-	 * Track the current resolution path for cycle detection.
-	 */
-	private array $resolutionStack = [];
-
-	/**
-	 * Resolve all dependencies for a model (with caching and cycle detection).
+	 * Resolve all dependencies for a model (unlimited chain following).
 	 */
 	public function getDependencies(
 		EngineModel $model,
-		bool $recursive = true,
+		$recurse = true,
 	): array
 	{
 		$ref = $model->getRef();
@@ -45,45 +41,35 @@ class ModelDependencyManager
 			return [];
 		}
 
-		// Cycle detection.
-		if ( in_array( $ref, $this->resolutionStack, true ) ) {
-			return [];
-		}
-
 		// Return from cache if available.
 		if ( isset( $this->dependencyCache[ $ref ] ) ) {
 			return $this->dependencyCache[ $ref ];
 		}
 
-		$this->resolutionStack[] = $ref;
-
-		$config = $model->getConfig();
-		$fields = $model->getFields();
-
-		$dependencies = $this->getConfigDependencies( $config, $fields, $recursive );
+		$dependencies = $this->getConfigDependencies( $model->getConfig(), $model->getFields(), [], $recurse );
 
 		$this->dependencyCache[ $ref ] = $dependencies;
-		array_pop( $this->resolutionStack );
 
 		return $dependencies;
 	}
 
 	/**
-	 * Scan config fields to find entity dependencies. No caching applied.
+	 * Scan config fields to find entity dependencies.
+	 *
+	 * @param  ConfigData|array  $config
+	 * @param  FieldCollection|array  $fields
+	 * @param  array  $stack  Cycle detection path (refs of models currently being resolved).
+	 * @param  bool  $recurse  Follow resolved entities into their own configs.
 	 */
 	public function getConfigDependencies(
 		ConfigData|array $config = [],
 		FieldCollection|array $fields = [],
-		array|bool $recursive = false,
+		array $stack = [],
+		bool $recurse = true,
 	): array
 	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
 		if ( ! $config || ! $fields ) {
-			return $dependencies;
+			return $stack;
 		}
 
 		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
@@ -101,7 +87,7 @@ class ModelDependencyManager
 					case 'entity':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
-							$dependencies = $this->getEntityDependency( $entity, $value, $dependencies );
+							$stack = $this->getEntityDependency( $entity, $value, $stack, $recurse );
 						}
 					break;
 
@@ -109,7 +95,7 @@ class ModelDependencyManager
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
 							foreach ( $value as $id ) {
-								$dependencies = $this->getEntityDependency( $entity, $id, $dependencies );
+								$stack = $this->getEntityDependency( $entity, $id, $stack, $recurse );
 							}
 						}
 					break;
@@ -129,7 +115,7 @@ class ModelDependencyManager
 								}
 
 								if ( $id ) {
-									$dependencies = $this->getEntityDependency( $entity, $id, $dependencies );
+									$stack = $this->getEntityDependency( $entity, $id, $stack, $recurse );
 								}
 
 								$stepConfig = $step['config'] ?? [];
@@ -137,17 +123,19 @@ class ModelDependencyManager
 									$routine = RoutineModel::get( $id );
 									if ( $routine ) {
 										if ( isset( $stepConfig['input'] ) ) {
-											$dependencies = $this->getConfigDependencies(
+											$stack = $this->getConfigDependencies(
 												$stepConfig['input'],
 												$routine->getInputSchema()->getFields(),
-												$dependencies
+												$stack,
+												$recurse
 											);
 										}
 										if ( isset( $stepConfig['variables'] ) ) {
-											$dependencies = $this->getConfigDependencies(
+											$stack = $this->getConfigDependencies(
 												$stepConfig['variables'],
 												$routine->getVariableSchema()->getFields(),
-												$dependencies
+												$stack,
+												$recurse
 											);
 										}
 									}
@@ -160,7 +148,7 @@ class ModelDependencyManager
 						foreach ( $value as $taskConfig ) {
 							$taskModel = TaskModel::get( $taskConfig['_class'] );
 							if ( $taskModel ) {
-								$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
+								$stack = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $stack, $recurse );
 							}
 						}
 					break;
@@ -168,31 +156,31 @@ class ModelDependencyManager
 					case 'webservice':
 						$webserviceModel = WebserviceModel::get( $value['_class'] );
 						if ( $webserviceModel ) {
-							$dependencies = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
+							$stack = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $stack, $recurse );
 						}
 					break;
 
 					case 'repeater':
 						foreach ( $value as $repeaterConfig ) {
-							$dependencies = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'] ?? [], $dependencies );
+							$stack = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'] ?? [], $stack, $recurse );
 						}
 						unset( $field['fieldset'] );
 					break;
 
 					case 'schema':
 						if ( is_array( $value ) ) {
-							$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
+							$stack = $this->getConfigSchemaDependencies( $value, $stack );
 						}
 					break;
 				}
 			}
 
 			if ( ! empty( $field['nested'] ) ) {
-				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
+				$stack = $this->getConfigDependencies( (array) $value, $field['nested'], $stack, $recurse );
 				unset( $field['nested'] );
 			}
 
-			$dependencies = $this->getConfigDependencies( $config, $field, $dependencies );
+			$stack = $this->getConfigDependencies( $config, $field, $stack, $recurse );
 		}
 
 		// Extract {{ storage.* }} tags from config values.
@@ -211,85 +199,85 @@ class ModelDependencyManager
 				}
 
 				$key = 'storage:' . $storageModel->getId();
-				if ( ! isset( $dependencies[ $key ] ) ) {
-					$dependencies[ $key ] = $storageModel;
-					if ( $recursive ) {
-						$dependencies = $storageModel->getConfigDependencies( $dependencies );
+				if ( ! isset( $stack[ $key ] ) ) {
+					$stack[ $key ] = $storageModel;
+					if ( $recurse ) {
+						$stack = $storageModel->getConfigDependencies( $recurse, $stack );
 					}
 				}
 			}
 		}
 
-		ksort( $dependencies );
+		ksort( $stack );
 
-		return $dependencies;
+		return $stack;
 	}
 
 	/**
 	 * Resolve a single entity reference to an EntityModel.
+	 *
+	 * @param  string  $entity
+	 * @param  mixed  $id
+	 * @param  array  $stack  Cycle detection path (refs of models currently being resolved).
+	 * @param  bool  $recurse  Follow this entity's config into its own dependencies.
 	 */
 	public function getEntityDependency(
 		string $entity,
 		mixed $id,
-		array|bool $recursive = [],
+		array $stack = [],
+		bool $recurse = true,
 	): array
 	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
-		$entityModel = EntityModel::get( $id, $entity );
+		$model = EntityModel::get( $id, $entity );
 		$entityKey   = strtolower( $entity );
 
-		if ( ! $entityModel ) {
-			return $dependencies;
+		if ( ! $model ) {
+			return $stack;
 		}
 
 		// getId() is delegated via __call on the Doctrine entity, so check the entity instead.
-		$doctrineEntity = $entityModel->getEntity();
-		if ( ! method_exists( $doctrineEntity, 'getId' ) ) {
-			return $dependencies;
+		if ( ! $model instanceof Persistable ) {
+			return $stack;
 		}
 
-		$depKey = $entityKey . ':' . $doctrineEntity->getId();
-		if ( isset( $dependencies[ $depKey ] ) ) {
-			return $dependencies;
+		// Cycle detection: if we're already resolving this model, stop.
+		$depKey = $entityKey . ':' . $model->getId();
+		if ( isset( $stack[ $depKey ] ) ) {
+			return $stack;
 		}
 
-		$dependencies[ $depKey ] = $entityModel;
+		$stack[ $depKey ] = $model;
 
-		if ( $recursive && method_exists( $entityModel, 'getConfigDependencies' ) ) {
-			$dependencies = $entityModel->getConfigDependencies( $dependencies );
+		// Only follow into sub-models if explicitly requested.
+		if ( $recurse && method_exists( $model, 'getConfigDependencies' ) ) {
+			$stack = $model->getConfigDependencies( $recurse, $stack );
 		}
 
-		return $dependencies;
+		return $stack;
 	}
 
 	/**
 	 * Extract dependencies from schema config (storage references).
+	 *
+	 * @param  array  $config
+	 * @param  array  $stack  Cycle detection path.
 	 */
 	public function getConfigSchemaDependencies(
 		array $config = [],
-		array|bool $recursive = false,
+		array $stack = [],
 	): array
 	{
-		$dependencies = [];
-		if ( $recursive ) {
-			$dependencies = is_array( $recursive ) ? $recursive : [];
-		}
-
 		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
-			$dependencies = $this->getEntityDependency( 'storage', $config['storage'], $dependencies );
+			$stack = $this->getEntityDependency( 'storage', $config['storage'], $stack );
 		} else {
 			foreach ( $config as $value ) {
 				if ( is_array( $value ) ) {
-					$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
+					$stack = $this->getConfigSchemaDependencies( $value, $stack );
 				}
 			}
 		}
 
-		return $dependencies;
+		return $stack;
 	}
 
 	/**
@@ -304,7 +292,7 @@ class ModelDependencyManager
 			return [];
 		}
 
-		$ref = method_exists( $entityModel, 'getRef' ) ? $entityModel->getRef() : null;
+		$ref = is_callable( [ $entityModel, 'getRef' ] ) ? $entityModel->getRef() : null;
 		if ( ! $ref ) {
 			$ref = strtolower( EntityModel::getEntityReflection( $entityModel->getEntity() )->getShortName() ) . ':' . $id;
 		}
@@ -324,6 +312,9 @@ class ModelDependencyManager
 			'storage'    => StorageModel::class,
 		];
 
+		/**
+		 * @var class-string{AutomationModel|FlowModel|RoutineModel|StorageModel} $configModel
+		 */
 		foreach ( $configModels as $name => $configModel ) {
 			$results = $configModel::getAll( [
 				'search' => [
@@ -333,7 +324,7 @@ class ModelDependencyManager
 
 			if ( $results ) {
 				foreach ( $results as $dependent ) {
-					$depRef = method_exists( $dependent, 'getRef' ) ? $dependent->getRef() : null;
+					$depRef = is_callable( [ $dependent, 'getRef' ] ) ? $dependent->getRef() : null;
 					if ( ! $depRef ) {
 						continue;
 					}
@@ -373,8 +364,7 @@ class ModelDependencyManager
 	 */
 	public function clearCache(): void
 	{
-		$this->dependencyCache    = [];
-		$this->dependentCache     = [];
-		$this->resolutionStack    = [];
+		$this->dependencyCache = [];
+		$this->dependentCache  = [];
 	}
 }

@@ -169,7 +169,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 		$config = [ 'routine' => $routine->getId() ];
 
 		$manager = $this->getManager();
-		$dependencies = $manager->getConfigDependencies( $config, $fields, false );
+		$dependencies = $manager->getConfigDependencies( $config, $fields, [], false );
 
 		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
 	}
@@ -202,7 +202,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 		$config = [ 'container' => $routine->getId() ];
 
 		$manager = $this->getManager();
-		$dependencies = $manager->getConfigDependencies( $config, $fields, true );
+		$dependencies = $manager->getConfigDependencies( $config, $fields, [], true );
 
 		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
 	}
@@ -366,7 +366,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 		$routine = $this->createRoutine( 'entity_dep_routine_' . uniqid() );
 
 		$manager = $this->getManager();
-		$dependencies = $manager->getEntityDependency( 'routine', $routine->getId(), false );
+		$dependencies = $manager->getEntityDependency( 'routine', $routine->getId(), [], false );
 
 		$this->assertCount( 1, $dependencies );
 		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
@@ -377,7 +377,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 	public function testGetEntityDependencyNonExistent(): void
 	{
 		$manager = $this->getManager();
-		$dependencies = $manager->getEntityDependency( 'routine', 999999, false );
+		$dependencies = $manager->getEntityDependency( 'routine', 999999, [], false );
 		$this->assertEmpty( $dependencies );
 	}
 
@@ -538,7 +538,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 		];
 
 		$manager = $this->getManager();
-		$dependencies = $manager->getConfigDependencies( $config, $fields, false );
+		$dependencies = $manager->getConfigDependencies( $config, $fields, [], false );
 
 		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
 	}
@@ -563,7 +563,7 @@ class ModelDependencyManagerTest extends BaseTestCase
 		];
 
 		$manager = $this->getManager();
-		$dependencies = $manager->getConfigDependencies( $config, $fields, false );
+		$dependencies = $manager->getConfigDependencies( $config, $fields, [], false );
 
 		$this->assertArrayHasKey( 'routine:' . $routine->getId(), $dependencies );
 	}

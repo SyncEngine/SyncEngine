@@ -89,12 +89,13 @@ trait Config
 		$this->setConfig( array_keys( $this->getConfigDependencies() ), '_dependencies' );
 	}
 
-	public function getConfigDependencies( array|bool $recursive = false ): array
+	public function getConfigDependencies( bool $recurse = false, array $recurseStack = [] ): array
 	{
 		return $this->getContainer()->get( ModelDependencyManager::class )->getConfigDependencies(
 			$this->getConfig(),
 			$this->getConfigFields(),
-			$recursive
+			$recurseStack,
+			$recurse
 		);
 	}
 
