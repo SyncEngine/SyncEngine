@@ -86,10 +86,10 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 			throw new NotAllowedException( 'Cannot delete entity with dependents.' );
 		}
 
-		return parent::delete( $flush, $manager );
+		return parent::delete( $flush, $entityManager );
 	}
 
-	public function trash( $flush = false ): bool
+	public function trash( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
 	{
 		if ( ! $this->hasEntity() ) {
 			return false; // @todo Or return true?
@@ -103,12 +103,12 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 		$this->setStatus( EntityStatus::TRASHED );
 		$this->setConfig( time(), '_trashedAt' );
-		$this->persist( $flush );
+		$this->persist( $flush, $entityManager );
 
 		return true;
 	}
 
-	public function restore( $flush = false ): bool
+	public function restore( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
 	{
 		if ( ! $this->isTrashed() ) {
 			return false;
@@ -116,7 +116,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 		$this->setStatus( EntityStatus::ENABLED );
 		$this->setConfig( null, '_trashedAt' );
-		$this->persist( $flush );
+		$this->persist( $flush, $entityManager );
 
 		return true;
 	}
