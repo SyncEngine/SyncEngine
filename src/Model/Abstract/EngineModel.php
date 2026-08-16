@@ -3,6 +3,8 @@
 namespace SyncEngine\Model\Abstract;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
@@ -77,5 +79,10 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		}
 
 		parent::persist( $flush, $entityManager );
+	}
+
+	public function handleRequest( Request $request ): Response
+	{
+		return new Response( '', Response::HTTP_NOT_IMPLEMENTED );
 	}
 }
