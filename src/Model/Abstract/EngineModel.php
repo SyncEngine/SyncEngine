@@ -89,6 +89,38 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		return parent::delete( $flush, $manager );
 	}
 
+	public function trash( $flush = false ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false; // @todo Or return true?
+		}
+
+		// Check dependents (runtime impact)
+		$manager = $this->getContainer()->get( ModelDependencyManager::class ) ?? new ModelDependencyManager();
+		if ( $manager->hasDependents( $this ) ) {
+			throw new NotAllowedException( 'Cannot trash entity with dependents.' );
+		}
+
+		$this->setStatus( EntityStatus::TRASHED );
+		$this->setConfig( time(), '_trashedAt' );
+		$this->persist( $flush );
+
+		return true;
+	}
+
+	public function restore( $flush = false ): bool
+	{
+		if ( ! $this->isTrashed() ) {
+			return false;
+		}
+
+		$this->setStatus( EntityStatus::ENABLED );
+		$this->setConfig( null, '_trashedAt' );
+		$this->persist( $flush );
+
+		return true;
+	}
+
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		$entity = $this->getEntity();
