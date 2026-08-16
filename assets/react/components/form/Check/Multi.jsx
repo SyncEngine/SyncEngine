@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonGroup, Form, ToggleButton } from 'react-bootstrap';
+import { ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { getCheckButtonVariant } from './';
@@ -55,26 +55,27 @@ export default function CheckMulti( props ) {
 		)
 	}
 
-	return (
-		<>
-			{
-				objectToMappable( props.choices ?? {}, 'value', 'label' ).map( choice => {
-					return <Form.Check
-						id={ props.id + choice.value }
-						key={ choice.value }
-						value={ choice.value }
-						onChange={ props.onChange }
-						label={ <Label>{ choice }</Label> }
-						checked={ isChecked( choice.value, props ) }
-						type={ props.type }
-						inline={ ! isEmpty( props.inline ) }
-						disabled={ props.disabled }
-						readOnly={ props.readonly ?? props.readOnly }
-					/>;
-				} )
-			}
-		</>
-	);
+	const choices = objectToMappable( props.choices ?? {}, 'value', 'label' ).map( choice => {
+		const component = <Form.Check
+			id={ props.id + choice.value }
+			key={ choice.value }
+			value={ choice.value }
+			onChange={ props.onChange }
+			label={ <Label>{ choice }</Label> }
+			checked={ isChecked( choice.value, props ) }
+			type={ props.type }
+			inline={ ! isEmpty( props.inline ) }
+			disabled={ props.disabled }
+			readOnly={ props.readonly ?? props.readOnly }
+		/>;
+
+		if ( 'fixed' === props.inline ) {
+			return <Col className={ props.col ?? 'col-12 col-md-6 col-xl-3' }>{ component }</Col>;
+		}
+		return component;
+	} );
+
+	return 'fixed' === props.inline ? <Row>{ choices }</Row> : <>{ choices }</>;
 }
 
 CheckMulti.propTypes = {
