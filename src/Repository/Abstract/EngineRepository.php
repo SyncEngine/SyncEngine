@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Repository\Interface\Searchable;
 use SyncEngine\Repository\Trait\Search;
+use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @template T of EngineEntity
@@ -20,6 +21,7 @@ use SyncEngine\Repository\Trait\Search;
 abstract class EngineRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
+	use Supervisor;
 
 	/**
 	 * @param  T  $entity

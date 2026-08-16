@@ -2,13 +2,9 @@
 
 namespace SyncEngine\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Repository\Abstract\EngineRepository;
-use SyncEngine\Repository\Interface\Searchable;
-use SyncEngine\Repository\Trait\Search;
-use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @extends EngineRepository<Storage>
@@ -20,8 +16,6 @@ use SyncEngine\Repository\Trait\Supervisor;
  */
 class StorageRepository extends EngineRepository
 {
-	use Supervisor;
-
 	public function __construct( ManagerRegistry $registry )
 	{
 		parent::__construct( $registry, Storage::class );

@@ -5,7 +5,6 @@ namespace SyncEngine\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Repository\Abstract\EngineRepository;
-use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @extends EngineRepository<Connection>
@@ -17,8 +16,6 @@ use SyncEngine\Repository\Trait\Supervisor;
  */
 class ConnectionRepository extends EngineRepository
 {
-	use Supervisor;
-
 	public function __construct( ManagerRegistry $registry )
 	{
 		parent::__construct( $registry, Connection::class );
