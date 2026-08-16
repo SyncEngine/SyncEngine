@@ -17,6 +17,7 @@ use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Framework\ModuleRegistryManager;
 use SyncEngine\Model\ModuleModel;
+use SyncEngine\Repository\Abstract\EngineRepository;
 use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
 
@@ -328,9 +329,9 @@ class ModuleController extends AbstractAdminController
 		$classes = [ 'Automation', 'Connection', 'Flow', 'Routine', 'Storage' ];
 
 		foreach ( $classes as $class ) {
-			if ( $entityManager->getRepository( 'SyncEngine\Entity\\' . $class )->findBySupervisorClassLocator(
-				$module->getClassLocator()
-			) ) {
+			/** @var EngineRepository $repository */
+			$repository = $entityManager->getRepository( 'SyncEngine\Entity\\' . $class );
+			if ( $repository?->findBySupervisorClassLocator( $module->getClassLocator() ) ) {
 				return true;
 			}
 		}
