@@ -69,7 +69,33 @@ abstract class EntityController extends AbstractAdminController
 
 		switch ( $action ) {
 			case 'delete':
-				$return['success'] = $model->delete( true );
+				if ( $model instanceof EngineModel ) {
+					if ( $request->request->get('delete_permanent') ) {
+						$return['success'] = $model->delete( true );
+					} else {
+						$return['success'] = $model->trash( true );
+					}
+				} else {
+					$return['success'] = $model->delete( true );
+				}
+			break;
+
+			case 'trash':
+				if ( ! method_exists( $model, 'trash' ) ) {
+					$return['success'] = false;
+					return $return;
+				}
+
+				$return['success'] = $model->trash( true );
+			break;
+
+			case 'restore':
+				if ( ! method_exists( $model, 'restore' ) ) {
+					$return['success'] = false;
+					return $return;
+				}
+
+				$return['success'] = $model->restore( true );
 			break;
 
 			case 'form':
