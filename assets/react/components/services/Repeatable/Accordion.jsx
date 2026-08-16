@@ -9,6 +9,7 @@ export default function RepeatableAccordion( props ) {
 	const {
 		sortable = true,
 		reorderCallback,
+		alwaysOpen = true,
 	} = props;
 
 	const items = props.items.map( ( item, index ) => {
@@ -62,14 +63,26 @@ export default function RepeatableAccordion( props ) {
 
 	if ( ! sortable ) {
 		return (
-			<AccordionSticky activeKey={ props.activeKey } className={ props.className } alwaysOpen>
+			<AccordionSticky
+				onSelect={ props.onSelect }
+				activeKey={ props.activeKey }
+				defaultActiveKey={ props.defaultActiveKey }
+				className={ props.className }
+				alwaysOpen={ alwaysOpen }
+			>
 				{ items }
 			</AccordionSticky>
 		)
 	}
 
 	return (
-		<AccordionSticky activeKey={ props.activeKey } className={ props.className } alwaysOpen>
+		<AccordionSticky
+			onSelect={ props.onSelect }
+			activeKey={ props.activeKey }
+			defaultActiveKey={ props.defaultActiveKey }
+			className={ props.className }
+			alwaysOpen={ alwaysOpen }
+		>
 			<Sortable
 				setItems={ reorderCallback }
 				items={ items }
@@ -79,7 +92,10 @@ export default function RepeatableAccordion( props ) {
 }
 
 RepeatableAccordion.propTypes = {
+	alwaysOpen: PropTypes.bool,
 	activeKey: PropTypes.any,
+	defaultActiveKey: PropTypes.any,
+	onSelect: PropTypes.func,
 	items: PropTypes.array,
 	sortable: PropTypes.bool,
 	reorderCallback: PropTypes.func,

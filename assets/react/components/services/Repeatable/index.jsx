@@ -15,7 +15,6 @@ import { mergeClassNames } from '../../../utils/props';
 export default function Repeatable( props ) {
 
 	const {
-		activeKey,
 		items,
 		inline = false,
 		sortable = false,
@@ -86,9 +85,22 @@ export default function Repeatable( props ) {
 	return (
 		<Stack gap={0} { ...( props.containerProps || {} ) }>
 			{ inline ?
-				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } className={ props.className } />
+				<RepeatableList
+					items={ parseItems( items ) }
+					sortable={ sortable }
+					reorderCallback={ reorderCallback }
+					className={ props.className }
+				/>
 				:
-				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } className={ props.className } />
+				<RepeatableAccordion
+					activeKey={ props.activeKey }
+					defaultActiveKey={ props.defaultActiveKey }
+					alwaysOpen={ props.alwaysOpen }
+					items={ parseItems( items ) }
+					sortable={ sortable }
+					reorderCallback={ reorderCallback }
+					className={ props.className }
+				/>
 			}
 			{ ( ! max || max > items.length ) &&
 				<Toolbar className="p-2 border" { ...( props.toolbarProps || {} ) }>
@@ -104,7 +116,9 @@ function Toolbar( props ) {
 }
 
 Repeatable.propTypes = {
+	alwaysOpen: PropTypes.bool,
 	activeKey: PropTypes.any,
+	defaultActiveKey: PropTypes.any,
 	items: PropTypes.array,
 	inline: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
 	sortable: PropTypes.bool,
