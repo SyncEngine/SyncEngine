@@ -62,7 +62,7 @@ function createSyncEngineMock() {
 	};
 }
 
-beforeAll(() => {
+beforeEach(() => {
 	window.SyncEngine = createSyncEngineMock();
 });
 
