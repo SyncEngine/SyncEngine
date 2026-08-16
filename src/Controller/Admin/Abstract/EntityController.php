@@ -74,6 +74,7 @@ abstract class EntityController extends AbstractAdminController
 						$return['success'] = $model->delete( true );
 					} else {
 						$return['success'] = $model->trash( true );
+						$return['entity'] = $model->normalize( true, true );
 					}
 				} else {
 					$return['success'] = $model->delete( true );
@@ -81,21 +82,14 @@ abstract class EntityController extends AbstractAdminController
 			break;
 
 			case 'trash':
-				if ( ! method_exists( $model, 'trash' ) ) {
-					$return['success'] = false;
-					return $return;
-				}
-
-				$return['success'] = $model->trash( true );
-			break;
-
 			case 'restore':
-				if ( ! method_exists( $model, 'restore' ) ) {
+				if ( ! method_exists( $model, $action ) ) {
 					$return['success'] = false;
 					return $return;
 				}
 
-				$return['success'] = $model->restore( true );
+				$return['success'] = $model->$action( true );
+				$return['entity'] = $model->normalize( true, true );
 			break;
 
 			case 'form':
