@@ -135,6 +135,42 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		parent::persist( $flush, $entityManager );
 	}
 
+	public function getTrashedAt(): ?\DateTimeImmutable
+	{
+		$trashedAt = $this->getConfig( '_trashedAt' );
+
+		if ( $trashedAt ) {
+			return \DateTimeImmutable::createFromFormat( 'U', $trashedAt );
+		}
+
+		return null;
+	}
+
+	public function isEnabled(): bool
+	{
+		return EntityStatus::ENABLED === $this->getStatus();
+	}
+
+	public function isDisabled(): bool
+	{
+		return EntityStatus::DISABLED === $this->getStatus();
+	}
+
+	public function isTrashed(): bool
+	{
+		return EntityStatus::TRASHED === $this->getStatus();
+	}
+
+	public function isVisible(): bool
+	{
+		return EntityVisibility::VISIBLE === $this->getVisibility();
+	}
+
+	public function isHidden(): bool
+	{
+		return EntityVisibility::HIDDEN === $this->getVisibility();
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response( '', Response::HTTP_NOT_IMPLEMENTED );
