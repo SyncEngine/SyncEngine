@@ -5,6 +5,8 @@ namespace SyncEngine\Entity\Abstract;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use SyncEngine\Attribute\NotExportable;
+use SyncEngine\Model\Enum\EntityStatus;
+use SyncEngine\Model\Enum\EntityVisibility;
 
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already an automation with this ref, please enter a different ref' )]
 #[UniqueEntity( fields: [ 'name' ], message: 'There is already an automation with this name, please enter a different name' )]
@@ -17,6 +19,12 @@ class EngineEntity
 
 	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $ref = null;
+
+	#[ORM\Column( type: 'string', length: 32, options: [ 'default' => EntityStatus::ENABLED->value ] )]
+	protected string $status = EntityStatus::ENABLED->value;
+
+	#[ORM\Column( type: 'string', length: 32, options: [ 'default' => EntityVisibility::VISIBLE->value ] )]
+	protected string $visibility = EntityVisibility::VISIBLE->value;
 
 	#[ORM\Column]
 	protected ?\DateTimeImmutable $created = null;
@@ -56,6 +64,30 @@ class EngineEntity
 	public function setRef( string $ref ): static
 	{
 		$this->ref = $ref;
+
+		return $this;
+	}
+
+	public function getStatus(): EntityStatus
+	{
+		return EntityStatus::from( $this->status );
+	}
+
+	public function setStatus( EntityStatus $status ): static
+	{
+		$this->status = $status->value;
+
+		return $this;
+	}
+
+	public function getVisibility(): EntityVisibility
+	{
+		return EntityVisibility::from( $this->visibility );
+	}
+
+	public function setVisibility( EntityVisibility $visibility ): static
+	{
+		$this->visibility = $visibility->value;
 
 		return $this;
 	}
