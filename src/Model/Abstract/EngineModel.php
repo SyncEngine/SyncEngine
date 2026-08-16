@@ -6,11 +6,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Abstract\EngineEntity;
+use SyncEngine\Exception\NotAllowedException;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Service\ModelExporter;
 
 /**
@@ -65,6 +67,20 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		}
 
 		parent::update( $flush, $entityManager );
+	}
+
+	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false; // @todo Or return true?
+		}
+
+		$manager = $this->getContainer()->get( ModelDependencyManager::class ) ?? new ModelDependencyManager();
+		if ( $manager->hasDependents( $this ) ) {
+			throw new NotAllowedException( 'Cannot delete entity with dependents.' );
+		}
+
+		return parent::delete( $flush, $manager );
 	}
 
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
