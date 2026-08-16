@@ -107,7 +107,6 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		$this->setConfig( $config );
 
 		$this->setStatus( EntityStatus::TRASHED );
-		$this->setConfig( time(), '_trashedAt' );
 		$this->persist( $flush, $entityManager );
 
 		return true;
