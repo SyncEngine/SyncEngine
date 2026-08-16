@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Exception\NotAllowedException;
+use SyncEngine\Model\Enum\EntityStatus;
+use SyncEngine\Model\Enum\EntityVisibility;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Trait\Config;
@@ -28,6 +30,10 @@ use SyncEngine\Service\ModelExporter;
  * @method $this setName( string $name )
  * @method null|string getDescription()
  * @method $this setDescription( ?string $description )
+ * @method EntityStatus|null getStatus()
+ * @method $this setStatus( EntityStatus $status )
+ * @method EntityVisibility|null getVisibility()
+ * @method $this setVisibility( EntityVisibility $visibility )
  * @method null|\DateTimeImmutable getCreated()
  * @method $this setCreated( \DateTimeImmutable $created )
  * @method null|\DateTimeImmutable getModified()
