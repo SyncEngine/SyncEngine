@@ -6,10 +6,15 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use SyncEngine\Model\Interface\Supervisable;
 
 /**
- * @extends ServiceEntityRepository<Supervisable>
+ * @template T of object
+ *
+ * @extends ServiceEntityRepository<T>
  */
 trait Supervisor
 {
+	/**
+	 * @return array<T>
+	 */
 	public function findBySupervisorClassLocator( $classLocator )
 	{
 		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(

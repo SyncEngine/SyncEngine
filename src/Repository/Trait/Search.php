@@ -4,6 +4,9 @@ namespace SyncEngine\Repository\Trait;
 
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @template T of object
+ */
 trait Search
 {
 	private function createSearchQueryBuilder( array $search, ?array $criteria = null, ?array $orderBy = null, $limit = null, $offset = null ): QueryBuilder
@@ -43,11 +46,17 @@ trait Search
 		return $queryBuilder;
 	}
 
+	/**
+	 * @return array<T>
+	 */
 	public function searchBy( array $search, ?array $criteria = null, ?array $orderBy = null, $limit = null, $offset = null ): array
 	{
 		return $this->createSearchQueryBuilder( $search, $criteria, $orderBy, $limit, $offset )->getQuery()->getResult();
 	}
 
+	/**
+	 * @return T|null
+	 */
 	public function searchOneBy( array $search, ?array $criteria = null, ?array $orderBy = null, $offset = null ): mixed
 	{
 		return $this->createSearchQueryBuilder( $search, $criteria, $orderBy, 1, $offset )->getQuery()->getOneOrNullResult();
