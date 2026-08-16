@@ -101,6 +101,11 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 			throw new NotAllowedException( 'Cannot trash entity with dependents.' );
 		}
 
+		$config = $this->getConfig();
+		$config['_trashedAt'] = time();
+		$config['_prevStatus'] = $this->getStatus()->value;
+		$this->setConfig( $config );
+
 		$this->setStatus( EntityStatus::TRASHED );
 		$this->setConfig( time(), '_trashedAt' );
 		$this->persist( $flush, $entityManager );
@@ -114,8 +119,20 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 			return false;
 		}
 
-		$this->setStatus( EntityStatus::ENABLED );
-		$this->setConfig( null, '_trashedAt' );
+		$config = $this->getConfig();
+
+		$status     = EntityStatus::ENABLED;
+		$prevStatus = $config['_prevStatus'] ?? null;
+		if ( $prevStatus ) {
+			$status = EntityStatus::tryFrom( $prevStatus ) ?? $status;
+		}
+
+		$this->setStatus( $status );
+
+		unset( $config['_trashedAt'] );
+		unset( $config['_prevStatus'] );
+
+		$this->setConfig( $config );
 		$this->persist( $flush, $entityManager );
 
 		return true;
