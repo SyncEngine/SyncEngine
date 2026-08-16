@@ -83,6 +83,10 @@ abstract class EntityController extends AbstractAdminController
 
 			case 'trash':
 			case 'restore':
+			case 'disable':
+			case 'enable':
+			case 'show':
+			case 'hide':
 				if ( ! method_exists( $model, $action ) ) {
 					$return['success'] = false;
 					return $return;

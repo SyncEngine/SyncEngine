@@ -138,6 +138,54 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		return true;
 	}
 
+	public function enable( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setStatus( EntityStatus::ENABLED );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function disable( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setStatus( EntityStatus::DISABLED );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function show( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setVisibility( EntityVisibility::VISIBLE );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function hide( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setVisibility( EntityVisibility::HIDDEN );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		$entity = $this->getEntity();
