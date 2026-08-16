@@ -57,7 +57,11 @@ function createSyncEngineMock() {
 		},
 		theme: { theme: 'light', setTheme: vi.fn() },
 		preferences: {},
-		forms: { changed: [] },
+		forms: {
+			changed: [],
+			register: vi.fn(),
+			unregister: vi.fn(),
+		},
 		icons: {},
 	};
 }
