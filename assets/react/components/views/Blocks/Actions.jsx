@@ -36,7 +36,7 @@ function getVariants( button, variant, outline, subtle ) {
 	}
 }
 
-function createTrigger( action, variants, buttonProps = {}, dropdown = false ) {
+function createTrigger( action, variants, elemProps = {}, dropdown = false ) {
 	let iconClasses = '';
 
 	let trigger = action.label ?? action.action;
@@ -55,9 +55,19 @@ function createTrigger( action, variants, buttonProps = {}, dropdown = false ) {
 		}
 	}
 
-	const Elemt = dropdown ? DropdownItem : Button;
+	if ( ! variants.button ) {
+		return trigger;
+	}
 
-	return variants.button ? <Elemt variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps } key={ buttonProps.key ?? undefined }>{ trigger }</Elemt> : trigger;
+	if ( dropdown ) {
+		return (
+			<DropdownItem variant={ variants.button } { ...elemProps } key={ elemProps.key ?? undefined }>
+				{ trigger }
+			</DropdownItem>
+		)
+	}
+
+	return <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...elemProps } key={ elemProps.key ?? undefined }>{ trigger }</Button>;
 }
 
 export default function Actions( props ) {
