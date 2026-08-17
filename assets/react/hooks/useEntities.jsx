@@ -283,6 +283,36 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		return true;
 	}
 
+	const doActionAndRefresh = async( entityId, action, params, updateState = true ) => {
+		if ( isNaN( entityId ) ) {
+			if ( ! entityId.hasOwnProperty( 'id' ) ) {
+				return;
+			}
+			entityId = entityId.id;
+		}
+		setLoading( ( updateState && 'silent' !== updateState ) );
+
+		action += '|query';
+
+		const results =
+			await fetchPost(
+				endpoint,
+				{ ...params, id: entityId, action: action, query: query }
+			);
+
+		setLoading( false );
+		if ( ! results.success ) {
+			return results.error ?? false;
+		}
+
+		if ( updateState ) {
+			remove( entityId );
+			update( results.data, true );
+		}
+
+		return true;
+	}
+
 	const disable = async( entityId, updateState = true ) => {
 		return doAction( entityId, 'disable', {}, updateState );
 	}
@@ -300,35 +330,15 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	}
 
 	const restore = async( entityId, updateState = true ) => {
-		return doAction( entityId, 'restore', {}, updateState );
+		return doActionAndRefresh( entityId, 'restore', {}, updateState );
 	}
 
-	const deleteAndReload = async ( entityId, updateState = true ) => {
-		if ( isNaN( entityId ) ) {
-			if ( ! entityId.hasOwnProperty( 'id' ) ) {
-				return;
-			}
-			entityId = entityId.id;
-		}
-		setLoading( ( updateState && 'silent' !== updateState ) );
+	const trashAndRefresh = async ( entityId, updateState = true ) => {
+		return doActionAndRefresh( entityId, 'trash', {}, updateState );
+	}
 
-		const results =
-			await fetchPost(
-				endpoint,
-				{ action: 'delete|query', delete: entityId, query: query }
-			);
-
-		setLoading( false );
-		if ( ! results.success ) {
-			return results.error ?? false;
-		}
-
-		if ( updateState ) {
-			remove( entityId );
-			update( results.data, true );
-		}
-
-		return true;
+	const deleteAndRefresh = async ( entityId, updateState = true, delete_permanent = false ) => {
+		return doActionAndRefresh( entityId, 'delete', { delete_permanent: delete_permanent }, updateState );
 	}
 
 	const get = ( id_or_ref, global = false ) => {

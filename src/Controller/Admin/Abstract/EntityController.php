@@ -126,19 +126,24 @@ abstract class EntityController extends AbstractAdminController
 			break;
 
 			case 'delete|query':
+			case 'trash|query':
+			case 'restore|query':
 			case 'query':
 			case 'list':
 
-				if ( 'delete|query' === $action ) {
-					$deleteId = $request->request->get( 'delete' );
-					$delete   = $model::get( $deleteId );
-					if ( ! $delete ) {
+				if ( 'delete|query' === $action || 'trash|query' === $action || 'restore|query' === $action ) {
+					$action      = explode( '|', $action )[0];
+					if ( ! $model->hasEntity() ) {
 						$return['success'] = false;
-						$return['error']   = $this->trans( 'Entity not found: {entity}:{id}', [ $model::getEntityClass(), $deleteId ] );
-
+						$return['error']   = $this->trans( 'Entity not found' );
 						return $return;
 					}
-					$delete->delete( true );
+					if ( ! method_exists( $model, $action ) ) {
+						$return['success'] = false;
+						$return['error']   = $this->trans( 'Action not supported: {action}', [ $action ] );
+						return $return;
+					}
+					$model->$action( true );
 				}
 
 				$query   = $request->request->get( 'query' );
