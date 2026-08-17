@@ -246,7 +246,12 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		try {
-			$modelInstance->delete( true );
+			$permanent = $request->request->get( 'delete_permanent' );
+			if ( $permanent ) {
+				$modelInstance->delete( true );
+			} else {
+				$modelInstance->trash( true );
+			}
 
 			return $this->json( [ 'message' => $this->trans( 'Entity deleted' ) ], Response::HTTP_OK );
 		} catch ( \Exception $e ) {
