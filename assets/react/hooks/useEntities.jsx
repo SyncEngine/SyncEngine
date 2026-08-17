@@ -268,7 +268,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		const results =
 			await fetchPost(
 				endpoint,
-				{ ...params, action: action }
+				{ ...params, id: entityId, action: action }
 			);
 
 		setLoading( false );
