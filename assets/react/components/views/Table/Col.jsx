@@ -9,9 +9,10 @@ export default function TableCol( props ) {
 		item,
 		content,
 		blockType = column.block ?? column.key ?? column.name ?? column,
+		className = '',
 	} = props;
 
-	let classes = '';
+	let classes = className;
 
 	if ( 'placeholder' === item ) {
 		return <td><LoadingPlaceholder/></td>
@@ -39,4 +40,5 @@ TableCol.propTypes = {
 	item: PropTypes.object,
 	content: PropTypes.any,
 	blockType: PropTypes.string,
+	className: PropTypes.string,
 };

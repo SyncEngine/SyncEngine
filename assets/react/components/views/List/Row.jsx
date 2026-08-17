@@ -10,6 +10,7 @@ export default function ListRow( {
 	columns,
 	callbacks,
 	wrap = true,
+	className,
 } ) {
 
 	let row = columns &&
@@ -32,7 +33,7 @@ export default function ListRow( {
 	row = <Stack direction="horizontal" className="justify-content-between w-100" gap={2}>{ row }</Stack>
 
 	if ( wrap ) {
-		row = <ListGroupItem>{ row }</ListGroupItem>
+		row = <ListGroupItem className={ className }>{ row }</ListGroupItem>
 	}
 
 	return row;
@@ -44,4 +45,5 @@ ListRow.propTypes = {
 	columns: PropTypes.object,
 	callbacks: PropTypes.object,
 	wrap: PropTypes.bool,
+	className: PropTypes.string,
 };

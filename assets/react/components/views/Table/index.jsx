@@ -27,8 +27,12 @@ export default function TableView( props ) {
 			<tbody>
 			{ ! isEmpty( items ) &&
 				objectToMappable( items, 'key' ).map( ( item, index ) => {
+					let className = '';
+					if ( item.disabled || item.hidden || 'disabled' === item.status || 'hidden' === item.status ) {
+						className = 'opacity-50';
+					}
 					return (
-						<TableRow key={ item.key ?? index } type={ type } columns={ columnMap } item={ item } callbacks={ callbacks } />
+						<TableRow key={ item.key ?? index } type={ type } columns={ columnMap } item={ item } callbacks={ callbacks } className={ className } />
 					)
 				} )
 			}

@@ -9,6 +9,7 @@ export default function TableRow( {
 	columns,
 	callbacks,
 	wrap = true,
+	className,
 } ) {
 
 	let row = objectToMappable( columns, 'key' ).map( ( column, index ) => {
@@ -28,7 +29,7 @@ export default function TableRow( {
 	} )
 
 	if ( wrap ) {
-		row = <tr>{ row }</tr>;
+		row = <tr className={ className }>{ row }</tr>;
 	}
 
 	return row;
@@ -40,4 +41,5 @@ TableRow.propTypes = {
 	columns: PropTypes.object,
 	callbacks: PropTypes.object,
 	wrap: PropTypes.bool,
+	className: PropTypes.string,
 };
