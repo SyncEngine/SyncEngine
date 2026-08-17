@@ -307,6 +307,9 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 		if ( updateState ) {
 			remove( entityId );
+			if ( results.entity ) {
+				edit( results.entity, true );
+			}
 			update( results.data, true );
 		}
 
