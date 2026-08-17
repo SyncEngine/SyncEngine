@@ -11,6 +11,7 @@ import Icon from '../../partials/Icon';
 import Label from '../../form/Label';
 
 import Modal from '../../modals/Modal';
+import ConfirmModal from '../../modals/ConfirmModal';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
@@ -180,14 +181,22 @@ export default function Actions( props ) {
 				const trigger = createTrigger( { ...action, icon: action.icon ?? 'restore' }, variants, {}, action.dropdown );
 				return React.cloneElement( trigger, { key: action.action, onClick: () => { action.callback( props.entity ?? props.item ?? props.id ) } } );
 
+			case 'enable':
 			case 'disable':
 				if ( ! item ) {
 					return null;
 				}
+				if ( props.entity || item._entity ) {
+					return (
+						<ConfirmModal key={ action.action } entity={ item } { ...action } callbackProps={ item }>
+							{ createTrigger( { ...action, icon: action.icon ?? action.action }, variants, {}, action.dropdown ) }
+						</ConfirmModal>
+					)
+				}
 				return (
 					<FormCheck
 						key={ action.action }
-						aria-label={ t('Disable') }
+						aria-label={ 'disable' === action.action ? t('Disable') : t('Enable') }
 						className="mt-n1 no-label"
 						type="switch"
 						defaultChecked={ ! ( item._disabled ?? false ) }
