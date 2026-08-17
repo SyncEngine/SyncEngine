@@ -186,7 +186,7 @@ export default function Actions( props ) {
 				}
 				return (
 					<FormCheck
-						key={ key }
+						key={ action.action }
 						aria-label={ t('Disable') }
 						className="mt-n1 no-label"
 						type="switch"
