@@ -38,7 +38,7 @@ abstract class EntityController extends AbstractAdminController
 				'error'   => $e->getMessage(),
 			];
 
-			if ( $this->getParameter( 'kernel.debug' ) ) {
+			if ( $this->getParameter( 'kernel.debug', false ) ) {
 				$response['exception'] = $e;
 			}
 		}
