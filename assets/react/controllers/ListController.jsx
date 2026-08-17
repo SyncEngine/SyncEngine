@@ -92,11 +92,7 @@ export default function ListController( props ) {
 					query.where = {};
 				}
 
-				if ( value === '*' ) {
-					delete query.where[ key ];
-				} else {
-					query.where[ key ] = value;
-				}
+				query.where[ key ] = value;
 
 				// Always reset to page 1 when filters change.
 				query.offset = 0;

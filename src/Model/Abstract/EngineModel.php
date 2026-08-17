@@ -264,10 +264,14 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 		if ( empty( $query['where']['status'] ) ) {
 			$query['where']['status'] = EntityStatus::ENABLED->value;
+		} elseif ( '*' === $query['where']['status'] ) {
+			unset( $query['where']['status'] );
 		}
 
 		if ( empty( $query['where']['visibility'] ) ) {
 			$query['where']['visibility'] = EntityVisibility::VISIBLE->value;
+		} elseif ( '*' === $query['where']['visibility'] ) {
+			unset( $query['where']['visibility'] );
 		}
 
 		return $query;
