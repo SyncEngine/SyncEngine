@@ -256,6 +256,53 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete app.entities[ type ][ entityId ];
 	}
 
+	const doAction = async( entityId, action, params, updateState = true ) => {
+		if ( isNaN( entityId ) ) {
+			if ( ! entityId.hasOwnProperty( 'id' ) ) {
+				return;
+			}
+			entityId = entityId.id;
+		}
+		setLoading( ( updateState && 'silent' !== updateState ) );
+
+		const results =
+			await fetchPost(
+				endpoint,
+				{ ...params, action: action }
+			);
+
+		setLoading( false );
+		if ( ! results.success ) {
+			return results.error ?? false;
+		}
+
+		if ( updateState ) {
+			edit( results.entity, true );
+		}
+
+		return true;
+	}
+
+	const disable = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'disable', {}, updateState );
+	}
+
+	const enable = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'enable', {}, updateState );
+	}
+
+	const show = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'show', {}, updateState );
+	}
+
+	const hide = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'hide', {}, updateState );
+	}
+
+	const restore = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'restore', {}, updateState );
+	}
+
 	const deleteAndReload = async ( entityId, updateState = true ) => {
 		if ( isNaN( entityId ) ) {
 			if ( ! entityId.hasOwnProperty( 'id' ) ) {
@@ -307,6 +354,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		add: add,
 		edit: edit,
 		remove: remove,
+		enable: enable,
+		disable: disable,
+		show: show,
+		hide: hide,
+		restore: restore,
 		delete: deleteAndReload,
 		getTotal: getTotal,
 		getQuery: getQuery,
