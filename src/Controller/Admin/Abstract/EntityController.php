@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Enum\EntityStatus;
 use SyncEngine\Model\Interface\Exportable;
 
 /**
@@ -148,6 +149,12 @@ abstract class EntityController extends AbstractAdminController
 
 				$query   = $request->request->get( 'query' );
 				$query   = $query ? json_decode( $query, true ) : null;
+
+				// Apply defaults ONLY if not explicitly set in where
+				if ( empty( $query['where']['status'] ) ) {
+					$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
+				}
+
 				$results = $this->_handleActionList( $model, $query );
 
 				if ( ! empty( $query['total'] ) ) {
@@ -265,6 +272,11 @@ abstract class EntityController extends AbstractAdminController
 		];
 
 		$query = array_merge( $defaults, $query );
+
+		// Apply defaults ONLY if not explicitly set in where
+		if ( empty( $query['where']['status'] ) ) {
+			$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
+		}
 
 		$page = $request->query->get( 'page' );
 		if ( is_numeric( $page ) ) {
