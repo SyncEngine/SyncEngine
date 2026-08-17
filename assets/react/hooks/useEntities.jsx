@@ -369,7 +369,8 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		show: show,
 		hide: hide,
 		restore: restore,
-		delete: deleteAndReload,
+		trash: trashAndRefresh,
+		delete: deleteAndRefresh,
 		getTotal: getTotal,
 		getQuery: getQuery,
 	}
