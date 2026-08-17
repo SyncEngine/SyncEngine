@@ -146,7 +146,11 @@ abstract class EntityController extends AbstractAdminController
 						$return['error']   = $this->trans( 'Action not supported: {action}', [ $action ] );
 						return $return;
 					}
+
 					$model->$action( true );
+					if ( 'delete' !== $action ) {
+						$return['entity'] = $model->normalize( true, true );
+					}
 				}
 
 				$query   = $request->request->get( 'query' );
