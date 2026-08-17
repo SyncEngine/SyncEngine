@@ -260,12 +260,13 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 	public static function parseQuery( array $query ): array
 	{
-		// Apply defaults ONLY if not explicitly set in where
-		if ( ! isset( $query['where']['status'] ) ) {
+		// Apply defaults unless specifically set.
+
+		if ( empty( $query['where']['status'] ) ) {
 			$query['where']['status'] = EntityStatus::ENABLED->value;
 		}
 
-		if ( ! isset( $query['where']['visibility'] ) ) {
+		if ( empty( $query['where']['visibility'] ) ) {
 			$query['where']['visibility'] = EntityVisibility::VISIBLE->value;
 		}
 
