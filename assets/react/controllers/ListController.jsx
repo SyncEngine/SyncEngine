@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Card } from 'react-bootstrap';
+import { Card, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
 import useGlobal from '../hooks/useGlobal';
@@ -17,6 +17,7 @@ import PaginationInfo from '../components/partials/PaginationToolbar/Info';
 import Icon from '../components/partials/Icon';
 import { HStack } from '../components/partials/Stack';
 import Search from '../components/partials/Search';
+import { deepClone, objectToMappable } from '../utils/data';
 
 function getQuery( query ) {
 	let url = new URL( window.location.href );
@@ -50,6 +51,7 @@ export default function ListController( props ) {
 			actions: [ 'pagination' ]
 		},
 		columns = {},
+		filters = [],
 	} = args;
 
 	const disableQuery  = false === args.query;
@@ -81,6 +83,24 @@ export default function ListController( props ) {
 		toPage: ( pageNumber, pageIndex ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageIndex * query.limit; return query; } ) },
 		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) },
 		search: ( search, column ) => { itemsCallbacks.fetch( ( query ) => { query.search[ column ?? 'name' ] = search; return query; } ) },
+		setFilter: ( key, value ) => {
+			itemsCallbacks.fetch( ( query ) => {
+				if ( ! query.where ) {
+					query.where = {};
+				}
+
+				if ( value === '*' ) {
+					delete query.where[ key ];
+				} else {
+					query.where[ key ] = value;
+				}
+
+				// Always reset to page 1 when filters change.
+				query.offset = 0;
+
+				return query;
+			});
+		},
 	}
 
 	/**
@@ -135,6 +155,39 @@ export default function ListController( props ) {
 					return (
 						<HStack key={ action + index }>
 							<Search onSearch={ queryCallbacks.search } column="name" value={ query.search?.["name"] } placeholder="Search.." />
+						</HStack>
+					);
+
+				case 'filter':
+					return (
+						filters && <HStack key={ action + index } gap={ 2 }>
+							{ objectToMappable( deepClone( filters ), 'key' ).map( ( filter, i ) => {
+								const currentFilterValue = query.where?.[ filter.key ] ?? null;
+								const displayLabel = filter.options.find( opt => opt.value === currentFilterValue )?.label
+									?? filter.defaultLabel
+									?? 'All';
+
+								return (
+									<DropdownButton
+										key={ i }
+										id={ `filter-${filter.key}` }
+										title={ displayLabel }
+										variant="outline-secondary"
+										drop="down"
+										className="ms-0"
+									>
+										{ filter.options.map( ( opt, j ) => (
+											<Dropdown.Item
+												key={ j }
+												eventKey={ opt.value }
+												onClick={ () => queryCallbacks.setFilter( filter.key, opt.value ) }
+											>
+												{ opt.label }
+											</Dropdown.Item>
+										))}
+									</DropdownButton>
+								);
+							})}
 						</HStack>
 					);
 
