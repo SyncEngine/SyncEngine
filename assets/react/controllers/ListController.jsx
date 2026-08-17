@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Card, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
-import useGlobal from '../hooks/useGlobal';
-import useEntities from '../hooks/useEntities';
-import usePreference from '../hooks/usePreference';
+import { HStack } from '../components/partials/Stack';
+import Search from '../components/partials/Search';
+import Icon from '../components/partials/Icon';
+import Label from '../components/form/Label';
 
 import EntityModal from '../components/modals/EntityModal';
 import ListView from '../components/views/List';
@@ -14,10 +15,12 @@ import TableView from '../components/views/Table';
 import Pager from '../components/partials/PaginationToolbar/Pager';
 import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
-import Icon from '../components/partials/Icon';
-import { HStack } from '../components/partials/Stack';
-import Search from '../components/partials/Search';
+
+import useGlobal from '../hooks/useGlobal';
+import useEntities from '../hooks/useEntities';
+import usePreference from '../hooks/usePreference';
 import { deepClone, objectToMappable } from '../utils/data';
+import { isString } from '../utils/conditions';
 
 function getQuery( query ) {
 	let url = new URL( window.location.href );
@@ -163,15 +166,15 @@ export default function ListController( props ) {
 						filters && <HStack key={ action + index } gap={ 2 }>
 							{ objectToMappable( deepClone( filters ), 'key' ).map( ( filter, i ) => {
 								const currentFilterValue = query.where?.[ filter.key ] ?? null;
-								const displayLabel = filter.options.find( opt => opt.value === currentFilterValue )?.label
-									?? filter.defaultLabel
+								const displayLabel = filter.options.find( opt => opt.value === currentFilterValue )
+									?? filter.label
 									?? 'All';
 
 								return (
 									<DropdownButton
 										key={ i }
 										id={ `filter-${filter.key}` }
-										title={ displayLabel }
+										title={ <Label icon={ isString( displayLabel ) ? filter.icon : undefined } label={ displayLabel } /> }
 										variant="outline-secondary"
 										drop="down"
 										className="ms-0"
@@ -182,7 +185,7 @@ export default function ListController( props ) {
 												eventKey={ opt.value }
 												onClick={ () => queryCallbacks.setFilter( filter.key, opt.value ) }
 											>
-												{ opt.label }
+												<Label { ...opt } />
 											</Dropdown.Item>
 										))}
 									</DropdownButton>

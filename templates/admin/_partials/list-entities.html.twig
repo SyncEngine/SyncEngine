@@ -48,13 +48,14 @@
 {% set filters = filters ?? [
 		{
 			key: 'status',
-			label: 'Status',
-			defaultLabel: 'Default',
+			label: 'Status'|trans,
+			default: '',
+			icon: 'status',
 			options: [
-				{ value: '',        label: 'Default'|trans },
-				{ value: 'enabled',  label: 'Enabled'|trans },
-				{ value: 'disabled', label: 'Disabled'|trans },
-				{ value: 'trashed',  label: 'Trashed'|trans },
+				{ value: '',         icon: 'status',  label: 'Default'|trans },
+				{ value: 'enabled',  icon: 'enable',  label: 'Enabled'|trans },
+				{ value: 'disabled', icon: 'disable', label: 'Disabled'|trans },
+				{ value: 'trashed',  icon: 'delete',  label: 'Trashed'|trans },
 			]
 		}
 ] %}
