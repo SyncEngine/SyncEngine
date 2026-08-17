@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Block from '../Blocks';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { mergeClassNames } from '../../../utils/props';
+import { isItemDisabled } from '../../../utils/conditions';
 
 export default function ListCol( props ) {
 	const {
@@ -10,15 +11,20 @@ export default function ListCol( props ) {
 		item,
 		content,
 		blockType = column.block ?? column.key ?? column.name ?? column,
-		className = '',
 	} = props;
 
 	if ( 'placeholder' === item ) {
 		return <LoadingPlaceholder/>
 	}
 
+	let classes = '';
+
+	if ( isItemDisabled( item ) ) {
+		classes = 'text-muted';
+	}
+
 	return (
-		<div className={ ( className || column.classes ) && mergeClassNames( className, column.classes ?? '' ) }>
+		<div className={ mergeClassNames( props.className, classes ) }>
 			<Block { ...props } block={ blockType } content={ content } args={ column } />
 		</div>
 	);
