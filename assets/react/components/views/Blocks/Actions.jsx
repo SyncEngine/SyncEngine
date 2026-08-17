@@ -188,7 +188,9 @@ export default function Actions( props ) {
 				)
 
 			case 'restore':
-				const trigger = createTrigger( { ...action, icon: action.icon ?? 'restore' }, variants, {}, action.dropdown );
+			case 'hide':
+			case 'show':
+				const trigger = createTrigger( { ...action, icon: action.icon ?? action.action }, variants, {}, action.dropdown );
 				return React.cloneElement( trigger, { key: action.action, onClick: () => { action.callback( props.entity ?? props.item ?? props.id ) } } );
 
 			case 'enable':
