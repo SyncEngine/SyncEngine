@@ -100,6 +100,17 @@
 				{ value: 'disabled', icon: 'disable', label: 'Disabled'|trans },
 				{ value: 'trashed',  icon: 'delete',  label: 'Trashed'|trans },
 			]
+		},
+		{
+			key: 'visibility',
+			label: 'Visibility'|trans,
+			default: 'visible',
+			icon: 'visible',
+			options: [
+				{ value: 'visible', icon: 'visible', label: 'Visible'|trans },
+				{ value: 'hidden',  icon: 'hidden', label: 'Hidden'|trans },
+				{ value: '*',       icon: 'visibility', label: 'All'|trans }
+			]
 		}
 ] %}
 
