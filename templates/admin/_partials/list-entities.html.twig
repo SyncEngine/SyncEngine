@@ -41,6 +41,24 @@
 
 {% set header = header ?? {} %}
 
+{% if header.actions is not defined %}
+	{% set header = header|merge({ actions: [ 'search', 'filter', 'create' ] }) %}
+{% endif %}
+
+{% set filters = filters ?? [
+		{
+			key: 'status',
+			label: 'Status',
+			defaultLabel: 'Default',
+			options: [
+				{ value: '',        label: 'Default'|trans },
+				{ value: 'enabled',  label: 'Enabled'|trans },
+				{ value: 'disabled', label: 'Disabled'|trans },
+				{ value: 'trashed',  label: 'Trashed'|trans },
+			]
+		}
+] %}
+
 {% set footer = footer ?? {
 	actions: [
 		'total',
