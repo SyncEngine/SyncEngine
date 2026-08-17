@@ -50,6 +50,14 @@ class ApiRestV1Controller extends AbstractApiController
 				$query['limit'] = 100;
 			}
 
+			if ( empty( $query['where']['status'] ) ) {
+				$query['where']['status'] = '*';
+			}
+
+			if ( empty( $query['where']['visibility'] ) ) {
+				$query['where']['visibility'] = '*';
+			}
+
 			$list = $model::getAll( $query );
 			foreach ( $list as &$entityItem ) {
 				$entityItem = $entityItem->normalize();
