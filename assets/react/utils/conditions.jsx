@@ -503,7 +503,7 @@ function isId( value ) {
  * @param {object} element
  * @returns {boolean}
  */
-function isHidden( element ) {
+function isElementHidden( element ) {
 	return ( element.offsetParent === null );
 }
 
@@ -596,7 +596,7 @@ export {
 	isFalse,
 	isTrue,
 	isId,
-	isHidden,
+	isElementHidden,
 	isIterable,
 	isObject,
 	isPromise,
