@@ -21,12 +21,8 @@ export default function ListView( props ) {
 		<ListGroup>
 		{ ! isEmpty( items ) &&
 			objectToMappable( items, 'key' ).map( ( item, index ) => {
-				let className = '';
-				if ( item.disabled || item.hidden || 'disabled' === item.status || 'hidden' === item.status ) {
-					className = 'opacity-50';
-				}
 				return (
-					<ListRow key={ item.key ?? index } type={ type } columns={ columns } item={ item } callbacks={ callbacks } className={ className } />
+					<ListRow key={ item.key ?? index } type={ type } columns={ columns } item={ item } callbacks={ callbacks } />
 				)
 			} )
 		}
