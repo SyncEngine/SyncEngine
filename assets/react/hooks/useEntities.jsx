@@ -322,11 +322,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	}
 
 	const show = async( entityId, updateState = true ) => {
-		return doAction( entityId, 'show', {}, updateState );
+		return doActionAndRefresh( entityId, 'show', {}, updateState );
 	}
 
 	const hide = async( entityId, updateState = true ) => {
-		return doAction( entityId, 'hide', {}, updateState );
+		return doActionAndRefresh( entityId, 'hide', {}, updateState );
 	}
 
 	const restore = async( entityId, updateState = true ) => {

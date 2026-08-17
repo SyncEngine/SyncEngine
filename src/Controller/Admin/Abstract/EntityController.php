@@ -129,10 +129,12 @@ abstract class EntityController extends AbstractAdminController
 			case 'delete|query':
 			case 'trash|query':
 			case 'restore|query':
+			case 'hide|query':
+			case 'show|query':
 			case 'query':
 			case 'list':
 
-				if ( 'delete|query' === $action || 'trash|query' === $action || 'restore|query' === $action ) {
+				if ( str_ends_with( $action, '|query' ) ) {
 					$action      = explode( '|', $action )[0];
 					if ( ! $model->hasEntity() ) {
 						$return['success'] = false;
