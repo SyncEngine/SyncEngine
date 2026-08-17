@@ -35,7 +35,7 @@
 		label: 'Actions'|trans,
 		view: 'grouped',
 		actions: {
-			reset: {
+			'reset': {
 				conditions: {
 					"data.running.active": true,
 				},
@@ -51,10 +51,14 @@
 					action: 'reset',
 				},
 			},
-			link: { label: 'Edit'|trans, dropdown: true },
-			edit: { label: 'Quick Edit'|trans },
-			export: { label: 'Export'|trans, dropdown: true },
-			'delete': { label: 'Delete'|trans, dropdown: true },
+			'link': { label: 'Edit'|trans, dropdown: true },
+			'edit': { label: 'Quick Edit'|trans },
+			'disable': { label: 'Disable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'enabled' } } },
+			'enable': { label: 'Enable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'disabled' } } },
+			'export': { label: 'Export'|trans, dropdown: true },
+			'trash': { label: 'Trash'|trans, dropdown: true, conditions: { status: { operator: '!=', compare: 'trashed' } } },
+			'restore': { label: 'Restore'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
+			'delete': { label: 'Delete Permanently'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
 		}
 	}
 } %}
