@@ -53,6 +53,8 @@
 			},
 			'link': { label: 'Edit'|trans, dropdown: true },
 			'edit': { label: 'Quick Edit'|trans },
+			'hide': { label: 'Hide'|trans, dropdown: true, conditions: { visibility: { operator: '!=', compare: 'hidden' } } },
+			'show': { label: 'Show'|trans, dropdown: true, conditions: { visibility: { operator: '==', compare: 'hidden' } } },
 			'disable': { label: 'Disable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'enabled' } } },
 			'enable': { label: 'Enable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'disabled' } } },
 			'export': { label: 'Export'|trans, dropdown: true },
