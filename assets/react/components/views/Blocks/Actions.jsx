@@ -1,27 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, DropdownButton, FormCheck } from 'react-bootstrap';
+import { ButtonGroup, DropdownButton, DropdownItem, FormCheck } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
 
 import { HStack, VStack } from '../../partials/Stack';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
+import Label from '../../form/Label';
+
+import Modal from '../../modals/Modal';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
-
-import Modal from '../../modals/Modal';
 import RequestModal from '../../modals/RequestModal';
+import PreviewModal from '../../modals/PreviewModal';
+
 import ModalToggle from '../../services/ModalToggle';
 import Collapsible from '../../services/Collapsible';
 import ResponseTabContent from '../../services/ResponseTabs/Content';
-import PreviewModal from '../../modals/PreviewModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
-import DropdownItem from 'react-bootstrap/DropdownItem';
-import Label from '../../form/Label';
 
 function getVariants( button, variant, outline, subtle ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -165,6 +165,7 @@ export default function Actions( props ) {
 
 			case 'delete':
 			case 'remove':
+			case 'trash':
 				const deleteVariant = action.variant ?? 'danger';
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
@@ -174,6 +175,10 @@ export default function Actions( props ) {
 						}
 					</DeleteModal>
 				)
+
+			case 'restore':
+				const trigger = createTrigger( { ...action, icon: action.icon ?? 'restore' }, variants, {}, action.dropdown );
+				return React.cloneElement( trigger, { key: action.action, onClick: () => { action.callback( props.entity ?? props.item ?? props.id ) } } );
 
 			case 'disable':
 				if ( ! item ) {
