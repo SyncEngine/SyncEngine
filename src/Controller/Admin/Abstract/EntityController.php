@@ -151,7 +151,7 @@ abstract class EntityController extends AbstractAdminController
 				$query   = $query ? json_decode( $query, true ) : null;
 
 				// Apply defaults ONLY if not explicitly set in where
-				if ( empty( $query['where']['status'] ) ) {
+				if ( $model instanceof EngineModel && empty( $query['where']['status'] ) ) {
 					$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
 				}
 
@@ -263,7 +263,7 @@ abstract class EntityController extends AbstractAdminController
 	 * @todo Create a Query DTO
 	 * @phpstan-ignore missingType.iterableValue, missingType.iterableValue
 	 */
-	public function _getListQuery( Request $request, array $query = [] ): array
+	public function _getListQuery( EntityModel $model, Request $request, array $query = [] ): array
 	{
 		$defaults = [
 			'limit'     => 10,
@@ -274,7 +274,7 @@ abstract class EntityController extends AbstractAdminController
 		$query = array_merge( $defaults, $query );
 
 		// Apply defaults ONLY if not explicitly set in where
-		if ( empty( $query['where']['status'] ) ) {
+		if ( $model instanceof EngineModel && empty( $query['where']['status'] ) ) {
 			$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
 		}
 

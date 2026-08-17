@@ -36,7 +36,7 @@ class FlowController extends EntityController
 	public function renderList( Request $request ): Response
 	{
 		$model = FlowModel::create();
-		$query = $this->_getListQuery( $request );
+		$query = $this->_getListQuery( $model, $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(
