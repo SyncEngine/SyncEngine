@@ -41,6 +41,47 @@
 {% set columns = firstColumns|merge( columns ) %}
 {% set columns = columns|merge( lastColumns ) %}
 
+{% if columns.info and columns.info.badges is not defined %}
+	{% set infoColumn = columns.info|merge( {
+		badges: [
+			{
+				title: 'Status'|trans,
+				options: [
+				{
+					compare: 'disabled',
+					value: '{{ status }}',
+					label: 'Disabled',
+					type: 'secondary',
+					icon: 'disable',
+				},
+				{
+					compare: 'trashed',
+					value: '{{ status }}',
+					label: 'Trashed',
+					type: 'secondary',
+					icon: 'delete',
+				}
+			]
+			},
+			{
+				title: 'Visibility'|trans,
+				options: [
+				{
+					compare: 'hidden',
+					value: '{{ visibility }}',
+					label: 'Hidden',
+					type: 'secondary',
+					icon: 'hide',
+				},
+			]
+			}
+		]
+	} ) %}
+
+	{% set columns = columns|merge( { info: infoColumn } ) %}
+
+{% endif %}
+
 {% set header = header ?? {} %}
 
 {% if header.actions is not defined %}
