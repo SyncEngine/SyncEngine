@@ -64,6 +64,11 @@ class EndpointExecuteCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
+		if ( ! $model->isEnabled() ) {
+			$output->writeln( '<error>Endpoint is not enabled</error>: <info>' . $endpoint . '</info>' );
+			return Command::INVALID;
+		}
+
 		if ( ! $model->canRunNow() && ! $input->getOption( 'ignore-state' ) ) {
 			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
