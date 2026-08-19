@@ -80,12 +80,6 @@ jobs:
 #      -   name: Check the Symfony console
 #          run: bin/console -V
 
-      # Install database
-      -   name: Doctrine Create migration
-          run: php bin/console --env=test doctrine:migrations:diff
-      -   name: Doctrine Install/Migrate
-          run: php bin/console --env=test doctrine:migrations:migrate
-
       # Build frontend assets, required for the tests to run properly
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -94,8 +88,16 @@ jobs:
           cache: 'npm'
       - name: Build Webpack assets
         run: |
-          npm install
+          npm ci  # Use ci instead of install for reproducible builds
           npm run build
+        env:
+          NODE_ENV: test
+
+      # Install database
+      -   name: Doctrine Create migration
+          run: php bin/console --env=test doctrine:migrations:diff
+      -   name: Doctrine Install/Migrate
+          run: php bin/console --env=test doctrine:migrations:migrate
 
       # Install composer dependencies, and dump env
       -   name: Run PHP Unit tests
