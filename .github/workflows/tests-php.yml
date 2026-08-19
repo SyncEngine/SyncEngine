@@ -86,6 +86,17 @@ jobs:
       -   name: Doctrine Install/Migrate
           run: php bin/console --env=test doctrine:migrations:migrate
 
+      # Build frontend assets, required for the tests to run properly
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Build Webpack assets
+        run: |
+          npm install
+          npm run build
+
       # Install composer dependencies, and dump env
       -   name: Run PHP Unit tests
           run: |
