@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	#[ORM\Column]
 	private array $roles = [];
 
+	#[ORM\Column( nullable: true )]
+	protected ?array $settings = [];
+
 	/**
 	 * Master toggle for 2FA. True if user has enrolled at least one method.
 	 */
@@ -51,9 +54,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	 */
 	#[ORM\OneToMany( mappedBy: 'user', targetEntity: TwoFactor::class, cascade: [ 'persist', 'remove' ], orphanRemoval: true )]
 	private Collection $twoFactorMethods;
-
-	#[ORM\Column( nullable: true )]
-	protected ?array $settings = [];
 
 	/** @var Collection<int, ApiToken> */
 	#[ORM\OneToMany( mappedBy: 'user', targetEntity: ApiToken::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
@@ -235,6 +235,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 		return $this;
 	}
 
+	public function getLocale(): ?string
+	{
+		return $this->getSetting( 'locale' );
+	}
+
+	public function setLocale( ?string $locale ): static
+	{
+		$this->setSetting( 'locale', $locale );
+
+		return $this;
+	}
+
 	/**
 	 * @return Collection<int, ApiToken>
 	 */
@@ -261,18 +273,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 				$apiToken->setUser( null );
 			}
 		}
-
-		return $this;
-	}
-
-	public function getLocale(): ?string
-	{
-		return $this->getSetting( 'locale' );
-	}
-
-	public function setLocale( ?string $locale ): static
-	{
-		$this->setSetting( 'locale', $locale );
 
 		return $this;
 	}
