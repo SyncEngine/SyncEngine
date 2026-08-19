@@ -385,6 +385,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	{
 		foreach ( $this->getTwoFactorMethods() as $method ) {
 			if ( $method->getType() === 'totp' && $method->isEnabled() ) {
+				// Compatible with Google Authenticator and other TOTP apps. Default values are used for period and digits.
 				$period = 30;
 				$digits = 6;
 				return new TotpConfiguration( $method->getSecret(), TotpConfiguration::ALGORITHM_SHA1, $period, $digits );
