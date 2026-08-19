@@ -139,4 +139,16 @@ class TestUserTwoFactor
 
 		$em->flush();
 	}
+
+	public static function generateTotpSecret(): string
+	{
+		$totp = \OTPHP\TOTP::create();
+		return $totp->getSecret();
+	}
+
+	public static function generateTotpCode( string $secret ): string
+	{
+		$totp = \OTPHP\TOTP::create( $secret );
+		return $totp->now();
+	}
 }

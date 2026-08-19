@@ -10,6 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SyncEngine\Entity\User;
 use SyncEngine\Entity\TwoFactor;
 use SyncEngine\Tests\Fixture\TestUser;
+use SyncEngine\Tests\Fixture\TestUserTwoFactor;
 
 class AccountTwoFactorTest extends WebTestCase
 {
@@ -31,15 +32,10 @@ class AccountTwoFactorTest extends WebTestCase
         $this->testUser = TestUser::getOrCreate( $em, $passwordHasher );
 
         // Ensure TOTP is disabled for this test by removing any existing methods.
-        if ( $this->testUser->isTwoFactorEnabled() ) {
-            foreach ( $this->testUser->getTwoFactorMethods() as $method ) {
-                $em->remove( $method );
-            }
-            $this->testUser->getTwoFactorMethods()->clear();
-            $this->testUser->setTwoFactorEnabled( false );
-            $em->persist( $this->testUser );
-            $em->flush();
-        }
+        $this->testUser->getTwoFactorMethods()->clear();
+        $this->testUser->setTwoFactorEnabled( false );
+        $em->persist( $this->testUser );
+        $em->flush();
 
         $this->client->loginUser( $this->testUser, 'main' );
     }
@@ -89,17 +85,11 @@ class AccountTwoFactorTest extends WebTestCase
         $this->assertNotNull( $this->totpSecret );
 
         // Generate a valid code for the current time window.
-        $validCode = $this->generateTotpCode( $this->totpSecret );
+        $validCode = TestUserTwoFactor::generateTotpCode( $this->totpSecret );
 
         $form = $totpFormNode->form();
         $form['_auth_code'] = $validCode;
         $form['secret'] = $this->totpSecret;
-
-        // Get CSRF token from the form.
-        $csrfInput = $totpFormNode->filter( 'input[name="_csrf_token"]' )->first();
-        if ( $csrfInput->count() > 0 ) {
-            $form['_csrf_token'] = $csrfInput->attr( 'value' );
-        }
 
         $this->client->submit( $form );
 
@@ -145,12 +135,6 @@ class AccountTwoFactorTest extends WebTestCase
         $form['_auth_code'] = '000000';
         $form['secret'] = $secret;
 
-        // Get CSRF token from the form.
-        $csrfInput = $totpFormNode->filter( 'input[name="_csrf_token"]' )->first();
-        if ( $csrfInput->count() > 0 ) {
-            $form['_csrf_token'] = $csrfInput->attr( 'value' );
-        }
-
         $this->client->submit( $form );
 
         // Should redirect back to setup with error flash.
@@ -188,7 +172,6 @@ class AccountTwoFactorTest extends WebTestCase
 
         // Get the CSRF token from the disable form.
         $crawler = $this->client->request( 'GET', '/admin/account/2fa/disable' );
-        $csrfToken = $this->extractCsrfToken( $crawler );
 
         // Now submit the disable form with password.
         $formNode = $crawler->filter( 'form[action*="account/2fa/disable"]' )->first();
@@ -196,7 +179,6 @@ class AccountTwoFactorTest extends WebTestCase
 
         $form = $formNode->form();
         $form['password'] = TestUser::PASSWORD;
-        $form['_csrf_token'] = $csrfToken;
 
         $this->client->submit( $form );
 
@@ -221,23 +203,5 @@ class AccountTwoFactorTest extends WebTestCase
 
         // Should redirect to login.
         $this->assertResponseRedirects( '/login', 302 );
-    }
-
-    private function generateTotpCode( string $secret ): string
-    {
-        if ( ! class_exists( 'OTPHP\TOTP' ) ) {
-            $this->markTestSkipped( 'otphp package not installed' );
-        }
-
-        $totp = \OTPHP\TOTP::create( $secret );
-        return $totp->now();
-    }
-
-    private function extractCsrfToken( Crawler $crawler ): string
-    {
-        $csrfInput = $crawler->filter( 'input[name="_csrf_token"]' )->first();
-
-        $this->assertGreaterThan( 0, $csrfInput->count(), 'CSRF token input not found in form' );
-        return $csrfInput->attr( 'value' );
     }
 }

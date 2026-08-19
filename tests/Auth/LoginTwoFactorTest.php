@@ -10,6 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SyncEngine\Entity\User;
 use SyncEngine\Entity\TwoFactor;
 use SyncEngine\Tests\Fixture\TestUser;
+use SyncEngine\Tests\Fixture\TestUserTwoFactor;
 
 class LoginTwoFactorTest extends WebTestCase
 {
@@ -30,11 +31,9 @@ class LoginTwoFactorTest extends WebTestCase
 
         // Create a user with TOTP enabled and a known secret for testing.
         $this->testUser = TestUser::getOrCreate( $em, $passwordHasher );
-	    $this->totpSecret = $this->generateTotpSecret();
+	    $this->totpSecret = TestUserTwoFactor::generateTotpSecret();
 
-	    foreach ( $this->testUser->getTwoFactorMethods() as $method ) {
-		    $this->testUser->removeTwoFactorMethod( $method );
-	    }
+	    $this->testUser->getTwoFactorMethods()->clear();
 
         $twoFactor = new TwoFactor();
         $twoFactor->setUser( $this->testUser );
@@ -128,7 +127,7 @@ class LoginTwoFactorTest extends WebTestCase
 
         // Submit the 2FA check form using the form node directly.
         $form = $crawler->filter( 'form' )->first()->form();
-		$form['_auth_code']->setValue( $this->generateTotpCode( $this->totpSecret ) );
+		$form['_auth_code']->setValue( TestUserTwoFactor::generateTotpCode( $this->totpSecret ) );
 
         $this->client->submit( $form );
 
@@ -168,27 +167,5 @@ class LoginTwoFactorTest extends WebTestCase
         // The Scheb bundle uses 'invalid' as the message key for invalid codes.
         $alertContent = $crawler->filter( '.alert, .error, [class*="error"], [class*="invalid"]' )->first()->text();
         $this->assertStringContainsStringIgnoringCase( 'valid', $alertContent );
-    }
-
-	private function generateTotpSecret(): string
-	{
-	// Use the same TOTP library as the Scheb bundle.
-		if ( ! class_exists( 'OTPHP\TOTP' ) ) {
-			$this->markTestSkipped( 'otphp package not installed' );
-		}
-
-		$totp = \OTPHP\TOTP::create();
-		return $totp->getSecret();
-	}
-
-    private function generateTotpCode( string $secret ): string
-    {
-        // Use the same TOTP library as the Scheb bundle.
-        if ( ! class_exists( 'OTPHP\TOTP' ) ) {
-            $this->markTestSkipped( 'otphp package not installed' );
-        }
-
-        $totp = \OTPHP\TOTP::create( $secret );
-        return $totp->now();
     }
 }
