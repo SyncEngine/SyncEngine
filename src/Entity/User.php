@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	/**
 	 * @var Collection<int, TwoFactor>
 	 */
-	#[ORM\OneToMany( mappedBy: 'user', targetEntity: TwoFactor::class, cascade: [ 'persist', 'remove' ] )]
+	#[ORM\OneToMany( mappedBy: 'user', targetEntity: TwoFactor::class, cascade: [ 'persist', 'remove' ], orphanRemoval: true )]
 	private Collection $twoFactorMethods;
 
 	#[ORM\Column( nullable: true )]
