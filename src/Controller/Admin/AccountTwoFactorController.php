@@ -39,7 +39,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		$this->senderEmail       = $senderEmail;
 	}
 
-	#[Route( '/account/2fa-setup', name: 'account_2fa_setup' )]
+	#[Route( '/account/2fa/setup', name: 'account_2fa_setup' )]
 	public function setup( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		/** @var User $user */
@@ -76,7 +76,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		);
 	}
 
-	#[Route( '/account/2fa-totp-verify', name: 'account_2fa_totp_verify' )]
+	#[Route( '/account/2fa/totp-verify', name: 'account_2fa_totp_verify' )]
 	public function verifyTotp( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		/** @var User $user */
@@ -126,7 +126,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		return $this->redirectToRoute( 'syncengine_account_index' );
 	}
 
-	#[Route( '/account/2fa-setup-email', name: 'account_2fa_email_setup' )]
+	#[Route( '/account/2fa/email-setup', name: 'account_2fa_email_setup' )]
 	public function emailSetup( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		/** @var User $user */
@@ -181,7 +181,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		);
 	}
 
-	#[Route( '/account/2fa-email-verify', name: 'account_2fa_email_verify' )]
+	#[Route( '/account/2fa/email-verify', name: 'account_2fa_email_verify' )]
 	public function emailVerify( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		/** @var User $user */
@@ -225,7 +225,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		return $this->redirectToRoute( 'syncengine_account_index' );
 	}
 
-	#[Route( '/account/2fa-disable', name: 'account_2fa_disable' )]
+	#[Route( '/account/2fa/disable', name: 'account_2fa_disable' )]
 	public function disableTotp( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		/** @var User $user */
