@@ -5,6 +5,10 @@ namespace SyncEngine\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -13,7 +17,7 @@ use SyncEngine\Security\Scope\ScopeRegistry;
 
 #[ORM\Entity( repositoryClass: UserRepository::class )]
 #[UniqueEntity( fields: [ 'email' ], message: 'There is already an account with this email' )]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTwoFactorInterface, TotpTwoFactorInterface
 {
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
@@ -35,6 +39,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private array $roles = [];
 
+	/**
+	 * Master toggle for 2FA. True if user has enrolled at least one method.
+	 */
+	#[ORM\Column]
+	private bool $twoFactorEnabled = false;
+
+	/**
+	 * @var Collection<int, TwoFactor>
+	 */
+	#[ORM\OneToMany( mappedBy: 'user', targetEntity: TwoFactor::class, cascade: [ 'persist', 'remove' ] )]
+	private Collection $twoFactorMethods;
+
 	#[ORM\Column( nullable: true )]
 	protected ?array $settings = [];
 
@@ -44,7 +60,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function __construct()
 	{
-		$this->apiTokens = new ArrayCollection();
+		$this->apiTokens        = new ArrayCollection();
+		$this->twoFactorMethods = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -257,5 +274,123 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		$this->setSetting( 'locale', $locale );
 
 		return $this;
+	}
+
+	/**
+	 * Get the master 2FA toggle status.
+	 */
+	public function isTwoFactorEnabled(): bool
+	{
+		return $this->twoFactorEnabled;
+	}
+
+	/**
+	 * Set the master 2FA toggle status.
+	 */
+	public function setTwoFactorEnabled( bool $twoFactorEnabled ): static
+	{
+		$this->twoFactorEnabled = $twoFactorEnabled;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, TwoFactor>
+	 */
+	public function getTwoFactorMethods(): Collection
+	{
+		return $this->twoFactorMethods;
+	}
+
+	public function addTwoFactorMethod( TwoFactor $twoFactorMethod ): static
+	{
+		if ( ! $this->twoFactorMethods->contains( $twoFactorMethod ) ) {
+			$this->twoFactorMethods[] = $twoFactorMethod;
+			$twoFactorMethod->setUser( $this );
+		}
+
+		return $this;
+	}
+
+	public function removeTwoFactorMethod( TwoFactor $twoFactorMethod ): static
+	{
+		$this->twoFactorMethods->removeElement( $twoFactorMethod );
+
+		return $this;
+	}
+
+	/**
+	 * @see EmailTwoFactorInterface
+	 */
+	public function isEmailAuthEnabled(): bool
+	{
+		return $this->isTwoFactorEnabled();
+	}
+
+	/**
+	 * @see EmailTwoFactorInterface
+	 */
+	public function getEmailAuthRecipient(): string
+	{
+		return $this->getEmail();
+	}
+
+	/**
+	 * @see EmailTwoFactorInterface
+	 */
+	public function getEmailAuthCode(): string|null
+	{
+		return $this->getSetting( '_email_2fa_code' );
+	}
+
+	/**
+	 * @see EmailTwoFactorInterface
+	 */
+	public function setEmailAuthCode( string $authCode ): void
+	{
+		$this->setSetting( '_email_2fa_code', $authCode );
+	}
+
+	/**
+	 * @see TotpTwoFactorInterface
+	 */
+	public function isTotpAuthenticationEnabled(): bool
+	{
+		// Check if user has enabled 2FA globally AND has an active TOTP method
+		if ( ! $this->isTwoFactorEnabled() ) {
+			return false;
+		}
+
+		foreach ( $this->getTwoFactorMethods() as $method ) {
+			if ( $method->getType() === 'totp' && $method->isEnabled() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @see TotpTwoFactorInterface
+	 */
+	public function getTotpAuthenticationUsername(): string
+	{
+		return $this->email;
+	}
+
+	/**
+	 * @see TotpTwoFactorInterface
+	 */
+	public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface|null
+	{
+		foreach ( $this->getTwoFactorMethods() as $method ) {
+			if ( $method->getType() === 'totp' && $method->isEnabled() ) {
+				$period = 30;
+				$digits = 6;
+				return new TotpConfiguration( $method->getSecret(), TotpConfiguration::ALGORITHM_SHA1, $period, $digits );
+			}
+		}
+
+		return null;
 	}
 }
