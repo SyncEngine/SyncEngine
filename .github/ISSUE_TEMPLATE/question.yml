@@ -1,0 +1,47 @@
+
+name: "❓ Question"
+description: Ask a question about using or developing SyncEngine
+title: "[Question]: "
+labels:
+  - question
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check the documentation and existing discussions before opening a question.
+
+        For general discussion or ideas that are not yet feature requests, consider using GitHub Discussions instead.
+
+  - type: checkboxes
+    id: searched
+    attributes:
+      label: Before asking
+      options:
+        - label: I have checked the documentation and existing discussions.
+          required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: What would you like to know?
+      description: Clearly describe your question and the context in which it arose.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Relevant context
+      description: |
+        Include relevant configuration, code, errors, or other information.
+        Remove credentials and other sensitive information.
+      render: text
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What have you tried?
+      description: |
+        Describe what you have already tried and what happened.
+        This helps avoid suggestions you have already tested.

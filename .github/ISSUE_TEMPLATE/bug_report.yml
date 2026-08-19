@@ -1,0 +1,127 @@
+
+name: "🐛 Bug Report"
+description: Report a reproducible problem with SyncEngine
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem with SyncEngine.
+
+        Before submitting this report, please search the existing issues to make sure the problem has not already been reported.
+
+  - type: checkboxes
+    id: existing-issues
+    attributes:
+      label: Existing issues
+      options:
+        - label: I have searched the existing issues and could not find a report for this problem.
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: |
+        Clearly describe what happened. Focus on the observed behavior rather than what you think the cause is.
+      placeholder: |
+        When I...
+        SyncEngine...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      description: Describe the behavior you expected instead.
+      placeholder: |
+        I expected SyncEngine to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Provide the smallest set of steps that reliably reproduces the problem.
+        Include relevant configuration, input data, or API requests where appropriate.
+      placeholder: |
+        1. Create a connection using...
+        2. Configure an automation with...
+        3. Execute...
+        4. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: minimal-example
+    attributes:
+      label: Minimal example
+      description: |
+        If possible, provide a minimal configuration, payload, code sample, or other example that demonstrates the problem.
+        Remove all credentials and other sensitive information.
+      render: text
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Specify the version tag or commit.
+      placeholder: "e.g. 1.2.3 or abc1234"
+
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation
+      options:
+        - Docker
+        - Self-hosted
+        - Development environment
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Include relevant environment information such as OS, PHP version,
+        database, Docker version, or other components that may affect the problem.
+      placeholder: |
+        OS:
+        PHP:
+        Database:
+        Docker:
+        Other:
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: |
+        Include relevant log output or error messages.
+        Remove credentials, tokens, personal information, and other sensitive data.
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: |
+        Add anything else that may help reproduce or understand the problem.
+        Links to related issues, screenshots, or recordings are welcome.
+
+  - type: checkboxes
+    id: sensitive-data
+    attributes:
+      label: Sensitive information
+      options:
+        - label: I have removed credentials, API keys, tokens, personal information, and other sensitive data from this report.
+          required: true

@@ -1,0 +1,88 @@
+
+name: "✨ Feature Request"
+description: Suggest an improvement or new capability for SyncEngine
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to SyncEngine.
+
+        Please describe the problem or use case you are trying to solve.
+        A proposed implementation is welcome, but please focus primarily on the problem rather than prescribing a specific technical solution.
+
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Existing functionality
+      options:
+        - label: I have checked the documentation and existing issues and could not find an existing solution.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: |
+        Describe the problem, limitation, or use case that prompted this request.
+        Who is affected by it and in what circumstances?
+      placeholder: |
+        When...
+        it is currently difficult/impossible to...
+        because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired outcome
+      description: |
+        Describe what you would like SyncEngine to be able to do.
+        Focus on the desired behavior rather than a particular implementation.
+      placeholder: |
+        Ideally, SyncEngine would...
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Example use case
+      description: |
+        Provide a concrete example of how this would be used.
+      placeholder: |
+        For example...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        Have you found a workaround or considered another approach?
+        If so, please describe it.
+      placeholder: |
+        Currently I...
+        I also considered...
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Possible implementation
+      description: |
+        If you have ideas about how this could be implemented, describe them here.
+        This is optional. Maintainers may choose a different implementation.
+      placeholder: |
+        One possible approach would be...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Links, examples, screenshots, related projects, or other useful context.
