@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\PreferredProviderInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
@@ -17,7 +18,7 @@ use SyncEngine\Security\Scope\ScopeRegistry;
 
 #[ORM\Entity( repositoryClass: UserRepository::class )]
 #[UniqueEntity( fields: [ 'email' ], message: 'There is already an account with this email' )]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTwoFactorInterface, TotpTwoFactorInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTwoFactorInterface, TotpTwoFactorInterface, PreferredProviderInterface
 {
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
@@ -317,6 +318,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 		$this->twoFactorMethods->removeElement( $twoFactorMethod );
 
 		return $this;
+	}
+
+	public function getPreferredTwoFactorProvider(): string|null
+	{
+		if ( $this->isTotpAuthenticationEnabled() ) {
+			return 'totp';
+		}
+
+		return 'email';
 	}
 
 	/**
