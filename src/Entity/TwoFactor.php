@@ -4,7 +4,6 @@ namespace SyncEngine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'user_two_factor')]
 class TwoFactor
 {
     #[ORM\Id]
