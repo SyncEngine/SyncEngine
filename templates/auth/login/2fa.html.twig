@@ -1,0 +1,8 @@
+{% extends 'index.html.twig' %}
+
+{% set header = 'Verify Login'|trans %}
+
+{% block content %}
+	{{ parent() }}
+	{% include '_partials/login-2fa.html.twig' %}
+{% endblock %}

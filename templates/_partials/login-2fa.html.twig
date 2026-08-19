@@ -1,0 +1,54 @@
+{# % extends '@SchebTwoFactor/Authentication/form.html.twig' %} #}
+
+{# Authentication errors #}
+{% if authenticationError %}
+	<div class="alert alert-warning">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</div>
+{% endif %}
+
+{# Let the user select the authentication method #}
+{% if availableTwoFactorProviders|length > 1 %}
+	<p>{{ "choose_provider"|trans({}, 'SchebTwoFactorBundle') }}:
+		{% for provider in availableTwoFactorProviders %}
+			<a href="{{ path("2fa_login", {"preferProvider": provider}) }}">{{ provider }}</a>
+		{% endfor %}
+	</p>
+{% endif %}
+
+{# Display current two-factor provider #}
+<p class="label"><label for="_auth_code">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }} {{ twoFactorProvider }}:</label></p>
+
+<form action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post" class="{{ classes|default('') }}">
+	{% if isCsrfProtectionEnabled %}
+		<input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+	{% endif %}
+    <input type="hidden" name="_target_path" value="{{ path('syncengine_admin_index') }}">
+
+	<div class="form-floating mb-3">
+		<input
+				class="form-control"
+				id="_auth_code"
+		       type="text"
+		       name="{{ authCodeParameterName }}"
+		       autocomplete="one-time-code"
+		       autofocus
+		       placeholder="{{ 'Code'|trans }}"
+		>
+		<label for="username">{{ 'Code'|trans }}</label>
+	</div>
+
+
+	{% if displayTrustedOption %}
+		<div class="form-floating mb-3 form-check">
+			<input id="_trusted" type="checkbox" class="form-check-input" name="{{ trustedParameterName }}" />
+			<label for="_trusted">{{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}</label>
+		</div>
+	{% endif %}
+
+	<p class="submit justify-content-between d-flex">
+		<input type="submit" class="btn btn-primary" value="{{ "Verify"|trans }}" />
+
+		{# The logout link gives the user a way out if they can't complete two-factor authentication #}
+		<a class="btn btn-secondary" href="{{ logoutPath }}">{{ 'Cancel'|trans }}</a>
+	</p>
+
+</form>
