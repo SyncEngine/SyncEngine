@@ -4,13 +4,13 @@ namespace SyncEngine\Tests\Auth;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SyncEngine\Entity\User;
 use SyncEngine\Entity\TwoFactor;
 use SyncEngine\Tests\Fixture\TestUser;
 use SyncEngine\Tests\Fixture\TestUserTwoFactor;
+use SyncEngine\Tests\TestCase\WebTestCase;
 
 class AccountTwoFactorTest extends WebTestCase
 {
