@@ -26,29 +26,52 @@ class AccountController extends AbstractAdminController
 	#[MenuItem( menu: 'main', route: 'syncengine_account_index', label: 'Account', icon: 'account' )]
 	public function renderAccount(): Response
 	{
+		/** @var User $user */
+		$user = $this->getUser();
+
 		return $this->render(
 			'admin/index.html.twig',
 			[
 				'header'      => $this->trans( 'Account' ),
 				'icon'        => 'account',
 				'cards'       => [
-					'edit'   => [
+					'edit'        => [
 						'icon'   => 'account-edit',
 						'header' => $this->trans( 'Edit account' ),
 						'body'   => $this->trans( 'Edit user account' ),
 						'link'   => $this->generateUrl( 'syncengine_account_edit' ),
 					],
-					'preferences'   => [
+					'preferences' => [
 						'icon'   => 'account-preferences',
 						'header' => $this->trans( 'Preferences' ),
 						'body'   => $this->trans( 'Edit preferences' ),
 						'link'   => $this->generateUrl( 'syncengine_account_preferences' ),
 					],
-					'tokens' => [
+					'tokens'      => [
 						'icon'   => 'token',
 						'header' => $this->trans( 'API tokens' ),
 						'body'   => $this->trans( 'Manage API tokens' ),
 						'link'   => $this->generateUrl( 'syncengine_account_tokens' ),
+					],
+					'two_factor'  => [
+						'icon'      => 'shield-lock',
+						'header'    => $this->trans( 'Two-factor authentication' ),
+						'body'      => $user->isTwoFactorEnabled()
+							? $this->trans( '2FA is active for your account' )
+							: $this->trans( 'Protect your account with a verification code' ),
+						'link'      => $user->isTwoFactorEnabled()
+							? $this->generateUrl( 'syncengine_account_2fa_disable' )
+							: $this->generateUrl( 'syncengine_account_2fa_setup' ),
+						'link_text' => $user->isTwoFactorEnabled()
+							? $this->trans( 'Disable' )
+							: $this->trans( 'Enable' ),
+						'badge'     => $user->isTwoFactorEnabled() ? [
+							'text'    => 'Active',
+							'variant' => 'success',
+						] : [
+							'text' => 'Inactive',
+							'variant' => 'secondary'
+						],
 					],
 				],
 				'breadcrumbs' => [
