@@ -29,7 +29,11 @@ class System
 		private Kernel $kernel,
 		Env $env
 	) {
-		$env->setEnvFile( 'local' );
+		if ( $this->kernel->getEnvironment() === 'test' ) {
+			$env->setEnvFile( 'test' );
+		} else {
+			$env->setEnvFile( 'local' );
+		}
 		$this->env = $env;
 	}
 
@@ -221,12 +225,17 @@ class System
 
 		try {
 			foreach ( $queries as $query ) {
+				//$connection->executeQuery( $query );
 				$connection->executeStatement( $query );
 			}
 
-			$connection->commit();
+			//$connection->commit();
 		} catch ( \Throwable $e ) {
-			$connection->rollBack();
+			try {
+				$connection->rollBack();
+			} catch (\Throwable $rollbackException ) {
+				// Log rollback exception if needed.
+			}
 			throw $e;
 		}
 
