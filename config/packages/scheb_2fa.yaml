@@ -9,4 +9,4 @@ scheb_two_factor:
         sender_email: '%env(SYNCENGINE_MAILER_SENDER)%'
         sender_name: SyncEngine
         digits: 6
-        template: '@SchebTwoFactor/Authentication/form.html.twig'
+        template: 'auth/login/2fa.html.twig'
