@@ -23,6 +23,9 @@ security:
             lazy: true
             provider: app_user_provider
 
+            logout:
+                path: syncengine_admin_logout
+
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: syncengine_admin_login
@@ -39,6 +42,11 @@ security:
               lifetime: 604800
               path: /
               always_remember_me: true
+
+            two_factor:
+                auth_form_path: /login/2fa
+                check_path: /login/2fa_check
+                enable_csrf: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
