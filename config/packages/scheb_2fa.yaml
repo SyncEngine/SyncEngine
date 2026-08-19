@@ -1,0 +1,12 @@
+# See the full configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/7.x/configuration.html
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+
+    email:
+        enabled: true
+        sender_email: '%env(SYNCENGINE_MAILER_SENDER)%'
+        sender_name: SyncEngine
+        digits: 6
+        template: '@SchebTwoFactor/Authentication/form.html.twig'
