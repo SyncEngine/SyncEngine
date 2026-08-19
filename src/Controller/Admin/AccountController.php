@@ -54,7 +54,7 @@ class AccountController extends AbstractAdminController
 						'link'   => $this->generateUrl( 'syncengine_account_tokens' ),
 					],
 					'two_factor'  => [
-						'icon'      => 'shield-lock',
+						'icon'      => 'two-factor',
 						'header'    => $this->trans( 'Two-factor authentication' ),
 						'body'      => $user->isTwoFactorEnabled()
 							? $this->trans( '2FA is active for your account' )

@@ -57,6 +57,7 @@ parameters:
     account-edit: 'bi bi-person-fill-gear'
     account-preferences: 'bi bi-person-workspace'
     token: 'bi bi-shield-lock'
+    two-factor: 'bi bi-person-fill-lock'
     restrict: 'bi bi-shield-slash'
     scope: 'bi bi-shield-check'
     # System.
