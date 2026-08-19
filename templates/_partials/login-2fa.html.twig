@@ -5,17 +5,29 @@
 	<div class="alert alert-warning">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</div>
 {% endif %}
 
+{% set providerLabels = {
+	'totp': 'Authenticator App'|trans,
+	'email': 'Email'|trans
+} %}
+{% set providerInstructions = {
+	'totp': 'Fill in the code from your authenticator app'|trans,
+	'email': 'Fill in the code send to your email'|trans
+} %}
+
 {# Let the user select the authentication method #}
 {% if availableTwoFactorProviders|length > 1 %}
-	<p>{{ "choose_provider"|trans({}, 'SchebTwoFactorBundle') }}:
+	<p class="text-muted text-center">
+		{{ "choose_provider"|trans({}, 'SchebTwoFactorBundle') }}:
 		{% for provider in availableTwoFactorProviders %}
-			<a href="{{ path("2fa_login", {"preferProvider": provider}) }}">{{ provider }}</a>
+			<a href="{{ path("2fa_login", {"preferProvider": provider}) }}">{{ providerLabels[provider] }}</a>
 		{% endfor %}
 	</p>
 {% endif %}
 
 {# Display current two-factor provider #}
-<p class="label"><label for="_auth_code">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }} {{ twoFactorProvider }}:</label></p>
+<p class="label mt-4">
+	<label for="_auth_code" class="h6">{{ providerInstructions[twoFactorProvider] }}</label>
+</p>
 
 <form action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post" class="{{ classes|default('') }}">
 	{% if isCsrfProtectionEnabled %}
@@ -25,15 +37,15 @@
 
 	<div class="form-floating mb-3">
 		<input
-				class="form-control"
-				id="_auth_code"
-		       type="text"
-		       name="{{ authCodeParameterName }}"
-		       autocomplete="one-time-code"
-		       autofocus
-		       placeholder="{{ 'Code'|trans }}"
+			class="form-control"
+			id="_auth_code"
+			type="text"
+			name="{{ authCodeParameterName }}"
+			autocomplete="one-time-code"
+			autofocus
+			placeholder="000000"
 		>
-		<label for="username">{{ 'Code'|trans }}</label>
+		<label for="_auth_code">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }}</label>
 	</div>
 
 
