@@ -51,9 +51,9 @@ class LoginTwoFactorTest extends WebTestCase
 
 	public function startLoginSequence(): Crawler
 	{
-		$this->client->request( 'GET', '/logout' );
-
 		$result = $this->client->request( 'GET', '/login' );
+
+		$this->assertResponseIsSuccessful();
 
 		$form = $result->filter( 'form' )->first()->form();
 
