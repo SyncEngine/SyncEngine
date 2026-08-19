@@ -306,6 +306,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	public function addTwoFactorMethod( TwoFactor $twoFactorMethod ): static
 	{
 		if ( ! $this->twoFactorMethods->contains( $twoFactorMethod ) ) {
+			$type = $twoFactorMethod->getType();
+			if ( $this->twoFactorMethods->exists(
+				fn( $key, TwoFactor $method ) => $type === $method->getType()
+			) ) {
+				// Ensure only one TOTP method exists per user.
+				throw new \LogicException( "User already has a `{$type}` method. Remove it before adding a new one." );
+			}
+
 			$this->twoFactorMethods[] = $twoFactorMethod;
 			$twoFactorMethod->setUser( $this );
 		}
