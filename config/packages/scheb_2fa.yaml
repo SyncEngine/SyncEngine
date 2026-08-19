@@ -10,3 +10,9 @@ scheb_two_factor:
         sender_name: SyncEngine
         digits: 6
         template: 'auth/login/2fa.html.twig'
+
+    totp:
+        enabled: true
+        issuer: SyncEngine
+        leeway: 1
+        template: 'auth/login/2fa.html.twig'
