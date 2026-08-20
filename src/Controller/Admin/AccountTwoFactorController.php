@@ -201,7 +201,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		if ( ! $this->isCsrfTokenValid( 'verify_2fa', $request->request->get( '_csrf_token', '' ) ) ) {
 			$this->addFlash( 'error', $this->trans( 'Invalid form submission. Please try again.' ) );
 
-			return $this->redirectToRoute( 'syncengine_account_email_2fa_setup' );
+			return $this->redirectToRoute( 'syncengine_account_2fa_email_setup' );
 		}
 
 		// Retrieve code from user settings (set during emailSetup)
@@ -210,7 +210,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		if ( $code !== $storedCode ) {
 			$this->addFlash( 'error', $this->trans( 'The verification code you entered is invalid.' ) );
 
-			return $this->redirectToRoute( 'syncengine_account_email_2fa_setup' );
+			return $this->redirectToRoute( 'syncengine_account_2fa_email_setup' );
 		}
 
 		// Clear the used code
