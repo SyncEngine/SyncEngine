@@ -214,7 +214,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		}
 
 		// Clear the used code
-		$user->setEmailAuthCode( null );
+		$user->unsetEmailAuthCode();
 		$user->setTwoFactorEnabled( true );
 
 		$entityManager->persist( $user );

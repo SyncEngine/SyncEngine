@@ -370,6 +370,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailTw
 	}
 
 	/**
+	 * @see EmailTwoFactorInterface
+	 */
+	public function unsetEmailAuthCode(): void
+	{
+		$this->unsetSetting( '_email_2fa_code' );
+	}
+
+	/**
 	 * @see TotpTwoFactorInterface
 	 */
 	public function isTotpAuthenticationEnabled(): bool
