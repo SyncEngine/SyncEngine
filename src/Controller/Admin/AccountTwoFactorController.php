@@ -194,7 +194,7 @@ class AccountTwoFactorController extends AbstractAdminController
 		$code = $request->request->get( '_auth_code', '' );
 
 		if ( empty( $code ) ) {
-			return $this->redirectToRoute( 'syncengine_account_email_2fa_setup' );
+			return $this->redirectToRoute( 'syncengine_account_2fa_email_setup' );
 		}
 
 		// Verify CSRF token
