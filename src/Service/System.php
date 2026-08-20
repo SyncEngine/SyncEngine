@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
@@ -10,7 +11,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use Doctrine\ORM\Tools\SchemaTool;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use SyncEngine\Kernel;
@@ -25,9 +25,7 @@ class System
 	protected string $php;
 
 	public function __construct(
-		private readonly string $projectDir,
-		private Kernel $kernel,
-		Env $env
+		private readonly string $projectDir, private Kernel $kernel, Env $env
 	) {
 		if ( $this->kernel->getEnvironment() === 'test' ) {
 			$env->setEnvFile( 'test' );
@@ -176,6 +174,7 @@ class System
 	public function runDatabaseCreation(): bool|array
 	{
 		$this->runCommand( 'doctrine:schema:drop', options: [ '--force' ] ); // '--if-exists' option does not exist,
+
 		return $this->runCommand( 'doctrine:schema:create' );
 	}
 
@@ -285,7 +284,7 @@ class System
 		$parsedOptions = [];
 		foreach ( $options as $name => $value ) {
 			if ( is_numeric( $name ) ) {
-				$name = $value;
+				$name  = $value;
 				$value = true;
 			}
 			$parsedOptions[ '--' . ltrim( $name, '-' ) ] = $value;
@@ -344,13 +343,15 @@ class System
 		$output = [];
 		$errors = [];
 
-		$success = $process->wait( function ( $type, $buffer ) use ( &$output, &$errors ): void {
-			if ( Process::ERR === $type ) {
-				$errors[] = $buffer;
-			} else {
-				$output[] = $buffer;
+		$success = $process->wait(
+			function ( $type, $buffer ) use ( &$output, &$errors ): void {
+				if ( Process::ERR === $type ) {
+					$errors[] = $buffer;
+				} else {
+					$output[] = $buffer;
+				}
 			}
-		} );
+		);
 
 		$return = [
 			'success' => 0 === $success,
