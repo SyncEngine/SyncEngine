@@ -58,14 +58,20 @@ abstract class EntityController extends AbstractAdminController
 		$action = $request->request->get( 'action' );
 		$return = [];
 
-		// @todo Better scope/permission based access validations.
-		if ( in_array( $action, [ 'delete', 'form', 'create', 'edit', 'export' ] ) ) {
-			if ( ! $this->isGranted( 'ROLE_EDITOR' ) ) {
-				$return['success'] = false;
-				$return['error']   = $this->trans( 'Access denied.' );
+		// @todo Better multi-action handling?
+		$primaryAction = explode( '|', $action )[0] ?? '';
 
-				return $return;
-			}
+		$isAllowed = match( $primaryAction ) {
+			'query', 'list' => true,
+			default => $this->isGranted( 'ROLE_EDITOR' ),
+		};
+
+		// @todo Better scope/permission based access validations.
+		if ( ! $isAllowed ) {
+			$return['success'] = false;
+			$return['error']   = $this->trans( 'Access denied.' );
+
+			return $return;
 		}
 
 		switch ( $action ) {
@@ -86,8 +92,8 @@ abstract class EntityController extends AbstractAdminController
 			case 'restore':
 			case 'disable':
 			case 'enable':
-			case 'show':
 			case 'hide':
+			case 'show':
 				if ( ! method_exists( $model, $action ) ) {
 					$return['success'] = false;
 					return $return;
