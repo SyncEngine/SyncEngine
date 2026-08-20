@@ -221,22 +221,27 @@ class System
 		}
 
 		$connection = $entityManager->getConnection();
-		$connection->beginTransaction();
 
+		$executed = [];
+		$current  = null;
 		try {
 			foreach ( $queries as $query ) {
-				//$connection->executeQuery( $query );
+				$current = $query;
 				$connection->executeStatement( $query );
+				$executed[] = $query;
 			}
-
-			//$connection->commit();
 		} catch ( \Throwable $e ) {
-			try {
-				$connection->rollBack();
-			} catch (\Throwable $rollbackException ) {
-				// Log rollback exception if needed.
-			}
-			throw $e;
+			return [
+				'success' => false,
+				'status'  => 'ERROR',
+				'output'  => [
+					'message'   => $e->getMessage(),
+					'exception' => $e::class,
+					'query'     => $current,
+					'executed'  => $executed,
+					'skipped'   => $skipped,
+				],
+			];
 		}
 
 		if ( $silent ) {
@@ -247,7 +252,7 @@ class System
 			'success' => true,
 			'status'  => 'OK',
 			'output'  => [
-				'executed' => $queries,
+				'executed' => $executed,
 				'skipped'  => $skipped,
 			],
 		];
