@@ -33,13 +33,11 @@ class ModelExporter
 		}
 	}
 
-	private function reset( string $ref ): void
+	private function reset(): void
 	{
-		if ( $ref === self::$runningRef ) {
-			self::$runningRef   = null;
-			self::$dependencies = [];
-			self::$tagRefs      = [];
-		}
+		self::$runningRef   = null;
+		self::$dependencies = [];
+		self::$tagRefs      = [];
 	}
 
 	public function export( $model, $exportDependencies = true ): array
@@ -105,7 +103,7 @@ class ModelExporter
 			}
 		}
 
-		$this->reset( $currentRef );
+		$this->reset();
 
 		return $export;
 	}
