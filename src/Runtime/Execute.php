@@ -380,6 +380,12 @@ class Execute
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$context->getTrace()?->enterTrace( $flow );
+
+		if ( ! $flow->isEnabled() ) {
+			$context->getTrace()?->leaveTrace( $flow );
+			return $data;
+		}
+
 		$context->startFlow( $flow );
 
 		$context->setCurrent( ResourceData::create(), 'step' );
@@ -437,6 +443,12 @@ class Execute
 	public function executeRoutine( RoutineModel $routine, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$context->getTrace()?->enterTrace( $routine );
+
+		if ( ! $routine->isEnabled() ) {
+			$context->getTrace()?->leaveTrace( $routine );
+			return $data;
+		}
+
 		$context->startRoutine( $routine );
 
 		$config = $routine->getConfig();
