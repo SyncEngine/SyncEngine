@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Normalizable;
@@ -176,12 +177,13 @@ class ModelNormalizer
 		// Delegate raw lookup to ModelDependencyManager.
 		$rawDependents = $this->dependencyManager->getDependents( $model );
 
-		foreach ( $rawDependents as $dependent ) {
+		/** @var EngineModel $dependent */
+		foreach ( $rawDependents as $dependentKey => $dependent ) {
 			$ref = $dependent->getRef();
 			if ( ! isset( static::$normalized[ $ref ] ) ) {
 				static::$normalized[ $ref ] = $dependent->normalize( false, false );
 			}
-			$dependents[] = static::$normalized[ $ref ];
+			$dependents[ $dependentKey ] = static::$normalized[ $ref ];
 		}
 
 		return $dependents;
