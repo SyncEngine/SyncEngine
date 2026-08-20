@@ -49,7 +49,9 @@ class ModelImporter
 
 		// @todo Find a way to keep track of recursive imports (blueprints).
 		if ( ! empty( $this->errors ) ) {
-			$this->em->rollback();
+			if ( ! empty( $this->done ) ) {
+				$this->em->rollback();
+			}
 			return false;
 		}
 
