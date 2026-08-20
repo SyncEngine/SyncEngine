@@ -197,7 +197,7 @@ const MenuItem = ( props ) => {
 	} = props;
 
 	// @todo differentiate between current and parent/ancestor.
-	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) || breadcrumbs.map( b => b.link ).includes( link ) : link === currentPath;
+	const isCurrent = link === currentPath || ( rootPath !== link && breadcrumbs.map( b => b.link ).includes( link ) );
 
 	let classes = 'd-flex icon-link icon-link-hover';
 	let backgroundClasses = '';
