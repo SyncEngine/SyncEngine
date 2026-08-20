@@ -235,8 +235,7 @@ class ModelDependencyManager
 		bool $recurse = true,
 	): array
 	{
-		$model = EntityModel::get( $id, $entity );
-		$entityKey   = strtolower( $entity );
+		$model     = EntityModel::get( $id, $entity );
 
 		if ( ! $model ) {
 			return $stack;
@@ -248,7 +247,7 @@ class ModelDependencyManager
 		}
 
 		// Cycle detection: if we're already resolving this model, stop.
-		$depKey = $entityKey . ':' . $model->getId();
+		$depKey = $this->getDepKey( $model );
 		if ( isset( $stack[ $depKey ] ) ) {
 			return $stack;
 		}
@@ -338,7 +337,7 @@ class ModelDependencyManager
 					if ( ! isset( $this->dependentCache[ $depRef ] ) ) {
 						$this->dependentCache[ $depRef ] = $dependent;
 					}
-					$dependents[] = $this->dependentCache[ $depRef ];
+					$dependents[ $this->getDepKey( $dependent ) ] = $this->dependentCache[ $depRef ];
 				}
 			}
 		}
@@ -364,6 +363,15 @@ class ModelDependencyManager
 	): bool
 	{
 		return ! empty( $this->getDependents( $entityModel ) );
+	}
+
+	/**
+	 * Create a unique key for an entity model, used for caching.
+	 */
+	public function getDepKey( EntityModel $entityModel ): string
+	{
+		$entity = strtolower( EntityModel::getEntityReflection( $entityModel->getEntity() )->getShortName() );
+		return $entity . ':' . $entityModel->getId();
 	}
 
 	/**
