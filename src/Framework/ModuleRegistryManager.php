@@ -242,7 +242,7 @@ class ModuleRegistryManager
 				return null;
 			}
 
-			return $reason ?: 'Disabled manually';
+			return $reason ?: 'Unknown';
 		}
 
 		if ( ! $constraint ) {
