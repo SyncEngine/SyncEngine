@@ -21,18 +21,98 @@
 	},
 } %}
 
+{#
+	Currently we only allow Automations to be disabled through the UI.
+	'disable': { label: 'Disable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'enabled' } } },
+#}
 {% set defaultActions = {
 	'link': { label: 'Edit'|trans, dropdown: true },
 	'edit': { label: 'Quick Edit'|trans },
+	'hide': { label: 'Hide'|trans, dropdown: true, conditions: { visibility: { operator: '!=', compare: 'hidden' } } },
+	'show': { label: 'Show'|trans, dropdown: true, conditions: { visibility: { operator: '==', compare: 'hidden' } } },
+	'enable': { label: 'Enable'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'disabled' } } },
 	'export': { label: 'Export'|trans, dropdown: true },
-	'delete': { label: 'Delete'|trans, dropdown: true },
+	'trash': { label: 'Trash'|trans, dropdown: true, conditions: { status: { operator: '!=', compare: 'trashed' } } },
+	'restore': { label: 'Restore'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
+	'delete': { label: 'Delete Permanently'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
 } %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'grouped', actions: defaultActions } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
 {% set columns = columns|merge( lastColumns ) %}
 
+{% if columns.info and columns.info.badges is not defined %}
+	{% set infoColumn = columns.info|merge( {
+		badges: [
+			{
+				title: 'Status'|trans,
+				options: [
+				{
+					compare: 'disabled',
+					value: '{{ status }}',
+					label: 'Disabled',
+					type: 'secondary',
+					icon: 'disable',
+				},
+				{
+					compare: 'trashed',
+					value: '{{ status }}',
+					label: 'Trashed',
+					type: 'secondary',
+					icon: 'delete',
+				}
+			]
+			},
+			{
+				title: 'Visibility'|trans,
+				options: [
+				{
+					compare: 'hidden',
+					value: '{{ visibility }}',
+					label: 'Hidden',
+					type: 'secondary',
+					icon: 'hide',
+				},
+			]
+			}
+		]
+	} ) %}
+
+	{% set columns = columns|merge( { info: infoColumn } ) %}
+
+{% endif %}
+
 {% set header = header ?? {} %}
+
+{% if header.actions is not defined %}
+	{% set header = header|merge({ actions: [ 'search', 'filter', 'create' ] }) %}
+{% endif %}
+
+{% set filters = filters ?? [
+		{
+			key: 'status',
+			label: 'Status'|trans,
+			default: '',
+			icon: 'status',
+			options: [
+				{ value: '',         icon: 'status',  label: 'Default'|trans },
+				{ value: 'enabled',  icon: 'enable',  label: 'Enabled'|trans },
+				{ value: 'disabled', icon: 'disable', label: 'Disabled'|trans },
+				{ value: 'trashed',  icon: 'delete',  label: 'Trashed'|trans },
+			]
+		},
+		{
+			key: 'visibility',
+			label: 'Visibility'|trans,
+			default: 'visible',
+			icon: 'visible',
+			options: [
+				{ value: 'visible', icon: 'visible', label: 'Visible'|trans },
+				{ value: 'hidden',  icon: 'hidden', label: 'Hidden'|trans },
+				{ value: '*',       icon: 'visibility', label: 'All'|trans }
+			]
+		}
+] %}
 
 {% set footer = footer ?? {
 	actions: [

@@ -256,7 +256,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete app.entities[ type ][ entityId ];
 	}
 
-	const deleteAndReload = async ( entityId, updateState = true ) => {
+	const doAction = async( entityId, action, params, updateState = true ) => {
 		if ( isNaN( entityId ) ) {
 			if ( ! entityId.hasOwnProperty( 'id' ) ) {
 				return;
@@ -268,7 +268,36 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		const results =
 			await fetchPost(
 				endpoint,
-				{ action: 'delete|query', delete: entityId, query: query }
+				{ ...params, id: entityId, action: action }
+			);
+
+		setLoading( false );
+		if ( ! results.success ) {
+			return results.error ?? false;
+		}
+
+		if ( updateState ) {
+			edit( results.entity, true );
+		}
+
+		return true;
+	}
+
+	const doActionAndRefresh = async( entityId, action, params, updateState = true ) => {
+		if ( isNaN( entityId ) ) {
+			if ( ! entityId.hasOwnProperty( 'id' ) ) {
+				return;
+			}
+			entityId = entityId.id;
+		}
+		setLoading( ( updateState && 'silent' !== updateState ) );
+
+		action += '|query';
+
+		const results =
+			await fetchPost(
+				endpoint,
+				{ ...params, id: entityId, action: action, query: query }
 			);
 
 		setLoading( false );
@@ -278,10 +307,41 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 		if ( updateState ) {
 			remove( entityId );
+			if ( results.entity ) {
+				edit( results.entity, true );
+			}
 			update( results.data, true );
 		}
 
 		return true;
+	}
+
+	const disable = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'disable', {}, updateState );
+	}
+
+	const enable = async( entityId, updateState = true ) => {
+		return doAction( entityId, 'enable', {}, updateState );
+	}
+
+	const show = async( entityId, updateState = true ) => {
+		return doActionAndRefresh( entityId, 'show', {}, updateState );
+	}
+
+	const hide = async( entityId, updateState = true ) => {
+		return doActionAndRefresh( entityId, 'hide', {}, updateState );
+	}
+
+	const restore = async( entityId, updateState = true ) => {
+		return doActionAndRefresh( entityId, 'restore', {}, updateState );
+	}
+
+	const trashAndRefresh = async ( entityId, updateState = true ) => {
+		return doActionAndRefresh( entityId, 'trash', {}, updateState );
+	}
+
+	const deleteAndRefresh = async ( entityId, updateState = true, delete_permanent = false ) => {
+		return doActionAndRefresh( entityId, 'delete', { delete_permanent: delete_permanent }, updateState );
 	}
 
 	const get = ( id_or_ref, global = false ) => {
@@ -307,7 +367,13 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		add: add,
 		edit: edit,
 		remove: remove,
-		delete: deleteAndReload,
+		enable: enable,
+		disable: disable,
+		show: show,
+		hide: hide,
+		restore: restore,
+		trash: trashAndRefresh,
+		delete: deleteAndRefresh,
 		getTotal: getTotal,
 		getQuery: getQuery,
 	}

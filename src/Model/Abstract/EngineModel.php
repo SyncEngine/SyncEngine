@@ -6,11 +6,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Abstract\EngineEntity;
+use SyncEngine\Exception\NotAllowedException;
+use SyncEngine\Model\Enum\EntityStatus;
+use SyncEngine\Model\Enum\EntityVisibility;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Service\ModelDependencyManager;
 use SyncEngine\Service\ModelExporter;
 
 /**
@@ -26,6 +30,10 @@ use SyncEngine\Service\ModelExporter;
  * @method $this setName( string $name )
  * @method null|string getDescription()
  * @method $this setDescription( ?string $description )
+ * @method EntityStatus|null getStatus()
+ * @method $this setStatus( EntityStatus $status )
+ * @method EntityVisibility|null getVisibility()
+ * @method $this setVisibility( EntityVisibility $visibility )
  * @method null|\DateTimeImmutable getCreated()
  * @method $this setCreated( \DateTimeImmutable $created )
  * @method null|\DateTimeImmutable getModified()
@@ -67,6 +75,116 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		parent::update( $flush, $entityManager );
 	}
 
+	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false; // @todo Or return true?
+		}
+
+		$manager = $this->getContainer()->get( ModelDependencyManager::class ) ?? new ModelDependencyManager();
+		if ( $manager->hasDependents( $this ) ) {
+			throw new NotAllowedException( 'Cannot delete entity with dependents.' );
+		}
+
+		return parent::delete( $flush, $entityManager );
+	}
+
+	public function trash( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false; // @todo Or return true?
+		}
+
+		// Check dependents (runtime impact)
+		$manager = $this->getContainer()->get( ModelDependencyManager::class ) ?? new ModelDependencyManager();
+		if ( $manager->hasDependents( $this ) ) {
+			throw new NotAllowedException( 'Cannot trash entity with dependents.' );
+		}
+
+		$config = $this->getConfig();
+		$config['_trashedAt'] = time();
+		$config['_prevStatus'] = $this->getStatus()->value;
+		$this->setConfig( $config );
+
+		$this->setStatus( EntityStatus::TRASHED );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function restore( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->isTrashed() ) {
+			return false;
+		}
+
+		$config = $this->getConfig();
+
+		$status     = EntityStatus::ENABLED;
+		$prevStatus = $config['_prevStatus'] ?? null;
+		if ( $prevStatus ) {
+			$status = EntityStatus::tryFrom( $prevStatus ) ?? $status;
+		}
+
+		$this->setStatus( $status );
+
+		unset( $config['_trashedAt'] );
+		unset( $config['_prevStatus'] );
+
+		$this->setConfig( $config );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function enable( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setStatus( EntityStatus::ENABLED );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function disable( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setStatus( EntityStatus::DISABLED );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function show( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setVisibility( EntityVisibility::VISIBLE );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
+	public function hide( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		$this->setVisibility( EntityVisibility::HIDDEN );
+		$this->persist( $flush, $entityManager );
+
+		return true;
+	}
+
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		$entity = $this->getEntity();
@@ -81,8 +199,81 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		parent::persist( $flush, $entityManager );
 	}
 
+	public function getTrashedAt(): ?\DateTimeImmutable
+	{
+		$trashedAt = $this->getConfig( '_trashedAt' );
+
+		if ( $trashedAt ) {
+			return \DateTimeImmutable::createFromFormat( 'U', $trashedAt );
+		}
+
+		return null;
+	}
+
+	public function isEnabled(): bool
+	{
+		return EntityStatus::ENABLED === $this->getStatus();
+	}
+
+	public function isDisabled(): bool
+	{
+		return EntityStatus::DISABLED === $this->getStatus();
+	}
+
+	public function isTrashed(): bool
+	{
+		return EntityStatus::TRASHED === $this->getStatus();
+	}
+
+	public function isVisible(): bool
+	{
+		return EntityVisibility::VISIBLE === $this->getVisibility();
+	}
+
+	public function isHidden(): bool
+	{
+		return EntityVisibility::HIDDEN === $this->getVisibility();
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response( '', Response::HTTP_NOT_IMPLEMENTED );
+	}
+
+	public static function getAll( array $query = [] ): array
+	{
+		if ( $query ) {
+			$query = self::parseQuery( $query );
+		}
+
+		return parent::getAll( $query ); // TODO: Change the autogenerated stub
+	}
+
+	public static function getTotalCount( array $query = [] ): int
+	{
+		if ( $query ) {
+			$query = self::parseQuery( $query );
+		}
+
+		return parent::getTotalCount( $query ); // TODO: Change the autogenerated stub
+	}
+
+	public static function parseQuery( array $query ): array
+	{
+		// Apply defaults unless specifically set.
+
+		if ( empty( $query['where']['status'] ) ) {
+			$query['where']['status'] = EntityStatus::ENABLED->value;
+		} elseif ( '*' === $query['where']['status'] ) {
+			unset( $query['where']['status'] );
+		}
+
+		if ( empty( $query['where']['visibility'] ) ) {
+			$query['where']['visibility'] = EntityVisibility::VISIBLE->value;
+		} elseif ( '*' === $query['where']['visibility'] ) {
+			unset( $query['where']['visibility'] );
+		}
+
+		return $query;
 	}
 }

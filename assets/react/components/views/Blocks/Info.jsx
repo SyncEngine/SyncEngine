@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { any, bool, object, oneOfType, string } from 'prop-types';
+import { any, array, bool, object, oneOfType, string } from 'prop-types';
 import { isObject } from '../../../utils/conditions';
 import { HStack, VStack } from '../../partials/Stack';
 import BadgeControl from './Badge';
@@ -11,6 +11,7 @@ const Info = forwardRef( function Info( props, ref ) {
 		item = {},
 		type = item.type,
 		badge,
+		badges,
 		inline = false,
 	} = props;
 
@@ -25,6 +26,7 @@ const Info = forwardRef( function Info( props, ref ) {
 			{ badge &&
 			  <BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />
 			}
+			{ badges && badges.map( ( badge, i ) => <BadgeControl key={ i } type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } /> ) }
 		</HStack>
 	)
 
@@ -52,6 +54,7 @@ Info.propTypes = {
 	item: object,
 	type: string,
 	badge: oneOfType( [ string, object ] ),
+	badges: array,
 	label: oneOfType( [ string, object ] ),
 	sub: oneOfType( [ object, string ] ),
 	icon: oneOfType( [ object, string, bool ] ),

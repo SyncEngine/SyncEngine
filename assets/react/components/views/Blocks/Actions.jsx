@@ -1,27 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, DropdownButton, FormCheck } from 'react-bootstrap';
+import { ButtonGroup, DropdownButton, DropdownItem, FormCheck } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
 
 import { HStack, VStack } from '../../partials/Stack';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
+import Label from '../../form/Label';
+
+import Modal from '../../modals/Modal';
+import ConfirmModal from '../../modals/ConfirmModal';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
-
-import Modal from '../../modals/Modal';
 import RequestModal from '../../modals/RequestModal';
+import PreviewModal from '../../modals/PreviewModal';
+
 import ModalToggle from '../../services/ModalToggle';
 import Collapsible from '../../services/Collapsible';
 import ResponseTabContent from '../../services/ResponseTabs/Content';
-import PreviewModal from '../../modals/PreviewModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
-import DropdownItem from 'react-bootstrap/DropdownItem';
-import Label from '../../form/Label';
 
 function getVariants( button, variant, outline, subtle ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -35,7 +36,7 @@ function getVariants( button, variant, outline, subtle ) {
 	}
 }
 
-function createTrigger( action, variants, buttonProps = {}, dropdown = false ) {
+function createTrigger( action, variants, elemProps = {}, dropdown = false ) {
 	let iconClasses = '';
 
 	let trigger = action.label ?? action.action;
@@ -54,9 +55,19 @@ function createTrigger( action, variants, buttonProps = {}, dropdown = false ) {
 		}
 	}
 
-	const Elemt = dropdown ? DropdownItem : Button;
+	if ( ! variants.button ) {
+		return trigger;
+	}
 
-	return variants.button ? <Elemt variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps } key={ buttonProps.key ?? undefined }>{ trigger }</Elemt> : trigger;
+	if ( dropdown ) {
+		return (
+			<DropdownItem variant={ variants.button } { ...elemProps } key={ elemProps.key ?? undefined }>
+				{ trigger }
+			</DropdownItem>
+		)
+	}
+
+	return <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...elemProps } key={ elemProps.key ?? undefined }>{ trigger }</Button>;
 }
 
 export default function Actions( props ) {
@@ -165,6 +176,7 @@ export default function Actions( props ) {
 
 			case 'delete':
 			case 'remove':
+			case 'trash':
 				const deleteVariant = action.variant ?? 'danger';
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
@@ -175,14 +187,28 @@ export default function Actions( props ) {
 					</DeleteModal>
 				)
 
+			case 'restore':
+			case 'hide':
+			case 'show':
+				const trigger = createTrigger( { ...action, icon: action.icon ?? action.action }, variants, {}, action.dropdown );
+				return React.cloneElement( trigger, { key: action.action, onClick: () => { action.callback( props.entity ?? props.item ?? props.id ) } } );
+
+			case 'enable':
 			case 'disable':
 				if ( ! item ) {
 					return null;
 				}
+				if ( props.entity || item._entity ) {
+					return (
+						<ConfirmModal key={ action.action } entity={ item } { ...action } callbackProps={ item }>
+							{ createTrigger( { ...action, icon: action.icon ?? action.action }, variants, {}, action.dropdown ) }
+						</ConfirmModal>
+					)
+				}
 				return (
 					<FormCheck
-						key={ key }
-						aria-label={ t('Disable') }
+						key={ action.action }
+						aria-label={ 'disable' === action.action ? t('Disable') : t('Enable') }
 						className="mt-n1 no-label"
 						type="switch"
 						defaultChecked={ ! ( item._disabled ?? false ) }

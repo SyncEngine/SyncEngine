@@ -36,7 +36,7 @@ class RoutineController extends EntityController
 	public function renderList( Request $request ): Response
 	{
 		$model = RoutineModel::create();
-		$query = $this->_getListQuery( $request );
+		$query = $this->_getListQuery( $model, $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Enum\EntityStatus;
 use SyncEngine\Model\Interface\Exportable;
 
 /**
@@ -57,19 +58,49 @@ abstract class EntityController extends AbstractAdminController
 		$action = $request->request->get( 'action' );
 		$return = [];
 
-		// @todo Better scope/permission based access validations.
-		if ( in_array( $action, [ 'delete', 'form', 'create', 'edit', 'export' ] ) ) {
-			if ( ! $this->isGranted( 'ROLE_EDITOR' ) ) {
-				$return['success'] = false;
-				$return['error']   = $this->trans( 'Access denied.' );
+		// @todo Better multi-action handling?
+		$primaryAction = explode( '|', $action )[0] ?? '';
 
-				return $return;
-			}
+		$isAllowed = match( $primaryAction ) {
+			'query', 'list' => true,
+			default => $this->isGranted( 'ROLE_EDITOR' ),
+		};
+
+		// @todo Better scope/permission based access validations.
+		if ( ! $isAllowed ) {
+			$return['success'] = false;
+			$return['error']   = $this->trans( 'Access denied.' );
+
+			return $return;
 		}
 
 		switch ( $action ) {
 			case 'delete':
-				$return['success'] = $model->delete( true );
+				if ( $model instanceof EngineModel ) {
+					if ( $request->request->get('delete_permanent') ) {
+						$return['success'] = $model->delete( true );
+					} else {
+						$return['success'] = $model->trash( true );
+						$return['entity'] = $model->normalize( true, true );
+					}
+				} else {
+					$return['success'] = $model->delete( true );
+				}
+			break;
+
+			case 'trash':
+			case 'restore':
+			case 'disable':
+			case 'enable':
+			case 'hide':
+			case 'show':
+				if ( ! method_exists( $model, $action ) ) {
+					$return['success'] = false;
+					return $return;
+				}
+
+				$return['success'] = $model->$action( true );
+				$return['entity'] = $model->normalize( true, true );
 			break;
 
 			case 'form':
@@ -102,23 +133,40 @@ abstract class EntityController extends AbstractAdminController
 			break;
 
 			case 'delete|query':
+			case 'trash|query':
+			case 'restore|query':
+			case 'hide|query':
+			case 'show|query':
 			case 'query':
 			case 'list':
 
-				if ( 'delete|query' === $action ) {
-					$deleteId = $request->request->get( 'delete' );
-					$delete   = $model::get( $deleteId );
-					if ( ! $delete ) {
+				if ( str_ends_with( $action, '|query' ) ) {
+					$action      = explode( '|', $action )[0];
+					if ( ! $model->hasEntity() ) {
 						$return['success'] = false;
-						$return['error']   = $this->trans( 'Entity not found: {entity}:{id}', [ $model::getEntityClass(), $deleteId ] );
-
+						$return['error']   = $this->trans( 'Entity not found' );
 						return $return;
 					}
-					$delete->delete( true );
+					if ( ! method_exists( $model, $action ) ) {
+						$return['success'] = false;
+						$return['error']   = $this->trans( 'Action not supported: {action}', [ $action ] );
+						return $return;
+					}
+
+					$model->$action( true );
+					if ( 'delete' !== $action ) {
+						$return['entity'] = $model->normalize( true, true );
+					}
 				}
 
 				$query   = $request->request->get( 'query' );
 				$query   = $query ? json_decode( $query, true ) : null;
+
+				// Apply defaults ONLY if not explicitly set in where
+				if ( $model instanceof EngineModel && empty( $query['where']['status'] ) ) {
+					$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
+				}
+
 				$results = $this->_handleActionList( $model, $query );
 
 				if ( ! empty( $query['total'] ) ) {
@@ -227,7 +275,7 @@ abstract class EntityController extends AbstractAdminController
 	 * @todo Create a Query DTO
 	 * @phpstan-ignore missingType.iterableValue, missingType.iterableValue
 	 */
-	public function _getListQuery( Request $request, array $query = [] ): array
+	public function _getListQuery( EntityModel $model, Request $request, array $query = [] ): array
 	{
 		$defaults = [
 			'limit'     => 10,
@@ -236,6 +284,11 @@ abstract class EntityController extends AbstractAdminController
 		];
 
 		$query = array_merge( $defaults, $query );
+
+		// Apply defaults ONLY if not explicitly set in where
+		if ( $model instanceof EngineModel && empty( $query['where']['status'] ) ) {
+			$query['where']['status'] = [ EntityStatus::ENABLED->value, EntityStatus::DISABLED->value ];
+		}
 
 		$page = $request->query->get( 'page' );
 		if ( is_numeric( $page ) ) {

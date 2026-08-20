@@ -41,6 +41,10 @@ class ExecuteScheduler
 			return ExecuteScheduleResult::rejected( 'scheduler_disabled' );
 		}
 
+		if ( ! $automation->isEnabled() ) {
+			return ExecuteScheduleResult::rejected( 'automation_not_enabled' );
+		}
+
 		if ( ! $automation->canAcceptNewRequests() ) {
 			return ExecuteScheduleResult::rejected( 'cannot_accept_new_requests' );
 		}

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Stack } from 'react-bootstrap';
 import Fields from '../../form/Fields';
 import { FieldsContext } from '../../../context/FieldsContext';
+import { isItemDisabled } from '../../../utils/conditions';
 
 export default function Body( props ) {
 	const { t } = useTranslation();
@@ -42,7 +43,7 @@ export default function Body( props ) {
 	} : {};
 
 	return (
-		<Stack gap={ 2 } className={ ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
+		<Stack gap={ 2 } className={ ( ( isItemDisabled( props ) ) ? 'opacity-50' : '' ) }>
 			{ description }
 			<Fields { ...props } fields={ { ...labelFields, ...props.fields } } fieldsContext={ useContext( FieldsContext ) } />
 		</Stack>

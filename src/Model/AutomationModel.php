@@ -157,6 +157,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	/** True when a run may start immediately. */
 	public function canRunNow(): bool
 	{
+		if ( ! $this->isEnabled() ) {
+			return false;
+		}
+
 		return match ( $this->getAutomationMode() ) {
 			AutomationMode::PARALLEL => true,
 			AutomationMode::QUEUED, AutomationMode::SINGLE => ! $this->hasActiveRuns( false ),
@@ -166,6 +170,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	/** True when this automation accepts a newly requested run right now. */
 	public function canAcceptNewRequests(): bool
 	{
+		if ( ! $this->isEnabled() ) {
+			return false;
+		}
+
 		return match ( $this->getAutomationMode() ) {
 			AutomationMode::PARALLEL, AutomationMode::QUEUED => true,
 			AutomationMode::SINGLE => ! $this->hasActiveRuns( false ) && ! $this->isScheduled(),

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Block from '../Blocks';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import { isItemDisabled } from '../../../utils/conditions';
+import { mergeClassNames } from '../../../utils/props';
 
 export default function TableCol( props ) {
 	const {
@@ -27,8 +29,12 @@ export default function TableCol( props ) {
 			break;
 	}
 
+	if ( isItemDisabled( item ) ) {
+		classes += ' text-muted';
+	}
+
 	return (
-		<td className={ classes }>
+		<td className={ mergeClassNames( props.className, classes ) }>
 			<Block { ...props } block={ blockType } content={ content } args={ column } />
 		</td>
 	);
@@ -39,4 +45,5 @@ TableCol.propTypes = {
 	item: PropTypes.object,
 	content: PropTypes.any,
 	blockType: PropTypes.string,
+	className: PropTypes.string,
 };

@@ -503,7 +503,7 @@ function isId( value ) {
  * @param {object} element
  * @returns {boolean}
  */
-function isHidden( element ) {
+function isElementHidden( element ) {
 	return ( element.offsetParent === null );
 }
 
@@ -577,6 +577,10 @@ function isFieldEditable( props ) {
 	return ! props.disabled && ! props.readonly && ! props.readOnly;
 }
 
+function isItemDisabled( item ) {
+	return ( item.disabled || item._disabled || 'disabled' === item.status )
+}
+
 export {
 	getOperators,
 	validate,
@@ -596,7 +600,7 @@ export {
 	isFalse,
 	isTrue,
 	isId,
-	isHidden,
+	isElementHidden,
 	isIterable,
 	isObject,
 	isPromise,
@@ -608,4 +612,5 @@ export {
 	isEqual,
 	isMultiline,
 	isFieldEditable,
+	isItemDisabled,
 }

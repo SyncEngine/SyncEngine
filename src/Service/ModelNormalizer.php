@@ -85,17 +85,22 @@ class ModelNormalizer
 			if ( ! $dependencies ) {
 				$value = $propertyAccess->getValue( $entity, $name );
 				if ( is_object( $value ) ) {
-					// Remove ref.
-					$value = clone $value;
+					$valueRef = new \ReflectionClass( $value );
+					if ( $valueRef->isEnum() ) {
+						$value = $value->value;
+					} else {
+						// Remove ref.
+						$value = clone $value;
 
-					if ( is_iterable( $value ) ) {
-						foreach ( $value as $key => $val ) {
-							if ( method_exists( $val, 'getId' ) ) {
-								$value[ $key ] = $val->getId();
+						if ( is_iterable( $value ) ) {
+							foreach ( $value as $key => $val ) {
+								if ( method_exists( $val, 'getId' ) ) {
+									$value[ $key ] = $val->getId();
+								}
 							}
+						} elseif ( method_exists( $value, 'getId' ) ) {
+							$value = $value->getId();
 						}
-					} elseif ( method_exists( $value, 'getId' ) ) {
-						$value = $value->getId();
 					}
 				}
 			} else {

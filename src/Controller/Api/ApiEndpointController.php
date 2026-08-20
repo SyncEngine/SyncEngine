@@ -99,6 +99,13 @@ class ApiEndpointController extends AbstractApiController
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $requiredScope );
 		}
 
+		if ( 'status' !== $action && ! $model->isEnabled() ) {
+			return $this->json(
+				[ 'message' => $this->trans( 'Automation is not enabled' ) ],
+				Response::HTTP_LOCKED
+			);
+		}
+
 		switch ( $action ) {
 			// Runs automation instantly and returns result.
 			case 'execute':
@@ -219,7 +226,11 @@ class ApiEndpointController extends AbstractApiController
 	 */
 	private function getEndpointStatus( AutomationModel $model ): array
 	{
-		$status = $model->hasActiveRuns();
+		if ( ! $model->isEnabled() ) {
+			$status = $model->getStatus()->value;
+		} else {
+			$status = $model->hasActiveRuns() ? 'active' : 'idle';
+		}
 
 		$running   = $this->getTraceSummaries( $model, TraceStatus::RUNNING, true );
 		$scheduled = $this->getTraceSummaries( $model, TraceStatus::SCHEDULED );
@@ -227,7 +238,7 @@ class ApiEndpointController extends AbstractApiController
 
 		return [
 			'success'      => true,
-			'status'       => ( $status ) ? 'active' : 'idle',
+			'status'       => $status,
 			'can_execute'  => $model->canRunNow(),
 			'can_schedule' => $this->scheduler->canSchedule( $model ),
 			'running'      => $running,
