@@ -16,6 +16,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 		footer,
 		parentRef,
 	} = props;
+
 	const contextRefId = parentRef.current.key ?? createRefId();
 	const tagsContext = useContext( TagsContext );
 	const parentContext = useContext( ParentContext );
@@ -44,17 +45,29 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 	function updateHtml( content ) {
 		const container = containerRef.current;
 
+		if ( ! container ) {
+			return;
+		}
+
 		if ( ! prevHtmlRef.current ) {
 			container.innerHTML = content;
 			prevHtmlRef.current = content;
 		} else if ( content !== prevHtmlRef.current ) {
 
 			// Only morph the form contents to keep the form element reference.
+			const form = container.querySelector( 'form' );
+
+			if ( ! form ) {
+				container.innerHTML = content;
+				prevHtmlRef.current = content;
+				return;
+			}
+
 			const template = document.createElement('template');
 			template.innerHTML = content;
 			const newForm = template.content.querySelector('form');
 
-			Idiomorph.morph( container.querySelector('form'), newForm.innerHTML, {
+			Idiomorph.morph( form, newForm.innerHTML, {
 				morphStyle: 'innerHTML',
 				callbacks: {
 					// Same rules as Turbo's data-turbo-permanent: leave anything
@@ -66,6 +79,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 								||
 								oldNode.hasAttribute( 'data-controlled-by' )
 							) {
+								// Do not morph this node or it's children.
 								return false;
 							}
 						}
@@ -78,6 +92,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 								||
 								node.hasAttribute( 'data-controlled-by' )
 							) {
+								// Do not remove this node or it's children.
 								return false;
 							}
 						}
