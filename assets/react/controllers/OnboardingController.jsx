@@ -19,14 +19,13 @@ export default function OnboardingController( props ) {
 	const [ loading, setLoading ] = useState( false );
 	const [ error, setError ] = useState( null );
 	const [ preferences, setPreference ] = usePreference( 'onboarding' );
-	const mountedRef = useRef( false );
 	const onboardingRef = getOnboardingRef();
 	const currentSequenceRef = useRef( null );
 
 	const getSequence = () => window.SyncEngine?.onboarding?.sequence ?? null;
 	const getCompleted = () => preferences?.completed ?? {};
 
-	const updatePreference = useCallback( ( key, value ) => {
+	const updatePreference = useCallback( ( key, value = null ) => {
 		if ( 'object' === typeof key ) {
 			setPreference( { ...preferences, ...key } );
 		} else  {
@@ -35,7 +34,7 @@ export default function OnboardingController( props ) {
 	}, [ setPreference, preferences ] );
 
 	const startOnboarding = useCallback( async ( sequence ) => {
-		var targetSequence = sequence || getSequence();
+		const targetSequence = sequence || getSequence();
 		if ( ! targetSequence ) return;
 
 		if ( onboardingRef.active ) return;
@@ -68,16 +67,15 @@ export default function OnboardingController( props ) {
 
 	// Auto-start on mount for new users
 	useEffect( () => {
-		if ( mountedRef.current ) return;
-		mountedRef.current = true;
+		let sequence = getSequence();
+		let completed = getCompleted();
 
-		var sequence = getSequence();
-		var completed = getCompleted();
+		let autoStart = preferences?.autoStart ?? true;
 
-		if ( preferences?.autoStart && ! completed?.[ sequence ] ) {
-			var timer = setTimeout( () => {
+		if ( autoStart && ! completed?.[ sequence ] ) {
+			let timer = setTimeout( () => {
 				startOnboarding( sequence );
-			}, 1500 );
+			}, 500 );
 
 			return () => clearTimeout( timer );
 		}
@@ -88,8 +86,8 @@ export default function OnboardingController( props ) {
 		setSteps( [] );
 		onboardingRef.active = false;
 
-		var sequence = currentSequenceRef.current;
-		var completed = getCompleted();
+		let sequence = currentSequenceRef.current;
+		let completed = getCompleted();
 
 		if ( sequence ) {
 			completed = { ...completed, [ sequence ]: true };
@@ -103,9 +101,10 @@ export default function OnboardingController( props ) {
 	}, [ updatePreference, preferences, currentSequenceRef ] );
 
 	const sequence = getSequence();
-	var completed = getCompleted();
-	var hasOnboarding = !!sequence;
-	var isCompleted = completed?.[ sequence ];
+	const hasOnboarding = !!sequence;
+
+	let completed = getCompleted();
+	let isCompleted = completed?.[ sequence ];
 
 	return (
 		<>
