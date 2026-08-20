@@ -46,8 +46,13 @@ class MenuController extends DefaultController
 		// @todo filter according to the security
 		foreach ( $loader->getMenuItems( $menuName )->all() as $item ) {
 			/** @var MenuItem $item */
-			$link = $this->generateUrl( $item->getRoute(), $item->getParameters() );
-			if ( $isAdmin or ! str_contains( $link, "system" ) ) {
+			try {
+				$link = $this->generateUrl( $item->getRoute(), $item->getParameters() );
+			} catch ( \Exception $e ) {
+				// @todo Log this error when debug is enabled?
+				$link = '';
+			}
+			if ( $link && ( $isAdmin || ! str_contains( $link, "system" ) ) ) {
 				$items[] = [
 					'name'     => $item->getRoute(),
 					'link'     => $link,
