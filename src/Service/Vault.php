@@ -3,9 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
-use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
 
 /**
@@ -18,29 +16,28 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 	private array $secrets;
 
 	public function __construct(
-		#[Autowire( '%env(SYNCENGINE_VAULT)%' )]
-		private readonly ?string $vault,
-		private readonly System $system,
-		private readonly string $projectDir,
+		#[Autowire(service: 'secrets.vault')]
+		private readonly AbstractVault $vault,
 	) {}
 
 	public function fetch(): ?array
 	{
 		if ( ! isset( $this->secrets ) ) {
 			$secrets = [];
-			if ( $this->vault ) {
+			$encoded = $this->vault->reveal( $this->env );
+			if ( $encoded ) {
 
-				$vault = base64_decode( $this->vault );
-				if ( false === $vault ) {
+				$decoded = base64_decode( $encoded );
+				if ( false === $decoded ) {
 					throw new \Exception( 'Cannot decode vault.' );
 				}
 
-				$vault = json_decode( $vault, true );
-				if ( null === $vault ) {
+				$decoded = json_decode( $decoded, true );
+				if ( null === $decoded ) {
 					throw new \Exception( 'Cannot decode vault.' );
 				}
 
-				$secrets = (array) $vault;
+				$secrets = (array) $decoded;
 			}
 			$this->secrets = $secrets;
 		}
@@ -95,59 +92,14 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 
 	final public function write( string $value ): bool
 	{
-		$command = 'secrets:set';
+		$this->vault->seal( $this->env, $value );
 
-		$tmp = $this->projectDir . '/var/tmp';
-		if ( ! is_dir( $tmp ) ) {
-			( new Filesystem() )->mkdir( $tmp );
-		}
-
-		$file = tempnam( $tmp, 'tmp' );
-
-		try {
-			$stream = fopen( $file, 'w' );
-
-			fwrite( $stream, $value );
-
-			$args = [
-				'name' => $this->env,
-				'file' => $file,
-			];
-
-			// Set secrets in PHP cache.
-			$success = $this->system->runCommand( $command, $args );
-
-			// Reset cache.
-			fclose( $stream );
-
-		} catch ( ExceptionInterface $exception ) {
-			$this->lastMessage = $exception->getMessage();
-			return false;
-		}
-
-		unlink( $file );
-
-		if ( $success ) {
-			return $success;
-		}
-
-		// Debug.
-
-		$success = $this->system->runCommand( $command, $args, silent: false );
-		$this->lastMessage = $success['status'];
-
-		return $success['success'];
+		return true;
 	}
 
 	public function generateKeys( bool $override = false ): bool
 	{
-		$command = 'secrets:generate-keys';
-
-		if ( $override ) {
-			return $this->system->runCommand( $command, options: [ 'rotate' => true ] );
-		}
-
-		return $this->system->runCommand( $command );
+		return $this->vault->generateKeys( $override );
 	}
 
 	public function seal( string $name, string $value ): void
