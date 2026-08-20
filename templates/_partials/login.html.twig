@@ -1,8 +1,8 @@
-{% if error %}
+{% if error is defined and error %}
 	<div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-<form action="{{ path('syncengine_admin_login') }}" method="post" class="">
+<form action="{{ path('syncengine_admin_login') }}" method="post" class="{{ classes|default('') }}">
 	<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     <input type="hidden" name="_target_path" value="{{ path('syncengine_admin_index') }}">
 

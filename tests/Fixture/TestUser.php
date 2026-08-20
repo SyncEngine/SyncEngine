@@ -26,14 +26,14 @@ class TestUser
 		return $user;
 	}
 
-	public static function getOrCreate( EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ?array $roles = [] ): User
+	public static function getOrCreate( EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ?array $roles = null ): User
 	{
 		/** @var \SyncEngine\Repository\UserRepository $repo */
 		$repo = $em->getRepository( User::class );
 		$user = $repo->findOneBy( [ 'email' => self::EMAIL ] );
 
 		if ( $user ) {
-			if ( array_diff( $roles, $user->getRoles() ) ) {
+			if ( is_array( $roles ) && array_diff( $roles, $user->getRoles() ) ) {
 				$user->setRoles( $roles );
 				$em->persist( $user );
 				$em->flush();

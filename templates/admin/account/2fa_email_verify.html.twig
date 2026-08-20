@@ -1,0 +1,44 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block content %}
+	{{ parent() }}
+
+	<div class="card my-3">
+		<div class="card-body">
+			<div class="text-center mb-4">
+				<i class="bi bi-envelope-check lead text-primary"></i>
+				<h5 class="mt-2">{{ 'Check your email'|trans }}</h5>
+				<p class="text-muted">{{ 'We sent a 6-digit verification code to your email address'|trans }}</p>
+			</div>
+
+			<form method="post" action="{{ path('syncengine_account_email_2fa_verify') }}" class="row g-3 justify-content-center">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('verify_2fa') }}" />
+
+				<div class="col-md-6">
+					<label for="_auth_code" class="form-label">{{ 'Enter the code from your email'|trans }}</label>
+					<input
+						type="text"
+						id="_auth_code"
+						name="_auth_code"
+						class="form-control text-center fs-5"
+						placeholder="000000"
+						required
+						autofocus
+						pattern="[0-9]{6}"
+						inputmode="numeric"
+						autocomplete="one-time-code"
+					/>
+				</div>
+
+				<div class="col-md-6 d-flex align-items-end gap-2">
+					<a href="{{ path('syncengine_account_email_2fa_setup') }}" class="btn btn-outline-secondary w-50">
+						{{ 'Resend Code'|trans }}
+					</a>
+					<button type="submit" class="btn btn-primary w-50">
+						<i class="bi bi-check-lg"></i> {{ 'Verify'|trans }}
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

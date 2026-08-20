@@ -38,7 +38,7 @@ jobs:
       -   name: Get Composer Cache Directory
           id: composer-dev-cache
           run: |
-              echo "name=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+              echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       -   name: Cache composer (vendor)
           uses: actions/cache@v3
           with:
@@ -79,6 +79,19 @@ jobs:
 #          run: vendor/bin/requirements-checker
 #      -   name: Check the Symfony console
 #          run: bin/console -V
+
+      # Build frontend assets, required for the tests to run properly
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Build Webpack assets
+        run: |
+          npm ci  # Use ci instead of install for reproducible builds
+          npm run build
+        env:
+          NODE_ENV: test
 
       # Install database
       -   name: Doctrine Create migration
