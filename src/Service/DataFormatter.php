@@ -40,7 +40,7 @@ class DataFormatter
 
 	public function getContentType( $format, iterable $config = [] ): string
 	{
-		return $this->getEncoder( $format, $config )?->getContentType( $config, $format ) ?? '';
+		return $this->getEncoder( $format, $config )?->getContentType( $config, $this->extractFormat( $format ) ) ?? '';
 	}
 
 	public function getEncoder( $format, iterable $config = [] ): ?CodecModel
@@ -52,7 +52,7 @@ class DataFormatter
 		$formatType   = $format;
 		$formatConfig = [];
 		if ( is_iterable( $format ) ) {
-			$formatType   = $format['_class'] ?? $format['format'] ?? '';
+			$formatType   = $this->extractFormat( $format );
 			$formatConfig = $format;
 		}
 
@@ -74,5 +74,19 @@ class DataFormatter
 		$codec?->setEncoder( $formatConfig );
 
 		return $codec;
+	}
+
+	private function extractFormat( $format ): string
+	{
+		if ( is_string( $format ) ) {
+			return $format;
+		}
+		if ( $format instanceof CodecModel ) {
+			return $format->getFormat();
+		}
+		if ( is_iterable( $format ) ) {
+			return $format['_class'] ?? $format['format'] ?? '';
+		}
+		return '';
 	}
 }
