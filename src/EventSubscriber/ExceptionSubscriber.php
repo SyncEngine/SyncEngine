@@ -2,7 +2,9 @@
 
 namespace SyncEngine\EventSubscriber;
 
-use Doctrine\DBAL\Exception\TableNotFoundException;
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
+use Doctrine\DBAL\Exception\InvalidFieldNameException;
+use Doctrine\ORM\Persisters\PersisterException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -104,7 +106,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
 			}
 		}
 
-		if ( $exception instanceof TableNotFoundException ) {
+		if (
+			$exception instanceof DatabaseObjectNotFoundException ||
+			$exception instanceof PersisterException ||
+			$exception instanceof InvalidFieldNameException
+		) {
 
 			$currentRoute = $request->attributes->get( '_route' );
 
