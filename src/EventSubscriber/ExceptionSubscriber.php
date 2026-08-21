@@ -123,7 +123,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
 			$event->allowCustomResponseCode();
 			$event->setResponse(
-				new RedirectResponse( $this->urlGenerator->generate( 'syncengine_install_repair', [ 'error' => $error ] ) )
+				new RedirectResponse( $this->urlGenerator->generate( 'syncengine_install_repair', [ 'error' => $error, 'redirect_to' => $request->getUri() ] ) )
 			);
 		}
 	}

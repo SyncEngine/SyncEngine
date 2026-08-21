@@ -106,6 +106,11 @@ class InstallController extends DefaultController
 		$response = $system->repairDatabase();
 
 		if ( true === $response && $system->isInstalled( $entityManager ) ) {
+
+			if ( $request->query->get( 'redirect_to' ) ) {
+				return $this->redirect( $request->query->get( 'redirect_to' ) );
+			}
+
 			return $this->redirectToRoute( 'syncengine_admin_index' );
 		}
 
