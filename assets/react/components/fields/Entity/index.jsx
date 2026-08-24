@@ -250,7 +250,6 @@ function normalizeEntityActions( props ) {
 	if ( ! actions ) {
 		return null;
 	}
-
 	return objectToMappable( actions, 'action', 'label' ).map( ( action ) => {
 		if ( React.isValidElement( action ) ) {
 			return action;
@@ -278,20 +277,24 @@ function normalizeEntityActions( props ) {
 					return null;
 				}
 				normalizedAction.callback = actionCallbacks.edit;
-				normalizedAction.label = action.label ?? <Icon icon="edit" />;
+				normalizedAction.label = ( action.action !== action.label ) ? action.label : <Icon icon="edit" />;
 				normalizedAction.savable = action.savable ?? true;
 				normalizedAction.entity = entityCallbacks.get( entity );
 				break;
 			case 'create':
 				normalizedAction.callback = actionCallbacks.create;
+				normalizedAction.label = ( action.action !== action.label ) ? action.label : <Icon icon="create" />;
 				normalizedAction.savable = action.savable ?? true;
 				if ( action.savable ) {
 					normalizedAction.editCallback = actionCallbacks.edit;
 				}
 				break;
 			case 'config':
+				if ( ! entity ) {
+					return null;
+				}
 				normalizedAction.fields = isFunction( configForm ) ? configForm() : configForm;
-				normalizedAction.label = action.label ?? <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
+				normalizedAction.label = ( action.action !== action.label ) ? action.label : <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
 				normalizedAction.callback = actionCallbacks.config;
 				break;
 		}
@@ -299,8 +302,6 @@ function normalizeEntityActions( props ) {
 		return normalizedAction;
 	} ).filter( Boolean );
 }
-
-
 
 export function EntityConfig( props ) {
 	const {
