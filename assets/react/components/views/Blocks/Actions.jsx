@@ -147,10 +147,9 @@ export default function Actions( props ) {
 
 		switch ( action.action ) {
 			case 'create':
-				const createAction = ( ! variants.button && ! action.icon ) ? { ...action, icon: 'add' } : action;
 				return (
-					<EntityModal key={ action.action } action="create" savable { ...action }>
-						{ createTrigger( createAction, variants, {}, action.dropdown ) }
+					<EntityModal key={ action.action } action="create" savable { ...action } id={ null } item={ null } entity={ null }>
+						{ createTrigger( { ...action, icon: 'add' }, variants, {}, action.dropdown ) }
 					</EntityModal>
 				)
 
@@ -236,7 +235,9 @@ export default function Actions( props ) {
 					);
 				}
 				return (
-					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, {}, action.dropdown ) } />
+					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, {}, action.dropdown ) }>
+						{ action.fields }
+					</ModalToggle>
 				);
 
 			case 'request':
