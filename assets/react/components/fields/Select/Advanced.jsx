@@ -19,9 +19,9 @@ import { mergeClassNames } from '../../../utils/props';
 function optionLabel( option ) {
 	return (
 		<HStack gap={ 2 }>
-			{ option.icon && <Icon icon={ option.icon }/> }
+			{ ! isEmpty( option.icon ) && <Icon icon={ option.icon }/> }
 			<span>{ option.label ?? option.name }</span>
-			{ option.description && <small className="text-secondary"> - { option.description }</small> }
+			{ ! isEmpty( option.description ) && <small className="text-secondary"> - { option.description }</small> }
 		</HStack>
 	)
 }
