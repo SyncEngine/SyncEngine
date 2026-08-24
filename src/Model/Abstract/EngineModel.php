@@ -66,6 +66,15 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		return $this->getContainer()->get( ModelExporter::class )->export( $this );
 	}
 
+	public function exportIcon()
+	{
+		if ( ! $this->hasEntity() ) {
+			return null;
+		}
+
+		return $this->getEntity()->getIcon();
+	}
+
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		if ( $this->hasEntity() ) {
