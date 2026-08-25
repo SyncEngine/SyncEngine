@@ -23,21 +23,27 @@ class SandboxController extends DefaultController
 		);
 	}
 
-	#[Route( '/json/preview', name: 'json_preview', requirements: [], methods: [ 'POST' ] )]
+	#[Route( '/admin/json/preview', name: 'json_preview', requirements: [], methods: [ 'POST' ] )]
 	public function preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
+		$this->denyAccessUnlessGranted( 'ROLE_EDITOR' );
+
 		return $this->handlePreview( $request, $executePreview );
 	}
 
 	#[Route( '/api/preview', name: 'api_preview', requirements: [], methods: [ 'POST' ] )]
 	public function api_preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
+		$this->denyAccessUnlessGranted( 'ROLE_API' );
+
 		return $this->handlePreview( $request, $executePreview );
 	}
 
 	#[Route( '/api/preview/schema/{type}', name: 'preview_schema', requirements: [ 'type' => '[a-z]+' ], methods: [ 'GET' ] )]
 	public function preview_schema( string $type ): JsonResponse
 	{
+		$this->denyAccessUnlessGranted( 'ROLE_API' );
+
 		return $this->json( $this->getPreviewSchema( $type ) );
 	}
 
