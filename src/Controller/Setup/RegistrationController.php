@@ -27,9 +27,11 @@ class RegistrationController extends DefaultController
 			return $this->redirectToRoute( 'syncengine_install' );
 		}
 
-		$existingUsers = $system->isRegistered( $entityManager );
-		if ( $existingUsers ) {
+		$existingAdmins = $system->isRegistered( $entityManager );
+		if ( $existingAdmins ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, $this->trans( 'Unable to access this page!' ) );
+
+			return $this->redirectToRoute( 'syncengine_user_create' );
 		}
 
 		$user = new User();
