@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { createRefId } from '../../../utils/globals';
+import { sanitizeHtml } from '../../../utils/sanitize';
 
 // Field elements.
 import FieldContainer from './Container';
@@ -66,7 +67,9 @@ export default function Field( props ) {
 			break;
 		case 'html':
 			field = (
-				<div dangerouslySetInnerHTML={ { __html: props.html } } />
+				<div dangerouslySetInnerHTML={ {
+					__html: props.trusted ? props.html : sanitizeHtml( props.html )
+				} } />
 			)
 			break;
 

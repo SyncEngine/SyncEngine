@@ -18,6 +18,7 @@ import { fetchPostJson } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
 import { debug } from '../../../utils/globals';
+import { sanitizeHtml } from '../../../utils/sanitize';
 import { suppress } from '../../../utils/events';
 import SourcePanel from './SourcePanel';
 import Button from '../../partials/Button';
@@ -161,11 +162,15 @@ export default function PreviewModal( props ) {
 				response: (
 					<>
 						{ /*response.success ? 'Success' : 'Error'*/ }
-						{ response.message && <div dangerouslySetInnerHTML={ { __html: response.message } }></div> }
-						{ response.error && <div dangerouslySetInnerHTML={ { __html: response.error } }></div> }
-						{ response.data &&
-							<ResponseTabs data={ response.data } contained />
-						}
+						{ response.message && (
+							<div className="text-muted" dangerouslySetInnerHTML={ { __html: sanitizeHtml( response.message ) } }/>
+						) }
+						{ response.error && (
+							<div className="alert alert-danger" dangerouslySetInnerHTML={ { __html: sanitizeHtml( response.error ) } }/>
+						) }
+						{ response.data && (
+							<ResponseTabs data={ response.data } contained/>
+						) }
 					</>
 				),
 			} );

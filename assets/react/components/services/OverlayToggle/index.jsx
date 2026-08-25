@@ -6,6 +6,7 @@ import useToggle from '../../../hooks/useToggle';
 import useRootClose from '../../../hooks/useRootClose';
 import { ParentContext } from '../../../context/ParentContext';
 import { ContainerContext } from '../../../context/ContainerContext';
+import { sanitizeHtml } from '../../../utils/sanitize';
 
 function getTriggerProps( triggers, callback, enable, disable ) {
 	let hover = false;
@@ -77,7 +78,7 @@ export default function OverlayToggle( props ) {
 				if ( React.isValidElement( content ) ) {
 					return React.cloneElement( content, triggerProps );
 				}
-				content = <span dangerouslySetInnerHTML={ { __html: content } } />
+				content = <span dangerouslySetInnerHTML={ { __html: sanitizeHtml( content ) } } />
 			}
 			if ( prewrap ) {
 				content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>

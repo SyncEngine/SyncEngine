@@ -3,6 +3,7 @@ import { bool, string } from 'prop-types';
 import useGlobal from '../../hooks/useGlobal';
 import { isString } from '../../utils/conditions';
 import { createSvg } from '../svg';
+import { sanitizeSvg } from '../../utils/sanitize';
 
 function Icon( props, ref ) {
 	const app = useGlobal();
@@ -18,6 +19,7 @@ function Icon( props, ref ) {
 		icon,
 		prefix = 'bi', // Bootstrap Icons.
 		variant,
+		trusted = false,
 	} = props;
 
 	if ( props.btn ) {
@@ -48,7 +50,7 @@ function Icon( props, ref ) {
 		}
 
 		if ( icon instanceof Element ) {
-			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+			override.dangerouslySetInnerHTML = { __html: trusted ? icon.outerHTML : sanitizeSvg( icon.outerHTML ) };
 
 		} else if ( icon.startsWith( '<svg' ) ) {
 			// Create SVG node.
@@ -60,7 +62,7 @@ function Icon( props, ref ) {
 			if ( iconRef ) {
 				app.icons[ iconRef ] = icon;
 			}
-			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+			override.dangerouslySetInnerHTML = { __html: trusted ? icon.outerHTML : sanitizeSvg( icon.outerHTML ) };
 
 		} else if ( icon.startsWith( 'data:image/svg+xml;base64,' ) ) {
 			// Parse base64 and create SVG node.
@@ -73,7 +75,7 @@ function Icon( props, ref ) {
 			if ( iconRef ) {
 				app.icons[ iconRef ] = icon;
 			}
-			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+			override.dangerouslySetInnerHTML = { __html: trusted ? icon.outerHTML : sanitizeSvg( icon.outerHTML ) };
 
 		// @todo, remove icon-font fallbacks?
 		} else if ( icon.startsWith( prefix + ' ' ) ) {
@@ -104,4 +106,5 @@ Icon.propTypes = {
 	variant: string,
 	icon: string,
 	btn: bool,
+	trusted: bool,
 }

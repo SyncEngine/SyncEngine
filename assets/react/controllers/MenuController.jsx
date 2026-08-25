@@ -6,6 +6,7 @@ import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
 import useBreadcrumbs from '../hooks/useBreadcrumbs';
 import { isArray } from '../utils/conditions';
+import { sanitizeHtml } from '../utils/sanitize';
 import { mapSortBy } from '../utils/data';
 import Icon from '../components/partials/Icon';
 
@@ -136,7 +137,7 @@ export default function MenuController( props ) {
 					{ menu }
 				</Nav>
 				{ app.hooks.hasOwnProperty( 'sidebar_bottom' ) &&
-					<div className={ "align-self-end w-100 p-3 small" + ( collapsed ? ' d-none' : '' ) } dangerouslySetInnerHTML={ { __html: app.hooks.sidebar_bottom } } />
+					<div className={ "align-self-end w-100 p-3 small" + ( collapsed ? ' d-none' : '' ) } dangerouslySetInnerHTML={ { __html: sanitizeHtml( app.hooks.sidebar_bottom ) } } />
 				}
 			</div>
 		</div>

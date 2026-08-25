@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import useToggle from '../../../hooks/useToggle';
 import Modal from '../../modals/Modal';
 import { isArray } from '../../../utils/conditions';
+import { sanitizeHtml } from '../../../utils/sanitize';
 
 export default function ModalToggle( props ) {
 	const {
@@ -31,7 +32,7 @@ export default function ModalToggle( props ) {
 				if ( React.isValidElement( content ) || ( isArray( content ) && React.isValidElement( content[0] ) ) ) {
 					return content;
 				}
-				content = <span dangerouslySetInnerHTML={ { __html: content } } />
+				content = <span dangerouslySetInnerHTML={ { __html: sanitizeHtml( content ) } } />
 			}
 			if ( prewrap ) {
 				content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
