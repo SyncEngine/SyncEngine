@@ -29,9 +29,18 @@ class HooksController extends DefaultController
 				'html' => $html,
 			] );
 		} catch ( \Exception $e ) {
+			if ( $this->isDebug() ) {
+				return $this->json( [
+					'success' => false,
+					'message' => $e->getMessage(),
+				] );
+			}
+
+			$this->logException( $e, 'An error occurred while executing hook' );
+
 			return $this->json( [
 				'success' => false,
-				'message' => $e->getMessage(),
+				'message' => 'An error occurred during hook execution. See logs for details.',
 			] );
 		}
 	}

@@ -61,8 +61,17 @@ class ApiEndpointController extends AbstractApiController
 				];
 			}
 		} catch ( \Exception $e ) {
+			if ( $this->isDebug() ) {
+				return $this->json(
+					[ 'message' => $e->getMessage() ],
+					Response::HTTP_INTERNAL_SERVER_ERROR
+				);
+			}
+
+			$this->logException( $e, 'An error occurred while listing endpoints' );
+
 			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
+				[ 'message' => 'An error occurred while listing endpoints. See logs for details.' ],
 				Response::HTTP_INTERNAL_SERVER_ERROR
 			);
 		}

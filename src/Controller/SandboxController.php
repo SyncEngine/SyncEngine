@@ -118,15 +118,28 @@ class SandboxController extends DefaultController
 
 			return $this->json( $result, $status );
 		} catch ( \Throwable $e ) {
+
+			if ( $this->isDebug() ) {
+				return $this->json(
+					[
+						'success' => false,
+						'message' => $e->getMessage(),
+						'type'    => get_class( $e ),
+						'code'    => $e->getCode(),
+						'file'    => $e->getFile(),
+						'line'    => $e->getLine(),
+						'trace'   => $e->getTraceAsString(),
+					],
+					Response::HTTP_INTERNAL_SERVER_ERROR
+				);
+			}
+
+			$this->logException( $e, 'An error occurred during preview execution' );
+
 			return $this->json(
 				[
 					'success' => false,
-					'message' => $e->getMessage(),
-					'type'    => get_class( $e ),
-					'code'    => $e->getCode(),
-					'file'    => $e->getFile(),
-					'line'    => $e->getLine(),
-					'trace'   => $e->getTraceAsString(),
+					'message' => 'An error occurred during preview execution. See logs for details.',
 				],
 				Response::HTTP_INTERNAL_SERVER_ERROR
 			);
