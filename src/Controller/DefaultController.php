@@ -91,10 +91,20 @@ class DefaultController extends AbstractController
 		return true === $this->getParameter( 'kernel.debug', false );
 	}
 
-	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
+	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [], $sanitizeOptions = [] ): JsonResponse
 	{
+		$html = $data['html'] ?? null;
+		if ( $html ) {
+			unset( $data['html'] );
+		}
+
 		$normalized = $this->container->get( ModelNormalizer::class )->normalize( $data );
-		$sanitized = ( new SerializationSanitizer() )->sanitize( $normalized );
+		$sanitized  = ( new SerializationSanitizer() )->sanitize( $normalized, $sanitizeOptions );
+
+		if ( $html ) {
+			$sanitized['html'] = $html;
+		}
+
 		return parent::json( $sanitized, $status, $headers, $context );
 	}
 
