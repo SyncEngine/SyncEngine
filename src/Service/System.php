@@ -51,9 +51,8 @@ class System
 			return $isInstalled;
 		}
 
-		// @todo filter by role.
-		$existingUsers = $entityManager->getRepository( User::class )->findAll();
-		if ( $existingUsers ) {
+		$existingAdmins = $entityManager->getRepository( User::class )->findByRole( 'ROLE_ADMIN' );
+		if ( $existingAdmins ) {
 			return true;
 		}
 
