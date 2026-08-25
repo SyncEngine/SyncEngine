@@ -4,19 +4,20 @@ namespace SyncEngine\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use SyncEngine\Service\ModelDependencyManager;
-use SyncEngine\Service\ModelExporter;
-use SyncEngine\Service\ModelImporter;
-use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Locator\Blueprints;
 use SyncEngine\Service\Locator\Codecs;
 use SyncEngine\Service\Locator\Columns;
 use SyncEngine\Service\Locator\Tasks;
 use SyncEngine\Service\Locator\Webservices;
+use SyncEngine\Service\ModelDependencyManager;
+use SyncEngine\Service\ModelExporter;
+use SyncEngine\Service\ModelImporter;
+use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\SerializationSanitizer;
 
 class DefaultController extends AbstractController
@@ -48,17 +49,18 @@ class DefaultController extends AbstractController
 		return array_merge(
 			parent::getSubscribedServices(),
 			[
-				'translator' => '?'.TranslatorInterface::class,
-				'entitymanager' => '?'.EntityManagerInterface::class,
-				Columns::class => '?'.Columns::class,
-				Codecs::class => '?'.Codecs::class,
-				Tasks::class => '?'.Tasks::class,
-				Webservices::class => '?'.Webservices::class,
-				Blueprints::class => '?'.Blueprints::class,
-				ModelNormalizer::class       => '?'.ModelNormalizer::class,
-				ModelDependencyManager::class => '?'.ModelDependencyManager::class,
-				ModelExporter::class         => '?'.ModelExporter::class,
-				ModelImporter::class => '?'.ModelImporter::class,
+				'logger'                      => '?' . LoggerInterface::class,
+				'translator'                  => '?' . TranslatorInterface::class,
+				'entitymanager'               => '?' . EntityManagerInterface::class,
+				Columns::class                => '?' . Columns::class,
+				Codecs::class                 => '?' . Codecs::class,
+				Tasks::class                  => '?' . Tasks::class,
+				Webservices::class            => '?' . Webservices::class,
+				Blueprints::class             => '?' . Blueprints::class,
+				ModelNormalizer::class        => '?' . ModelNormalizer::class,
+				ModelDependencyManager::class => '?' . ModelDependencyManager::class,
+				ModelExporter::class          => '?' . ModelExporter::class,
+				ModelImporter::class          => '?' . ModelImporter::class,
 			]
 		);
 	}
