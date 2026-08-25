@@ -51,6 +51,7 @@
 		"@uiw/react-codemirror": "^4.25.10",
 		"@xyflow/react": "^12.11.0",
 		"bootstrap-icons": "^1.13.1",
+		"dompurify": "^3.4.14",
 		"i18next": "^26.3.1",
 		"i18next-icu": "^2.4.3",
 		"idiomorph": "^0.7.4",
