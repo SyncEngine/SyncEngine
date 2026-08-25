@@ -6,10 +6,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Service\Attribute\Required;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Service\Vault;
 
+#[IsGranted('ROLE_ADMIN')]
 class VaultController extends DefaultController
 {
 	private Vault $vault;
