@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Form\EnvironmentFormType;
@@ -17,13 +18,15 @@ use SyncEngine\Service\Env;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\System;
 
+#[IsGranted('ROLE_ADMIN')]
+#[Route('/system')]
 class SystemController extends AbstractAdminController
 {
 	public function __construct(
 		private readonly KernelInterface $kernel,
 	) {}
 
-	#[Route( '/system', name: 'system_index' )]
+	#[Route( '/', name: 'system_index' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'system' )]
 	public function renderSystemIndex( Request $request ): Response
 	{
@@ -159,7 +162,7 @@ class SystemController extends AbstractAdminController
 		);
 	}
 
-	#[Route( '/system/info', name: 'system_info' )]
+	#[Route( '/info', name: 'system_info' )]
 	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
 	{
 		$core   = [
@@ -298,7 +301,7 @@ class SystemController extends AbstractAdminController
 		);
 	}
 
-	#[Route( '/system/env', name: 'system_env' )]
+	#[Route( '/env', name: 'system_env' )]
 	public function renderSystemEnv( Request $request, System $system ): Response
 	{
 		return $this->render(

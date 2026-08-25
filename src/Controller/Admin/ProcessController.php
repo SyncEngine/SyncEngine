@@ -7,15 +7,18 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Form\ProcessManagerFormType;
 use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Env;
 
+#[IsGranted('ROLE_ADMIN')]
+#[Route('/system')]
 class ProcessController extends DefaultController
 {
-	#[Route('system/processes', name: 'system_processes' )]
+	#[Route('processes', name: 'system_processes' )]
 	function renderIndex( Request $request, MessengerManager $manager, Env $env ): Response
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -128,7 +131,7 @@ class ProcessController extends DefaultController
 		] );
 	}
 
-	#[Route('system/processes/enable', name: 'system_enable_manager' )]
+	#[Route('processes/enable', name: 'system_enable_manager' )]
 	function handleEnable( Request $request, MessengerManager $manager ): Response
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -138,7 +141,7 @@ class ProcessController extends DefaultController
 		return $this->redirectToRoute( 'syncengine_system_processes' );
 	}
 
-	#[Route('system/processes/disable', name: 'system_disable_manager' )]
+	#[Route('processes/disable', name: 'system_disable_manager' )]
 	function handleDisable( Request $request, MessengerManager $manager ): Response
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
@@ -21,6 +22,7 @@ use SyncEngine\Repository\Abstract\EngineRepository;
 use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/system')]
 class ModuleController extends AbstractAdminController
 {
