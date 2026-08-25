@@ -13,6 +13,8 @@ use SyncEngine\Model\Interface\Exportable;
 
 /**
  * @template T of EntityModel
+ *
+ * @method FormInterface form( EntityModel $model, Request $request, false|string $saveLabel = '' )
  */
 abstract class EntityController extends AbstractAdminController
 {
