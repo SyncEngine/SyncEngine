@@ -36,6 +36,7 @@ class DefaultController extends AbstractController
 		if ( $prefix ) {
 			$name = $prefix . '.' . $name;
 		}
+
 		return parent::getParameter( $name );
 	}
 
@@ -65,10 +66,6 @@ class DefaultController extends AbstractController
 		);
 	}
 
-	protected function trans( ?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null ): string {
-		return $this->container->get('translator')->trans( $id, $parameters, $domain ?? $this->defaultDomain, $locale );
-	}
-
 	#[Required]
 	public function setContainer( ContainerInterface $container ): ?ContainerInterface
 	{
@@ -89,10 +86,40 @@ class DefaultController extends AbstractController
 		return self::get( 'entitymanager' );
 	}
 
+	public function isDebug()
+	{
+		return true === $this->getParameter( 'kernel.debug', false );
+	}
+
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
 		$normalized = $this->container->get( ModelNormalizer::class )->normalize( $data );
 		$sanitized = ( new SerializationSanitizer() )->sanitize( $normalized );
 		return parent::json( $sanitized, $status, $headers, $context );
+	}
+
+	protected function trans( ?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null ): string
+	{
+		return $this->container->get( 'translator' )->trans(
+			$id,
+			$parameters,
+			$domain ?? $this->defaultDomain,
+			$locale
+		);
+	}
+
+	protected function logException( \Exception $e, string $message = 'An error occurred' ): void
+	{
+		$this->get( 'logger' )->error(
+			$message,
+			[
+				'message' => $e->getMessage(),
+				'type'    => get_class( $e ),
+				'code'    => $e->getCode(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine(),
+				'trace'   => $e->getTraceAsString(),
+			]
+		);
 	}
 }
