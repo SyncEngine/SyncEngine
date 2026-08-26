@@ -81,10 +81,15 @@ export default function OnboardingController( props ) {
 		}
 	}, [ preferences, startOnboarding ] );
 
-	const handleComplete = useCallback( () => {
+	const handleClose = useCallback( () => {
 		setActive( false );
 		setSteps( [] );
+		setError( null );
 		onboardingRef.active = false;
+	}, [ setActive, setSteps, setError, onboardingRef ] );
+
+	const handleComplete = useCallback( () => {
+		handleClose();
 
 		let sequence = currentSequenceRef.current;
 		let completed = getCompleted();
@@ -128,7 +133,7 @@ export default function OnboardingController( props ) {
 			{ error && (
 				<Modal
 					show={ true }
-					onHide={ () => { setActive( false ); onboardingRef.active = false; } }
+					onHide={ handleClose }
 					centered
 					dialogClassName="onboarding-dialog"
 				>
@@ -137,7 +142,7 @@ export default function OnboardingController( props ) {
 					</Modal.Header>
 					<Modal.Body className="text-center py-4">
 						<p className="mb-3">Unable to load onboarding: { error }</p>
-						<button className="btn btn-sm btn-secondary" onClick={ () => { setActive( false ); onboardingRef.active = false; } }>Dismiss</button>
+						<button className="btn btn-sm btn-secondary" onClick={ handleClose }>Dismiss</button>
 					</Modal.Body>
 				</Modal>
 			) }
