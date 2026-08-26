@@ -62,7 +62,6 @@ class VaultTest extends KernelTestCase
 			'sql: SELECT * FROM users WHERE name = \'O\'Brien\'',
 			'',
 			str_repeat( 'a', 500 ),
-			random_bytes( 512 )
 		];
 
 		foreach ( $passwords as $index => $value ) {
@@ -71,5 +70,54 @@ class VaultTest extends KernelTestCase
 			$retrieved = $this->vault->reveal( $key );
 			$this->assertEquals( $value, $retrieved, "Failed for value at index {$index}" );
 		}
+	}
+
+	public function testSetThrowsOnNonStringValue(): void
+	{
+		$this->expectException( \InvalidArgumentException::class );
+		$this->expectExceptionMessage( 'Vault value must be a string or null' );
+
+		$this->vault->set( 'test_array_key', [ 'nested' => 'value' ] );
+	}
+
+	public function testSetThrowsOnBinaryValue(): void
+	{
+		$this->expectException( \InvalidArgumentException::class );
+		$this->expectExceptionMessage( 'Vault value must be valid UTF-8' );
+
+		$this->vault->seal( 'test_binary_key', random_bytes( 512 ) );
+	}
+
+	public function testStorePasswordWithControlCharacters(): void
+	{
+		$password = "line1\nline2\ttab\rcarriage\x01\x02end";
+
+		$this->vault->seal( 'test_control_key', $password );
+		$retrieved = $this->vault->reveal( 'test_control_key' );
+		$this->assertEquals( $password, $retrieved );
+	}
+
+	public function testStoreAndFetchSshPrivateKey(): void
+	{
+		$sshKey = '-----BEGIN OPENSSH PRIVATE KEY-----' . "\n"
+			. 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW'
+			. 'QyNTUxOQAAACDmX3gRkFpMmJ0bGVhVjFmYWNrZXJzZGZhc2RmYXNkZmFzZGZhc2Rm'
+			. '-----END OPENSSH PRIVATE KEY-----';
+
+		$this->vault->seal( 'test_ssh_key', $sshKey );
+		$retrieved = $this->vault->reveal( 'test_ssh_key' );
+		$this->assertEquals( $sshKey, $retrieved );
+	}
+
+	public function testStoreAndFetchRsaPrivateKey(): void
+	{
+		$rsaKey = '-----BEGIN RSA PRIVATE KEY-----' . "\n"
+			. 'MIIEpAIBAAKCAQEA0Z3VS5JJcds3xfn/ygWyF8PbnGy0AHB7MhgHcTz6sE2I2yPB'
+			. 'aFDrBz9vFqU4yLqM5sKjNkRdOxXVbN3wQZ1rTgE4pJmW9fGhYiUoP2lKjS8nRQ=='
+			. '-----END RSA PRIVATE KEY-----';
+
+		$this->vault->seal( 'test_rsa_key', $rsaKey );
+		$retrieved = $this->vault->reveal( 'test_rsa_key' );
+		$this->assertEquals( $rsaKey, $retrieved );
 	}
 }
