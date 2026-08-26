@@ -78,6 +78,16 @@ abstract class EntityController extends AbstractAdminController
 			return $return;
 		}
 
+		$allowedMethods = match( $primaryAction ) {
+			'query', 'list' => [ 'GET', 'POST' ],
+			default => [ 'POST' ],
+		};
+
+		if ( ! in_array( strtoupper( $request->getMethod() ), $allowedMethods, true ) ) {
+			$return['success'] = false;
+			$return['error']   = $this->trans( 'Invalid request method.' );
+		}
+
 		switch ( $action ) {
 			case 'delete':
 				if ( $model instanceof EngineModel ) {
