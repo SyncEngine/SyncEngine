@@ -1,7 +1,7 @@
 import React, { cloneElement, createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
+import { Card, Col, Spinner, Stack } from 'react-bootstrap';
 
 import Fields from '../../form/Fields';
 import Modal from '../Modal';
@@ -40,7 +40,7 @@ export default function PreviewModal( props ) {
 	const {
 		children,
 		type,
-		title = t('Preview'),
+		title = t( 'Preview' ),
 		item = props.config ?? {},
 		entity,
 		endpoint = app.endpoints.requests.preview,
@@ -126,7 +126,7 @@ export default function PreviewModal( props ) {
 		}
 
 		return params;
-	}
+	};
 
 	const openModal = () => {
 		if ( 'function' === typeof item ) {
@@ -137,7 +137,7 @@ export default function PreviewModal( props ) {
 		setModal( {
 			title: getTitle(),
 		} );
-	}
+	};
 
 	const request = async( params ) => {
 		setLoading( ( params.action ? params.action + '-' : '' ) + params.mode );
@@ -179,7 +179,7 @@ export default function PreviewModal( props ) {
 		}
 
 		setLoading( false );
-	}
+	};
 
 	const handleClose = useCallback( () => {
 		setModal( false );
@@ -201,31 +201,31 @@ export default function PreviewModal( props ) {
 	};
 	const triggerProps = {
 		onClick: handleTrigger,
-		onFocus: e => e.stopPropagation()
-	}
+		onFocus: e => e.stopPropagation(),
+	};
 
 	const previewModalContext = {
 		scope: scope,
 		request: request,
 		previewData: {
 			current: getPreviewData( true ),
-			update: setPreviewData
+			update: setPreviewData,
 		},
 		sendData: {
 			current: sendData,
-			toggle: toggleSendData
+			toggle: toggleSendData,
 		},
 		previewRequestParams: {
 			current: previewRequestParams,
-			update: updatePreviewRequestParams
+			update: updatePreviewRequestParams,
 		},
 		previewRequestQuery: {
 			current: previewRequestQuery,
-			update: updatePreviewRequestQuery
+			update: updatePreviewRequestQuery,
 		},
 		variables: {
 			current: variables,
-			update: updateVariables
+			update: updateVariables,
 		},
 	};
 
