@@ -111,7 +111,9 @@ class JsonController extends AbstractAdminController
 	{
 		$sequence = $request->query->get( 'sequence', 'index' );
 
-		$filePath = dirname( __DIR__, 2 ) . '/config/onboarding/' . $sequence . '.php';
+		$root = $this->getParameter( 'dir.onboarding' );
+
+		$filePath = $root . '/' . $sequence . '.php';
 
 		if ( ! file_exists( $filePath ) ) {
 			return $this->json(
