@@ -7,7 +7,7 @@ framework:
     csrf_protection:
         enabled: true
         check_header: true
-        cookie_name: csrf-token
+        cookie_name: '%syncengine.security.csrf_cookie_name%'
         stateless_token_ids:
             - submit
             - authenticate

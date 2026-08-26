@@ -2,6 +2,7 @@
 
 namespace SyncEngine\EventSubscriber;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -14,6 +15,8 @@ final class CsrfSubscriber implements EventSubscriberInterface
 {
 	public function __construct(
 		private readonly CsrfTokenManagerInterface $csrfTokenManager,
+		#[Autowire('%syncengine.security.csrf_cookie_name%')]
+		private string $cookieName,
 	) {}
 
 	public static function getSubscribedEvents(): array
@@ -36,7 +39,7 @@ final class CsrfSubscriber implements EventSubscriberInterface
 			return;
 		}
 
-		$token = $request->cookies->get( 'csrf-token' );
+		$token = $request->cookies->get( $this->cookieName );
 
 		if ( ! $token ) {
 			$event->setResponse(
