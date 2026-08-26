@@ -1,21 +1,22 @@
 <?php
 
-namespace SyncEngine\Controller;
+namespace SyncEngine\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Locator\Blueprints;
 use SyncEngine\Service\Locator\Codecs;
 use SyncEngine\Service\Locator\Columns;
 use SyncEngine\Service\Locator\Tasks;
 use SyncEngine\Service\Locator\Webservices;
+use SyncEngine\Service\Preferences;
 
-class JsonController extends DefaultController
+class JsonController extends AbstractAdminController
 {
 	#[Route( '/json/preferences', name: 'json_preferences' )]
 	public function handlePreferences( Request $request, Preferences $preferences ): JsonResponse
