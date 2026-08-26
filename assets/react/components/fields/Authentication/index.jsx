@@ -42,7 +42,7 @@ export default function Authentication( props ) {
 			// Update local state on external changes.
 			setSelectedWebservice( config._class );
 		}
-		if ( ! isEqual( connectConfig, config._connect ) ) {
+		if ( config._connect && ! isEqual( connectConfig, config._connect ) ) {
 			setConnectConfig( config._connect ?? {} );
 		}
 	}, [ value ] );
