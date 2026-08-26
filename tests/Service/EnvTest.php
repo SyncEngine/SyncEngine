@@ -16,7 +16,7 @@ class EnvTest extends BaseTestCase
 		parent::setUp();
 
 		$this->tempDir = sys_get_temp_dir() . '/syncengine_env_test_' . uniqid();
-		var_dump($this->tempDir);
+
 		( new Filesystem() )->mkdir( $this->tempDir );
 	}
 
