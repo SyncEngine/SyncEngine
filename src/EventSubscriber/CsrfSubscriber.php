@@ -30,9 +30,9 @@ final class CsrfSubscriber implements EventSubscriberInterface
 		}
 
 		$request = $event->getRequest();
+		$path = $request->getPathInfo();
 
-		if ( ! str_contains( $request->getPathInfo(), '/json/' )
-		     || ! in_array( $request->getMethod(), [ 'POST', 'PUT', 'PATCH', 'DELETE' ], true ) ) {
+		if ( ! str_contains( $path, '/json/' ) && ! str_ends_with( $path, '/json' ) ) {
 			return;
 		}
 
