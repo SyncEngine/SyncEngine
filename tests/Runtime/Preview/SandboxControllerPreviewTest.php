@@ -237,6 +237,9 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 	public function testPreviewSchemaReturnsSchemaForValidType(): void
 	{
 		$controller = $this->createController();
+
+		$this->mockApiTokenSecurity( [ 'automation:*' ] );
+
 		$response = $controller->preview_schema( 'task' );
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
