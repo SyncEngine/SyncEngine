@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use Masterminds\HTML5\Parser\UTF8Utils;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use SyncEngine\Service\Interface\SettingsInterface;
@@ -58,13 +59,51 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 
 	public function set( string $key, mixed $value ): static
 	{
+		$this->fetch();
+
+		$this->validateKey( $key );
+		$this->validateValue( $value );
+
+		if ( null === $this->secrets ) {
+			$this->secrets = [];
+		}
+
 		$this->secrets[ $key ] = $value;
 
 		return $this;
 	}
 
+	private function validateKey( string $key ): void
+	{
+		if ( ! preg_match( '/^[a-zA-Z0-9_]+$/', $key ) ) {
+			throw new \InvalidArgumentException( 'Vault key contains invalid characters. Only letters, numbers, and underscores are allowed.' );
+		}
+
+		if ( strlen( $key ) > 255 ) {
+			throw new \InvalidArgumentException( 'Vault key exceeds maximum length of 255 characters' );
+		}
+	}
+
+	private function validateValue( mixed $value ): void
+	{
+		if ( null === $value ) {
+			// Unset.
+			return;
+		}
+
+		if ( ! is_string( $value ) ) {
+			throw new \InvalidArgumentException( 'Vault value must be a string or null' );
+		}
+
+		if ( $value !== UTF8Utils::convertToUTF8( $value ) ) {
+			throw new \InvalidArgumentException( 'Vault value must be valid UTF-8' );
+		}
+	}
+
 	public function unset( string $key ): static
 	{
+		$this->fetch();
+
 		unset( $this->secrets[ $key ] );
 
 		return $this;
@@ -77,11 +116,17 @@ class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 		} else {
 			$this->set( $key, $value );
 		}
+
 		return $this->persist();
 	}
 
 	public function persist(): bool
 	{
+		if ( null === $this->secrets ) {
+			// Nothing to persist.
+			return true;
+		}
+
 		ksort( $this->secrets );
 
 		$secrets = json_encode( $this->secrets );
