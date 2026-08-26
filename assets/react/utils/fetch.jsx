@@ -1,6 +1,27 @@
 import { isObject } from './conditions';
 
+const generateCsrfToken = () => {
+	const tokenName = window.SyncEngine?.csrfToken;
+
+	if ( ! tokenName ) {
+		return [ null, null ];
+	}
+
+	const token = crypto.randomUUID();
+
+	// Double-submit stateless token.
+	document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict; Secure`;
+
+	return [ tokenName, token ];
+}
+
 const fetchPost = async ( url, data, init = {} ) => {
+	const [ tokenName, token ] = generateCsrfToken();
+	if ( token ) {
+		init.headers = { ...( init.headers || {} ) };
+		init.headers[ tokenName ] = token;
+	}
+
 	const params = new URLSearchParams();
 	for ( const key in data ) {
 		const value = ( 'object' === typeof data[ key ] ) ? JSON.stringify( data[ key ] ) : data[ key ];
@@ -14,10 +35,16 @@ const fetchPost = async ( url, data, init = {} ) => {
 }
 
 const fetchPostJson = async ( url, data, init = {} ) => {
-	init.method = 'POST';
-	init.body = JSON.stringify( data );
 	init.headers = { ...( init.headers || {} ) };
 	init.headers[ 'Content-Type' ] = 'application/json';
+
+	const [ tokenName, token ] = generateCsrfToken();
+	if ( token ) {
+		init.headers[ tokenName ] = token;
+	}
+
+	init.method = 'POST';
+	init.body = JSON.stringify( data );
 
 	return await fetchJson( url, init );
 }
