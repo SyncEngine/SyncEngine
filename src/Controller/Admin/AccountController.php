@@ -5,6 +5,7 @@ namespace SyncEngine\Controller\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -237,11 +238,12 @@ class AccountController extends AbstractAdminController
 		return $this->render(
 			'admin/account/tokens.html.twig',
 			[
-				'backlink'    => true,
-				'title'       => $this->trans( 'Access tokens' ),
-				'icon'        => 'token',
-				'tokens'      => $apiTokens,
-				'breadcrumbs' => [
+				'backlink'      => true,
+				'title'         => $this->trans( 'Access tokens' ),
+				'icon'          => 'token',
+				'tokens'        => $apiTokens,
+				'grantedScopes' => $user->getGrantedScopes(),
+				'breadcrumbs'   => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_account_index' ),
 						'title' => $this->trans( 'Account' ),
@@ -372,6 +374,21 @@ class AccountController extends AbstractAdminController
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
+			// Validate scopes are within user's granted scopes.
+			$config = $apiToken->getConfig();
+			$scopes = $config['scopes'] ?? [];
+
+			$grantedScopes = $user->getGrantedScopes();
+			$invalidScopes = array_filter( $scopes, fn( $scope ) => ! in_array( $scope, $grantedScopes, true ) );
+
+			if ( ! empty( $invalidScopes ) ) {
+				$form->get( 'config' )->addError(
+					new FormError( 'Invalid scopes selected: ' . implode( ', ', $invalidScopes ) )
+				);
+
+				return $form;
+			}
+
 			$apiToken->setUser( $user );
 			$entityManager->persist( $apiToken );
 			$entityManager->flush();
