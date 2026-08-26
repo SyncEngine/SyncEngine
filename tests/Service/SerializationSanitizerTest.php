@@ -45,7 +45,13 @@ class SerializationSanitizerTest extends BaseTestCase
 		// ISO-8859-1 encoded "café" (é = 0xE9) — not valid UTF-8
 		$latin1 = 'caf' . "\xE9";
 
-		$result = $sanitizer->sanitize( [ 'key' => $latin1 ], [ SerializationSanitizer::SANITIZE_UTF8 => false ] );
+		$result = $sanitizer->sanitize(
+			[ 'key' => $latin1 ],
+			[
+				SerializationSanitizer::SANITIZE_UTF8 => false,
+				SerializationSanitizer::SANITIZE_HTML => false
+			]
+		);
 
 		$this->assertEquals( $latin1, $result['key'] );
 		$this->assertFalse( mb_detect_encoding( $result['key'], 'UTF-8', true ) );
@@ -111,15 +117,15 @@ class SerializationSanitizerTest extends BaseTestCase
 		$this->assertSame( 42, $sanitizer->sanitizeResource( 42 ) );
 	}
 
-	// -- encode_utf8() -----------------------------------------------------------
+	// -- encodeUtf8() -----------------------------------------------------------
 
 	public function testEncodeUtf8PassesThroughValidUtf8(): void
 	{
 		$sanitizer = new SerializationSanitizer();
 
-		$this->assertEquals( 'hello world', $sanitizer->encode_utf8( 'hello world' ) );
-		$this->assertEquals( 'こんにちは 🎉', $sanitizer->encode_utf8( 'こんにちは 🎉' ) );
-		$this->assertEquals( '', $sanitizer->encode_utf8( '' ) );
+		$this->assertEquals( 'hello world', $sanitizer->encodeUtf8( 'hello world' ) );
+		$this->assertEquals( 'こんにちは 🎉', $sanitizer->encodeUtf8( 'こんにちは 🎉' ) );
+		$this->assertEquals( '', $sanitizer->encodeUtf8( '' ) );
 	}
 
 	public function testEncodeUtf8DetectsNonUtf8HighBytes(): void
@@ -130,9 +136,9 @@ class SerializationSanitizerTest extends BaseTestCase
 
 		$this->assertFalse( mb_detect_encoding( $data, 'UTF-8', true ) );
 
-		// encode_utf8 calls UTF8Utils::convertToUTF8 which defaults to converting FROM UTF-8
+		// encodeUtf8 calls UTF8Utils::convertToUTF8 which defaults to converting FROM UTF-8
 		// so invalid bytes are stripped rather than converted.
-		$result = $sanitizer->encode_utf8( $data );
+		$result = $sanitizer->encodeUtf8( $data );
 
 		$this->assertEquals( 'helloworld', $result );
 	}
@@ -143,7 +149,7 @@ class SerializationSanitizerTest extends BaseTestCase
 		// mb_detect_encoding with strict mode returns UTF-8 for control characters (false positive)
 		$data      = "hello\x01\x02world";
 
-		$result = $sanitizer->encode_utf8( $data );
+		$result = $sanitizer->encodeUtf8( $data );
 
 		$this->assertEquals( "hello\x01\x02world", $result );
 	}
