@@ -23,8 +23,8 @@ class InstallController extends DefaultController
 		LoggerInterface $syncengineLogger,
 		KernelInterface $kernel,
 	): Response {
-		if ( true === $system->isInstalled( $entityManager ) ) {
-			if ( true !== $system->isRegistered( $entityManager ) ) {
+		if ( true === $system->isInstalled() ) {
+			if ( true !== $system->isRegistered() ) {
 				return $this->redirectToRoute( 'syncengine_register' );
 			}
 
@@ -39,7 +39,7 @@ class InstallController extends DefaultController
 			if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
 
 				// Validate database connection.
-				$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
+				$dbConnected = $system->isDatabaseConnected();
 
 				if ( $dbConnected instanceof \Throwable ) {
 					$this->addFlash( 'warning', $dbConnected->getMessage() );
@@ -47,7 +47,7 @@ class InstallController extends DefaultController
 
 				} elseif ( $dbConnected ) {
 					// Install database schema.
-					$success = $system->install( $entityManager, $env );
+					$success = $system->install();
 
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
@@ -55,7 +55,7 @@ class InstallController extends DefaultController
 
 					} else {
 						// Check if installed successfully.
-						$success = $system->isInstalled( $entityManager, $env );
+						$success = $system->isInstalled();
 
 						if ( true === $success ) {
 							return $this->redirectToRoute( 'syncengine_register' );
@@ -97,7 +97,6 @@ class InstallController extends DefaultController
 	#[Route( '/install/repair', name: 'install_repair' )]
 	public function handleRepair(
 		Request $request,
-		EntityManagerInterface $entityManager,
 		System $system,
 	): Response {
 		$error = $request->query->get( 'error' ) ?: '';
@@ -105,7 +104,7 @@ class InstallController extends DefaultController
 		// Reinstall.
 		$response = $system->repairDatabase();
 
-		if ( true === $response && $system->isInstalled( $entityManager ) ) {
+		if ( true === $response && $system->isInstalled() ) {
 
 			if ( $request->query->get( 'redirect_to' ) ) {
 				return $this->redirect( $request->query->get( 'redirect_to' ) );

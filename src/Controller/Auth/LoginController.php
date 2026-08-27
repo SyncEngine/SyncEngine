@@ -15,12 +15,11 @@ class LoginController extends DefaultController
 	#[Route( '/login', name: 'admin_login' )]
 	public function renderLogin(
 		AuthenticationUtils $authenticationUtils,
-		EntityManagerInterface $entityManager,
 		System $system
 	): Response
 	{
-		if ( true !== $system->isRegistered( $entityManager ) ) {
-			if ( true !== $system->isInstalled( $entityManager ) ) {
+		if ( true !== $system->isRegistered() ) {
+			if ( true !== $system->isInstalled() ) {
 				return $this->redirectToRoute( 'syncengine_install' );
 			}
 			return $this->redirectToRoute( 'syncengine_register' );

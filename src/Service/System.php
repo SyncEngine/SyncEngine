@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use SyncEngine\Kernel;
 
@@ -21,18 +20,19 @@ if ( ! defined( 'STDIN' ) ) {
 
 class System
 {
-	protected Env $env;
 	protected string $php;
 
 	public function __construct(
-		private readonly string $projectDir, private Kernel $kernel, Env $env
+		private readonly string $projectDir,
+		private Kernel $kernel,
+		protected Env $env,
+		protected EntityManagerInterface $em
 	) {
 		if ( $this->kernel->getEnvironment() === 'test' ) {
-			$env->setEnvFile( 'test' );
+			$this->env->setEnvFile( 'test' );
 		} else {
-			$env->setEnvFile( 'local' );
+			$this->env->setEnvFile( 'local' );
 		}
-		$this->env = $env;
 	}
 
 	public function getEnv(): Env
@@ -40,18 +40,14 @@ class System
 		return $this->env;
 	}
 
-	public function isRegistered( ?EntityManagerInterface $entityManager = null ): bool|\Throwable
+	public function isRegistered(): bool|\Throwable
 	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-
-		$isInstalled = $this->isInstalled( $entityManager );
+		$isInstalled = $this->isInstalled();
 		if ( true !== $isInstalled ) {
 			return $isInstalled;
 		}
 
-		$existingAdmins = $entityManager->getRepository( User::class )->findByRole( 'ROLE_ADMIN' );
+		$existingAdmins = $this->em->getRepository( User::class )->findByRole( 'ROLE_ADMIN' );
 		if ( $existingAdmins ) {
 			return true;
 		}
@@ -59,32 +55,19 @@ class System
 		return false;
 	}
 
-	public function isInstalled( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
+	public function isInstalled(): bool
 	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-		if ( ! $env ) {
-			$env = $this->env;
-		}
-
 		// For now installation only requires a database.
-		return $this->isDatabaseInstalled( $entityManager, $env );
+		return $this->isDatabaseInstalled();
 	}
 
-	public function isDatabaseInstalled( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
+	public function isDatabaseInstalled(): bool
 	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-		if ( ! $env ) {
-			$env = $this->env;
-		}
+		$hasDatabase = $this->isDatabaseConnected();
 
-		$hasDatabase = $this->isDatabaseConnected( $entityManager, $env );
 		if ( $hasDatabase ) {
 			try {
-				$entityManager->getRepository( User::class )->findAll();
+				$this->em->getRepository( User::class )->findAll();
 
 				return true;
 			} catch ( \Throwable $e ) {
@@ -95,22 +78,15 @@ class System
 		return false;
 	}
 
-	public function isDatabaseConnected( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isDatabaseConnected(): bool|\Throwable
 	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-		if ( ! $env ) {
-			$env = $this->env;
-		}
-
-		$hasDatabase = $env->get( 'DATABASE_URL' );
+		$hasDatabase = $this->env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
 			try {
 				// Calls connect() "under the hood".
-				$entityManager->getConnection()->getServerVersion();
+				$this->em->getConnection()->getServerVersion();
 
-				if ( $entityManager->getConnection()->isConnected() ) {
+				if ( $this->em->getConnection()->isConnected() ) {
 					return true;
 				}
 			} catch ( \Throwable $e ) {
@@ -121,9 +97,9 @@ class System
 		return false;
 	}
 
-	public function install( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function install(): bool|\Throwable
 	{
-		if ( true === $this->isInstalled( $entityManager, $env ) ) {
+		if ( true === $this->isInstalled() ) {
 			return new \Exception( 'Already installed' );
 		}
 
@@ -196,14 +172,10 @@ class System
 	/**
 	 * Effectively runs doctrine:schema:update but without dropping any tables from the existing database.
 	 */
-	public function runDatabaseSafeSchemaRepair( ?EntityManagerInterface $entityManager = null, bool $silent = true ): bool|array
+	public function runDatabaseSafeSchemaRepair( bool $silent = true ): bool|array
 	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-
-		$schemaTool = new SchemaTool( $entityManager );
-		$metadata   = $entityManager->getMetadataFactory()->getAllMetadata();
+		$schemaTool = new SchemaTool( $this->em );
+		$metadata   = $this->em->getMetadataFactory()->getAllMetadata();
 		$sql        = $schemaTool->getUpdateSchemaSql( $metadata );
 
 		$queries = [];
@@ -218,7 +190,7 @@ class System
 			$queries[] = $query;
 		}
 
-		$connection = $entityManager->getConnection();
+		$connection = $this->em->getConnection();
 
 		$executed = [];
 		$current  = null;

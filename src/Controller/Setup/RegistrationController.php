@@ -23,11 +23,11 @@ class RegistrationController extends DefaultController
 		System $system
 	): Response
 	{
-		if ( true !== $system->isInstalled( $entityManager ) ) {
+		if ( true !== $system->isInstalled() ) {
 			return $this->redirectToRoute( 'syncengine_install' );
 		}
 
-		$existingAdmins = $system->isRegistered( $entityManager );
+		$existingAdmins = $system->isRegistered();
 		if ( $existingAdmins ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, $this->trans( 'Unable to access this page!' ) );
 
