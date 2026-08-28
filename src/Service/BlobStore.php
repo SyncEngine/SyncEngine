@@ -107,6 +107,10 @@ class BlobStore
 		// Sets ref in Blob.
 		$ref = $blob->getRef();
 
+		if ( str_contains( $ref, '../' ) ) {
+			throw new \InvalidArgumentException( 'Blob ref must not contain path traversal sequences' );
+		}
+
 		$target = $this->directory . $ref;
 
 		// Skip if file already exists on disk.
