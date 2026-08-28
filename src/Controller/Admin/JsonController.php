@@ -109,7 +109,7 @@ class JsonController extends AbstractAdminController
 	#[Route( '/json/onboarding', name: 'json_onboarding' )]
 	public function getOnboardingSteps( Request $request, TranslatorInterface $translator ): JsonResponse
 	{
-		$sequence = $request->query->get( 'sequence', 'index' );
+		$sequence = preg_replace( '/[^a-zA-Z0-9_]/', '', $request->query->get( 'sequence', 'index' ) );
 
 		$root = $this->getParameter( 'dir.onboarding' );
 
