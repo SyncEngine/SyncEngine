@@ -9,8 +9,6 @@ import { FlowContext } from './index';
 import LimitedHandle from './LimitedHandle';
 import Entity from '../Entity';
 
-import useEntity from '../../../hooks/useEntity';
-
 import DeleteModal from '../../modals/DeleteModal';
 import EntitySelectorModal from '../../modals/EntitySelectorModal';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -19,8 +17,8 @@ import Icon from '../../partials/Icon';
 
 import { parseId } from '../../../utils/globals';
 import { deepClone, mapGetIndex } from '../../../utils/data';
-import { suppress } from '../../../utils/events';
 import { HStack } from '../../partials/Stack';
+import { isConfigured } from '../../../utils/conditions';
 
 
 export default function StepNode( props ) {
@@ -109,7 +107,10 @@ export default function StepNode( props ) {
 		) } );
 		actions.push( 'create' );
 	} else {
-		const configAction = { action: 'config' };
+		const configAction = {
+			action: 'config',
+			icon: isConfigured( data.config ) ? 'configured' : 'config',
+		};
 		if ( preview ) {
 			configAction.preview = {
 				type: 'step',
