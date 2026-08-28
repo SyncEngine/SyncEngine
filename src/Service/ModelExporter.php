@@ -400,8 +400,8 @@ class ModelExporter
 
 	public function parseConfigEntity( string $entity, mixed $value )
 	{
-		$entity      = strtolower( $entity );
-		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
+		/** @var class-string<EntityModel> $entityModel */
+		$entityModel = EntityModel::getEntityModelClass( ucfirst( strtolower( $entity ) ) );
 
 		if ( class_exists( $entityModel ) ) {
 			$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
