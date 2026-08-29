@@ -25,6 +25,7 @@ parameters:
     syncengine.dir.modules: '%syncengine.dir.root%/modules'
     syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
     syncengine.dir.translations: '%syncengine.dir.root%/translations'
+    syncengine.dir.onboarding: '%syncengine.dir.root%/config/onboarding'
     syncengine.namespace.root: 'SyncEngine'
     syncengine.namespace.modules: '%syncengine.namespace.root%\Module'
     syncengine.max_traces: '%env(SYNCENGINE_MAX_TRACES)%'
