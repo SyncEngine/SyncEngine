@@ -22,22 +22,22 @@ use SyncEngine\Structure\Data\ConfigData;
 class ModelExporter
 {
 	private Serializer $serializer;
-	private static ?string $runningRef = null;
-	private static array $dependencies = [];
-	private static array $tagRefs = [];
+	private ?string $runningRef = null;
+	private array $dependencies = [];
+	private array $tagRefs = [];
 
 	private function start( string $ref ): void
 	{
-		if ( ! self::$runningRef ) {
-			self::$runningRef = $ref;
+		if ( ! $this->runningRef ) {
+			$this->runningRef = $ref;
 		}
 	}
 
 	private function reset(): void
 	{
-		self::$runningRef   = null;
-		self::$dependencies = [];
-		self::$tagRefs      = [];
+		$this->runningRef   = null;
+		$this->dependencies = [];
+		$this->tagRefs      = [];
 	}
 
 	public function export( $model, $exportDependencies = true ): array
@@ -51,7 +51,7 @@ class ModelExporter
 
 		$currentRef = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
-		if ( $currentRef === self::$runningRef ) {
+		if ( $currentRef === $this->runningRef ) {
 			return [];
 		}
 
@@ -87,11 +87,11 @@ class ModelExporter
 		}
 
 		if ( $exportDependencies ) {
-			foreach ( self::$dependencies as $ref => $dependency ) {
+			foreach ( $this->dependencies as $ref => $dependency ) {
 				if ( ! is_object( $dependency ) ) {
 					continue;
 				}
-				self::$dependencies[ $ref ] = true;
+				$this->dependencies[ $ref ] = true;
 				if ( method_exists( $dependency, 'export' ) ) {
 					$dep_export = $dependency->export();
 					foreach ( $dep_export as $key => $normalized ) {
@@ -159,8 +159,8 @@ class ModelExporter
 						is_subclass_of( $modelClass, EntityModel::class )
 					) {
 						$relRef = $relation->getRef();
-						if ( ! isset( self::$dependencies[ $relRef ] ) ) {
-							self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
+						if ( ! isset( $this->dependencies[ $relRef ] ) ) {
+							$this->dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
 						}
 						$relation = $relRef;
 					} else {
@@ -178,8 +178,8 @@ class ModelExporter
 					is_subclass_of( $modelClass, EntityModel::class )
 				) {
 					$valRef = $value->getRef();
-					if ( ! isset( self::$dependencies[ $valRef ] ) ) {
-						self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
+					if ( ! isset( $this->dependencies[ $valRef ] ) ) {
+						$this->dependencies[ $valRef ] = $modelClass::get( $value->getId() );
 					}
 					$value = $valRef;
 				} else {
@@ -334,29 +334,29 @@ class ModelExporter
 			}
 
 			// Get the already parsed ref.
-			if ( isset( self::$tagRefs[ $ref ] ) ) {
-				$ref = self::$tagRefs[ $ref ];
+			if ( isset( $this->tagRefs[ $ref ] ) ) {
+				$ref = $this->tagRefs[ $ref ];
 			}
 
-			if ( ! isset( self::$dependencies[ $ref ] ) ) {
+			if ( ! isset( $this->dependencies[ $ref ] ) ) {
 				$storageModel = StorageModel::get( $ref );
 				if ( ! $storageModel ) {
-					self::$tagRefs[ $ref ] = false;
+					$this->tagRefs[ $ref ] = false;
 					continue;
 				}
 
 				// Cache ref/id and point it to the actual ref.
-				self::$tagRefs[ $ref ] = $storageModel->getRef();
+				$this->tagRefs[ $ref ] = $storageModel->getRef();
 
-				if ( ! isset( self::$dependencies[ $storageModel->getRef() ] ) ) {
-					self::$dependencies[ $storageModel->getRef() ] = $storageModel;
+				if ( ! isset( $this->dependencies[ $storageModel->getRef() ] ) ) {
+					$this->dependencies[ $storageModel->getRef() ] = $storageModel;
 				}
 			}
 		}
 
 		// @todo improve this.
 		$replace_tags = [];
-		foreach ( self::$tagRefs as $id_tag => $ref_tag ) {
+		foreach ( $this->tagRefs as $id_tag => $ref_tag ) {
 			if ( ! is_numeric( $id_tag ) ) {
 				continue;
 			}
@@ -408,8 +408,8 @@ class ModelExporter
 			$entityModel = $entityModel::get( $entityId );
 			if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
 				// Set new dependency.
-				if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
-					self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+				if ( ! isset( $this->dependencies[ $entityModel->getRef() ] ) ) {
+					$this->dependencies[ $entityModel->getRef() ] = $entityModel;
 				}
 				// Override config.
 				if ( is_numeric( $value ) ) {
