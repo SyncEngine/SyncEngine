@@ -32,6 +32,7 @@ class TraceModel extends EntityModel
 	private ?int $iteration = null;
 	private ?int $lastAutoSave = 1;
 	private ?int $killTimestamp = null;
+	private ?string $killSwitchPath = null;
 	private bool $isRegistered = false;
 	private bool $hasErrors;
 	private bool $iteratorEnded = false;
@@ -447,21 +448,23 @@ class TraceModel extends EntityModel
 
 	public function checkKillSwitch(): static
 	{
-		static $killSwitch;
 		if ( $this->killTimestamp ) {
 			if ( $this->killTimestamp > time() + 1 ) {
 				throw new ExecuteStopException( 'Killed already.' );
 			}
 			return $this;
 		}
-		if ( ! isset( $killSwitch ) ) {
+
+		if ( ! isset( $this->killSwitchPath ) ) {
 			if ( ! $this->isRegistered() ) {
 				return $this;
 			}
-			$killSwitch = $this->getTraceDir() . '.kill';
+			$this->killSwitchPath = $this->getTraceDir() . '.kill';
 		}
 
-		if ( ( new Filesystem() )->exists( $killSwitch ) ) {
+		clearstatcache( true, $this->killSwitchPath );
+
+		if ( ( new Filesystem() )->exists( $this->killSwitchPath ) ) {
 			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
 				$this->setStatus( TraceStatus::STOPPED );
 			}
