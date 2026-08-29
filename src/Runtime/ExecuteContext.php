@@ -205,8 +205,6 @@ class ExecuteContext extends Context
 			return $ancestors;
 		}
 
-		$ancestors[] = $parent;
-
 		do {
 			$ancestors[] = $parent;
 		} while ( $parent = $parent->getParent() );
