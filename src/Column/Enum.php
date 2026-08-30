@@ -6,8 +6,8 @@ use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\Type\SelectFieldType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Format\FloatFormatter;
@@ -107,7 +107,7 @@ class Enum extends ColumnModel
 			'choices' => $options,
 		];
 
-		return new InputFieldType( $field );
+		return new SelectFieldType( $field );
 	}
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )

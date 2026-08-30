@@ -6,8 +6,9 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\Type\ParamsFieldType;
+use SyncEngine\Form\Fields\Type\RepeaterFieldType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -101,25 +102,27 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 				'actions'      => [ 'delete' ],
 				'fieldset'     => $column->getSchemaColumns()?->getFields()->generateLabels(),
 			];
-		} else {
-			$input = $column?->getInput() ?? [ 'type' => 'input' ];
-			$field = [
-				'type'         => 'params',
-				'customizable' => true,
-				'format'       => 'json',
-				'columns'      => ! empty( $config['associative'] ) ?
-					[
-						'key'   => $this->trans( 'Key/Name' ),
-						'value' => $input
-					]
-					:
-					[
-						'value' => $input
-					],
-			];
+
+			return new RepeaterFieldType( $field );
 		}
 
-		return new InputFieldType( $field );
+		$input = $column?->getInput() ?? [ 'type' => 'input' ];
+		$field = [
+			'type'         => 'params',
+			'customizable' => true,
+			'format'       => 'json',
+			'columns'      => ! empty( $config['associative'] ) ?
+				[
+					'key'   => $this->trans( 'Key/Name' ),
+					'value' => $input
+				]
+				:
+				[
+					'value' => $input
+				],
+		];
+
+		return new ParamsFieldType( $field );
 	}
 
 	public function normalize(): array

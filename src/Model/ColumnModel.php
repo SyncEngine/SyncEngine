@@ -5,7 +5,7 @@ namespace SyncEngine\Model;
 use SyncEngine\Column\Type\ColumnTypeInterface;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Type\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;

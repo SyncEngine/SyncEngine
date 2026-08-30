@@ -4,8 +4,8 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\BooleanColumnType;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\Type\SelectFieldType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\BooleanFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -76,7 +76,7 @@ class Boolean extends ColumnModel
 			'customizable' => true,
 		];
 
-		return new InputFieldType( $field );
+		return new SelectFieldType( $field );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

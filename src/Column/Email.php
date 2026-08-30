@@ -4,8 +4,8 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\Type\InputFieldType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\EmailFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
