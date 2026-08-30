@@ -32,20 +32,19 @@ class FieldTypeFactory
 			return $config;
 		}
 
-		if ( ! isset( $config['type'] ) ) {
+		if ( empty( $config['type'] ) ) {
 			if ( isset( $config['tabs'] ) ) {
-				$config['type'] = 'tabs';
-			} elseif ( isset( $config['steps'] ) || isset( $config['wizard'] ) ) {
-				$config['type'] = 'wizard';
+				return new TabsFieldType( $config );
 			}
-		}
-
-		if ( isset( $config['nested'] ) ) {
-			return new NestedGroupFieldType( $config );
-		}
-
-		if ( isset( $config['fields'] ) ) {
-			return new GroupFieldType( $config );
+			if ( isset( $config['steps'] ) || isset( $config['wizard'] ) ) {
+				return new WizardFieldType( $config );
+			}
+			if ( isset( $config['nested'] ) ) {
+				return new NestedGroupFieldType( $config );
+			}
+			if ( isset( $config['fields'] ) ) {
+				return new GroupFieldType( $config );
+			}
 		}
 
 		$field = match ( $config['type'] ?? '' ) {
