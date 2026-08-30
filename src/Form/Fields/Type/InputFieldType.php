@@ -11,7 +11,12 @@ class InputFieldType extends AbstractFieldType
 
 	public function getType(): string
 	{
-		return 'text';
+		$type = $this->_get( 'type', 'text' );
+
+		return match ( $type ) {
+			'text', 'email', 'password', 'number', 'url', 'tel', 'search', 'date', 'time', 'datetime-local', 'month', 'week' => $type,
+			default => 'text',
+		};
 	}
 
 	public function getPlaceholder(): string
