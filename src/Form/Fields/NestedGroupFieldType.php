@@ -5,7 +5,7 @@ namespace SyncEngine\Form\Fields;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
-class NestedGroupFieldType extends AbstractFieldType
+class NestedGroupFieldType extends GroupFieldType
 {
 	public function setNested( FieldCollection|array $nested ): Static
 	{
