@@ -3,9 +3,12 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Taggable;
 
 class CodeFieldType extends AbstractFieldType
 {
+	use Taggable;
+
 	public function getType(): string
 	{
 		return 'code';
@@ -31,18 +34,6 @@ class CodeFieldType extends AbstractFieldType
 	public function setContained( bool $contained ): static
 	{
 		$this->_set( 'contained', $contained );
-
-		return $this;
-	}
-
-	public function isTaggable(): bool
-	{
-		return (bool) $this->_get( 'taggable', false );
-	}
-
-	public function setTaggable( bool $taggable ): static
-	{
-		$this->_set( 'taggable', $taggable );
 
 		return $this;
 	}

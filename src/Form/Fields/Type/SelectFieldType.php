@@ -3,9 +3,12 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Taggable;
 
 class SelectFieldType extends AbstractFieldType
 {
+	use Taggable;
+
 	public function getType(): string
 	{
 		return 'select';

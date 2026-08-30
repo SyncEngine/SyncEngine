@@ -3,9 +3,12 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Taggable;
 
 class ConditionsFieldType extends AbstractFieldType
 {
+	use Taggable;
+
 	public function getType(): string
 	{
 		return 'conditions';
@@ -43,18 +46,6 @@ class ConditionsFieldType extends AbstractFieldType
 	public function setSortable( bool $sortable ): static
 	{
 		$this->_set( 'sortable', $sortable );
-
-		return $this;
-	}
-
-	public function isTaggable(): bool
-	{
-		return (bool) $this->_get( 'taggable', false );
-	}
-
-	public function setTaggable( bool $taggable ): static
-	{
-		$this->_set( 'taggable', $taggable );
 
 		return $this;
 	}

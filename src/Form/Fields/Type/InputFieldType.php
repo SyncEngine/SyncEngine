@@ -3,24 +3,15 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Taggable;
 
 class InputFieldType extends AbstractFieldType
 {
+	use Taggable;
+
 	public function getType(): string
 	{
 		return 'text';
-	}
-
-	public function isTaggable(): bool
-	{
-		return (bool) $this->_get( 'taggable', false );
-	}
-
-	public function setTaggable( bool $taggable ): static
-	{
-		$this->_set( 'taggable', $taggable );
-
-		return $this;
 	}
 
 	public function getPlaceholder(): string

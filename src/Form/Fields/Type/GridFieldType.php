@@ -3,9 +3,12 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Taggable;
 
 class GridFieldType extends AbstractFieldType
 {
+	use Taggable;
+
 	public function getType(): string
 	{
 		return 'grid';
@@ -55,18 +58,6 @@ class GridFieldType extends AbstractFieldType
 	public function setRemovable( bool $removable ): static
 	{
 		$this->_set( 'removable', $removable );
-
-		return $this;
-	}
-
-	public function isTaggable(): bool
-	{
-		return (bool) $this->_get( 'taggable', false );
-	}
-
-	public function setTaggable( bool $taggable ): static
-	{
-		$this->_set( 'taggable', $taggable );
 
 		return $this;
 	}
