@@ -19,10 +19,10 @@ class Blueprints extends AbstractServiceModelLocator
 {
 	public function __construct(
 		private readonly string $dir,
-		protected readonly TranslatorInterface $translator,
 		ServiceLocator $container,
 		Modules $modulesService,
 		LoggerInterface $logger,
+		protected readonly TranslatorInterface $translator,
 	) {
 		parent::__construct( $container, $modulesService, $logger );
 	}
