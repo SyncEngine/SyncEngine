@@ -223,8 +223,12 @@ class Split extends TaskModel
 
 			if ( ! empty( $config['column']['_class'] ) ) {
 				$column = ColumnModel::get( $config['column']['_class'] );
-				foreach ( $value as $index => $val ) {
-					$value[ $index ] = $column->format( $val, $config['column'] );
+				if ( $column ) {
+					foreach ( $value as $index => $val ) {
+						$value[ $index ] = $column->format( $val, $config['column'] );
+					}
+				} else {
+					$context->addError( $this->trans( 'Column `{type}` does not exist', [ 'type' => $config['column']['_class'] ] ) );
 				}
 			}
 		}
