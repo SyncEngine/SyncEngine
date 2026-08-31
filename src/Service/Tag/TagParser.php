@@ -38,8 +38,15 @@ class TagParser
 		$this->recurseMode = $recurse;
 
 		$this->setCleanMode( $clean );
+	}
 
-		$this->extractor = new TagExtractor( $resource );
+	public function getExtractor(): TagExtractor
+	{
+		if ( ! isset( $this->extractor ) ) {
+			$this->extractor = new TagExtractor( $this->resource );
+		}
+
+		return $this->extractor;
 	}
 
 	public function setCleanMode( bool|CleanerInterface $mode ): self
@@ -74,12 +81,12 @@ class TagParser
 
 	public function hasTag( $value, string $tag = '' ): bool
 	{
-		return $this->extractor->hasTag( $value, $tag );
+		return $this->getExtractor()->hasTag( $value, $tag );
 	}
 
 	public function getTagParts( string $tag ): array
 	{
-		return $this->extractor->getTagParts( $tag );
+		return $this->getExtractor()->getTagParts( $tag );
 	}
 
 	public function parseArray( array $array ): array
@@ -118,9 +125,9 @@ class TagParser
 		// Nested tags.
 		//$pattern = '/{{\s*([\w.]+)\s*(?:\(\s*"(?:[^"\\\\]|\\\\.)*"\s*\))?\s*}}/';
 
-		if ( $this->extractor->isSingleTag( $value ) ) {
+		if ( $this->getExtractor()->isSingleTag( $value ) ) {
 			// Just a single tag. Can return non-string value.
-			$tag    = $this->extractor->trimTag( $value );
+			$tag    = $this->getExtractor()->trimTag( $value );
 			$parsed = $this->parseTag( $tag );
 
 			if ( null === $parsed && ! $this->shouldClean( $tag ) ) {
