@@ -1,0 +1,62 @@
+<?php
+
+namespace SyncEngine\Form\Fields\Trait;
+
+use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+
+/**
+ * @extends AbstractFieldType
+ */
+trait Groups
+{
+	public function setFields( FieldCollection|array $fields ): static
+	{
+		if ( ! $fields instanceof FieldCollection ) {
+			$fields = new FieldCollection( $fields );
+		}
+
+		$this->_set( 'fields', $fields );
+
+		return $this;
+	}
+
+	public function getFields(): FieldCollection
+	{
+		if ( ! isset( $this['fields'] ) ) {
+			$this->_set( 'fields', new FieldCollection() );
+		}
+
+		return $this->_get( 'fields' );
+	}
+
+	public function getField( string $name ): ?FieldConfigInterface
+	{
+		if ( isset( $this['fields'] ) ) {
+			return $this['fields'][ $name ];
+		}
+
+		return null;
+	}
+
+	public function addField( string $name, FieldConfigInterface|array $config ): static
+	{
+		if ( empty( $this['fields'] ) ) {
+			$this['fields'] = new FieldCollection();
+		}
+
+		$this['fields'][ $name ] = $config;
+
+		return $this;
+	}
+
+	public function removeField( string $name ): static
+	{
+		if ( isset( $this['fields'] ) ) {
+			unset( $this['fields'][ $name ] );
+		}
+
+		return $this;
+	}
+}
