@@ -176,11 +176,11 @@ class RuntimeMultiRegionalOrderAggregationCaseTest extends RuntimeScenarioTestCa
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertCount( 3, $result['data'] );
-		$this->assertSame( 'ORD001', $result['data'][0]['order_num'] );
-		$this->assertSame( 'ORD101', $result['data'][1]['order_num'] );
-		$this->assertSame( 'ORD201', $result['data'][2]['order_num'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertCount( 3, $result->getData() );
+		$this->assertSame( 'ORD001', $result->getData()[0]['order_num'] );
+		$this->assertSame( 'ORD101', $result->getData()[1]['order_num'] );
+		$this->assertSame( 'ORD201', $result->getData()[2]['order_num'] );
 
 		$requests     = MockHttp::getMockRequests();
 		$getRequests  = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'GET' ) );

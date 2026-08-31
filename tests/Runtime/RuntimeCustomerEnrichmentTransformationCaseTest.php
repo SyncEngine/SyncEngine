@@ -211,14 +211,14 @@ class RuntimeCustomerEnrichmentTransformationCaseTest extends RuntimeScenarioTes
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertCount( 2, $result['data'] );
-		$this->assertSame( 'John', $result['data'][0]['first_name'] );
-		$this->assertSame( '123 Main St', $result['data'][0]['street'] );
-		$this->assertSame( 'Tech Corp', $result['data'][0]['company_name'] );
-		$this->assertSame( 'Jane', $result['data'][1]['first_name'] );
-		$this->assertSame( '456 Oak Ave', $result['data'][1]['street'] );
-		$this->assertSame( 'Finance Inc', $result['data'][1]['company_name'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertCount( 2, $result->getData() );
+		$this->assertSame( 'John', $result->getData()[0]['first_name'] );
+		$this->assertSame( '123 Main St', $result->getData()[0]['street'] );
+		$this->assertSame( 'Tech Corp', $result->getData()[0]['company_name'] );
+		$this->assertSame( 'Jane', $result->getData()[1]['first_name'] );
+		$this->assertSame( '456 Oak Ave', $result->getData()[1]['street'] );
+		$this->assertSame( 'Finance Inc', $result->getData()[1]['company_name'] );
 
 		$requests     = MockHttp::getMockRequests();
 		$getRequests  = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'GET' ) );

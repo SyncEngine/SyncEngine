@@ -20,6 +20,7 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
+use SyncEngine\Runtime\ExecuteResult;
 use SyncEngine\Security\ApiTokenSecurityToken;
 use SyncEngine\Tests\Fixture\TestUser;
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
@@ -178,7 +179,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 		return $automation;
 	}
 
-	protected function executeAutomationScenario( AutomationModel $automation, mixed $data = null ): array
+	protected function executeAutomationScenario( AutomationModel $automation, mixed $data = null ): ExecuteResult
 	{
 		$execute = static::getContainer()->get( Execute::class );
 
@@ -341,6 +342,13 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 
 	public function getLastErrorMessage( $result ): string
 	{
+		if ( $result instanceof ExecuteResult ) {
+			$result = [
+				'errors'  => $result->getErrors(),
+				'message' => $result->getMessage(),
+			];
+		}
+
 		if ( isset( $result['errors'][0]['message'] ) ) {
 			return $result['errors'][0]['message'];
 		}

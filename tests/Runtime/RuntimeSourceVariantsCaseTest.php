@@ -118,11 +118,11 @@ class RuntimeSourceVariantsCaseTest extends RuntimeScenarioTestCase
 
 		$result = $this->executeAutomationScenario( $automation );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'ORD-42', $result['data']['id'] );
-		$this->assertSame( 120.5, $result['data']['total'] );
-		$this->assertSame( 'accepted', $result['data']['dispatch']['status'] );
-		$this->assertSame( 'ERP-99', $result['data']['dispatch']['remote_id'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'ORD-42', $result->getData()['id'] );
+		$this->assertSame( 120.5, $result->getData()['total'] );
+		$this->assertSame( 'accepted', $result->getData()['dispatch']['status'] );
+		$this->assertSame( 'ERP-99', $result->getData()['dispatch']['remote_id'] );
 
 		$requests = $this->getHttpRequests( 'MockHttp' );
 
@@ -164,8 +164,8 @@ class RuntimeSourceVariantsCaseTest extends RuntimeScenarioTestCase
 			'customer_id' => 'C-7788',
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'Jane Doe', $result['data']['transformed']['full_name'] );
-		$this->assertSame( 'C-7788', $result['data']['transformed']['customer_id'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'Jane Doe', $result->getData()['transformed']['full_name'] );
+		$this->assertSame( 'C-7788', $result->getData()['transformed']['customer_id'] );
 	}
 }

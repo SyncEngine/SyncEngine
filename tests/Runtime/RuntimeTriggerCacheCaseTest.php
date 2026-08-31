@@ -61,10 +61,10 @@ class RuntimeTriggerCacheCaseTest extends RuntimeScenarioTestCase
 			'payload' => 'keep-me',
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'C-9001', $result['data']['customer_id'] );
-		$this->assertSame( 'keep-me', $result['data']['payload'] );
-		$this->assertSame( 'C-9001', $result['data']['copied_customer'] );
-		$this->assertSame( 'synced-from-trigger', $result['data']['note'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'C-9001', $result->getData()['customer_id'] );
+		$this->assertSame( 'keep-me', $result->getData()['payload'] );
+		$this->assertSame( 'C-9001', $result->getData()['copied_customer'] );
+		$this->assertSame( 'synced-from-trigger', $result->getData()['note'] );
 	}
 }

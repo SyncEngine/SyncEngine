@@ -81,8 +81,10 @@ class LocalBatchTest extends BaseTestCase
 		$newContext->registerTrace( $trace );
 		$result = $execute->execute( $automation, $newContext, new ExecuteData( $data ) );
 
-		$this->assertArrayHasKey( 180, $result['data'] );
-		$this->assertEquals( 180, $result['data'][ 180 ]['test_id'] );
-		$this->assertEquals( 'changed', $result['data'][ 180 ]['test'] );
+		$data = $result->getData()->normalize();
+
+		$this->assertArrayHasKey( 180, $data );
+		$this->assertEquals( 180, $data[ 180 ]['test_id'] );
+		$this->assertEquals( 'changed', $data[ 180 ]['test'] );
 	}
 }

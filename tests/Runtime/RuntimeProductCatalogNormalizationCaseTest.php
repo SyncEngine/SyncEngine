@@ -177,20 +177,20 @@ class RuntimeProductCatalogNormalizationCaseTest extends RuntimeScenarioTestCase
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertCount( 2, $result['data'] );
-		$this->assertSame( 'Laptop Pro', $result['data'][0]['product_name'] );
-		$this->assertSame( 1299.99, $result['data'][0]['product_price'] );
-		$this->assertSame( '123 Main St', $result['data'][0]['seller_address_street'] );
-		$this->assertSame( 'New York', $result['data'][0]['seller_address_city'] );
-		$this->assertSame( 'Electronics', $result['data'][0]['category_1'] );
-		$this->assertSame( 'Home & Garden', $result['data'][0]['category_2'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertCount( 2, $result->getData() );
+		$this->assertSame( 'Laptop Pro', $result->getData()[0]['product_name'] );
+		$this->assertSame( 1299.99, $result->getData()[0]['product_price'] );
+		$this->assertSame( '123 Main St', $result->getData()[0]['seller_address_street'] );
+		$this->assertSame( 'New York', $result->getData()[0]['seller_address_city'] );
+		$this->assertSame( 'Electronics', $result->getData()[0]['category_1'] );
+		$this->assertSame( 'Home & Garden', $result->getData()[0]['category_2'] );
 
-		$this->assertSame( 'Winter Coat', $result['data'][1]['product_name'] );
-		$this->assertSame( 89.5, $result['data'][1]['product_price'] );
-		$this->assertSame( '456 Oak Ave', $result['data'][1]['seller_address_street'] );
-		$this->assertSame( 'Boston', $result['data'][1]['seller_address_city'] );
-		$this->assertSame( 'Clothing', $result['data'][1]['category_1'] );
+		$this->assertSame( 'Winter Coat', $result->getData()[1]['product_name'] );
+		$this->assertSame( 89.5, $result->getData()[1]['product_price'] );
+		$this->assertSame( '456 Oak Ave', $result->getData()[1]['seller_address_street'] );
+		$this->assertSame( 'Boston', $result->getData()[1]['seller_address_city'] );
+		$this->assertSame( 'Clothing', $result->getData()[1]['category_1'] );
 
 		$requests     = MockHttp::getMockRequests();
 		$getRequests  = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'GET' ) );
@@ -202,6 +202,6 @@ class RuntimeProductCatalogNormalizationCaseTest extends RuntimeScenarioTestCase
 		$this->assertStringContainsString( '/api/products/batch', $postRequests[0]['url'] );
 
 		$payload = $postRequests[0]['options']['data'] ?? [];
-		$this->assertEquals( $result['data'], $payload );
+		$this->assertEquals( $result->getData()->normalize(), $payload );
 	}
 }

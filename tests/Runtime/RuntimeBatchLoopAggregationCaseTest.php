@@ -48,8 +48,8 @@ class RuntimeBatchLoopAggregationCaseTest extends RuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertCount( 5, $result['data']['rows'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertCount( 5, $result->getData()['rows'] );
 		$this->assertSame( [ '1:2', '2:2', '3:1' ], $this->getLastAutomationContext()?->getCacheTag( 'loop.batches' ) );
 	}
 }

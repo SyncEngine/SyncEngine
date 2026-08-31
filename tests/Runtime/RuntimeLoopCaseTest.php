@@ -48,10 +48,10 @@ class RuntimeLoopCaseTest extends RuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'yes', $result['data']['items'][0]['processed'] );
-		$this->assertSame( 'SKU-1-done', $result['data']['items'][0]['label'] );
-		$this->assertSame( 'yes', $result['data']['items'][1]['processed'] );
-		$this->assertSame( 'SKU-2-done', $result['data']['items'][1]['label'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'yes', $result->getData()['items'][0]['processed'] );
+		$this->assertSame( 'SKU-1-done', $result->getData()['items'][0]['label'] );
+		$this->assertSame( 'yes', $result->getData()['items'][1]['processed'] );
+		$this->assertSame( 'SKU-2-done', $result->getData()['items'][1]['label'] );
 	}
 }

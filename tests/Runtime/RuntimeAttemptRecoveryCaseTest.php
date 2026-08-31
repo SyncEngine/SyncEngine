@@ -63,9 +63,9 @@ class RuntimeAttemptRecoveryCaseTest extends RuntimeScenarioTestCase
 			'other' => 'value',
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'original', $result['data']['foo'] );
-		$this->assertSame( 'original', $result['data']['recovered'] );
-		$this->assertSame( 'value', $result['data']['other'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'original', $result->getData()['foo'] );
+		$this->assertSame( 'original', $result->getData()['recovered'] );
+		$this->assertSame( 'value', $result->getData()['other'] );
 	}
 }

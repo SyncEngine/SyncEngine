@@ -9,6 +9,7 @@ use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Runtime\ExecuteLocalBatch;
+use SyncEngine\Runtime\ExecuteResult;
 use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
 class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
@@ -31,9 +32,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 			[ 'sku' => 'A-5' ],
 		] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'Added to queue!', $result['message'] );
-		$this->assertCount( 2, $result['data'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'Added to queue!', $result->getMessage() );
+		$this->assertCount( 2, $result->getData()?->normalize() ?? [] );
 
 		$context = $this->getLastAutomationContext();
 		$trace = $context?->getTrace();
@@ -58,9 +59,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 			[ 'sku' => 'A-5' ],
 		] );
 
-		$this->assertTrue( $firstResult['success'] );
-		$this->assertSame( 'Added to queue!', $firstResult['message'] );
-		$this->assertSame( [ 'A-1', 'A-2' ], array_column( $firstResult['data'], 'sku' ) );
+		$this->assertTrue( $firstResult->isSuccess() );
+		$this->assertSame( 'Added to queue!', $firstResult->getMessage() );
+		$this->assertSame( [ 'A-1', 'A-2' ], array_column( $firstResult->getData()?->normalize() ?? [], 'sku' ) );
 
 		$initialTrace = $this->getLastAutomationContext()?->getTrace();
 		$this->assertNotNull( $initialTrace );
@@ -76,9 +77,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 
 		$secondResult = $this->executeAutomationWithTrace( $automation, $this->loadTrace( $automation, $traceId ) );
 
-		$this->assertTrue( $secondResult['success'] );
-		$this->assertSame( 'Added to queue!', $secondResult['message'] );
-		$this->assertSame( [ 'A-3', 'A-4' ], array_column( $secondResult['data'], 'sku' ) );
+		$this->assertTrue( $secondResult->isSuccess() );
+		$this->assertSame( 'Added to queue!', $secondResult->getMessage() );
+		$this->assertSame( [ 'A-3', 'A-4' ], array_column( $secondResult->getData()?->normalize() ?? [], 'sku' ) );
 
 		$secondTrace = $this->loadTrace( $automation, $traceId );
 		$this->assertSame( 2, $secondTrace->getCurrentIteration() );
@@ -87,9 +88,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 
 		$thirdResult = $this->executeAutomationWithTrace( $automation, $this->loadTrace( $automation, $traceId ) );
 
-		$this->assertTrue( $thirdResult['success'] );
-		$this->assertSame( 'Finished executing endpoint.', $thirdResult['message'] );
-		$this->assertSame( [ 'A-5' ], array_column( $thirdResult['data'], 'sku' ) );
+		$this->assertTrue( $thirdResult->isSuccess() );
+		$this->assertSame( 'Finished executing endpoint.', $thirdResult->getMessage() );
+		$this->assertSame( [ 'A-5' ], array_column( $thirdResult->getData()?->normalize() ?? [], 'sku' ) );
 
 		$finalTrace = $this->loadTrace( $automation, $traceId );
 		$this->assertSame( 0, $finalTrace->getCurrentIteration() );
@@ -122,9 +123,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 		$this->assertNotNull( $traceOne );
 		$traceOneId = $traceOne->getId();
 
-		$this->assertTrue( $result11['success'] );
-		$this->assertSame( 'Added to queue!', $result11['message'] );
-		$this->assertSame( [ 'R1-1', 'R1-2' ], array_column( $result11['data'], 'sku' ) );
+		$this->assertTrue( $result11->isSuccess() );
+		$this->assertSame( 'Added to queue!', $result11->getMessage() );
+		$this->assertSame( [ 'R1-1', 'R1-2' ], array_column( $result11->getData()?->normalize() ?? [], 'sku' ) );
 		$this->assertStoredTraceFiles( $traceOne, [ 1 ] );
 		$this->assertStoredBatchFiles( $traceOne, [
 			1 => [ 'R1-1', 'R1-2' ],
@@ -142,9 +143,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 		$this->assertNotNull( $traceTwo );
 		$traceTwoId = $traceTwo->getId();
 
-		$this->assertTrue( $result21['success'] );
-		$this->assertSame( 'Added to queue!', $result21['message'] );
-		$this->assertSame( [ 'R2-1', 'R2-2' ], array_column( $result21['data'], 'sku' ) );
+		$this->assertTrue( $result21->isSuccess() );
+		$this->assertSame( 'Added to queue!', $result21->getMessage() );
+		$this->assertSame( [ 'R2-1', 'R2-2' ], array_column( $result21->getData()?->normalize() ?? [], 'sku' ) );
 		$this->assertStoredTraceFiles( $traceTwo, [ 1 ] );
 		$this->assertStoredBatchFiles( $traceTwo, [
 			1 => [ 'R2-1', 'R2-2' ],
@@ -155,9 +156,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 
 		$result12 = $this->executeAutomationWithTrace( $automation, $this->loadTrace( $automation, $traceOneId ) );
 
-		$this->assertTrue( $result12['success'] );
-		$this->assertSame( 'Added to queue!', $result12['message'] );
-		$this->assertSame( [ 'R1-3', 'R1-4' ], array_column( $result12['data'], 'sku' ) );
+		$this->assertTrue( $result12->isSuccess() );
+		$this->assertSame( 'Added to queue!', $result12->getMessage() );
+		$this->assertSame( [ 'R1-3', 'R1-4' ], array_column( $result12->getData()?->normalize() ?? [], 'sku' ) );
 
 		$reloadedTraceOne = $this->loadTrace( $automation, $traceOneId );
 		$reloadedTraceTwo = $this->loadTrace( $automation, $traceTwoId );
@@ -169,9 +170,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 
 		$result22 = $this->executeAutomationWithTrace( $automation, $this->loadTrace( $automation, $traceTwoId ) );
 
-		$this->assertTrue( $result22['success'] );
-		$this->assertSame( 'Finished executing endpoint.', $result22['message'] );
-		$this->assertSame( [ 'R2-3' ], array_column( $result22['data'], 'sku' ) );
+		$this->assertTrue( $result22->isSuccess() );
+		$this->assertSame( 'Finished executing endpoint.', $result22->getMessage() );
+		$this->assertSame( [ 'R2-3' ], array_column( $result22->getData()?->normalize() ?? [], 'sku' ) );
 
 		$finalTraceTwo = $this->loadTrace( $automation, $traceTwoId );
 		$this->assertSame( 0, $finalTraceTwo->getCurrentIteration() );
@@ -180,9 +181,9 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 
 		$result13 = $this->executeAutomationWithTrace( $automation, $this->loadTrace( $automation, $traceOneId ) );
 
-		$this->assertTrue( $result13['success'] );
-		$this->assertSame( 'Finished executing endpoint.', $result13['message'] );
-		$this->assertSame( [ 'R1-5' ], array_column( $result13['data'], 'sku' ) );
+		$this->assertTrue( $result13->isSuccess() );
+		$this->assertSame( 'Finished executing endpoint.', $result13->getMessage() );
+		$this->assertSame( [ 'R1-5' ], array_column( $result13->getData()?->normalize() ?? [], 'sku' ) );
 
 		$finalTraceOne = $this->loadTrace( $automation, $traceOneId );
 		$this->assertSame( 0, $finalTraceOne->getCurrentIteration() );
@@ -210,7 +211,7 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 		], $config ) );
 	}
 
-	private function executeAutomationWithTrace( AutomationModel $automation, ?TraceModel $trace = null, mixed $data = null ): array
+	private function executeAutomationWithTrace( AutomationModel $automation, ?TraceModel $trace = null, mixed $data = null ): ExecuteResult
 	{
 		$execute = static::getContainer()->get( Execute::class );
 

@@ -43,8 +43,8 @@ class RuntimeEventHookCaseTest extends RuntimeScenarioTestCase
 
 		$result = $this->executeAutomationScenario( $automation, [ 'id' => 'CASE-1' ] );
 
-		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
-		$this->assertSame( 'processed', $result['data']['status'] );
+		$this->assertTrue( $result->isSuccess(), $this->getLastErrorMessage( $result ) );
+		$this->assertSame( 'processed', $result->getData()['status'] );
 		$this->assertSame( 'executed', $this->getLastAutomationContext()?->getCacheTag( 'events.success' ) );
 	}
 }

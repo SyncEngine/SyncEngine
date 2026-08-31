@@ -39,12 +39,12 @@ class RuntimeRoutineConditionsCaseTest extends RuntimeScenarioTestCase
 		] );
 
 		$vipResult = $this->executeAutomationScenario( $automation, [ 'type' => 'vip', 'order' => 'A100' ] );
-		$this->assertTrue( $vipResult['success'] );
-		$this->assertSame( 'expedite', $vipResult['data']['priority'] );
+		$this->assertTrue( $vipResult->isSuccess() );
+		$this->assertSame( 'expedite', $vipResult->getData()['priority'] );
 
 		$regularResult = $this->executeAutomationScenario( $automation, [ 'type' => 'regular', 'order' => 'A101' ] );
-		$this->assertTrue( $regularResult['success'] );
-		$this->assertArrayNotHasKey( 'priority', $regularResult['data'] );
-		$this->assertSame( 'regular', $regularResult['data']['type'] );
+		$this->assertTrue( $regularResult->isSuccess() );
+		$this->assertArrayNotHasKey( 'priority', $regularResult->getData() );
+		$this->assertSame( 'regular', $regularResult->getData()['type'] );
 	}
 }
