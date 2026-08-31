@@ -2,7 +2,9 @@
 
 namespace SyncEngine\Service\Locator;
 
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\ModuleModel;
 
@@ -38,7 +40,7 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 	 *
 	 * @return ?T
 	 */
-	public function get( $name ): ?ServiceModel
+	public function get( $name, bool $throwOnError = false ): ?ServiceModel
 	{
 		try {
 			$service = $this->container->get( $name ) ?? null;
@@ -52,13 +54,19 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 				}
 				// @todo Convert to factories?
 				return $service;
+			} else {
+				if ( $throwOnError ) {
+					throw new InvalidException( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
+				}
+				return null;
 			}
-		} catch ( \Throwable $throwable ) {
-			// Nope.
+		} catch ( \Throwable $e ) {
+			/** @var NotFoundExceptionInterface $e */
+			if ( $throwOnError ) {
+				throw $e;
+			}
+			return null;
 		}
-
-		// @todo Error or log.
-		return null;
 	}
 
 	/**
