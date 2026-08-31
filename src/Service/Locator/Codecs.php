@@ -21,13 +21,13 @@ class Codecs extends AbstractServiceModelLocator
 		return CodecModel::class;
 	}
 
-	public function get( $name ): ?CodecModel
+	public function get( $name, bool $throwOnError = false ): ?CodecModel
 	{
 		/**
 		 * Support all lowercase.
 		 * @var CodecModel $service
 		 */
-		$service = parent::get( ucfirst( $name ) );
+		$service = parent::get( ucfirst( $name ), $throwOnError );
 
 		if ( ! $service ) {
 			// @todo Use custom locator for formats.

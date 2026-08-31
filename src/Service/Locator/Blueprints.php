@@ -2,10 +2,12 @@
 
 namespace SyncEngine\Service\Locator;
 
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Service\DataFormatter;
@@ -34,7 +36,7 @@ class Blueprints extends AbstractServiceModelLocator
 		return BlueprintModel::class;
 	}
 
-	public function get( $name ): ?BlueprintModel
+	public function get( $name, bool $throwOnError = false ): ?BlueprintModel
 	{
 		$file_location = $this->dir . DIRECTORY_SEPARATOR . $name;
 
@@ -65,13 +67,19 @@ class Blueprints extends AbstractServiceModelLocator
 					$blueprint->setModule( $module );
 				}
 				return $blueprint;
+			} else {
+				if ( $throwOnError ) {
+					throw new InvalidException( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
+				}
+				return null;
 			}
 		} catch ( \Throwable $throwable ) {
-			// Nope.
+			/** @var NotFoundExceptionInterface $e */
+			if ( $throwOnError ) {
+				throw $e;
+			}
+			return null;
 		}
-
-		// @todo Error or log.
-		return null;
 	}
 
 	/**
