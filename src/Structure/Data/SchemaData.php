@@ -235,6 +235,14 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function normalize(): array
 	{
-		return $this->schema;
+		return array_map(
+			function ( $column ) {
+				if ( $column instanceof ColumnModel ) {
+					return $column->normalize();
+				}
+				return $column;
+			},
+			$this->schema
+		);
 	}
 }
