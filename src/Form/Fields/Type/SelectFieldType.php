@@ -3,11 +3,13 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Group;
 use SyncEngine\Form\Fields\Trait\Taggable;
 
 class SelectFieldType extends AbstractFieldType
 {
 	use Taggable;
+	use Group;
 
 	public function getType(): string
 	{

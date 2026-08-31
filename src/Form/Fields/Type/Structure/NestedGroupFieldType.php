@@ -4,65 +4,44 @@ namespace SyncEngine\Form\Fields\Type\Structure;
 
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\Trait\NestedGroup;
 
 class NestedGroupFieldType extends GroupFieldType
 {
-	public function setNested( FieldCollection|array $nested ): Static
+	use NestedGroup;
+
+	public function setNested( FieldCollection|array $nested ): static
 	{
-		return $this->setFields( $nested );
+		return $this->setNestedFields( $nested );
 	}
 
 	public function getNested(): FieldCollection
 	{
-		return $this->getFields();
+		return $this->getNestedFields();
 	}
 
 	public function setFields( FieldCollection|array $fields ): static
 	{
-		if ( ! $fields instanceof FieldCollection ) {
-			$fields = new FieldCollection( $fields );
-		}
-
-		parent::_set( 'nested', $fields );
-
-		return $this;
+		return $this->setNestedFields( $fields );
 	}
 
 	public function getFields(): FieldCollection
 	{
-		if ( ! isset( $this['nested'] ) ) {
-			$this->_set( 'nested', new FieldCollection() );
-		}
-
-		return parent::_get( 'nested' );
+		return $this->getNestedFields();
 	}
 
 	public function getField( string $name ): ?FieldConfigInterface
 	{
-		if ( isset( $this['nested'] ) ) {
-			return $this['nested'][ $name ];
-		}
-
-		return null;
+		return $this->getNestedField( $name );
 	}
 
 	public function addField( string $name, FieldConfigInterface|array $config ): static
 	{
-		if ( empty( $this['nested'] ) ) {
-			$this['nested'] = new FieldCollection();
-		}
-
-		$this['nested'][ $name ] = $config;
-
-		return $this;
+		return $this->addNestedField( $name, $config );
 	}
 
 	public function removeField( string $name ): static
 	{
-		if ( isset( $this['nested'] ) ) {
-			unset( $this['nested'][ $name ] );
-		}
-
-		return $this;
+		return $this->removeNestedField( $name );
 	}
 }

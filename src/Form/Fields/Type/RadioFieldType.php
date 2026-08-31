@@ -3,9 +3,12 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Group;
 
 class RadioFieldType extends AbstractFieldType
 {
+	use Group;
+
 	public function getType(): string
 	{
 		return 'radio';

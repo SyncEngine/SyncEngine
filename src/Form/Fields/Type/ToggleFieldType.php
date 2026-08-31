@@ -3,11 +3,13 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Group;
 use SyncEngine\Form\Fields\Trait\NestedGroup;
 
 class ToggleFieldType extends AbstractFieldType
 {
 	use Group;
+	use NestedGroup;
 
 	public function getType(): string
 	{

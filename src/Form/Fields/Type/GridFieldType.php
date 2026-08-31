@@ -3,11 +3,13 @@
 namespace SyncEngine\Form\Fields\Type;
 
 use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Trait\Group;
 use SyncEngine\Form\Fields\Trait\Taggable;
 
 class GridFieldType extends AbstractFieldType
 {
 	use Taggable;
+	use Group;
 
 	public function getType(): string
 	{
@@ -22,18 +24,6 @@ class GridFieldType extends AbstractFieldType
 	public function setColumns( array $columns ): static
 	{
 		$this->_set( 'columns', $columns );
-
-		return $this;
-	}
-
-	public function isNested(): bool
-	{
-		return (bool) $this->_get( 'nested', false );
-	}
-
-	public function setNested( bool $nested ): static
-	{
-		$this->_set( 'nested', $nested );
 
 		return $this;
 	}
