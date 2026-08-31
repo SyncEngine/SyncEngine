@@ -92,19 +92,19 @@ class EndpointExecuteCommand extends EndpointCommand
 			$this->progress->finish( '<comment>Endpoint stopped</comment>: <info>' . $endpoint . '</info> > ' . date( 'Y-m-d H:i:s' ) );
 		}
 
-		$success = $result['success'];
+		$success = $result->isSuccess();
 
-		if ( ! $success && $result['errors'] ) {
+		if ( ! $success && $result->hasErrors() ) {
 			if ( $input->getOption( 'errors' ) ) {
 				$output->writeln( '' );
-				foreach ( $result['errors'] as $error ) {
+				foreach ( $result->getErrors() as $error ) {
 					$output->writeln( '<error>' . (string) $error . '</error>' );
 				}
 			}
 		}
 
-		if ( ! empty( $result['message'] ) ) {
-			$output->writeln( $result['message'] );
+		if ( ! empty( $result->getMessage() ) ) {
+			$output->writeln( $result->getMessage() );
 		}
 
 		$this->output = null;

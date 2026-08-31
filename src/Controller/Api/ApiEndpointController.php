@@ -132,8 +132,8 @@ class ApiEndpointController extends AbstractApiController
 				$results      = $execute->execute( $model, $context, $request );
 				$responseType = $model->getConfig( 'response.type' );
 
-				if ( 'file' === $responseType ) {
-					$file = ExecuteData::create( $results['data'] ?? [] )->get( $model->getConfig( 'response.file.key' ), '' );
+				if ( 'file' === $responseType && $results->hasData() ) {
+					$file = $results->getData()->get( $model->getConfig( 'response.file.key' ), '' );
 
 					if ( ! empty( $file ) ) {
 						if ( $file instanceof Blob ) {

@@ -171,7 +171,7 @@ class Execute
 		return array_replace_recursive( $context->getTagsResource(), $automation->getTagsResource( [], $context ) );
 	}
 
-	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteResult
 	{
 		$isMain      = (bool) ! $context->getParent();
 		$isScheduled = (bool) $context->getTrace()?->getCurrentIteration();
@@ -307,36 +307,25 @@ class Execute
 
 			$errors = $context->getErrors();
 			if ( $errors ) {
-				return [
-					'success' => false,
-					'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
-					'errors'  => $errors,
-				];
+				return ExecuteResult::error( $this->translator->trans( 'There were errors while executing this endpoint.' ), $errors );
 			}
 
-			if ( $result instanceof ExecuteData ) {
-				$result = $result->normalize();
+			if ( ! $result instanceof ExecuteData ) {
+				$result = ExecuteData::create( $result ?? [] );
 			}
 
-			return [
-				'success' => true,
-				'message' => $message,
-				'data'    => $result ?? [],
-			];
+			return ExecuteResult::success( $message, $result );
 
 		} catch ( ExecuteStopException $e ) {
 			$automation->setRunning( false );
 			$automation->persist( true );
 
 			if ( $isMain ) {
+				// @todo What if scheduler rejects the next queued trace?
 				$this->scheduler->scheduleNextQueuedTrace( $automation );
 			}
 
-			return [
-				'success' => false,
-				'message' => $e->getMessage(),
-				'errors'  => $context->getErrors(),
-			];
+			return ExecuteResult::error( $e->getMessage(), $context->getErrors() );
 		}
 	}
 

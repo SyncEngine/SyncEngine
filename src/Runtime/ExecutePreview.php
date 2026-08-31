@@ -134,8 +134,7 @@ class ExecutePreview extends Execute
 						$automation = AutomationModel::create();
 						$automation->setConfig( $config );
 
-						$result = $this->execute( $automation, $this->previewContext, $data );
-						$result = ExecuteData::create( $result ); // execute() returns an array.
+						$result = $this->execute( $automation, $this->previewContext, $data )->getData();
 					break;
 					default:
 						if ( ! $type ) {
@@ -274,7 +273,7 @@ class ExecutePreview extends Execute
 		try {
 			switch ( true ) {
 				case $startEntity instanceof AutomationModel:
-					$data = new ExecuteData( $this->execute( $startEntity, $context, $data ) );
+					$data = new ExecuteData( $this->execute( $startEntity, $context, $data )->getData() );
 				break;
 				case $startEntity instanceof FlowModel:
 					$data = $this->executeFlow( $startEntity, $context, $data );
@@ -303,7 +302,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteResult
 	{
 		$context->getTrace()?->enterTrace( $automation );
 
@@ -360,7 +359,11 @@ class ExecutePreview extends Execute
 
 		$context->getTrace()?->leaveTrace( $automation );
 
-		return $return instanceof ExecuteData ? $return->get() : $return;
+		if ( ! $return instanceof ExecuteData ) {
+			$return = new ExecuteData( $return );
+		}
+
+		return ExecuteResult::success( '', $return );
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
