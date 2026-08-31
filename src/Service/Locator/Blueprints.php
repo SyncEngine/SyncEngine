@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service\Locator;
 
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
@@ -19,11 +19,12 @@ class Blueprints extends AbstractServiceModelLocator
 {
 	public function __construct(
 		private readonly string $dir,
+		protected readonly TranslatorInterface $translator,
 		ServiceLocator $container,
 		Modules $modulesService,
-		protected readonly TranslatorInterface $translator,
+		LoggerInterface $logger,
 	) {
-		parent::__construct( $container, $modulesService );
+		parent::__construct( $container, $modulesService, $logger );
 	}
 
 	public function validate( ServiceModel $service ): bool
@@ -53,6 +54,8 @@ class Blueprints extends AbstractServiceModelLocator
 					return $blueprint;
 				}
 			}
+
+			$this->logger->warning( 'File "' . $file_location . '" is not a valid ' . $this->getModelClass() );
 			return null;
 		}
 
@@ -66,15 +69,18 @@ class Blueprints extends AbstractServiceModelLocator
 
 					$blueprint->setModule( $module );
 				}
+
 				return $blueprint;
+
 			} else {
+				$this->logger->warning( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 				if ( $throwOnError ) {
 					throw new InvalidException( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 				}
 				return null;
 			}
-		} catch ( \Throwable $throwable ) {
-			/** @var NotFoundExceptionInterface $e */
+		} catch ( \Throwable $e ) { /** @var NotFoundExceptionInterface $e */
+			$this->logger->warning( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 			if ( $throwOnError ) {
 				throw $e;
 			}

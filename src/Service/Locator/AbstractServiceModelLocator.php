@@ -3,6 +3,7 @@
 namespace SyncEngine\Service\Locator;
 
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\ServiceModel;
@@ -22,6 +23,7 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 	public function __construct(
 		protected readonly ServiceLocator $container,
 		protected readonly Modules $modulesService,
+		protected readonly LoggerInterface $logger,
 	) {}
 
 	/**
@@ -52,16 +54,19 @@ abstract class AbstractServiceModelLocator implements LocatorInterface
 
 					$service->setModule( $module );
 				}
+
 				// @todo Convert to factories?
 				return $service;
+
 			} else {
+				$this->logger->warning( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 				if ( $throwOnError ) {
 					throw new InvalidException( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 				}
 				return null;
 			}
-		} catch ( \Throwable $e ) {
-			/** @var NotFoundExceptionInterface $e */
+		} catch ( \Throwable $e ) { /** @var NotFoundExceptionInterface $e */
+			$this->logger->warning( 'Service "' . $name . '" is not a valid ' . $this->getModelClass() );
 			if ( $throwOnError ) {
 				throw $e;
 			}
