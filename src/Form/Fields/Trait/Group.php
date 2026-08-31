@@ -9,7 +9,7 @@ use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 /**
  * @extends AbstractFieldType
  */
-trait Groups
+trait Group
 {
 	public function setFields( FieldCollection|array $fields ): static
 	{

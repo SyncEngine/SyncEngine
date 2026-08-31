@@ -1,23 +1,27 @@
 <?php
 
-namespace SyncEngine\Form\Fields;
+namespace SyncEngine\Form\Fields\Trait;
 
+use SyncEngine\Form\Fields\AbstractFieldType;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
-class NestedGroupFieldType extends AbstractFieldType
+/**
+ * @extends AbstractFieldType
+ */
+trait NestedGroup
 {
 	public function setNested( FieldCollection|array $nested ): Static
 	{
-		return $this->setFields( $nested );
+		return $this->setNestedFields( $nested );
 	}
 
 	public function getNested(): FieldCollection
 	{
-		return $this->getFields();
+		return $this->getNestedFields();
 	}
 
-	public function setFields( FieldCollection|array $fields ): static
+	public function setNestedFields( FieldCollection|array $fields ): static
 	{
 		if ( ! $fields instanceof FieldCollection ) {
 			$fields = new FieldCollection( $fields );
@@ -28,7 +32,7 @@ class NestedGroupFieldType extends AbstractFieldType
 		return $this;
 	}
 
-	public function getFields(): FieldCollection
+	public function getNestedFields(): FieldCollection
 	{
 		if ( ! isset( $this['nested'] ) ) {
 			$this->_set( 'nested', new FieldCollection() );
@@ -37,7 +41,7 @@ class NestedGroupFieldType extends AbstractFieldType
 		return parent::_get( 'nested' );
 	}
 
-	public function getField( string $name ): ?FieldConfigInterface
+	public function getNestedField( string $name ): ?FieldConfigInterface
 	{
 		if ( isset( $this['nested'] ) ) {
 			return $this['nested'][ $name ];
@@ -46,7 +50,7 @@ class NestedGroupFieldType extends AbstractFieldType
 		return null;
 	}
 
-	public function addField( string $name, FieldConfigInterface|array $config ): static
+	public function addNestedField( string $name, FieldConfigInterface|array $config ): static
 	{
 		if ( empty( $this['nested'] ) ) {
 			$this['nested'] = new FieldCollection();
@@ -57,7 +61,7 @@ class NestedGroupFieldType extends AbstractFieldType
 		return $this;
 	}
 
-	public function removeField( string $name ): static
+	public function removeNestedField( string $name ): static
 	{
 		if ( isset( $this['nested'] ) ) {
 			unset( $this['nested'][ $name ] );
