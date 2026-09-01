@@ -43,7 +43,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		return () => {
 			unsubscribe( eventName, callback );
 		}
-	}, [ eventName ] );
+	}, [ eventName, fetchCallback ] );
 
 	return [ state, update, publish ];
 }
