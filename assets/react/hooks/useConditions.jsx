@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { isEmpty, isObject, validate } from '../utils/conditions';
 import { FieldsContext } from '../context/FieldsContext';
 import { getEvent } from './useFieldValue';
@@ -39,27 +39,28 @@ export default function useConditions( dependencies = null, context = null ) {
 
 	const [ valid, setValid ] = useState( dependencies ? onValidate() : true );
 
+	const callbacks = useRef({});
+
 	useEffect( () => {
 
 		if ( ! dependencies ) {
 			return;
 		}
 
-		const callbacks = {};
-
 		for ( const name in dependencies ) {
-			callbacks[ name ] = ( data ) => {
+			callbacks.current[ name ] = ( data ) => {
 				//values[]
 				values[ name ] = data.detail;
 				setChanged( changed + 1 );
 				setValid( onValidate() );
 			};
-			subscribe( getEvent( [ name ], context ?? {} ), callbacks[ name ] );
+			subscribe( getEvent( [ name ], context ?? {} ), callbacks.current[ name ] );
 		}
 
 		return () => {
-			for ( const name in callbacks ) {
-				unsubscribe( getEvent( [ name ], context ?? {} ), callbacks[ name ] );
+			for ( const name in callbacks.current ) {
+				unsubscribe( getEvent( [ name ], context ?? {} ), callbacks.current[ name ] );
+				delete callbacks.current[ name ];
 			}
 		}
 	}, [ dependencies, values ] );
