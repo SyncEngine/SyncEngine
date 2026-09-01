@@ -51,7 +51,7 @@ export default function useConditions( dependencies = null, context = null ) {
 			callbacks.current[ name ] = ( data ) => {
 				//values[]
 				values[ name ] = data.detail;
-				setChanged( changed + 1 );
+				setChanged( c => c + 1 );
 				setValid( onValidate() );
 			};
 			subscribe( getEvent( [ name ], context ?? {} ), callbacks.current[ name ] );
