@@ -7,6 +7,10 @@ import { deepClone } from '../utils/data';
 const fetching = {};
 
 /**
+ * Models hook relates to the systems service models which are static data objects that are used throughout the application.
+ * This hook provides a way to fetch and optionally filter these models in a React component.
+ * CRUD operations are not supported by this hook, as models are considered static data.
+ *
  * @param {Object} items
  * @param {Object} query
  * @param {String} endpoint
@@ -171,7 +175,6 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	const callbacks = {
 		fetch: fetch,
 		filter: filter,
-		update: update,
 		get: get,
 		getTotal: getTotal,
 		getQuery: getQuery,
