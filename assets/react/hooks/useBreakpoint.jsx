@@ -1,5 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import useModels from './useModels';
 import useGlobal from './useGlobal';
 import useMediaQuery from './useMediaQuery';
 

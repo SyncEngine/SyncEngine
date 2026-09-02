@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useModels from './useModels';
-import useGlobal from './useGlobal';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function useMediaQuery( query ) {
 	const register = useRef( {} );
