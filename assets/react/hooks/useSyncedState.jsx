@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { isSet } from '../utils/conditions';
 
@@ -13,26 +13,35 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 
 	const [ state, setState ] = useState( initial );
 
+	// Use refs to track the latest callbacks without triggering resubscription loops.
+	const fetchCallbackRef = useRef( fetchCallback );
+	const publishCallbackRef = useRef( publishCallback );
+
+	// Ensure latest state of callbacks is always used in the effect and update function.
+	fetchCallbackRef.current = fetchCallback;
+	publishCallbackRef.current = publishCallback;
+
 	const update = useCallback( ( state, force, silent ) => {
 		if ( ! force && ! isSet( state ) ) {
 			return;
 		}
 
 		let success = true;
-		if ( 'function' === typeof publishCallback && ! silent ) {
-			success = publishCallback( state );
+		if ( 'function' === typeof publishCallbackRef.current && ! silent ) {
+			success = publishCallbackRef.current( state );
 		}
 		if ( success ) {
 			publish( eventName, state );
 		}
-	}, [ eventName, publishCallback ] );
+	}, [ eventName ] );
 
 	useEffect( () => {
 		setState( initial );
 
 		const callback = async ( data ) => {
-			if ( 'function' === typeof fetchCallback ) {
-				setState( await fetchCallback() );
+			// Always use the latest fetchCallback from the ref
+			if ( 'function' === typeof fetchCallbackRef.current ) {
+				setState( await fetchCallbackRef.current() );
 			} else {
 				setState( data.detail );
 			}
@@ -43,7 +52,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		return () => {
 			unsubscribe( eventName, callback );
 		}
-	}, [ eventName, fetchCallback ] );
+	}, [ eventName ] ); // Only resubscribe when the event name changes
 
 	return [ state, update, publish ];
 }
