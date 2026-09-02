@@ -42,7 +42,8 @@ class Preferences implements SettingsInterface
 
 	private function validateKey( string $key ): void
 	{
-		if ( preg_match( '/[^a-zA-Z0-9_\-\.]/', $key ) ) {
+		// Allow ``, `-`, `.`, `\`, '/' and `:` in addition to alphanumeric characters and underscores
+		if ( preg_match( '/[^a-zA-Z0-9_\/\-\.\\\:]/', $key ) ) {
 			throw new \InvalidArgumentException( 'Preference key contains invalid characters' );
 		}
 
