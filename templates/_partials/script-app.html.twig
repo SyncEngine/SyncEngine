@@ -5,6 +5,7 @@
 		__experimental: {{ __experimental ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		csrfToken: "{{ csrf_token('client') }}",
+		cache: {},
 		screen: {
 			breadcrumbs: []
 		},
