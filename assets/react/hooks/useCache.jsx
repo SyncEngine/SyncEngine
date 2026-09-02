@@ -2,6 +2,28 @@ import { useCallback, useRef } from 'react';
 import useGlobal from './useGlobal';
 
 /**
+ * Serialize a value into a canonical string representation for consistent hashing.
+ * @param {*} value
+ * @returns {string}
+ */
+function serializeCanonical( value ) {
+	if ( Array.isArray( value ) ) {
+		return '[' + value.map( serializeCanonical ).join( ',' ) + ']';
+	}
+
+	if ( value && 'object' === typeof value ) {
+		return '{' +
+		       Object.keys( value )
+		             .sort()
+		             .map( key => key + ':' + serializeCanonical( value[ key ] ) )
+		             .join( ',' )
+		       + '}';
+	}
+
+	return JSON.stringify( value );
+}
+
+/**
  * Canonicalize query object for consistent hashing regardless of key order.
  * @param {*} key
  * @param {string} namespace
@@ -14,10 +36,7 @@ function parseCacheKey( key, namespace ) {
 
 	// Sort object keys for consistent hashing.
 	if ( 'object' === typeof key ) {
-		key = Object.keys( key ).sort().reduce( ( acc, k ) => {
-			acc[ k ] = key[ k ];
-			return acc;
-		}, {} );
+		key = serializeCanonical( key );
 	}
 
 	return namespace + ':' + JSON.stringify( key );
