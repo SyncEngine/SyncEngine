@@ -48,7 +48,7 @@ export default i18n
 		return {
 			resources: resources,
 			lng: language,
-			fallbackLng: language,
+			fallbackLng: 'en',
 			partialBundledLanguages: true, // Load on demand: https://www.i18next.com/overview/api#addresourcebundle
 			interpolation: {
 				escapeValue: false,
