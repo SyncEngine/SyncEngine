@@ -59,7 +59,14 @@ const fetchJson = async ( url, init ) => {
 		);
 
 	} catch ( e ) {
-		return { success: false, error: e };
+		// Distinguish network errors from parsing errors
+		const error = e instanceof TypeError 
+			? { type: 'network', message: 'Network request failed' }
+			: { type: 'parsing', message: 'Failed to parse response' };
+		
+		console.error( '[fetchJson]', url, error );
+		
+		return { success: false, error: error };
 	}
 }
 
