@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useGlobal from './useGlobal';
+import useCache from './useCache';
 import { fetchPost } from '../utils/fetch';
 import { isArray, isEmpty, validate } from '../utils/conditions';
 import { deepClone, mapGetIndex, objectMergeDepth } from '../utils/data';
@@ -21,6 +22,15 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	if ( ! endpoint ) {
 		endpoint = app.endpoints.entities[ type ] ?? app.baseUrl;
 	}
+
+	// Use generic cache hook
+	const {
+		getCache: getCachedIds,
+		setCache: setCachedIds,
+		invalidateAll: invalidateCache,
+		invalidateByCallback: invalidateCacheByCallback,
+		setKey: setCacheKey
+	} = useCache( type, query );
 
 	useEffect(() => {
 		if ( ! isEmpty( items ) ) {
@@ -55,7 +65,9 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 		if ( updateState ) {
 			setQuery( newQuery );
+			setCacheKey( newQuery, false );
 		}
+
 		return newQuery;
 	}
 
@@ -89,6 +101,29 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			}
 		}
 
+		// Check if we have cached IDs from the hook
+		const cachedIds = getCachedIds();
+		if ( cachedIds && cachedIds.size > 0 ) {
+			// Cache hit, return entities from global state using cached IDs
+			let entityRefs = [];
+			Array.from( cachedIds ).forEach( id => {
+				if ( app.entities[ type ]?.hasOwnProperty( id ) ) {
+					entityRefs.push( app.entities[ type ][ id ] );
+				}
+			});
+
+			if ( ! isEmpty( resultFilters ) ) {
+				entityRefs = filter( resultFilters, entityRefs );
+			}
+
+			if ( updateState ) {
+				setEntities( entityRefs );
+			}
+			setLoading( false );
+			return entityRefs;
+		}
+
+		// Cache miss - fetch from server
 		const results =
 			await fetchPost(
 				endpoint,
@@ -98,6 +133,10 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		if ( results.success ) {
 
 			let entityRefs = update( results.data, false );
+
+			// Store result IDs in cache for future queries
+			const resultIds = new Set( results.data.map( entity => entity.id ) );
+			setCachedIds( resultIds );
 
 			if ( updateState ) {
 				if ( isEmpty( resultFilters ) && results.hasOwnProperty( 'total' ) ) {
@@ -222,6 +261,9 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			}
 			return item;
 		} ) );
+
+		// Invalidate cache entries containing this entity ID using hook's callback method
+		invalidateCacheByCallback( ( key, entry ) => entry.value.has( entity.id ) );
 	}
 
 	/**
@@ -231,11 +273,13 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		if ( ! entity.hasOwnProperty( 'id' ) ) {
 			return;
 		}
-		entities.push( entity );
-		setEntities( [ ...entities ] );
+		setEntities( [ ...entities, entity ] );
 
 		// Register new entity.
 		update( entity, false );
+
+		// Invalidate all caches for this type on creation using hook's method
+		invalidateCache();
 	}
 
 	/**
@@ -254,6 +298,9 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			return;
 		}
 		delete app.entities[ type ][ entityId ];
+
+		// Invalidate cache entries containing this entity ID using hook's callback method
+		invalidateCacheByCallback( ( key, entry ) => entry.value.has( entityId ) );
 	}
 
 	const doAction = async( entityId, action, params, updateState = true ) => {
