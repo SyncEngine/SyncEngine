@@ -5,19 +5,29 @@ import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 import Icon from '../partials/Icon';
 
+// Lazy initialization of portal sandbox to avoid module-level DOM manipulation.
+const getPortalSandbox = () => {
+	let el = document.getElementById( '_portalSandbox' );
+	if ( ! el ) {
+		el = document.createElement( 'div' );
+		el.id = '_portalSandbox';
+		el.classList.add( 'd-none' );
+		document.body.append( el );
+	}
+	return el;
+};
+
 function preventBubbling( e ) {
 	'Escape' !== e.key && e.stopPropagation();
 }
 
-let portalSandbox = document.getElementById( '_portalSandbox' );
-if ( ! portalSandbox ) {
-	portalSandbox = document.createElement( 'div' );
-	portalSandbox.id = '_portalSandbox';
-	portalSandbox.classList.add( 'd-none' );
-	document.body.append( portalSandbox );
-}
-
 const ModalSandboxPortal = ( props ) => {
+	const portalContainerRef = useRef( null );
+
+	if ( ! portalContainerRef.current ) {
+		portalContainerRef.current = getPortalSandbox();
+	}
+
 	return createPortal(
 		<div
 			className="d-none"
@@ -29,7 +39,7 @@ const ModalSandboxPortal = ( props ) => {
 		>
 			{ props.children }
 		</div>,
-		portalSandbox
+		portalContainerRef.current
 	)
 }
 
