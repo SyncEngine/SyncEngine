@@ -20,7 +20,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 			return [ null, alert, false ];
 		}
 
-		const get = async ( fallback ) => {
+		const get = useCallback( async ( fallback ) => {
 			if ( ! document.hasFocus() ) {
 				return fallback;
 			}
@@ -36,7 +36,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 				}
 			}
 			return fallback;
-		}
+		}, [ json ] );
 
 		const set = useCallback( ( value ) => {
 			if ( isEmpty( value ) ) {
