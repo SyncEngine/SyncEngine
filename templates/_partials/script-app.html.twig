@@ -4,7 +4,7 @@
 		debug: {{ app.debug ? 'true' : 'false' }},
 		__experimental: {{ __experimental ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
-		csrfToken: "{{ csrf_token('submit') }}",
+		csrfToken: "{{ csrf_token('client') }}",
 		screen: {
 			breadcrumbs: []
 		},

@@ -52,7 +52,7 @@ final class CsrfSubscriber implements EventSubscriberInterface
 		}
 
 		$valid = $this->csrfTokenManager->isTokenValid(
-			new CsrfToken( 'submit', $token )
+			new CsrfToken( 'client', $token )
 		);
 
 		if ( ! $valid ) {

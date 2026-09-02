@@ -9,6 +9,6 @@ framework:
         check_header: true
         cookie_name: '%syncengine.security.csrf_cookie_name%'
         stateless_token_ids:
-            - submit
+            - client
             - authenticate
             - logout
