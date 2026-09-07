@@ -5,10 +5,12 @@ namespace SyncEngine\Model\Enum;
 use Symfony\Component\Translation\TranslatableMessage;
 use SyncEngine\Model\Enum\Interface\TranslatableEnumInterface;
 use SyncEngine\Model\Enum\Trait\EnumStringTrait;
+use SyncEngine\Model\Enum\Trait\TranslatableEnumTrait;
 
 enum AutomationMode: string implements TranslatableEnumInterface
 {
 	use EnumStringTrait;
+	use TranslatableEnumTrait;
 
 	// Only allow a single instance at a time. Block new requests.
 	case SINGLE   = 'single';

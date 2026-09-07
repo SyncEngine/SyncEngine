@@ -3,12 +3,15 @@
 namespace SyncEngine\Model\Enum;
 
 use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Model\Enum\Interface\TranslatableEnumInterface;
 use SyncEngine\Model\Enum\Trait\EnumStringTrait;
+use SyncEngine\Model\Enum\Trait\TranslatableEnumTrait;
 
 enum TraceStatus: string implements TranslatableEnumInterface
 {
 	use EnumStringTrait;
+	use TranslatableEnumTrait;
 
 	case REGISTERED = 'registered';
 	case SCHEDULED = 'scheduled';
