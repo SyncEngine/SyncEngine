@@ -12,10 +12,11 @@ vi.mock('react-i18next', () => ({
 }));
 
 // Mock react-bootstrap to avoid portal/DOM issues in tests
-vi.mock('react-bootstrap', () => {
-	const actual = vi.importActual('react-bootstrap');
+vi.mock('react-bootstrap', async () => {
+	const actual = await vi.importActual('react-bootstrap');
 	return {
 		...actual,
+		Accordion: actual.Accordion || actual,
 		Modal: ({ children, ...props }) => (
 			<div {...props} data-testid="modal-wrapper">
 				{children}
@@ -27,6 +28,7 @@ vi.mock('react-bootstrap', () => {
 					{children}
 				</div>
 			),
+			...actual.Form,
 		},
 	};
 });
