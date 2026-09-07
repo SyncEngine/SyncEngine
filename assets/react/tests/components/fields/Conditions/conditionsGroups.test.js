@@ -138,11 +138,12 @@ describe('transformConditionsOutput', () => {
 	it('preserves _label through transform', () => {
 		const data = {
 			conditions: [
-				{ _label: 'My Group', operator: 'AND', conditions: [] },
+				{ _label: 'My Group', operator: 'OR', conditions: [] },
 			],
 			operator: 'AND',
 		};
 		const result = transformConditionsOutput( data );
+		expect( Array.isArray( result ) ).toBe( false );
 		expect( result.conditions[0]._label ).toBe( 'My Group' );
 	});
 });
