@@ -3,6 +3,7 @@
 namespace SyncEngine\Model\Abstract;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Interface\Normalizable;
 
@@ -33,7 +34,11 @@ abstract class AbstractModel implements Normalizable
 		return $this->getContainer()->get('parameter_bag')->get( $name );
 	}
 
-	protected function trans( ?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null ): string {
+	protected function trans( null|string|TranslatableInterface $id, array $parameters = [], ?string $domain = null, ?string $locale = null ): string {
+		// @todo Create a trait or custom Translator service?
+		if ( $id instanceof TranslatableInterface ) {
+			return $id->trans( $this->getContainer()->get('translator'), $locale );
+		}
 		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
 	}
 
