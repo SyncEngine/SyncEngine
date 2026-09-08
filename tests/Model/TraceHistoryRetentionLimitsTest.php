@@ -49,7 +49,8 @@ class TraceHistoryRetentionLimitsTest extends BaseTestCase
 			$trace->getEntity()->setCreated( $created );
 		}
 
-		$trace->register( $automation )->save( true );
+		$trace->register( $automation );
+		$automation->save( true );
 		return $trace;
 	}
 
