@@ -33,6 +33,7 @@ class RunDevUpdates extends Command
 			'2026-01-06' => 'syncengine:execute:dev:update:config-model-format',
 			'2026-07-28' => 'syncengine:execute:dev:update:config-webservice-soap-request',
 			'2026-09-08' => 'syncengine:execute:dev:update:rename-trace-data-column',
+			'2026-09-09' => 'syncengine:execute:dev:update:rename-entity-date-columns',
 		];
 
 		/** @var QuestionHelper $helper */
