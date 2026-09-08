@@ -97,12 +97,12 @@ class ApiEndpointStatusCaseTest extends RuntimeScenarioTestCase
 	private function assertTraceSummary( array $trace, string $status, bool $withIteration = false ): void
 	{
 		$this->assertArrayHasKey( 'id', $trace );
-		$this->assertArrayHasKey( 'created', $trace );
-		$this->assertArrayHasKey( 'modified', $trace );
+		$this->assertArrayHasKey( 'created_at', $trace );
+		$this->assertArrayHasKey( 'updated_at', $trace );
 		$this->assertArrayHasKey( 'status', $trace );
 		$this->assertSame( $status, $trace['status'] );
-		$this->assertIsString( $trace['created'] );
-		$this->assertIsString( $trace['modified'] );
+		$this->assertIsString( $trace['created_at'] );
+		$this->assertIsString( $trace['updated_at'] );
 
 		if ( $withIteration ) {
 			$this->assertArrayHasKey( 'current_iteration', $trace );

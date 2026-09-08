@@ -20,10 +20,10 @@ class Trace
 	private ?Automation $automation = null;
 
 	#[ORM\Column]
-	private ?\DateTimeImmutable $created = null;
+	private ?\DateTimeImmutable $createdAt = null;
 
 	#[ORM\Column]
-	private ?\DateTimeImmutable $modified = null;
+	private ?\DateTimeImmutable $updatedAt = null;
 
 	#[ORM\Column( length: 255 )]
 	private ?string $status = null;
@@ -55,26 +55,26 @@ class Trace
 		return $this;
 	}
 
-	public function getCreated(): ?\DateTimeImmutable
+	public function getCreatedAt(): ?\DateTimeImmutable
 	{
-		return $this->created;
+		return $this->createdAt;
 	}
 
-	public function setCreated( \DateTimeImmutable $created ): static
+	public function setCreatedAt( \DateTimeImmutable $createdAt ): static
 	{
-		$this->created = $created;
+		$this->createdAt = $createdAt;
 
 		return $this;
 	}
 
-	public function getModified(): ?\DateTimeImmutable
+	public function getUpdatedAt(): ?\DateTimeImmutable
 	{
-		return $this->modified;
+		return $this->updatedAt;
 	}
 
-	public function setModified( \DateTimeImmutable $modified ): static
+	public function setUpdatedAt( \DateTimeImmutable $updatedAt ): static
 	{
-		$this->modified = $modified;
+		$this->updatedAt = $updatedAt;
 
 		return $this;
 	}

@@ -46,7 +46,7 @@ class TraceHistoryRetentionLimitsTest extends BaseTestCase
 		$trace->setStatus( $status );
 
 		if ( $created instanceof \DateTimeImmutable ) {
-			$trace->getEntity()->setCreated( $created );
+			$trace->getEntity()->setCreatedAt( $created );
 		}
 
 		$trace->register( $automation );

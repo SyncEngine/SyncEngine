@@ -60,7 +60,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 		$apiToken = new ApiToken();
 		$apiToken->setToken( 'test-api-token-' . md5( json_encode( $scopes ) ) );
 		$apiToken->setUser( $user );
-		$apiToken->setExpires( new \DateTime( '+1 year' ) );
+		$apiToken->setExpiresAt( new \DateTime( '+1 year' ) );
 		$apiToken->setConfig( [ 'scopes' => $scopes ] );
 
 		$em->persist( $apiToken );

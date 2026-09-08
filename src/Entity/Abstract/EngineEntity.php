@@ -27,10 +27,10 @@ class EngineEntity
 	protected string $visibility = EntityVisibility::VISIBLE->value;
 
 	#[ORM\Column]
-	protected ?\DateTimeImmutable $created = null;
+	protected ?\DateTimeImmutable $createdAt = null;
 
 	#[ORM\Column]
-	protected ?\DateTimeImmutable $modified = null;
+	protected ?\DateTimeImmutable $updatedAt = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
 	protected ?string $icon = null;
@@ -92,26 +92,26 @@ class EngineEntity
 		return $this;
 	}
 
-	public function getCreated(): ?\DateTimeImmutable
+	public function getCreatedAt(): ?\DateTimeImmutable
 	{
-		return $this->created;
+		return $this->createdAt;
 	}
 
-	public function setCreated( \DateTimeImmutable $created ): static
+	public function setCreatedAt( \DateTimeImmutable $createdAt ): static
 	{
-		$this->created = $created;
+		$this->createdAt = $createdAt;
 
 		return $this;
 	}
 
-	public function getModified(): ?\DateTimeImmutable
+	public function getUpdatedAt(): ?\DateTimeImmutable
 	{
-		return $this->modified;
+		return $this->updatedAt;
 	}
 
-	public function setModified( \DateTimeImmutable $modified ): static
+	public function setUpdatedAt( \DateTimeImmutable $updatedAt ): static
 	{
-		$this->modified = $modified;
+		$this->updatedAt = $updatedAt;
 
 		return $this;
 	}

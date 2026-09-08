@@ -19,10 +19,10 @@ use SyncEngine\Structure\Data\ResourceData;
 /**
  * @extends EntityModel<Trace>
  *
- * @method \DateTimeImmutable|null getCreated()
- * @method setCreated( \DateTimeImmutable $created )
- * @method \DateTimeImmutable|null getModified()
- * @method setModified( \DateTimeImmutable $modified )
+ * @method \DateTimeImmutable|null getCreatedAt()
+ * @method setCreatedAt( \DateTimeImmutable $created )
+ * @method \DateTimeImmutable|null getUpdatedAt()
+ * @method setUpdatedAt( \DateTimeImmutable $updates )
  */
 class TraceModel extends EntityModel
 {
@@ -46,7 +46,7 @@ class TraceModel extends EntityModel
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		if ( $this->hasEntity() ) {
-			$this->getEntity()->setModified( new \DateTimeImmutable() );
+			$this->getEntity()->setUpdatedAt( new \DateTimeImmutable() );
 		}
 
 		parent::update( $flush, $entityManager );
@@ -56,10 +56,10 @@ class TraceModel extends EntityModel
 	{
 		$entity = $this->getEntity();
 
-		if ( ! $entity->getCreated() ) {
-			$entity->setCreated( new \DateTimeImmutable() );
+		if ( ! $entity->getCreatedAt() ) {
+			$entity->setCreatedAt( new \DateTimeImmutable() );
 		}
-		$entity->setModified( new \DateTimeImmutable() );
+		$entity->setUpdatedAt( new \DateTimeImmutable() );
 
 		parent::persist( $flush, $entityManager );
 	}

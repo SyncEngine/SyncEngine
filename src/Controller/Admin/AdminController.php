@@ -20,7 +20,7 @@ class AdminController extends AbstractAdminController
 			'limit'        => 10,
 			'total'        => true,
 			'dependencies' => true,
-			'order'        => [ 'created' => 'DESC', 'id' => 'DESC' ],
+			'order'        => [ 'createdAt' => 'DESC', 'id' => 'DESC' ],
 		];
 
 		$messengerItems = $messageRepository->findAll();

@@ -25,7 +25,7 @@ class ApiToken
 	private ?string $description = null;
 
 	#[ORM\Column( type: Types::DATETIME_MUTABLE, nullable: true )]
-	private ?\DateTimeInterface $expires = null;
+	private ?\DateTimeInterface $expiresAt = null;
 
 	#[ORM\Column( nullable: true )]
 	protected ?array $config = [];
@@ -71,14 +71,14 @@ class ApiToken
 		return $this;
 	}
 
-	public function getExpires(): ?\DateTimeInterface
+	public function getExpiresAt(): ?\DateTimeInterface
 	{
-		return $this->expires;
+		return $this->expiresAt;
 	}
 
-	public function setExpires( ?\DateTimeInterface $expires ): static
+	public function setExpiresAt( ?\DateTimeInterface $expiresAt ): static
 	{
-		$this->expires = $expires;
+		$this->expiresAt = $expiresAt;
 
 		return $this;
 	}

@@ -257,23 +257,23 @@ class ApiEndpointController extends AbstractApiController
 	}
 
 	/**
-	 * @return array{id: int, created: string, modified: string, status: string,current_iteration: int}[]
+	 * @return array{id: int, created_at: string, updated_at: string, status: string,current_iteration: int}[]
 	 */
 	private function getTraceSummaries( AutomationModel $model, TraceStatus $status, bool $includeIteration = false ): array
 	{
 		$traces = TraceModel::getRepository()->findBy(
 			[ 'automation' => $model->getId(), 'status' => $status->value ],
-			[ 'created' => 'ASC', 'id' => 'ASC' ]
+			[ 'createdAt' => 'ASC', 'id' => 'ASC' ]
 		);
 
 		return array_map( function ( $trace ) use ( $includeIteration ) {
 			$trace = TraceModel::create( $trace );
 
 			$data = [
-				'id'       => $trace->getId(),
-				'created'  => $trace->getCreated()?->format( \DateTimeInterface::ATOM ),
-				'modified' => $trace->getModified()?->format( \DateTimeInterface::ATOM ),
-				'status'   => $trace->getStatus()?->value,
+				'id'         => $trace->getId(),
+				'created_at' => $trace->getCreatedAt()?->format( \DateTimeInterface::ATOM ),
+				'updated_at' => $trace->getUpdatedAt()?->format( \DateTimeInterface::ATOM ),
+				'status'     => $trace->getStatus()?->value,
 			];
 
 			if ( $includeIteration ) {

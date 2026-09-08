@@ -34,10 +34,10 @@ use SyncEngine\Service\ModelExporter;
  * @method $this setStatus( EntityStatus $status )
  * @method EntityVisibility|null getVisibility()
  * @method $this setVisibility( EntityVisibility $visibility )
- * @method null|\DateTimeImmutable getCreated()
- * @method $this setCreated( \DateTimeImmutable $created )
- * @method null|\DateTimeImmutable getModified()
- * @method $this setModified( \DateTimeImmutable $modified )
+ * @method null|\DateTimeImmutable getCreatedAt()
+ * @method $this setCreatedAt( \DateTimeImmutable $created )
+ * @method null|\DateTimeImmutable getUpdatedAt()
+ * @method $this setUpdatedAt( \DateTimeImmutable $updated )
  * @method null|string getIcon()
  * @method $this setIcon( string $icon )
  * @method null|string getSupervisor()
@@ -78,7 +78,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		if ( $this->hasEntity() ) {
-			$this->getEntity()->setModified( new \DateTimeImmutable() );
+			$this->getEntity()->setUpdatedAt( new \DateTimeImmutable() );
 		}
 
 		parent::update( $flush, $entityManager );
@@ -198,11 +198,11 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 	{
 		$entity = $this->getEntity();
 
-		if ( ! $entity->getCreated() ) {
-			$entity->setCreated( new \DateTimeImmutable() );
+		if ( ! $entity->getCreatedAt() ) {
+			$entity->setCreatedAt( new \DateTimeImmutable() );
 		}
-		if ( ! $entity->getModified() ) {
-			$entity->setModified( new \DateTimeImmutable() );
+		if ( ! $entity->getUpdatedAt() ) {
+			$entity->setUpdatedAt( new \DateTimeImmutable() );
 		}
 
 		parent::persist( $flush, $entityManager );

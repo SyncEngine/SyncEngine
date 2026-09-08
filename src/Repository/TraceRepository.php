@@ -29,8 +29,8 @@ class TraceRepository extends ServiceEntityRepository
 	 * Supported criteria keys:
 	 *  - automation    int
 	 *  - status        TraceStatus
-	 *  - modifiedAfter \DateTimeImmutable  (inclusive, t.modified >= value)
-	 *  - modifiedBefore \DateTimeImmutable (exclusive, t.modified < value)
+	 *  - updatedAfter \DateTimeImmutable  (inclusive, t.updatedAt >= value)
+	 *  - updatedBefore \DateTimeImmutable (exclusive, t.updatedAt < value)
 	 */
 	public function existsBy( array $criteria ): bool
 	{
@@ -44,28 +44,28 @@ class TraceRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * Return lightweight scalar rows — no entity hydration — ordered newest-modified first.
+	 * Return lightweight scalar rows — no entity hydration — ordered newest-updated first.
 	 * Suitable for state checks and UI summaries.
 	 * Dates are returned as Unix timestamps.
 	 *
 	 * Supported criteria keys: same as existsBy().
 	 *
-	 * @return array<int, array{ id: int, status: string, created: int, modified: int }>
+	 * @return array<int, array{ id: int, status: string, createdAt: int, updatedAt: int }>
 	 */
 	public function findRowsBy( array $criteria ): array
 	{
 		$rows = $this->buildRowsCriteriaQuery( $criteria )
-		             ->select( 't.id, t.status, t.created, t.modified' )
-		             ->orderBy( 't.modified', 'DESC' )
+		             ->select( 't.id, t.status, t.createdAt, t.updatedAt' )
+		             ->orderBy( 't.updatedAt', 'DESC' )
 		             ->getQuery()
 		             ->getArrayResult();
 
 		return array_map( static function ( array $row ): array {
 			return [
-				'id'       => (int) $row['id'],
-				'status'   => (string) $row['status'],
-				'created'  => $row['created'] instanceof \DateTimeInterface ? $row['created']->getTimestamp() : 0,
-				'modified' => $row['modified'] instanceof \DateTimeInterface ? $row['modified']->getTimestamp() : 0,
+				'id'        => (int) $row['id'],
+				'status'    => (string) $row['status'],
+				'createdAt' => $row['createdAt'] instanceof \DateTimeInterface ? $row['createdAt']->getTimestamp() : 0,
+				'updatedAt' => $row['updatedAt'] instanceof \DateTimeInterface ? $row['updatedAt']->getTimestamp() : 0,
 			];
 		}, $rows );
 	}
@@ -88,14 +88,14 @@ class TraceRepository extends ServiceEntityRepository
 			   ->setParameter( 'status', $status );
 		}
 
-		if ( isset( $criteria['modifiedAfter'] ) ) {
-			$qb->andWhere( 't.modified >= :modifiedAfter' )
-			   ->setParameter( 'modifiedAfter', $criteria['modifiedAfter'] );
+		if ( isset( $criteria['updatedAfter'] ) ) {
+			$qb->andWhere( 't.updatedAt >= :updatedAfter' )
+			   ->setParameter( 'updatedAfter', $criteria['updatedAfter'] );
 		}
 
-		if ( isset( $criteria['modifiedBefore'] ) ) {
-			$qb->andWhere( 't.modified < :modifiedBefore' )
-			   ->setParameter( 'modifiedBefore', $criteria['modifiedBefore'] );
+		if ( isset( $criteria['updatedBefore'] ) ) {
+			$qb->andWhere( 't.updatedAt < :updatedBefore' )
+			   ->setParameter( 'updatedBefore', $criteria['updatedBefore'] );
 		}
 
 		return $qb;

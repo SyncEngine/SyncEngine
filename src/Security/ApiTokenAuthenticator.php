@@ -113,7 +113,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			return false;
 		}
 
-		if ( new \DateTime() > $apiToken->getExpires() ) {
+		if ( new \DateTime() > $apiToken->getExpiresAt() ) {
 			throw new CustomUserMessageAuthenticationException( 'Expired API Token' );
 		}
 

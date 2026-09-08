@@ -232,12 +232,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
 		$activeRuns = $repository->findRowsBy(
-			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'updatedAfter' => $freshAfter ]
 		);
 
 		if ( ! empty( $activeRuns ) ) {
 			$this->setData( true, 'running.active' );
-			$this->setData( $activeRuns[0]['modified'] ?: time(), 'running.heartbeat' );
+			$this->setData( $activeRuns[0]['updatedAt'] ?: time(), 'running.heartbeat' );
 
 			return true;
 		}
@@ -307,7 +307,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$staleBefore = new \DateTimeImmutable( '-' . $timeout . ' seconds' );
 		$cleaned     = false;
 		$staleRows   = $repository->findRowsBy(
-			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedBefore' => $staleBefore, ]
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'updatedBefore' => $staleBefore, ]
 		);
 
 		if ( ! empty( $staleRows ) ) {
@@ -316,7 +316,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 			foreach ( $repository->findBy( [ 'id' => array_column( $staleRows, 'id' ) ] ) as $trace ) {
 				$trace->setStatus( TraceStatus::STOPPED->value );
-				$trace->setModified( $now );
+				$trace->setUpdatedAt( $now );
 				$entityManager->persist( $trace );
 			}
 
@@ -325,13 +325,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		}
 
 		$activeRuns = $repository->findRowsBy(
-			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $staleBefore ]
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'updatedAfter' => $staleBefore ]
 		);
 		if ( empty( $activeRuns ) ) {
 			$this->setData( null, 'running' );
 		} else {
 			$this->setData( true, 'running.active' );
-			$this->setData( $activeRuns[0]['modified'] ?: time(), 'running.heartbeat' );
+			$this->setData( $activeRuns[0]['updatedAt'] ?: time(), 'running.heartbeat' );
 		}
 
 		$this->persist( true );
