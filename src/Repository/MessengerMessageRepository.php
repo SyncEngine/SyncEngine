@@ -61,6 +61,8 @@ class MessengerMessageRepository
 		$types  = [];
 
 		foreach ( $criteria as $field => $value ) {
+			$field = $this->mapFieldName( $field );
+
 			if ( is_array( $value ) ) {
 				$where[]          = "$field IN (:{$field})";
 				$params[ $field ] = $value;
@@ -80,6 +82,8 @@ class MessengerMessageRepository
 		if ( $orderBy ) {
 			$orderParts = [];
 			foreach ( $orderBy as $field => $direction ) {
+				$field = $this->mapFieldName( $field );
+
 				$direction    = strtoupper( $direction ) === 'DESC' ? 'DESC' : 'ASC';
 				$orderParts[] = "{$field} {$direction}";
 			}
@@ -106,5 +110,16 @@ class MessengerMessageRepository
 		}
 
 		return $stmt->executeQuery()->fetchAllAssociative();
+	}
+
+	private function mapFieldName( $field ): string
+	{
+		return match( $field ) {
+			'createdAt' => 'created_at',
+			'availableAt' => 'available_at',
+			'deliveredAt' => 'delivered_at',
+			'redeliveredAt' => 'redelivered_at',
+			default => $field,
+		};
 	}
 }

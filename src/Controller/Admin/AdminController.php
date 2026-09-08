@@ -48,7 +48,7 @@ class AdminController extends AbstractAdminController
 					'total' => $totalMessenger,
 					'query' => [
 						'limit' => 10,
-						'order' => [ 'created_at' => 'DESC' ],
+						'order' => [ 'createdAt' => 'DESC' ],
 					],
 				],
 				'onboarding' => [
