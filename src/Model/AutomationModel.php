@@ -132,7 +132,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return 0 < $timeout ? $timeout : self::DEFAULT_RUNNING_TIMEOUT;
 	}
 
-	/** Max number of persisted traces kept per automation; falls back to global setting. */
+	/** @deprecated  Max number of persisted traces kept per automation; falls back to global setting. */
 	public function getMaxTraces(): int
 	{
 		$max = (int) $this->getConfig( 'execution.max_traces', 0 );
@@ -143,6 +143,32 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$default = (int) $this->getParameter( 'max_traces' );
 
 		return 0 < $default ? $default : 10;
+	}
+
+	/**
+	 * @return array<string, array{status: string, limit: int, unit: string}>
+	 */
+	public function getTraceHistoryRetention(): array
+	{
+		$config = $this->getConfig( 'execution.history.retention', [] );
+
+		$retention = [
+			'default' => [
+				'status' => '',
+				'limit'  => $this->getMaxTraces(),
+				'unit'   => '',
+			],
+		];
+
+		foreach ( $config as $limit ) {
+			if ( ! isset( $limit['status'] ) ) {
+				$retention['default'] = $limit;
+			} else {
+				$retention[ $limit['status'] ] = $limit;
+			}
+		}
+
+		return $retention;
 	}
 
 	/**
@@ -738,14 +764,60 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'type'        => 'number',
 						'postfix'     => $this->trans( 'Seconds' ),
 					],
-					'max_traces' => [
-						'label'       => $this->trans( 'History limit' ),
-						'help'        => [
-							$this->trans( 'Maximum number of stored traces for this automation. Leave empty to use the global default.' ),
-							$this->trans( 'Leave empty to use the global default.' ),
+					'history' => [
+						'wrap'        => false,
+						'nested'      => [
+							'retention' => [
+								'label'       => $this->trans( 'History traces retention limit' ),
+								'description' => $this->trans( 'Configure execution history of this automation.' ),
+								'help'        => [
+									$this->trans( 'Maximum number of stored traces for this automation.' ),
+									$this->trans( 'Leave empty to use the global default of {param}.', [ 'param' => $this->getParameter( 'max_traces' ) ] ),
+								],
+								'type' => 'grid',
+								'columns' => [
+									'status' => [
+										'type'     => 'select',
+										'header'   => $this->trans( 'Status' ),
+										'unique'   => true,
+										'required' => true,
+										'choices'  => [
+											'default' => $this->trans('Default'),
+											TraceStatus::SUCCESS->value => [
+												'label' => $this->trans( TraceStatus::SUCCESS ),
+												'icon' => 'event-' . TraceStatus::SUCCESS->value,
+											],
+											TraceStatus::STOPPED->value => [
+												'label' => $this->trans( TraceStatus::STOPPED ),
+												'icon' => 'event-' . TraceStatus::STOPPED->value,
+											],
+											TraceStatus::CANCELLED->value => [
+												'label' => $this->trans( TraceStatus::CANCELLED ),
+												'icon' => 'event-' . TraceStatus::CANCELLED->value,
+											],
+											TraceStatus::FAILED->value => [
+												'label' => $this->trans( TraceStatus::FAILED ),
+												'icon' => 'event-' . TraceStatus::FAILED->value,
+											],
+										],
+									],
+									'limit' => [
+										'type'     => 'number',
+										'required' => true,
+										'header'   => $this->trans( 'Max' ),
+									],
+									'unit' => [
+										'type'    => 'select',
+										'header'  => $this->trans( 'Unit' ),
+										'default' => 'fixed',
+										'choices' => [
+											'fixed' => $this->trans('Fixed'),
+											'days'  => $this->trans('Days'),
+										],
+									],
+								],
+							],
 						],
-						'placeholder' => $this->getParameter( 'max_traces' ),
-						'type'        => 'number',
 					],
 				],
 			],
