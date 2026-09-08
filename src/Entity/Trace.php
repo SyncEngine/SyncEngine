@@ -29,7 +29,7 @@ class Trace
 	private ?string $status = null;
 
 	#[ORM\Column]
-	private array $trace = [];
+	private array $data = [];
 
 	public function getId(): ?int
 	{
@@ -91,14 +91,14 @@ class Trace
 		return $this;
 	}
 
-	public function getTrace(): array
+	public function getData(): array
 	{
-		return $this->trace;
+		return $this->data;
 	}
 
-	public function setTrace( array $trace ): static
+	public function setData( array $data ): static
 	{
-		$this->trace = $trace;
+		$this->data = $data;
 
 		return $this;
 	}

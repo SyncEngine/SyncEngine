@@ -289,7 +289,7 @@ class TraceModel extends EntityModel
 
 	public function setRequest( array $params = [], array $query = [] ): static
 	{
-		$trace = (array) ( $this->getEntity()?->getTrace() ?? [] );
+		$trace = (array) ( $this->getEntity()?->getData() ?? [] );
 		$trace['request'] = [
 			'params'    => $params,
 			'query'     => $query,
@@ -308,7 +308,7 @@ class TraceModel extends EntityModel
 	 */
 	public function getRequest(): array
 	{
-		$trace   = (array) ( $this->getEntity()?->getTrace() ?? [] );
+		$trace   = (array) ( $this->getEntity()?->getData() ?? [] );
 		$request = (array) ( $trace['request'] ?? [] );
 
 		return [
@@ -753,7 +753,7 @@ class TraceModel extends EntityModel
 	 */
 	private function getTraceData( ?string $key = null ): mixed
 	{
-		$data = $this->getEntity()?->getTrace();
+		$data = $this->getEntity()?->getData();
 
 		if ( ! $data ) {
 			return null;
@@ -769,7 +769,7 @@ class TraceModel extends EntityModel
 
 	protected function setTrace( array $trace ): void
 	{
-		$this->getEntity()?->setTrace( $trace );
+		$this->getEntity()?->setData( $trace );
 	}
 
 	public static function getEntityClass(): string

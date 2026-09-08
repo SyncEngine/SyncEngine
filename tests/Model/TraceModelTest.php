@@ -127,6 +127,6 @@ class TraceModelTest extends BaseTestCase
 
 		$this->assertSame( [ 'a' => 1 ], $payload['params'] );
 		$this->assertSame( [ 'q' => 'x' ], $payload['query'] );
-		$this->assertArrayNotHasKey( 'queue', $trace->getEntity()->getTrace() );
+		$this->assertArrayNotHasKey( 'queue', $trace->getEntity()->getData() );
 	}
 }

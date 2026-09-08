@@ -56,10 +56,10 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		);
 
 		$this->assertCount( 2, $queued );
-		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'one' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'two' ], (array) ( $queued[1]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'one' ], (array) ( $queued[0]->getData()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'two' ], (array) ( $queued[1]->getData()['request']['query'] ?? [] ) );
 
 		$activeTrace->setStatus( TraceStatus::SUCCESS )->save( true );
 		DefaultController::getEntityManager()->clear();
@@ -84,9 +84,9 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $firstQueued->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getData() );
 		$this->assertSame( TraceStatus::SCHEDULED, $secondQueued->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getData() );
 	}
 
 	public function testQueuedRequestsRemainProcessableAfterSwitchingAutomationToSingle(): void
@@ -146,11 +146,11 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $firstQueued->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getData() );
 		$this->assertSame( TraceStatus::SCHEDULED, $secondQueued->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getData() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdQueued->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $thirdQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $thirdQueued->getEntity()->getData() );
 
 		DefaultController::getEntityManager()->clear();
 		$this->invokeBatch( $handler, $automation, (int) $queued[1]->getId() );
@@ -162,7 +162,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $secondProcessed->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $secondProcessed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getData() );
 		$this->assertSame( TraceStatus::SCHEDULED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
@@ -171,7 +171,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
 		$this->assertNotSame( TraceStatus::QUEUED, $thirdProcessed->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $thirdProcessed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getData() );
 	}
 
 	public function testQueuedRequestsRemainProcessableAfterSwitchingAutomationToParallel(): void
@@ -207,12 +207,12 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		);
 
 		$this->assertCount( 3, $queued );
-		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-1' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-2' ], (array) ( $queued[1]->getTrace()['request']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 3 ], (array) ( $queued[2]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-3' ], (array) ( $queued[2]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-1' ], (array) ( $queued[0]->getData()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-2' ], (array) ( $queued[1]->getData()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 3 ], (array) ( $queued[2]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-3' ], (array) ( $queued[2]->getData()['request']['query'] ?? [] ) );
 
 		$automation->setConfig( [
 			'execution' => [
@@ -237,7 +237,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertSame( TraceStatus::SUCCESS, $firstProcessed->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $firstProcessed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $firstProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstProcessed->getEntity()->getData() );
 		$this->assertSame( TraceStatus::SCHEDULED, $secondStillQueued->getStatus() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
 
@@ -249,7 +249,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$this->assertSame( TraceStatus::SUCCESS, $secondProcessed->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $secondProcessed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getData() );
 		$this->assertSame( TraceStatus::SCHEDULED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
@@ -258,7 +258,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
 		$this->assertSame( TraceStatus::SUCCESS, $thirdProcessed->getStatus() );
 		$this->assertNotSame( TraceStatus::SCHEDULED, $thirdProcessed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getData() );
 	}
 
 	public function testQueuedTracesRemainProcessableWhileAnotherRunIsActive(): void
@@ -304,7 +304,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$processed = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$this->assertNotSame( TraceStatus::QUEUED, $processed->getStatus() );
-		$this->assertArrayHasKey( 'request', (array) $processed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $processed->getEntity()->getData() );
 	}
 
 	public function testQueuedModeQueuesNewScheduleWhenScheduledTraceExists(): void
@@ -336,8 +336,8 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$this->assertCount( 1, $scheduled );
 		$this->assertCount( 1, $queued );
-		$this->assertSame( [ 'id' => 10 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'scheduled' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 10 ], (array) ( $queued[0]->getData()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'scheduled' ], (array) ( $queued[0]->getData()['request']['query'] ?? [] ) );
 	}
 }
 
