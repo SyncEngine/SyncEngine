@@ -26,8 +26,8 @@ use SyncEngine\Structure\Data\SchemaData;
 class StorageModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data {
-		getData as getDataDefault;
-		setData as private setDataDefault;
+		getData as private _getData;
+		setData as private _setData;
 	}
 	use Tags;
 	use Supervisor;
@@ -95,7 +95,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 			throw new \RuntimeException( 'Data is not editable for this storage.' );
 		}
 
-		$this->setDataDefault( $value, $key );
+		$this->_setData( $value, $key );
 	}
 
 	/**
@@ -109,10 +109,10 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	public function getData( $key = null, $default = null ): mixed
 	{
 		if ( $this->isRaw() ) {
-			return $this->getDataDefault( 'value', $default );
+			return $this->_getData( 'value', $default );
 		}
 
-		return $this->getDataDefault( $key, $default );
+		return $this->_getData( $key, $default );
 	}
 
 	/**
