@@ -126,7 +126,7 @@ function TraceNodeHeader( props ) {
 					  <span title={ t("Avg. memory per iteration") }>~<MemoryValue value={ Math.round( item.memory_total / item.count ) } initialView="K" /> | </span>
 					}
 					<span title={ t("Peak memory increase") }>^<MemoryValue value={ item.memory_peak  } initialView="K" /></span>
-					<span title={ t("Memory usage before > after") }> | <MemoryValue value={ item.memory_enter  } initialView="M" /> > <MemoryValue value={ item.memory_leave } initialView="M" /></span>
+					<span title={ t("Memory usage before > after") }> | <MemoryValue value={ item.memory_enter  } initialView="M" /> &gt; <MemoryValue value={ item.memory_leave } initialView="M" /></span>
 				</Badge>
 			}
 			{ ( item.progress && item.progress.label ) &&
