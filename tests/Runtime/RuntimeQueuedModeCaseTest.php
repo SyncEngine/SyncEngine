@@ -52,7 +52,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC' ]
+			[ 'createdAt' => 'ASC' ]
 		);
 
 		$this->assertCount( 2, $queued );
@@ -118,7 +118,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC' ]
+			[ 'createdAt' => 'ASC' ]
 		);
 
 		$this->assertCount( 3, $queued );
@@ -203,7 +203,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC' ]
+			[ 'createdAt' => 'ASC' ]
 		);
 
 		$this->assertCount( 3, $queued );
@@ -282,7 +282,7 @@ class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC' ]
+			[ 'createdAt' => 'ASC' ]
 		);
 
 		$this->assertCount( 1, $queued );

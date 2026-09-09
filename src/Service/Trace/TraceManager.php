@@ -41,13 +41,13 @@ class TraceManager
 			if ( 'days' === $rule['unit'] && ! empty( $rule['limit'] ) ) {
 				$cutoff = time() - ( $rule['limit'] * 86400 ); // 86400 seconds in a day
 				foreach ( $groupTraces as $trace ) {
-					if ( $trace->getCreated()->getTimestamp() < $cutoff ) {
+					if ( $trace->getCreatedAt()->getTimestamp() < $cutoff ) {
 						TraceModel::create( $trace )->removeTraceFiles();
 						$automation->removeTrace( $trace );
 					}
 				}
 			} elseif ( $rule['limit'] < \count( $groupTraces ) ) {
-				usort( $groupTraces, fn( $a, $b ) => $b->getCreated() <=> $a->getCreated() );
+				usort( $groupTraces, fn( $a, $b ) => $b->getCreatedAt() <=> $a->getCreatedAt() );
 				foreach ( array_slice( $groupTraces, $rule['limit'] ) as $trace ) {
 					TraceModel::create( $trace )->removeTraceFiles();
 					$automation->removeTrace( $trace );
