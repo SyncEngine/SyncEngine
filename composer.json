@@ -22,6 +22,10 @@
 		{
 			"type": "other",
 			"url": "https://www.syncengine.io"
+		},
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/SyncEngine"
 		}
 	],
 	"require": {
