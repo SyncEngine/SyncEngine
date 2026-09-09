@@ -84,7 +84,7 @@ class ExecuteScheduler
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC', 'id' => 'ASC' ],
+			[ 'createdAt' => 'ASC', 'id' => 'ASC' ],
 			1
 		);
 

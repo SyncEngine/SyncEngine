@@ -21,7 +21,7 @@ class Automation extends EngineEntity
 	// @todo Verify if we need `cascade: [ "persist", "remove"]` ?
 	/** @var Collection<int, Trace> */
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
-	#[ORM\OrderBy(['created' => 'DESC'])]
+	#[ORM\OrderBy(['createdAt' => 'DESC'])]
 	#[NotExportable]
 	#[Ignore]
 	private Collection $traces;
