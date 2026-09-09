@@ -241,8 +241,8 @@ class TraceModel extends EntityModel
 
 	public function start( ?ExecuteContext $context = null ): static
 	{
-		if ( ! $this->getCreated() ) {
-			$this->setCreated( new \DateTimeImmutable() );
+		if ( ! $this->getCreatedAt() ) {
+			$this->setCreatedAt( new \DateTimeImmutable() );
 		}
 
 		$this->setStatus( TraceStatus::RUNNING );
