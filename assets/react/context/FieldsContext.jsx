@@ -1,6 +1,22 @@
 import { createContext, useContext } from 'react';
 import { isEmpty, isFieldEditable, isKey, isObject } from '../utils/conditions';
 
+/**
+ * Context for field hierarchy in form structures.
+ * Provides parent reference, path tracking, value storage, and editable state.
+ * @type {import('react').Context<{
+ *   parent: FieldsContext | null,
+ *   children: Record<string, FieldsContext>,
+ *   root: string | null,
+ *   prefix: string,
+ *   id: string,
+ *   path: string[],
+ *   values: Record<string, any>,
+ *   editable: boolean,
+ *   _root: any,
+ *   _index: number | null
+ * }>}
+ */
 export const FieldsContext = createContext(
 	{
 		parent: null,
@@ -15,6 +31,10 @@ export const FieldsContext = createContext(
 	}
 );
 
+/**
+ * Context for individual field configuration.
+ * @type {import('react').Context<Object<string, any>>}
+ */
 export const FieldContext = createContext( {} );
 
 FieldContext.create = ( field ) => {
