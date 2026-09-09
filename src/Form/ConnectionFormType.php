@@ -14,6 +14,16 @@ class ConnectionFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$model = $options['model'];
+
+		if ( ! isset( $options['model'] ) ) {
+			$model = ConnectionModel::create();
+		}
+
+		if ( ! $options['model'] instanceof ConnectionModel ) {
+			throw new \InvalidArgumentException( 'The "model" option must be an instance of ConnectionModel.' );
+		}
+
 		$builder
 			->add( 'name', TextType::class, [
 				'required' => true,
@@ -39,7 +49,7 @@ class ConnectionFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => ConnectionModel::create()->getFields()->normalize(),
+						'fields' => $model->getFields()->normalize(),
 						'tags'   => [],
 					] ),
 				]
@@ -50,6 +60,7 @@ class ConnectionFormType extends AbstractType
 	{
 		$resolver->setDefaults( [
 			'data_class' => Connection::class,
+			'model'      => null,
 		] );
 	}
 }

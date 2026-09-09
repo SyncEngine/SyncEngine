@@ -253,6 +253,7 @@ abstract class EntityController extends AbstractAdminController
 				$form,
 				$model->getEntity(),
 				[
+					'model' => $model,
 					'attr' => [
 						'data-id'     => $model->getId(),
 						'data-entity' => json_encode( $model->normalize() ),

@@ -14,6 +14,16 @@ class StorageFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$model = $options['model'];
+
+		if ( ! isset( $options['model'] ) ) {
+			$model = StorageModel::create();
+		}
+
+		if ( ! $options['model'] instanceof StorageModel ) {
+			throw new \InvalidArgumentException( 'The "model" option must be an instance of StorageModel.' );
+		}
+
 		$builder
 			->add( 'name', TextType::class, [
 				'required' => true,
@@ -46,7 +56,7 @@ class StorageFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => StorageModel::create()->getFields()->normalize(),
+						'fields' => $model->getFields()->normalize(),
 						'tags'   => [],
 					] ),
 				]
@@ -66,6 +76,7 @@ class StorageFormType extends AbstractType
 	{
 		$resolver->setDefaults( [
 			'data_class' => Storage::class,
+			'model'      => null,
 		] );
 	}
 }

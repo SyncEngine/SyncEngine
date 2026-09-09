@@ -14,6 +14,16 @@ class RoutineFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$model = $options['model'];
+
+		if ( ! isset( $options['model'] ) ) {
+			$model = RoutineModel::create();
+		}
+
+		if ( ! $options['model'] instanceof RoutineModel ) {
+			throw new \InvalidArgumentException( 'The "model" option must be an instance of RoutineModel.' );
+		}
+
 		$builder
 			->add( 'name', TextType::class, [
 				'required' => true,
@@ -39,7 +49,7 @@ class RoutineFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => RoutineModel::create()->getFields()->normalize(),
+						'fields' => $model->getFields()->normalize(),
 						'tags'   => [
 							'context' => [ 'routine' => '_entity' ],
 						],
@@ -52,6 +62,7 @@ class RoutineFormType extends AbstractType
 	{
 		$resolver->setDefaults( [
 			'data_class' => Routine::class,
+			'model'      => null,
 		] );
 	}
 }

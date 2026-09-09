@@ -14,6 +14,16 @@ class FlowFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$model = $options['model'];
+
+		if ( ! isset( $options['model'] ) ) {
+			$model = FlowModel::create();
+		}
+
+		if ( ! $options['model'] instanceof FlowModel ) {
+			throw new \InvalidArgumentException( 'The "model" option must be an instance of FlowModel.' );
+		}
+
 		$builder
 			->add( 'name', TextType::class, [
 				'required' => true,
@@ -39,7 +49,7 @@ class FlowFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => FlowModel::create()->getFields()->normalize(),
+						'fields' => $model->getFields()->normalize(),
 						'tags'   => [
 							'context' => [ 'flow' => '_entity' ],
 						],
@@ -52,6 +62,7 @@ class FlowFormType extends AbstractType
 	{
 		$resolver->setDefaults( [
 			'data_class' => Flow::class,
+			'model'      => null,
 		] );
 	}
 }

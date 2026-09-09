@@ -14,7 +14,15 @@ class AutomationFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$model = AutomationModel::create();
+		$model = $options['model'] ?? null;
+
+		if ( ! isset( $model ) ) {
+			$model = AutomationModel::create();
+		}
+
+		if ( ! $model instanceof AutomationModel ) {
+			throw new \InvalidArgumentException( 'The "model" option must be an instance of AutomationModel.' );
+		}
 
 		$builder
 			->add( 'name', TextType::class, [
@@ -64,6 +72,7 @@ class AutomationFormType extends AbstractType
 	{
 		$resolver->setDefaults( [
 			'data_class' => Automation::class,
+			'model'      => null,
 		] );
 	}
 }
