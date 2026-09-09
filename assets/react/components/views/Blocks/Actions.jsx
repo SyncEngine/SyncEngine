@@ -310,14 +310,14 @@ export default function Actions( props ) {
 	if ( dropdownElements.length ) {
 		const trigger = dropdownTrigger
 			? dropdownTrigger
-			: <Icon icon="toolbar-menu" />;
+			: null;
 
 		actionElements.push(
 			<DropdownButton
+				key="dropdown"
+				flip={ true }
 				title={ trigger }
 				variant={ dropdownVariant.startsWith( 'outline-' ) ? dropdownVariant : 'outline-' + dropdownVariant }
-				className={ subtle ? 'btn-subtle' : '' }
-				key="dropdown"
 			>
 				{ dropdownElements }
 			</DropdownButton>
@@ -336,7 +336,7 @@ export default function Actions( props ) {
 			actionElements = (
 				<ButtonGroup>
 					{ primary }
-					<DropdownButton title="" as={ButtonGroup} variant={ 'outline-secondary' } placement="left">
+					<DropdownButton title="" as={ButtonGroup} variant={ 'outline-secondary' } placement="left" flip={ true }>
 						{ actionElements }
 					</DropdownButton>
 				</ButtonGroup>
