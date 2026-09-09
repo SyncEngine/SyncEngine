@@ -27,6 +27,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data {
 		getData as getDataDefault;
+		setData as private setDataDefault;
 	}
 	use Tags;
 	use Supervisor;
@@ -66,8 +67,6 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public function isDataEditable(): bool
 	{
-		// @todo Think of a mechanism where blueprints can block data setters.
-
 		$supervisor = $this->getSupervisor();
 		if ( $supervisor instanceof AbstractStorageBlueprint ) {
 			return $supervisor->isDataEditable();
@@ -88,6 +87,15 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		}
 		$this->setConfig( $type, 'type' );
 		$this->entity->setType( $type );
+	}
+
+	public function setData( $value, $key = null ): void
+	{
+		if ( ! $this->isDataEditable() ) {
+			throw new \RuntimeException( 'Data is not editable for this storage.' );
+		}
+
+		$this->setDataDefault( $value, $key );
 	}
 
 	/**
