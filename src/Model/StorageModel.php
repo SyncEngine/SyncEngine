@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SyncEngine\Blueprint\AbstractStorageBlueprint;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
@@ -61,6 +62,18 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	public static function addType( $type, $label ): void
 	{
 		self::$_TYPES[ $type ] = $label;
+	}
+
+	public function isDataEditable(): bool
+	{
+		// @todo Think of a mechanism where blueprints can block data setters.
+
+		$supervisor = $this->getSupervisor();
+		if ( $supervisor instanceof AbstractStorageBlueprint ) {
+			return $supervisor->isDataEditable();
+		}
+
+		return true;
 	}
 
 	public function isRaw(): bool

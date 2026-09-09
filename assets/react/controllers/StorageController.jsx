@@ -9,7 +9,12 @@ export default function StorageController( props ) {
 		value,
 		element,
 		onChange,
+		args,
 	} = props;
+
+	const {
+		editable = true,
+	} = args;
 
 	const [ config, setConfig ] = useState( null );
 
@@ -32,7 +37,7 @@ export default function StorageController( props ) {
 	}, [ element, setConfig ] );
 
 	if ( config ) {
-		return ( <Dataset value={ value } onChange={ update } type={ config.type } storageConfig={ config } /> );
+		return ( <Dataset value={ value } onChange={ update } type={ config.type } storageConfig={ config } editable={ editable } /> );
 	}
 }
 

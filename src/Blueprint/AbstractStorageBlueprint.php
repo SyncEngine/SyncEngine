@@ -16,6 +16,11 @@ abstract class AbstractStorageBlueprint extends BlueprintModel
 		$this->entity = StorageModel::getModelName();
 	}
 
+	public function isDataEditable(): bool
+	{
+		return true;
+	}
+
 	public function beforeUpdate(): void
 	{
 		$model = $this->getSupervisable();
