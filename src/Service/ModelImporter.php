@@ -123,6 +123,13 @@ class ModelImporter
 				continue;
 			}
 
+			// Map property names to match entity methods.
+			$property = match( $property ) {
+				'created', 'created_at' => 'createdAt',
+				'modified', 'modified_at', 'updated', 'updated_at' => 'updatedAt',
+				default => $property,
+			};
+
 			$setter = 'set' . ucfirst( $property );
 
 			if ( method_exists( $entity, $setter ) || method_exists( $model, $setter ) ) {
