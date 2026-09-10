@@ -30,7 +30,7 @@ function getConfig( item ) {
 	if ( 'function' === typeof config ) {
 		config = config();
 	}
-	return ( 'object' === config ) ? deepClone( config ) : {};
+	return ( 'object' === typeof config ) ? deepClone( config ) : {};
 }
 
 export default function PreviewModal( props ) {
