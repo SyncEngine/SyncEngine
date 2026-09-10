@@ -89,6 +89,14 @@ class SystemController extends AbstractAdminController
 								],
 							],
 							[
+								'icon' => 'support',
+								'text' => 'Support',
+								'link' => [
+									'url' => 'https://syncengine.io/support',
+									'target' => '_blank',
+								],
+							],
+							[
 								'icon' => 'github',
 								'text' => 'GitHub',
 								'link' => [
