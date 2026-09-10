@@ -115,7 +115,7 @@ export default function StepNode( props ) {
 			configAction.preview = {
 				type: 'step',
 				title: t( 'Step #{number}', { number: nodeIndex + 1 } ),
-				item: () => data,
+				item: () => ( { id: selectedEntity, ...config } ),
 				scope: scope,
 				onParse: ( params ) => {
 					return {
