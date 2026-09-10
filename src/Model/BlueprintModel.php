@@ -349,7 +349,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getIcon(): string
 	{
-		return $this->icon ?: ( $this->isFromModule() ? $this->getModule()->getIcon() : '' );
+		return $this->icon ?: $this->getModule()?->getIcon() ?: '';
 	}
 
 	final public function getName(): string
@@ -374,7 +374,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 
 		if ( $supervisable::getModelName() !== $this->getEntity() ) {
-			throw new InvalidParameterException( 'Incorrect Model Entity' );
+			if ( $this->getParameter( 'kernel.debug', false ) ) {
+				throw new InvalidParameterException( 'Incorrect Model Entity: ' . $supervisable::getModelName() . ' != ' . $this->getEntity() . ' (blueprint: ' . $this->getName() . ')' );
+			} else {
+				throw new InvalidParameterException( 'Incorrect Model Entity' );
+			}
 		}
 
 		$this->supervisable = $supervisable;
