@@ -1,5 +1,36 @@
 import React from 'react';
-import { isObject } from './conditions';
+import { isEmptyConfigValue, isObject } from './conditions';
+
+/**
+ * Remove all empty config values form a config object.
+ * @param value
+ * @returns {{}|*}
+ */
+function removeEmptyConfigValues( value ) {
+	if ( Array.isArray( value ) ) {
+		const result = value
+			.map( removeEmptyConfigValues )
+			.filter( value => ! isEmptyConfigValue( value ) );
+
+		return result;
+	}
+
+	if ( null !== value && 'object' === typeof value ) {
+		const result = {};
+
+		for ( const [ key, value ] of Object.entries( value ) ) {
+			const cleanedValue = removeEmptyConfigValues( value );
+
+			if ( ! isEmptyConfigValue( cleanedValue ) ) {
+				result[ key ] = cleanedValue;
+			}
+		}
+
+		return result;
+	}
+
+	return value;
+}
 
 /**
  * Create a new object and remove all old references.
@@ -406,6 +437,7 @@ function mapSortBy( list, key, desc = false ) {
 }
 
 export {
+	removeEmptyConfigValues,
 	deepClone,
 	objectToMappable,
 	objectKeyToProp,
@@ -421,5 +453,5 @@ export {
 	mapFind,
 	mapFilter,
 	mapGroupBy,
-	mapSortBy
-}
+	mapSortBy,
+};
