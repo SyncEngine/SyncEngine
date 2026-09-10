@@ -26,8 +26,8 @@ use SyncEngine\Structure\Data\SchemaData;
 class StorageModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data {
-		getData as private _getData;
-		setData as private _setData;
+		getData as public _getData;
+		setData as public _setData;
 	}
 	use Tags;
 	use Supervisor;
@@ -92,6 +92,8 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	public function setData( $value, $key = null ): void
 	{
 		if ( ! $this->isDataEditable() ) {
+			// Blueprints can use _setData() directly for automated management of data,
+			// but external code should not be able to modify the data directly.
 			throw new \RuntimeException( 'Data is not editable for this storage.' );
 		}
 
