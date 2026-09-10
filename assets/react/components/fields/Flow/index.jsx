@@ -369,7 +369,7 @@ function Flow( props ) {
 						y: clientY,
 					} ),
 					origin: [ 0.5, 0.0 ],
-				}, { data: { entity: entity } } );
+				}, nodeDefaults );
 
 				const sourceNodeId = connectionState.fromNode.id;
 
