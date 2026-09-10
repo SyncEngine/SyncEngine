@@ -183,10 +183,13 @@ class MessengerManager implements EventSubscriberInterface
 
 		if ( $this->workerLimit > $this->workerRegistry->getWorkerCount( $transports ) ) {
 
+			$commandInstance = $this->system->getCommand( 'messenger:consume' );
+			$commandDefinition = $commandInstance->getDefinition();
+
 			/**
 			 * @see ConsumeMessagesCommand
 			 */
-			$command = [ 'messenger:consume' ];
+			$command = [ $commandInstance->getName() ];
 
 			foreach ( (array) $transports as $transport ) {
 				$command[] = $transport;
@@ -194,7 +197,11 @@ class MessengerManager implements EventSubscriberInterface
 
 			$options = $this->getCommandOptions();
 			foreach ( $options as $name => $value ) {
-				$command[] = '--' . $name . '=' . $value;
+				if ( $commandDefinition->hasOption( $name ) ) {
+					$command[] = '--' . $name . '=' . $value;
+				} else {
+					// @todo Log warning about unknown option.
+				}
 			}
 
 			$this->callCommand( $command );
@@ -265,7 +272,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onExecuteEvent(): void
 	{
-		static $debounce = 0, $file = null, $fs = null;
+		static $debounce = 0, $file = [], $fs = null;
 
 		$time = time();
 		$pid  = getmypid();
@@ -274,16 +281,16 @@ class MessengerManager implements EventSubscriberInterface
 			return;
 		}
 
-		if ( ! $file ) {
+		if ( ! isset( $file[ $pid ] ) ) {
 			$fs   = new Filesystem();
-			$file = $this->workerRegistry->getPingFilePath( $pid );
+			$file[ $pid ] = $this->workerRegistry->getPingFilePath( $pid );
 		}
 
-		if ( ! $fs->exists( $file ) ) {
-			$fs->touch( $file );
+		if ( ! $fs->exists( $file[ $pid ] ) ) {
+			$fs->touch( $file[ $pid ] );
 		}
 
-		$fs->dumpFile( $file, time() );
+		$fs->dumpFile( $file[ $pid ], time() );
 
 		$debounce = $time;
 	}
