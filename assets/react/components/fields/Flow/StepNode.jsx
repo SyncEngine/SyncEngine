@@ -18,7 +18,7 @@ import Icon from '../../partials/Icon';
 import { parseId } from '../../../utils/globals';
 import { deepClone, mapGetIndex, removeEmptyConfigValues } from '../../../utils/data';
 import { HStack } from '../../partials/Stack';
-import { isConfigured } from '../../../utils/conditions';
+import { isConfigured, isEqual } from '../../../utils/conditions';
 
 
 export default function StepNode( props ) {
@@ -41,7 +41,6 @@ export default function StepNode( props ) {
 	const entityCallbacks = _FlowContext?.entityCallbacks;
 
 	const { getNodes, getEdges } = useReactFlow();
-	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
 	const [ selectedEntity, setSelectedEntity ] = useState( data[ entity ] );
 	const [ config, setConfig ] = useState( removeEmptyConfigValues( deepClone( data.config ?? {} ) ) );
 	const [ showSelector, setShowSelector ] = useState( false );
@@ -54,10 +53,17 @@ export default function StepNode( props ) {
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;
 		delete newValue.id;
-		// @todo only set if actually changed?
-		setConfig( newValue );
-		onChange( props.id, { [ entity ]: entityId, config: removeEmptyConfigValues( deepClone( newValue ) ) } );
 		setSelectedEntity( entityId );
+
+		setConfig( newValue );
+		const parsedConfig = removeEmptyConfigValues( deepClone( newValue ) );
+
+		if ( entityId === data[ entity ] && isEqual( parsedConfig, data.config ) ) {
+			// Skip upstream update if nothing changed.
+			return;
+		}
+
+		onChange( props.id, { [ entity ]: entityId, config: parsedConfig } );
 	}, [ onChange, data, entity ] );
 
 	const handleConfigUpdate = useCallback( newValue => {
