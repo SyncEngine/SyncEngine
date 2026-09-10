@@ -112,12 +112,12 @@ class FieldCollection extends AbstractCollection
 				}
 				foreach ( $changes as $key => $change ) {
 					$field[ $key ] = $change;
+				}
 
-					if ( $recursive ) {
-						foreach ( $field as $value ) {
-							if ( $value instanceof FieldCollection ) {
-								$value->bulkEdit( $changes, $conditions, $recursive );
-							}
+				if ( $recursive ) {
+					foreach ( $field as $value ) {
+						if ( $value instanceof FieldCollection ) {
+							$value->bulkEdit( $changes, $conditions, $recursive );
 						}
 					}
 				}
