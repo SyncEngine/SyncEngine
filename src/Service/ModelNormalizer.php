@@ -131,7 +131,15 @@ class ModelNormalizer
 			if ( is_iterable( $value ) ) {
 				$value = ResourceData::create( $value )->normalize();
 			} elseif ( $value instanceof Normalizable ) {
-				$value = $value->normalize();
+				if ( $value instanceof EntityModel ) {
+					if ( $includeDependencies ) {
+						$value = $value->normalize( $includeDependencies, $includeDependents );
+					} else {
+						$value = $value->getId();
+					}
+				} else {
+					$value = $value->normalize();
+				}
 			}
 
 			$data[ $name ] = $value;
