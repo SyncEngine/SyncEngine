@@ -318,7 +318,7 @@ function isConfigured( value, compare = null ) {
 		if ( isSet( value ) && isSet( compare ) ) {
 			return ! isEqual( value, compare );
 		}
-		return ! isEmpty( value );
+		return ! isEmptyConfigValue( value );
 	}
 
 	if ( Array.isArray( value ) ) {
@@ -345,6 +345,29 @@ function isConfigured( value, compare = null ) {
 		}
 	}
 	return false;
+}
+
+function isEmptyConfigValue( value ) {
+	switch ( typeof value ) {
+		case 'string':
+			return '' === value;
+		case 'boolean':
+		case 'number':
+		case 'bigint':
+			return false;
+		case 'object':
+			if ( null === value ) {
+				return true;
+			} else if ( Array.isArray( value ) ) {
+				return value.every( isEmptyConfigValue );
+			}
+			return Object.values( value ).every( isEmptyConfigValue );
+		case 'function':
+		case 'symbol':
+		case 'undefined':
+		default:
+			return true;
+	}
 }
 
 function isEmpty( value ) {
@@ -589,6 +612,7 @@ export {
 	startsWith,
 	endsWith,
 	isConfigured,
+	isEmptyConfigValue,
 	isEmpty,
 	isSet,
 	isValue,
