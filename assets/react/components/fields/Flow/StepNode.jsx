@@ -16,7 +16,7 @@ import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 
 import { parseId } from '../../../utils/globals';
-import { deepClone, mapGetIndex } from '../../../utils/data';
+import { deepClone, mapGetIndex, removeEmptyConfigValues } from '../../../utils/data';
 import { HStack } from '../../partials/Stack';
 import { isConfigured } from '../../../utils/conditions';
 
@@ -43,6 +43,7 @@ export default function StepNode( props ) {
 	const { getNodes, getEdges } = useReactFlow();
 	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
 	const [ selectedEntity, setSelectedEntity ] = useState( data[ entity ] );
+	const [ config, setConfig ] = useState( removeEmptyConfigValues( deepClone( data.config ?? {} ) ) );
 	const [ showSelector, setShowSelector ] = useState( false );
 	const tagsContext = useContext( TagsContext );
 
@@ -54,7 +55,8 @@ export default function StepNode( props ) {
 		const entityId = newValue.id;
 		delete newValue.id;
 		// @todo only set if actually changed?
-		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
+		setConfig( newValue );
+		onChange( props.id, { [ entity ]: entityId, config: removeEmptyConfigValues( deepClone( newValue ) ) } );
 		setSelectedEntity( entityId );
 	}, [ onChange, data, entity ] );
 
@@ -63,8 +65,8 @@ export default function StepNode( props ) {
 	}, [ handleChange, data, entity ] );
 
 	const handleSet = useCallback( ( entityId ) => {
-		handleChange( { id: parseId( entityId ), ...( data.config ?? {} ) } );
-	}, [ handleChange, data ] )
+		handleChange( { id: parseId( entityId ), ...( config ?? {} ) } );
+	}, [ handleChange, config ] )
 
 	const nodes = getNodes().filter( node => node.type !== 'input' );
 	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
@@ -109,7 +111,7 @@ export default function StepNode( props ) {
 	} else {
 		const configAction = {
 			action: 'config',
-			icon: isConfigured( data.config ) ? 'configured' : 'config',
+			icon: isConfigured( config ) ? 'configured' : 'config',
 		};
 		if ( preview ) {
 			configAction.preview = {
@@ -174,7 +176,7 @@ export default function StepNode( props ) {
 							<Entity
 								className="nodrag"
 								entity={ entity }
-								value={ { id: selectedEntity, ...( data.config ?? {} ), } }
+								value={ { id: selectedEntity, ...config } }
 								query={ false }
 								choices={ _FlowContext?.entities ?? {} }
 								selectable={ false }
