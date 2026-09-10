@@ -10,7 +10,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { objectToMappable } from '../../../utils/data';
 import Info from '../../views/Blocks/Info';
 
-export default function RoutineSelectorModal( props ) {
+export default function EntitySelectorModal( props ) {
 	const { t } = useTranslation();
 	const {
 		onSelect,
@@ -28,9 +28,9 @@ export default function RoutineSelectorModal( props ) {
 		if ( onClose ) onClose();
 	};
 
-	const handleSelect = ( entity ) => {
+	const handleSelect = ( item ) => {
 		setOpen( false );
-		if ( onSelect ) onSelect( entity );
+		if ( onSelect ) onSelect( item );
 	};
 
 	const filteredEntities = entities && objectToMappable( entities ).filter( r =>
@@ -66,7 +66,7 @@ export default function RoutineSelectorModal( props ) {
 									action
 									//variant={ entity }
 									className="w-100 text-start mb-1"
-									onClick={ () => handleSelect( entity ) }
+									onClick={ () => handleSelect( item ) }
 								>
 									<Info item={ item } icon={ item.icon } />
 								</ListGroup.Item>
@@ -84,7 +84,7 @@ export default function RoutineSelectorModal( props ) {
 	);
 }
 
-RoutineSelectorModal.propTypes = {
+EntitySelectorModal.propTypes = {
 	onSelect: PropTypes.func,
 	onClose: PropTypes.func,
 };
