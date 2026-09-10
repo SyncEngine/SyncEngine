@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Command\Tmp;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +20,7 @@ use SyncEngine\Controller\DefaultController;
 class FixDateColumnNamesCommand extends Command
 {
 	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
-	public function __construct( private DefaultController $controller )
+	public function __construct( private EntityManagerInterface $entityManager )
 	{
 		parent::__construct();
 	}
@@ -33,32 +34,31 @@ class FixDateColumnNamesCommand extends Command
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
+		$connection = $this->entityManager->getConnection();
+
 		try {
 			$rollback = $input->getOption( 'rollback' );
 
 			if ( $rollback ) {
 				$output->writeln( '<comment>Rolling back changes...</comment>' );
-				$em = $this->controller::getEntityManager();
 
 				foreach ( [ 'trace', 'connection', 'automation', 'flow', 'routine', 'storage' ] as $entity ) {
-					$em->getConnection()->executeStatement('ALTER TABLE '.$entity.' CHANGE `created_at` `created` LONGTEXT NOT NULL');
-					$em->getConnection()->executeStatement('ALTER TABLE '.$entity.' CHANGE `updated_at` `modified` LONGTEXT NOT NULL');
+					$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `created_at` `created` LONGTEXT NOT NULL');
+					$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `updated_at` `modified` LONGTEXT NOT NULL');
 				}
 
-				$em->getConnection()->executeStatement('ALTER TABLE api_token CHANGE `expires_at` `expires` LONGTEXT NOT NULL');
+				$connection->executeStatement('ALTER TABLE api_token CHANGE `expires_at` `expires` LONGTEXT NOT NULL');
 
 				$output->writeln( '<info>Rollback completed successfully.</info>' );
 				return Command::SUCCESS;
 			}
 
-			$em = $this->controller::getEntityManager();
-
 			foreach ( [ 'trace', 'connection', 'automation', 'flow', 'routine', 'storage' ] as $entity ) {
-				$em->getConnection()->executeStatement('ALTER TABLE '.$entity.' CHANGE `created` `created_at` LONGTEXT NOT NULL');
-				$em->getConnection()->executeStatement('ALTER TABLE '.$entity.' CHANGE `modified` `updated_at` LONGTEXT NOT NULL');
+				$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `created` `created_at` LONGTEXT NOT NULL');
+				$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `modified` `updated_at` LONGTEXT NOT NULL');
 			}
 
-			$em->getConnection()->executeStatement('ALTER TABLE api_token CHANGE `expires` `expires_at` LONGTEXT NOT NULL');
+			$connection->executeStatement('ALTER TABLE api_token CHANGE `expires` `expires_at` LONGTEXT NOT NULL');
 
 		} catch (\Exception $e) {
 			$output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
