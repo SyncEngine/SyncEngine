@@ -26,9 +26,11 @@
 							<td class="col-name">{{ user.name ?: '-' }}</td>
 							<td class="col-roles">
 								{% set userRoles = user.roles %}
+								<div class="d-flex flex-wrap gap-1">
 								{% for role in userRoles %}
-									<span class="badge text-bg-secondary me-1">{{ role }}</span>
+									<span class="badge bg-secondary-subtle text-secondary-emphasis">{{ role|replace({'ROLE_': ''})|lower|capitalize }}</span>
 								{% endfor %}
+								</div>
 							</td>
 							<td class="col-actions text-end">
 								<div class="d-flex justify-content-end gap-1">
