@@ -68,6 +68,9 @@ class StorageFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'react',
 					'data-type'       => 'storage',
+					'data-args'       => json_encode( [
+						'editable' => $model->isDataEditable()
+					] ),
 				]
 			] );
 	}
