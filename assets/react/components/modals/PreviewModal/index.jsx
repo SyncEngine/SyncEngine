@@ -117,9 +117,11 @@ export default function PreviewModal( props ) {
 		params.requestQuery = previewRequestQuery;
 		params.variables = variables;
 
+		const configCopy = deepClone( config );
+
 		params.type = type;
-		params.config = config;
-		params.ref = config._ref ?? entity.ref ?? '';
+		params.config = configCopy;
+		params.ref = configCopy._ref ?? entity.ref ?? '';
 
 		if ( isFunction( props.onParse ) ) {
 			params = props.onParse( params );
