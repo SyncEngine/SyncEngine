@@ -1,32 +1,32 @@
 import React from 'react';
-import { isEmptyConfigValue, isObject } from './conditions';
+import { isEmptyConfigValue, isObject, isArray } from './conditions';
 
 /**
- * Remove all empty config values form a config object.
+ * Remove all empty config values form a config object whilst keeping references intact.
  * @param value
  * @returns {{}|*}
  */
 function removeEmptyConfigValues( value ) {
-	if ( Array.isArray( value ) ) {
-		const result = value
-			.map( removeEmptyConfigValues )
-			.filter( value => ! isEmptyConfigValue( value ) );
+	if ( isArray( value ) ) {
+		for ( let i = value.length - 1; i >= 0; i-- ) {
+			removeEmptyConfigValues( value[ i ] );
 
-		return result;
-	}
-
-	if ( null !== value && 'object' === typeof value ) {
-		const result = {};
-
-		for ( const [ key, value ] of Object.entries( value ) ) {
-			const cleanedValue = removeEmptyConfigValues( value );
-
-			if ( ! isEmptyConfigValue( cleanedValue ) ) {
-				result[ key ] = cleanedValue;
+			if ( isEmptyConfigValue( value[ i ] ) ) {
+				value.splice( i, 1 );
 			}
 		}
 
-		return result;
+		return value;
+	}
+
+	if ( isObject( value ) ) {
+		for ( const [ key, val ] of Object.entries( value ) ) {
+			removeEmptyConfigValues( val );
+
+			if ( isEmptyConfigValue( val ) ) {
+				delete value[ key ];
+			}
+		}
 	}
 
 	return value;
