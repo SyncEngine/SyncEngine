@@ -1,0 +1,935 @@
+'Column definitions': 'Визначення стовпців'
+'Extend column definitions': 'Розширити визначення стовпців'
+'Configure custom column types for each field.': 'Налаштувати власні типи стовпців для кожного поля.'
+'Comma Separated Values': 'Значення, розділені комами'
+'FormData encoded string': 'Рядок, закодований FormData'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'URL-кодований рядок'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Адреса
+'Address column': 'Стовпець адреси'
+Strict: Суворий
+'Address columns': 'Стовпці адреси'
+'Country (Code)': 'Країна (Код)'
+'Column name for: {field}': 'Назва стовпця для: {field}'
+'Administrative Area / Province / State': 'Адміністративний район / Провінція / Штат'
+'Locality / City': 'Населений пункт / Місто'
+'Dependent Locality': 'Залежний населений пункт'
+'Postal / ZIP Code': 'Поштовий індекс'
+'Sorting Code': 'Сортувальний код'
+'Address Line 1': 'Рядок адреси 1'
+'Address Line 2': 'Рядок адреси 2'
+'Address Line 3': 'Рядок адреси 3'
+Locale: Locale
+Organization: Організація
+'Given Name': "Ім'я"
+'Additional Name': "Додаткове ім'я"
+'Family Name': 'Прізвище'
+Boolean: Boolean
+'Format as true or false': 'Форматувати як true або false'
+Format: Формат
+Integer: Ціле число
+'Custom text': 'Власний текст'
+'Custom number': 'Власне число'
+'True value': 'Значення true'
+'False value': 'Значення false'
+'Fallback value': 'Запасне значення'
+'Null / Empty': 'Null / Порожній'
+Custom: Власний
+'Fallback custom value': 'Власне запасне значення'
+'Yes': 'Так'
+'No': 'Ні'
+Collection: Колекція
+'A collection of a column type': 'Колекція типу стовпця'
+Associative: Асоціативний
+'Column Type': 'Тип стовпця'
+Key/Name: Ключ/Назва
+Currency: Валюта
+'Currency column for money/price based values': 'Стовпець валюти для значень на основі грошей/цін'
+'Currency sign': 'Знак валюти'
+'Add space between currency sign and value?': 'Додати проміжок між знаком валюти та значенням?'
+'Put currency sign after value?': 'Розмістити знак валюти після значення?'
+Date: Дата
+'General date and time column': 'Загальний стовпець дати та часу'
+Unchanged: Без змін
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Порожній рядок'
+'Current timestamp as format': 'Поточний timestamp як формат'
+'Please check PHP date documentation': 'Будь ласка, перевірте документацію з дат PHP'
+Timezone: Часовий пояс
+'Please check PHP DateTimeZone documentation': 'Будь ласка, перевірте документацію PHP DateTimeZone'
+'Empty value': 'Порожнє значення'
+Duration: Тривалість
+'General duration column': 'Загальний стовпець тривалості'
+'Please check PHP DateInterval documentation': 'Будь ласка, перевірте документацію PHP DateInterval'
+Email: Email
+'Email column': 'Стовпець email'
+'Validation mode': 'Режим валідації'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Забезпечує, що email-адреса дуже суворо дотримується стандартів RFC. Наприклад, не дозволяє IP-адреси в частині домену.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Дотримується правил введення HTML5, які є дещо ліберальнішими за суворі стандарти RFC.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Подібно до HTML5, але також дозволяє email-адреси без TLD (наприклад, user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Fallback
+'Fallback value if it is an invalid email address.': 'Запасне значення, якщо це недійсна email-адреса.'
+Enumeration: Перелік
+'Predefined select options': 'Попередньо визначені опції вибору'
+Options: Опції
+Value: Значення
+Label: Мітка
+'Numeric options': 'Числові опції'
+None: Немає
+'Use column for type hinting': 'Використати стовпець для type hinting'
+Soft: "М'який"
+'Use fallback for invalid values': 'Використати fallback для недійсних значень'
+'Throw error on invalid values': 'Викинути помилку на недійсних значеннях'
+'Set the fallback value in case it is empty.': 'Встановити запасне значення, якщо воно порожнє.'
+'Will also be used as fallback in soft mode.': "Також використовуватиметься як fallback у м'якому режимі."
+'Parse before validation': 'Парсити перед валідацією'
+'Trim text': 'Обрізати текст'
+'Convert case': 'Конвертувати регістр'
+'Capitalize first': 'Велика перша літера'
+'Capitalize Words': 'Великі літери у словах'
+lowercase: lowercase
+UPPERCASE: ВЕЛИКІ_ЛІТЕРИ
+'Invalid enum config': 'Недійсна конфігурація enum'
+'Invalid value for enum: {formatted}': 'Недійсне значення для enum: {formatted}'
+Number: Число
+'Numeric column': 'Числовий стовпець'
+Type: Тип
+'A raw number can be used for calculations and number storage.': 'Сире число можна використовувати для обчислень та зберігання чисел.'
+'A formatted number can be used for display.': 'Форматоване число можна використовувати для відображення.'
+'Raw number': 'Сире число'
+'Format to a number type.': 'Форматувати до числового типу.'
+Formatted: Форматовано
+'Format to a numeric string.': 'Форматувати до числового рядка.'
+Rounding: Округлення
+'Round halves up': 'Округлювати половини вгору'
+'Round halves down': 'Округлювати половини вниз'
+'Round halves to even numbers': 'Округлювати половини до парних чисел'
+'Round halves to odd numbers': 'Округлювати половини до непарних чисел'
+Decimals: Десяткові
+'Trim trailing zeros (0)': 'Видалити кінцеві нулі (0)'
+'Decimal separator': 'Десятковий роздільник'
+'Thousands separator': 'Роздільник тисяч'
+none: немає
+space: пробіл
+Schema: Schema
+'Schema definitions column': 'Стовпець визначень schema'
+'Schema source': 'Джерело schema'
+Manual: Ручний
+Storage: Зберігання
+'Schema storage': 'Зберігання schema'
+'Configure column types for each field.': 'Налаштувати типи стовпців для кожного поля.'
+Slug: Slug
+'Format as a slug': 'Форматувати як slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: ВЕЛИКІ_ЛІТЕРИ_ПІДКРЕСЛЕННЯ
+Case: Випадок
+'camel Style': 'стиль camel'
+'Word separator': 'Роздільник слів'
+dash: дефіс
+underscore: підкреслення
+Text: Текст
+'General text column': 'Загальний стовпець тексту'
+'Limit length?': 'Обмежити довжину?'
+Max: Макс
+Unit: Одиниця
+Characters: Символи
+Words: Слова
+'Access denied.': 'Доступ заборонено.'
+'Invalid request method.': 'Недійсний метод запиту.'
+'Entity not found': 'Сутність не знайдено'
+'Action not supported: {action}': 'Дія не підтримується: {action}'
+Update: Оновити
+Create: Створити
+Account: Обліковий запис
+'Edit account': 'Редагувати обліковий запис'
+'Edit user account': 'Редагувати обліковий запис користувача'
+Preferences: Налаштування
+'Edit preferences': 'Редагувати налаштування'
+'API tokens': 'Токени API'
+'Manage API tokens': 'Керувати токенами API'
+'Two-factor authentication': 'Двофакторна автентифікація'
+'2FA is active for your account': '2FA активний для вашого облікового запису'
+'Protect your account with a verification code': 'Захистіть свій обліковий запис кодом верифікації'
+Disable: Вимкнути
+Enable: Увімкнути
+'Account updated successfully.': 'Обліковий запис оновлено.'
+Edit: Редагувати
+'Preferences updated successfully.': 'Налаштування оновлено.'
+'Access tokens': 'Токени доступу'
+'API Tokens': 'Токени API'
+'Create API token': 'Створити токен API'
+'Edit API token': 'Редагувати токен API'
+'Enable two-factor authentication': 'Увімкнути двофакторну автентифікацію'
+'Enable 2FA': 'Увімкнути 2FA'
+'Invalid form submission. Please try again.': 'Недійсна відправка форми. Будь ласка, спробуйте ще раз.'
+'The verification code you entered is invalid.': 'Введений код верифікації є недійсним.'
+'Two-factor authentication has been enabled.': 'Двофакторна автентифікація увімкнена.'
+'Could not send verification email. Please try again.': 'Не вдалося надіслати email для верифікації. Будь ласка, спробуйте ще раз.'
+'Verify your email': 'Верифікувати свій email'
+'Verify Email': 'Верифікувати email'
+'Disable two-factor authentication': 'Вимкнути двофакторну автентифікацію'
+'Disable 2FA': 'Вимкнути 2FA'
+'Invalid password.': 'Недійсний пароль.'
+'Two-factor authentication has been disabled.': 'Двофакторна автентифікація вимкнена.'
+Automations: Автоматизації
+'Successfully created automation!': 'Автоматизацію створено!'
+'New automation': 'Нова автоматизація'
+'Successfully edited automation!': 'Автоматизацію відредаговано!'
+'Edit automation': 'Редагувати автоматизацію'
+Connections: "З'єднання"
+'Successfully created connection!': "З'єднання створено!"
+'New connection': "Нове з'єднання"
+'Successfully edited connection!': "З'єднання відредаговано!"
+'Edit connection': "Редагувати з'єднання"
+Flows: Workflows
+'Successfully created flow!': 'Workflow створено!'
+'New flow': 'Новий workflow'
+'Successfully edited flow!': 'Workflow відредаговано!'
+'Edit flow': 'Редагувати workflow'
+'Connection required': "Потрібне з'єднання"
+'Connection not found': "З'єднання не знайдено"
+'Webservice not found': 'Webservice не знайдено'
+Modules: Модулі
+'Please upload a valid ZIP file': 'Завантажте дійсний ZIP-файл'
+Upload: Завантажити
+'Unable to refresh system cache after module upload.': 'Не вдалося оновити кеш системи після завантаження модуля.'
+'Install unsuccessful': 'Встановлення не вдалося'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Не вдається видалити {moduleName}. Він досі використовується у вашій системі'
+'Uninstall unsuccessful': 'Видалення не вдалося'
+'Unable to refresh system cache after module uninstall.': 'Не вдалося оновити кеш системи після видалення модуля.'
+'{moduleName} successfully uninstalled': '{moduleName} видалено'
+'Invalid module package: {moduleName}': 'Недійсний пакет модуля: {moduleName}'
+'Disabled manually': 'Вимкнено вручну'
+'Unable to refresh system cache after module disable.': 'Не вдалося оновити кеш системи після вимкнення модуля.'
+'{moduleName} disabled': '{moduleName} вимкнено'
+'Unable to disable {moduleName}.': 'Не вдається вимкнути {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Не вдалося оновити кеш системи після увімкнення модуля.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Не вдається увімкнути {moduleName}. Він був знову вимкнений під час відновлення кешу.'
+'{moduleName} enabled': '{moduleName} увімкнено'
+'Cannot move file': 'Неможливо перемістити файл'
+'Could not find module in zip file': 'Не знайдено модуля у zip-файлі'
+'Could not parse module namespace': 'Не вдалося проаналізувати namespace модуля'
+'Cannot unzip file!': 'Неможливо розпакувати файл!'
+'Cant delete temp folder': 'Не вдається видалити тимчасову папку'
+Configuration: Конфігурація
+'Configure manager to optimize SyncEngine for your server.': 'Налаштуйте manager для оптимізації SyncEngine для вашого сервера.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Автоматичний запуск workerів async у фоновому режимі для обробки автоматизацій.'
+Enabled: Увімкнено
+'Cannot enable manager': 'Неможливо увімкнути manager'
+Disabled: Вимкнено
+'The manager is controlled by a cronjob.': 'Manager контролюється cronjob.'
+External: Зовнішній
+'The manager is controlled externally.': 'Manager контролюється зовнішньо.'
+'Queue size:': 'Розмір черги:'
+'Active workers:': 'Активні workerи:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Створено: {timestamp} | Ping: {ping}'
+Processes: Процеси
+System: Система
+Save: Зберегти
+'Invalid Manager': 'Недійсний Manager'
+'Configuration saved': 'Конфігурацію збережено'
+Routines: Рутини
+'Successfully created routine!': 'Рутину створено!'
+'New routine': 'Нова рутина'
+'Successfully edited routine!': 'Рутину відредаговано!'
+'Edit routine': 'Редагувати рутину'
+Storages: Зберігання
+'Successfully created storage!': 'Зберігання створено!'
+'New storage': 'Нове зберігання'
+'Successfully edited storage!': 'Зберігання відредаговано!'
+'Edit storage': 'Редагувати зберігання'
+'Clear cache': 'Очистити кеш'
+Environment: Середовище
+'Configure environment setup': 'Налаштувати налаштування середовища'
+Vault: Vault
+'Configure vault secrets': 'Налаштувати секрети vault'
+'Manage system processes': 'Керувати процесами системи'
+Import: Імпорт
+'Import JSON configs': 'Імпортувати конфігурації JSON'
+Info: Інформація
+'System information': 'Інформація про систему'
+Help: Допомога
+'JSON data': 'Дані JSON'
+'Format must be JSON.': 'Формат має бути JSON.'
+'Import successful': 'Імпорт успішний'
+Users: Користувачі
+'Successfully created user!': 'Користувача створено!'
+'Successfully edited user!': 'Користувача відредаговано!'
+'You cannot reset your own password.': 'Ви не можете скинути свій власний пароль.'
+'Password reset email sent successfully!': 'Email для скидання пароля надіслано!'
+'An error occurred while resetting the password.': 'Під час скидання пароля сталася помилка.'
+'You cannot delete your own account.': 'Ви не можете видалити свій власний обліковий запис.'
+'Successfully deleted user!': 'Користувача видалено!'
+'Endpoint not found: {value}': 'Endpoint не знайдено: {value}'
+'Automation is not enabled': 'Автоматизація не увімкнена'
+'Automation is already running': 'Автоматизація вже працює'
+'File not found': 'Файл не знайдено'
+'Scheduled processes are disabled.': 'Заплановані процеси вимкнено.'
+'Automation cannot accept a new request right now.': 'Автоматизація не може прийняти новий запит зараз.'
+'Entity type not found': 'Тип сутності не знайдено'
+'Entity deleted': 'Сутність видалено'
+'An error occurred while sending the password reset email.': 'Під час надсилання email для скидання пароля сталася помилка.'
+'Your password reset request': 'Ваш запит на скидання пароля'
+'No reset password token found in the URL or in the session.': 'Токен скидання пароля не знайдено в URL або сесії.'
+Install: Встановити
+'Unknown database error': 'Невідома помилка бази даних'
+'Could not repair database': 'Не вдалося відновити базу даних'
+'Unable to access this page!': 'Неможливо отримати доступ до цієї сторінки!'
+Register: Реєстрація
+Variables: Змінні
+'Define static variables to be used within the automation.': 'Визначте статичні змінні для використання всередині автоматизації.'
+Source: Джерело
+'Select the data source for this automation': 'Виберіть джерело даних для цієї автоматизації'
+Request: Запит
+'Extract data from the current request body.': 'Екстрагувати дані з поточного тіла запиту.'
+'Cannot be used with scheduled automations.': 'Не можна використовувати з запланованими автоматизаціями.'
+Retrieve: Отримати
+'Retrieve data from a webservice or other custom source.': 'Отримати дані з webservices або іншого джерела.'
+'Run automation in batches': 'Запустити автоматизацію партіями'
+'Batch method': 'Метод партії'
+'Batches are made remotely using retrieve parameters': 'Партії створюються віддалено за допомогою параметрів отримання'
+'Batches are created locally': 'Партії створюються локально'
+'Limit batch size': 'Обмежити розмір партії'
+'Limit the number of records to fetch/run at once.': 'Обмежити кількість записів для отримання/запуску одночасно.'
+Interval: Інтервал
+'Set an interval time between each batch.': 'Встановити час інтервалу між кожною партією.'
+Seconds: Секунди
+'Configure where to extract request data from.': 'Налаштувати, звідки екстрагувати дані запиту.'
+'Request param': 'Параметр запиту'
+'Define the param name to use as the data source.': 'Визначте назву параметра для використання як джерело даних.'
+'Leave empty to use the full request data.': 'Залиште порожнім, щоб використовувати всі дані запиту.'
+'Configure tasks to retrieve the data': 'Налаштувати завдання для отримання даних'
+'Define source schema structure.': 'Визначити структуру schema джерела.'
+'Predefined schema storage': 'Попередньо визначене зберігання schema'
+'Manual definitions': 'Ручні визначення'
+'Event handler on empty source': 'EventHandler на порожньому джерелі'
+Cancel: Скасувати
+Error: Помилка
+'Optionally trigger error when there is no data available from the source.': 'За бажанням викликати помилку, коли немає доступних даних з джерела.'
+Actions: Дії
+'The actions that need to be done with the source data.': 'Дії, які потрібно виконати з даними джерела.'
+Flow: Workflow
+Routine: Рутина
+Tasks: Завдання
+Events: Події
+'Select the behavior on various events in this automation.': 'Виберіть поведінку на різних подіях в цій автоматизації.'
+'On Cancel': 'При скасуванні'
+'Actions to execute when the automation is cancelled.': 'Дії для виконання, коли автоматизацію скасовано.'
+'On Error': 'При помилці'
+'Actions to execute when the automation fails.': 'Дії для виконання, коли автоматизація не вдається.'
+'On Success': 'При успіху'
+'Actions to execute when the automation completed successfully.': 'Дії для виконання, коли автоматизацію успішно завершено.'
+Response: Відповідь
+'What this automation should respond in case of a HTTP request.': 'Що ця автоматизація повинна відповідати у разі HTTP-запиту.'
+'Success status and data': 'Статус успіху та дані'
+'Data only': 'Тільки дані'
+'Success status only': 'Тільки статус успіху'
+'File Download': 'Завантаження файлу'
+'Download file selector': 'Селектор завантажуваного файлу'
+Execution: Виконання
+'Control how this automation is executed.': 'Керувати виконанням цієї автоматизації.'
+'Execution mode': 'Режим виконання'
+Single: Одиночний
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Тільки один запуск одночасно та блокує нові запити, поки запущено активний або запланований.'
+Parallel: Паралельний
+'Multiple simultaneous execution runs allowed': 'Дозволено кілька одночасних виконань'
+Queued: В черзі
+'Accepts new requests but executes only one run at a time.': 'Приймає нові запити, але виконує лише один запуск одночасно.'
+'Stale run timeout': 'Тайм-аут застарілого запуску'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Секунди без активності перед тим, як запуск вважається застарілим і автоматично скидається.'
+'Defaults to {default}.': 'За замовчуванням {default}.'
+'History traces retention limit': 'Ліміт зберігання слідів історії'
+'Configure execution history of this automation.': 'Налаштувати історію виконання цієї автоматизації.'
+'Maximum number of stored traces for this automation.': 'Максимальна кількість збережених слідів для цієї автоматизації.'
+'Leave empty to use the global default of {param}.': 'Залиште порожнім, щоб використовувати глобальне замовчування {param}.'
+Status: Статус
+Default: За замовчуванням
+Fixed: Фіксований
+Days: Дні
+Webservice: Webservice
+Trigger: Тригер
+Start: Запустити
+Stop: Зупинити
+Continue: Продовжити
+Success: Успіх
+Unknown: Не відомий
+Trashed: Смітник
+Visible: Видимий
+Hidden: Прихований
+Registered: Зареєстровано
+Scheduled: Заплановано
+Running: Працює
+Stopped: Зупинено
+Failed: Не вдалося
+Cancelled: Скасовано
+Dynamic: Динамічний
+Sequence: Послідовність
+'Add steps': 'Додати кроки'
+'Input data': 'Вхідні дані'
+'Input variables': 'Вхідні змінні'
+Conditions: Умови
+'Input schema': 'Вхідна schema'
+'Output schema': 'Вихідна schema'
+'Data type': 'Тип даних'
+Columns: Стовпці
+Key: Ключ
+Name: Назва
+'Field name key': 'Ключ назви поля'
+'By default it will fetch the index key unless the value is an array containing field information.': 'За замовчуванням отримає ключ індексу, якщо значення не є масивом з інформацією про поле.'
+'Field label key': 'Ключ мітки поля'
+'Used in case the value is an array containing field information.': 'Використовується, якщо значення є масивом з інформацією про поле.'
+'Schema storages': 'Зберігання schema'
+'From source schema': 'З schema джерела'
+'To target schema': 'До schema призначення'
+'Format options': 'Опції формату'
+'Response format': 'Формат відповіді'
+'This webservice does not validate authorization.': 'Цей webservice не валідує авторизацію.'
+'Added to queue!': 'Додано до черги!'
+'Finished executing endpoint.': 'Endpoint виконано.'
+'There were errors while executing this endpoint.': 'Під час виконання цього endpoint сталася помилка.'
+'Dots (.) in refs are forbidden: {ref}': 'Крапки (.) у ref заборонені: {ref}'
+'Entity not found for: {ref}': 'Сутність не знайдено для: {ref}'
+'Model not found for: {ref} ({class})': 'Модель не знайдено для: {ref} ({class})'
+'Response param name': 'Назва параметра відповіді'
+'The param name where the results are located': 'Назва параметра, де розташовані результати'
+'Nested keys are supported: key.nested_key': 'Підтримуються вкладені ключі: key.nested_key'
+'Key / Column name override to store results': 'Override назви ключа/стовпця для зберігання результатів'
+'Start with dot (.) for root': 'Почати з крапки (.) для root'
+Action: Дія
+'Replace current data with results': 'Замінити поточні дані результатами'
+'Merge results with current data': "Об'єднати результати з поточними даними"
+'Insert results into current data without replacing existing values': 'Вставити результати в поточні дані без заміни існуючих значень'
+'Combine recursively?': 'Комбінувати рекурсивно?'
+'Catch errors': 'Схопити помилки'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Визначте, як обробляти помилки. Коли помилка відповідає умові, вона запобігає помилці та запускає визначені дії замість неї.'
+'Leave empty to catch all errors.': 'Залиште порожнім, щоб схопити всі помилки.'
+'No actions defined': 'Дій не визначено'
+'Run catch {name}': 'Запустити catch {name}'
+Cache: Кеш
+'Get or set a value in the context cache': 'Отримати або встановити значення в кеші контексту'
+'Set cache': 'Встановити кеш'
+'Get cache': 'Отримати кеш'
+'Set from data': 'Встановити з даних'
+'Manual value': 'Ручне значення'
+'Key / Column name': 'Ключ / Назва стовпця'
+'Leave empty for root': 'Залиште порожнім для root'
+'Cache value': 'Значення кешу'
+'Cache tag reference/path': 'Посилання/шлях тегу кешу'
+'Can be used like: {tag}': 'Може використовуватися як: {tag}'
+Method: Метод
+Replace: Замінити
+Merge: "Об'єднати"
+Append: Додати
+'Not found action': 'Дію не знайдено'
+'Action if the tag is not found': 'Дія, якщо тег не знайдено'
+'Override with empty value': 'Override порожнім значенням'
+'Skip task': 'Пропустити завдання'
+'Cache tag reference missing': 'Посилання тегу кешу відсутнє'
+Choose: Вибрати
+'Choose between different options based on conditions': 'Вибір між різними опціями на основі умов'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Визначте опції та їхні умови. Коли умова дійсна, запускається лише ця опція.'
+'Default tasks': 'Завдання за замовчуванням'
+'These tasks will run if none of the option conditions are met.': 'Ці завдання запустяться, якщо не виконано жодну з умов опції.'
+'Run option {name}': 'Запустити опцію {name}'
+'Run default': 'Запустити замовчування'
+Extract: Екстрагувати
+'Extract a column from each item in your data': 'Екстрагувати стовпець з кожного елемента ваших даних'
+'The data column name to extract items from': 'Назва стовпця даних для екстрагування елементів'
+'The column to extract': 'Стовпець для екстрагування'
+'The target column to put results': 'Цільовий стовпець для розміщення результатів'
+'Leave empty to use the Key / Column name set above': 'Залиште порожнім, щоб використовувати Ключ/Назву стовпця, встановлену вище'
+'No column key configured': 'Ключ стовпця не налаштовано'
+'Data not iterable': 'Дані не ітеруються'
+'Could not extract': 'Не вдалося екстрагувати'
+Filter: Фільтр
+'Filter data based on conditions': 'Фільтрувати дані на основі умов'
+'Leave empty for root iteration': 'Залиште порожнім для ітерації root'
+'Filter method': 'Метод фільтра'
+'Keep valid rows': 'Зберегти дійсні рядки'
+'Keep invalid rows': 'Зберегти недійсні рядки'
+'No conditions configured': 'Умов не налаштовано'
+'Data key not found': 'Ключ даних не знайдено'
+Group: Група
+'Group your data': 'Групувати ваші дані'
+'The data column name to group items for': 'Назва стовпця даних для групування елементів'
+'Group by': 'Групувати за'
+'Set column name/key to group by value': 'Встановити назву/ключ стовпця для групування за значенням'
+'Default group key': 'Ключ групи за замовчуванням'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Використовуватиметься, коли рядок не містить визначеного стовпця групи або є порожнім значенням. Якщо не встановлено, рядок буде видалено.'
+'No group column configured': 'Стовпець групи не налаштовано'
+'Invalid group column: {value}': 'Недійсний стовпець групи: {value}'
+Index: Індекс
+'Index your data': 'Індексувати ваші дані'
+'The data column name to index items for': 'Назва стовпця даних для індексування елементів'
+'Numeric list': 'Числовий список'
+'Associative indexes': 'Асоціативні індекси'
+'New index key': 'Новий ключ індексу'
+'The template for the indexed keys': 'Шаблон для індексованих ключів'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Використовувати ключі стовпців як теги: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Метод індексу не налаштовано'
+'No index key template configured': 'Шаблон ключа індексу не налаштовано'
+Loop: Цикл
+'Iterate over a set of rows': 'Ітерувати по набору рядків'
+'Loop method': 'Метод циклу'
+Row: Рядок
+Batches: Партії
+'Batch size': 'Розмір партії'
+'Set the number of records to fetch/run at once.': 'Встановити кількість записів для отримання/запуску одночасно.'
+'Data column not found: {key}': 'Стовпець даних не знайдено: {key}'
+'Data column not iterable: {key}': 'Стовпець даних не ітерується: {key}'
+'Invalid action': 'Недійсна дія'
+'No batch size configured': 'Розмір партії не налаштовано'
+Map: Мапа
+'Map key value pairs': 'Маппінг пар ключ-значення'
+'The data column name for the value that needs to be mapped': 'Назва стовпця даних для значення, яке потрібно маппіти'
+'Nested keys are supported: {example}': 'Підтримуються вкладені ключі: {example}'
+'Map columns': 'Стовпці маппінгу'
+'Convert key names and definition schema.': 'Конвертувати назви ключів та schema визначень.'
+'Map values': 'Значення маппінгу'
+'Convert values for a column': 'Конвертувати значення для стовпця'
+'Only return mapped items?': 'Повертати лише маппені елементи?'
+'This will also reorder your data in the order of your map.': 'Це також переставить ваші дані в порядку вашої мапи.'
+'Remove old keys?': 'Видалити старі ключі?'
+'Map source': 'Джерело маппінгу'
+Mapper: Маппер
+'Convert column types to schema where available?': 'Конвертувати типи стовпців у schema, де доступно?'
+'No manual map configured.': 'Ручну мапу не налаштовано.'
+'Cannot map empty data': 'Неможливо маппити порожні дані'
+'Cannot map scalar data': 'Неможливо маппити скалярні дані'
+'Merge columns and/or values': "Об'єднати стовпці та/або значення"
+'The data column name to merge': "Назва стовпця даних для об'єднання"
+'Merge values of a column into a single value': "Об'єднати значення стовпця в одне значення"
+'Merge columns': "Об'єднати стовпці"
+'Merge both': "Об'єднати обидва"
+'Key merge method': "Метод об'єднання ключів"
+'Merge column key names': "Об'єднати назви ключів стовпців"
+'Merge column keys using an indexed name': "Об'єднати ключі стовпців, використовуючи індексовану назву"
+'Merge column keys using a regular expression': "Об'єднати ключі стовпців, використовуючи регулярний вираз"
+'Column keys that need to be merged': "Ключі стовпців, які потрібно об'єднати"
+'Column key name': 'Назва ключа стовпця'
+'Regex to match keys with and merge': "Regex для співпадіння ключів з та об'єднання"
+'Indexed key to search for and merge': "Індексований ключ для пошуку та об'єднання"
+'Nested keys are not supported': 'Вкладені ключі не підтримуються'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Індекс починається з'
+'Method to merge values from multiple columns': "Метод об'єднання значень з кількох стовпців"
+'Each column value will be appended': 'Кожне значення стовпця буде додано'
+'Latter column values merge into the former': "Останні значення стовпців об'єднуються з попередніми"
+'Latter column values replaces the former': 'Останні значення стовпців замінюють попередні'
+'Latter column values insert into the former': 'Останні значення стовпців вставляються в попередні'
+Separator: Роздільник
+Comma: Кома
+Semicolon: Крапка з комою
+Space: Пробіл
+Tab: Табуляція
+'New line': 'Новий рядок'
+'Value template': 'Шаблон значення'
+'The template for each separate value to be merged': "Шаблон для кожного окремого значення, яке потрібно об'єднати"
+'Remove original column key(s)?': 'Видалити оригінальний(і) ключ(і) стовпця?'
+'Only keep unique values?': 'Зберегти лише унікальні значення?'
+'By default all values are kept.': 'За замовчуванням зберігаються всі значення.'
+'Preserve column keys?': 'Зберегти ключі стовпців?'
+'Keep empty values?': 'Зберегти порожні значення?'
+'By default all empty column values will not be merged.': "За замовчуванням порожні значення стовпців не об'єднуються."
+'No key configured': 'Ключ не налаштовано'
+'No columns defined': 'Стовпців не визначено'
+'No key method selected': 'Метод ключа не вибрано'
+'Cannot merge scalar value.': "Неможливо об'єднати скалярне значення."
+'Find and replace': 'Знайти та замінити'
+'The data column name for the values that need to be replaced': 'Назва стовпця даних для значень, які потрібно замінити'
+'In case the value is a list of values this task will iterate the replacements for all': 'Якщо значення є списком значень, це завдання ітерує заміни для всіх'
+'Replace values': 'Замінити значення'
+'Replace keys': 'Замінити ключі'
+'Replace keys and values': 'Замінити ключі та значення'
+'Replace recursively?': 'Замінити рекурсивно?'
+Find: Знайти
+'Find value not set': 'Значення пошуку не встановлено'
+'Cannot replace scalar data': 'Неможливо замінити скалярні дані'
+'Retrieve your data from your specific connection': "Отримати ваші дані з конкретного з'єднання"
+'The data column name to pass to the webservice': 'Назва стовпця даних для передачі у webservice'
+Connection: "З'єднання"
+'Response data': 'Дані відповіді'
+'No connection configured': "З'єднання не налаштовано"
+'Data not found: {key}': 'Дані не знайдено: {key}'
+Send: Надіслати
+'Send your data to your specific connection': "Надіслати ваші дані до конкретного з'єднання"
+'Retrieve response data': 'Отримати дані відповіді'
+Set: Встановити
+'Set your own values': 'Встановити власні значення'
+'The data column key name for the values that needs to be set': 'Назва ключа стовпця даних для значень, які потрібно встановити'
+'Reorder data?': 'Переставити дані?'
+'This will append all configured columns at the end of the current data.': 'Це додасть усі налаштовані стовпці в кінець поточних даних.'
+'Force if invalid?': 'Примусово, якщо недійсно?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Коли існуючі дані є скалярними, створити нову колекцію даних з значень, встановлених у цьому завданні.'
+'You can still reference the original value through the {placeholder} tag.': 'Ви все ще можете посилатися на оригінальне значення через тег {placeholder}.'
+'Set method': 'Метод встановлення'
+'Set column values': 'Встановити значення стовпця'
+'Set schema': 'Встановити schema'
+'Set both': 'Встановити обидва'
+'Remove columns not defined in schema?': 'Видалити стовпці, не визначені в schema?'
+'Column key/name': 'Ключ/назва стовпця'
+'-- Unchanged --': '-- Без змін --'
+'Use {wildcard} to insert the current value.': 'Використати {wildcard} для вставки поточного значення.'
+Unset: Видалити
+'Data is not iterable': 'Дані не ітеруються'
+'No set params configured': 'Параметри встановлення не налаштовано'
+Sort: Сортувати
+'Sort your data': 'Сортувати ваші дані'
+'The data column key name for the values that needs to be sorted': 'Назва ключа стовпця даних для значень, які потрібно відсортувати'
+'Sort by key / column name': 'Сортувати за ключем/назвою стовпця'
+'Sort by value': 'Сортувати за значенням'
+'Sort by column value': 'Сортувати за значенням стовпця'
+'Sort by': 'Сортувати за'
+'Set column name/key to sort by value': 'Встановити назву/ключ стовпця для сортування за значенням'
+Ascending: Зростання
+Descending: Спадання
+'Ascending natural order': 'Природний порядок зростання'
+'Descending natural order': 'Природний порядок спадання'
+'No sort method configured': 'Метод сортування не налаштовано'
+'Invalid sort order: {order}': 'Недійсний порядок сортування: {order}'
+'No sort column configured': 'Стовпець сортування не налаштовано'
+Split: Розділити
+'Split value and/or split column key into multiple': 'Розділити значення та/або ключ стовпця на кілька'
+'The data column name to split': 'Назва стовпця даних для розділення'
+'Split value': 'Значення розділення'
+'Split into column keys': 'Розділити на ключі стовпців'
+'Split value and split into column keys': 'Розділити значення та розділити на ключі стовпців'
+'Column key split method': 'Метод розділення ключа стовпця'
+'Split into column keys by providing custom names': 'Розділити на ключі стовпців, надавши власні назви'
+'Split into column keys using an indexed name': 'Розділити на ключі стовпців, використовуючи індексовану назву'
+'Column key names': 'Назви ключів стовпців'
+'Current value index/key (optional)': "Індекс/ключ поточного значення (необов'язково)"
+'New column key name': 'Нова назва ключа стовпця'
+'Indexed key': 'Індексований ключ'
+'The template for the new indexed keys.': 'Шаблон для нових індексованих ключів.'
+'Remove original key(s)?': 'Видалити оригінальний(і) ключ(і)?'
+'Regular expression (Regex)': 'Регулярний вираз (Regex)'
+'Regular expression': 'Регулярний вираз'
+'Regex must be made for splitting values, not matching.': 'Regex має бути створений для розділення значень, а не співпадіння.'
+'Split value column definition': 'Визначення стовпця значення розділення'
+'No action configured': 'Дію не налаштовано'
+'Loop key not supported': 'Ключ циклу не підтримується'
+'Value is not splittable into list': 'Значення не можна розділити на список'
+'Column `{type}` does not exist': 'Стовпець `{type}` не існує'
+'Value is not splittable into keys': 'Значення не можна розділити на ключі'
+'No columns configured': 'Стовпців не налаштовано'
+Store: Зберігати
+'Get or set a storage': 'Отримати або встановити зберігання'
+'Set storage': 'Встановити зберігання'
+'Get storage': 'Отримати зберігання'
+'Storage column key/path': 'Ключ/шлях стовпця зберігання'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Встановити шлях, де буде зберігатися це значення, або залиште порожнім. Використовуйте крапки (.) для навігації в зберіганні.'
+'No storage selected': 'Зберігання не вибрано'
+'Storage not found': 'Зберігання не знайдено'
+'Raw storage cannot contain paths': 'Сире зберігання не може містити шляхи'
+'This is a raw storage, please select a different storage or change the storage type': 'Це сире зберігання, будь ласка, виберіть інше зберігання або змініть тип зберігання'
+Template: Шаблон
+'Create your own modifier template with Twig': 'Створіть власний шаблон модифікатора з Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Теги виводу {example_var} парсуються перед двигуном шаблонів Twig як теги. Тільки statement execute {example_func} парсуються у Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Значення `data` використовується для виведення завдання. Доступні змінні: `data`, `config`, `cache`, `variables` та `context`.'
+'Add your code here': 'Додайте свій код тут'
+'No template set': 'Шаблон не встановлено'
+Trace: Слід
+'Trace current status with a log or error.': 'Відстежувати поточний статус з log або помилкою.'
+'Trace type': 'Тип сліду'
+'Creating an error will result in the trace reporting as failed.': 'Створення помилки призведе до того, що слід буде повідомлено про невдачу.'
+'Log message': 'Повідомлення log'
+'Error message': 'Повідомлення про помилку'
+Message: Повідомлення
+'Extra info': 'Додаткова інформація'
+'Include data?': 'Включити дані?'
+'Message not configured': 'Повідомлення не налаштовано'
+'Trigger something independently from the current flow': 'Тригер щось незалежно від поточного workflow'
+'Run async?': 'Запустити async?'
+Experimental: Експериментальний
+'If the automation is using batches then this trigger will always run async.': 'Якщо автоматизація використовує партії, цей тригер завжди запускатиметься async.'
+'Pass current data?': 'Передати поточні дані?'
+'Override current data?': 'Override поточних даних?'
+'Leave empty to pass root data': 'Залиште порожнім, щоб передати root-дані'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Визначте статичні змінні для використання з цим тригером. Існуючі змінні також будуть включені.'
+Automation: Автоматизація
+Wait: Чекайте
+'Wait for time to pass': 'Чекайте, поки час пройде'
+'Seconds to wait': 'Секунди очікування'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Підключитися до FTP-сервера для завантаження та/або завантаження файлів'
+'{type} extension is not available': 'Розширення {type} недоступне'
+Host: Хост
+Port: Порт
+Username: "Ім'я користувача"
+Password: Пароль
+'Passive mode': 'Пасивний режим'
+'Connect using SSL': 'Підключитися за допомогою SSL'
+'Process timeout in seconds': 'Тайм-аут процесу в секундах'
+'Cannot connect to {host}': 'Неможливо підключитися до {host}'
+'Cannot login to {host}': 'Неможливо увійти в {host}'
+'Successfully connected to {host}': "Під'єднано до {host}"
+'Could not connect to {host}': 'Не вдалося підключитися до {host}'
+'HTTP No auth': 'HTTP Без auth'
+'Connect without authorization': 'Підключитися без авторизації'
+'Allow HTTP': 'Дозволити HTTP'
+'Allow unsafe HTTP connection without SSL encryption': "Дозволити небезпечне HTTP-з'єднання без шифрування SSL"
+Endpoint: Endpoint
+'Send current data': 'Надіслати поточні дані'
+'Select data transport location': 'Виберіть місце транспорту даних'
+'Request {type}': 'Запит {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Підключитися з базовою авторизацією'
+'Username / key': "Ім'я користувача / ключ"
+'Password / Secret': 'Пароль / Секрет'
+'HTTP Bearer token': 'Токен Bearer HTTP'
+'Connect with Bearer Token authorization': 'Підключитися з авторизацією Bearer Token'
+Token: Токен
+'HTTP Authorization server': 'Сервер авторизації HTTP'
+'Connect to a HTTP server using an authorization server': 'Підключитися до HTTP-сервера, використовуючи сервер авторизації'
+Body: Тіло
+Header: Заголовок
+'Redirect url': 'URL перенаправлення'
+'Local File system': 'Локальна файлова система'
+'Use the local filesystem defined by your environment': 'Використовувати локальну файлову систему, визначену вашим середовищем'
+'Root path': 'Шлях root'
+'Relative path?': 'Відносний шлях?'
+'Makes the root path relative to the SyncEngine installation': 'Робить шлях root відносним до встановлення SyncEngine'
+'Successfully accessed {root}': 'Доступ до {root}'
+'Could not access {root}': 'Не вдалося отримати доступ до {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Підключитися до SFTP-сервера для завантаження та/або завантаження файлів'
+'Authentication type': 'Тип автентифікації'
+'Private key': 'Приватний ключ'
+'Username and password': "Ім'я користувача та пароль"
+'Private key password': 'Пароль приватного ключа'
+'If your private key is password protected, you can fill in that password here': 'Якщо ваш приватний ключ захищений паролем, ви можете ввести цей пароль тут'
+'Cannot login to {host}: {error}': 'Неможливо увійти в {host}: {error}'
+'Could not rename': 'Не вдалося перейменувати'
+SOAP: SOAP
+'Connect using SOAP': 'Підключитися за допомогою SOAP'
+'HTTP Authentication': 'Автентифікація HTTP'
+'Basic authentication': 'Базова автентифікація'
+'SOAP multistep server': 'Багатокроковий сервер SOAP'
+'Connect to a SOAP server using multistep setup': 'Підключитися до сервера SOAP, використовуючи багатокрокову конфігурацію'
+'SOAP extension is not available': 'Розширення SOAP недоступне'
+Url: Url
+'The URL for this authentication step': 'URL для цього кроку автентифікації'
+SQL: SQL
+'Connect to a SQL server': 'Підключитися до SQL-сервера'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Немає доступних розширень бази даних, будь ласка, встановіть одне з наступних: {options}'
+'Select database driver': 'Виберіть драйвер бази даних'
+Database: База даних
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Запит
+'Fetch method': 'Метод fetch'
+'Associated array': 'Асоціативний масив'
+'Key => Value pairs': 'Пари Ключ => Значення'
+'Key column': 'Ключовий стовпець'
+'Choose the key you want to use as the row key': 'Виберіть ключ, який хочете використовувати як ключ рядка'
+Path: Шлях
+'Select what you want to retrieve': 'Виберіть, що хочете отримати'
+'File contents': 'Зміст файлу'
+'List directories and filenames': 'Перелік каталогів та імен файлів'
+'List filenames': 'Перелік імен файлів'
+'List directories': 'Перелік каталогів'
+Filename: "Ім'я файлу"
+'Select what action you want to send': 'Виберіть дію, яку хочете надіслати'
+'Upload file contents': 'Завантажити зміст файлу'
+'Delete file': 'Видалити файл'
+'Create directory': 'Створити каталог'
+'Delete directory': 'Видалити каталог'
+'Rename or move a file or directory': 'Перейменувати або перемістити файл або каталог'
+'Overwrite if file exists': 'Перезаписати, якщо файл існує'
+'Directory name': 'Назва каталогу'
+'Old name': 'Стара назва'
+'New name': 'Нова назва'
+'Overwrite if new name exists': 'Перезаписати, якщо нова назва існує'
+'No Filename configured': "Ім'я файлу не налаштовано"
+'Cannot fetch file from {host}, please try passive mode': 'Не вдалося отримати файл з {host}, будь ласка, спробуйте пасивний режим'
+'Cannot fetch file from {host}': 'Не вдалося отримати файл з {host}'
+'Successfully retrieved: {name}': 'Отримано: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Файл {oldName} існував, перейменовано в {newName}'
+'Could not be write file: {name}': 'Не вдалося записати файл: {name}'
+'Successfully uploaded: {name}': 'Завантажено: {name}'
+'Could not delete file {name}': 'Не вдалося видалити файл {name}'
+'Successfully deleted file: {name}': 'Файл видалено: {name}'
+'Cannot read directory from {host}': 'Неможливо прочитати каталог з {host}'
+'No directory configured': 'Каталог не налаштовано'
+'Could not create directory: {path}': 'Не вдалося створити каталог: {path}'
+'Successfully created directory: {path}': 'Каталог створено: {path}'
+'Could not delete directory: {path}': 'Не вдалося видалити каталог: {path}'
+'Successfully deleted: {path}': 'Видалено: {path}'
+'Invalid rename configuration': 'Недійсна конфігурація перейменування'
+'Could not rename: {old} to {new}': 'Не вдалося перейменувати: {old} на {new}'
+'Successfully renamed: {old} to {new}': 'Перейменовано: {old} на {new}'
+'Invalid resource': 'Недійсний ресурс'
+'Request method': 'Метод запиту'
+'Request timeout': 'Тайм-аут запиту'
+'Request query': 'Query запиту'
+'Request header': 'Заголовок запиту'
+'Request body': 'Тіло запиту'
+'SOAP version': 'Версія SOAP'
+'Default (PHP default)': 'За замовчуванням (PHP за замовчуванням)'
+'SOAP protocol version. Leave empty for PHP default.': 'Версія протоколу SOAP. Залиште порожнім для PHP за замовчуванням.'
+Compression: Стиснення
+'Compress SOAP requests and accept compressed responses.': 'Стиснути запити SOAP та прийняти стиснені відповіді.'
+'Connection timeout': "Тайм-аут з'єднання"
+'Maximum time in seconds for the connection to be established.': "Максимальний час у секундах для встановлення з'єднання."
+'WSDL mode': 'Режим WSDL'
+'Will this connection use WSDL file format?': "Це з'єднання використовуватиме формат файлу WSDL?"
+'WSDL file url': 'URL файлу WSDL'
+'Link to WSDL format that will be filled in for this soap connection': "Посилання на формат WSDL, який буде заповнено для цього soap-з'єднання"
+'WSDL cache': 'Кеш WSDL'
+'No cache': 'Без кешу'
+'Memory cache': "Кеш пам'яті"
+'Disk/File cache': 'Кеш диска/файлу'
+Both: Обидва
+'WSDL cache warning': 'Попередження кешу WSDL'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Файловий кеш WSDL увімкнено. Це може викликати проблеми зі застарілими файлами WSDL та безпекою через спільний доступ на сервері.'
+'SOAP service namespace': 'Namespace SOAP-сервісу'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Цільовий namespace SOAP-сервісу. Потрібно, коли режим WSDL вимкнено.'
+'SOAPAction header': 'Заголовок SOAPAction'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': "Необов'язкове значення заголовка HTTP SOAPAction. Потрібне деякими серверами SOAP."
+Advanced: Розширені
+'Override options for the SOAP connection.': "Опції override для SOAP-з'єднання."
+'SOAP headers': 'Заголовки SOAP'
+'SOAP operation name': 'Назва операції SOAP'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Назва операції SOAP для виклику. Це потрібно як для режиму WSDL, так і non-WSDL.'
+'Use data transport as body?': 'Використовувати транспортування даних як body?'
+'SOAP body': 'Тіло SOAP'
+'Define static variables to be used within the authorization process.': 'Визначте статичні змінні для використання всередині процесу авторизації.'
+'Authorized request base config': 'Базова конфігурація авторизованого запиту'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': "Визначте базову конфігурацію запиту. Це буде використано для встановлення параметрів за замовчуванням для будь-якого запиту, що використовує це з'єднання."
+'Override host': 'Override хоста'
+'Authorization process steps': 'Кроки процесу авторизації'
+'Define each step for the authorization process.': 'Визначте кожен крок процесу авторизації.'
+'The param name where the authentication parameters are located': 'Назва параметра, де розташовані параметри автентифікації'
+'Tag name': 'Назва тегу'
+'Choose the tag name in which the response param value is stored': 'Виберіть назву тегу, в якому зберігається значення параметра відповіді'
+'Example: token': 'Приклад: token'
+Expiration: Термін дії
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Встановити таймер терміну дії для значення тегу, щоб повторна автентифікація була виконана в межах цього часового діапазону'
+'Supported formats:': 'Підтримувані формати:'
+'Timestamp or date': 'Timestamp або дата'
+'Time format: ({time_format})': 'Формат часу: ({time_format})'
+'Text format: ({time_string})': 'Формат тексту: ({time_string})'
+'Response type': 'Тип відповіді'
+'The type of response the URL will return': 'Тип відповіді, який поверне URL'
+'Tag storage': 'Зберігання тегу'
+'Define the tags you need to store for authentication': 'Визначте теги, які потрібно зберегти для автентифікації'
+'Run next step (default)': 'Запустити наступний крок (за замовчуванням)'
+'Skip next step': 'Пропустити наступний крок'
+'Stop loop': 'Зупинити цикл'
+'Run previous step (default)': 'Запустити попередній крок (за замовчуванням)'
+'Restart loop from beginning': 'Перезапустити цикл з початку'
+'Cannot authenticate on step #{step} from connection #{connectionID}': "Неможливо автентифікуватися на кроці #{step} з з'єднання #{connectionID}"
+'Invalid tag name': 'Недійсна назва тегу'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Недійсна або порожня відповідь сервера для тегу:{tag} | Параметр не знайдено:{param}'
+'Invalid or empty server response for tag:{tag}': 'Недійсна або порожня відповідь сервера для тегу:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Ви впевнені, що хочете вимкнути двофакторну автентифікацію?'
+'You will need to re-enable 2FA after verifying your password': 'Вам потрібно повторно увімкнути 2FA після перевірки вашого пароля'
+'Enter your password to confirm': 'Введіть свій пароль для підтвердження'
+'Check your email': 'Перевірте свою електронну пошту'
+'We sent a 6-digit verification code to your email address': 'Ми надіслали 6-значний код верифікації на вашу електронну адресу'
+'Enter the code from your email': 'Введіть код з вашого email'
+'Resend Code': 'Повторно надіслати код'
+Verify: Верифікувати
+'Choose how you want to receive verification codes': 'Виберіть, як ви хочете отримувати коди верифікації'
+'Authenticator App (Recommended)': 'Додаток Authenticator (рекомендовано)'
+'Scan the QR code with your TOTP app': 'Скануйте QR-код за допомогою вашого TOTP-додатку'
+'Or enter this secret manually:': 'Або введіть цей секрет вручну:'
+'Email Verification': 'Верифікація email'
+'We will send a 6-digit code to your email address': 'Ми надішлемо 6-значний код на вашу електронну адресу'
+'Send Code to Email': 'Надіслати код на email'
+'Create new': 'Створити новий'
+Description: Опис
+Expires: Термін дії
+'No API tokens created': 'Токени API не створено'
+URL: URL
+Uses: Використання
+'You are about to reset this process, are you sure?': 'Ви збираєтеся скинути цей процес, ви впевнені?'
+Reset: Скинути
+'Reset automation': 'Скинути автоматизацію'
+'Quick Edit': 'Швидке редагування'
+Hide: Сховати
+Show: Показати
+Export: Експорт
+Trash: Смітник
+Restore: Відновити
+'Delete Permanently': 'Видалити назавжди'
+Issue: Випуск
+Connected: Підключено
+'Used in': 'Використовується в'
+'Last runs': 'Останні запуски'
+'Scheduled runs': 'Заплановані запуски'
+Steps: Кроки
+'Message Queue': 'Черга повідомлень'
+'Scheduled At': 'Заплановано на'
+'Created At': 'Створено о'
+View: Перегляд
+'Scheduled run': 'Запланований запуск'
+Delete: Видалити
+'Delete run': 'Видалити запуск'
+'Are you sure you want to delete this message?': 'Ви впевнені, що хочете видалити це повідомлення?'
+'Disabled modules.': 'Вимкнені модулі.'
+Module: Модуль
+Requires: Вимагає
+Reason: Причина
+Uninstall: Видалити
+'Are you sure?': 'Ви впевнені?'
+'This will uninstall module {moduleName} from {vendor}': 'Це видалить модуль {moduleName} від {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Завантажте новішу версію модуля, щоб замінити несумісний модуль.'
+Version: Версія
+Author: Автор
+Manage: Керувати
+Reinstall: Перевстановити
+Config: Config
+Task: Завдання
+Traces: Сліди
+'You are about to kill this process, are you sure?': 'Ви збираєтеся завершити цей процес, ви впевнені?'
+Kill: Завершити
+'New user': 'Новий користувач'
+'Edit user': 'Редагувати користувача'
+Roles: Ролі
+'Reset password': 'Скинути пароль'
+'Reset password?': 'Скинути пароль?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'Email для скидання пароля буде надіслано на {email}. Користувач зможе встановити свій власний пароль.'
+'This will delete user {email}': 'Це видалить користувача {email}'
+Visibility: Видимість
+All: Всі
+Dashboard: Панель керування
+'Verify Login': 'Верифікація входу'
+Login: Вхід
+'Forgot password?': 'Забули пароль?'
+'Password Reset Email Sent': 'Email для скидання пароля надіслано'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Якщо існує обліковий запис, що відповідає вашому email, то щойно був надісланий email, який містить посилання, яке ви можете використовувати для скидання пароля.'
+'This link will expire in %expiration%': 'Це посилання дійсне протягом %expiration%'
+"If you don't receive an email please check your spam folder": "Якщо ви не отримали email, будь ласка, перевірте папку спам"
+'Back to login': 'Повернутися до входу'
+'Try again': 'Спробувати ще раз'
+'Reset your password': 'Скинути свій пароль'
+'Enter your email address and we will send you a link to reset your password.': 'Введіть свою адресу email, і ми надішлемо вам посилання для скидання пароля.'
+'Page not found': 'Сторінку не знайдено'
+'Oops! An Error Occurred': 'Ой! Сталася помилка'
+Back: Назад
+'Authenticator App': 'Додаток Authenticator'
+'Fill in the code from your authenticator app': 'Введіть код з вашого додатку authenticator'
+'Fill in the code send to your email': 'Введіть код, надісланий на ваш email'
+'There was a problem validating your password reset request': 'Виникла проблема з валідацією вашого запиту на скидання пароля'
+'There is already an automation with this ref, please enter a different ref': 'Вже існує автоматизація з цим ref, будь ласка, введіть інший ref'
+'There is already an automation with this name, please enter a different name': 'Вже існує автоматизація з цією назвою, будь ласка, введіть іншу назву'
+'There is already an automation with this endpoint, please enter a different name': 'Вже існує автоматизація з цим endpoint, будь ласка, введіть іншу назву'
+'There is already an account with this email': 'Вже існує обліковий запис з цим email'
+'Your password should be at least { limit } characters': 'Ваш пароль повинен бути щонайменше { limit } символів'
+'Please enter a password': 'Будь ласка, введіть пароль'
+'You should agree to our license terms.': 'Ви повинні погодитися з нашими умовами ліцензії.'
+'Please enter your email': 'Будь ласка, введіть свій email'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: довірених

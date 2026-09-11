@@ -1,0 +1,935 @@
+'Column definitions': 'Ορισμοί στηλών'
+'Extend column definitions': 'Επέκταση ορισμών στηλών'
+'Configure custom column types for each field.': 'Διαμόρφωση προσαρμοσμένων τύπων στηλών για κάθε πεδίο.'
+'Comma Separated Values': 'Τιμές διαχωρισμένες με κόμμα'
+'FormData encoded string': 'String κωδικοποιημένο FormData'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'String κωδικοποιημένο URL'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Διεύθυνση
+'Address column': 'Στήλη διεύθυνσης'
+Strict: Αυστηρό
+'Address columns': 'Στήλες διεύθυνσης'
+'Country (Code)': 'Χώρα (Κωδικός)'
+'Column name for: {field}': 'Όνομα στήλης για: {field}'
+'Administrative Area / Province / State': 'Διοικητική περιοχή / Επαρχία / Πολιτεία'
+'Locality / City': 'Τοπικότητα / Πόλη'
+'Dependent Locality': 'Εξαρτημένη τοπικότητα'
+'Postal / ZIP Code': 'Ταχυδρομικός κώδικας'
+'Sorting Code': 'Κωδικός ταξινόμησης'
+'Address Line 1': 'Γραμμή διεύθυνσης 1'
+'Address Line 2': 'Γραμμή διεύθυνσης 2'
+'Address Line 3': 'Γραμμή διεύθυνσης 3'
+Locale: Locale
+Organization: Οργάνωση
+'Given Name': 'Όνομα'
+'Additional Name': 'Επιπλέον όνομα'
+'Family Name': 'Επίθετο'
+Boolean: Boolean
+'Format as true or false': 'Μορφοποίηση ως true ή false'
+Format: Μορφή
+Integer: Ακέραιος
+'Custom text': 'Προσαρμοσμένο κείμενο'
+'Custom number': 'Προσαρμοσμένος αριθμός'
+'True value': 'Τιμή true'
+'False value': 'Τιμή false'
+'Fallback value': 'Τιμή fallback'
+'Null / Empty': 'Null / Κενό'
+Custom: Προσαρμοσμένο
+'Fallback custom value': 'Προσαρμοσμένη τιμή fallback'
+'Yes': 'Ναι'
+'No': 'Όχι'
+Collection: Συλλογή
+'A collection of a column type': 'Μια συλλογή τύπου στήλης'
+Associative: Associative
+'Column Type': 'Τύπος στήλης'
+Key/Name: Κλειδί/Όνομα
+Currency: Νόμισμα
+'Currency column for money/price based values': 'Στήλη νομίσματος για τιμές βάσει χρήματος/τιμής'
+'Currency sign': 'Σύμβολο νομίσματος'
+'Add space between currency sign and value?': 'Προσθήκη κενού μεταξύ συμβόλου νομίσματος και τιμής;'
+'Put currency sign after value?': 'Τοποθέτηση συμβόλου νομίσματος μετά την τιμή;'
+Date: Ημερομηνία
+'General date and time column': 'Γενική στήλη ημερομηνίας και ώρας'
+Unchanged: Αμετάβλητο
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Κενό string'
+'Current timestamp as format': 'Τρέχον timestamp ως μορφή'
+'Please check PHP date documentation': 'Ελέγξτε την τεκμηρίωση ημερομηνίας PHP'
+Timezone: Ζώνη ώρας
+'Please check PHP DateTimeZone documentation': 'Ελέγξτε την τεκμηρίωση DateTimeZone PHP'
+'Empty value': 'Κενή τιμή'
+Duration: Διάρκεια
+'General duration column': 'Γενική στήλη διάρκειας'
+'Please check PHP DateInterval documentation': 'Ελέγξτε την τεκμηρίωση DateInterval PHP'
+Email: Email
+'Email column': 'Στήλη email'
+'Validation mode': 'Λειτουργία επικύρωσης'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Διασφαλίζει ότι η διεύθυνση email ακολουθεί πολύ στενά τα πρότυπα RFC. Για παράδειγμα, δεν επιτρέπει διευθύνσεις IP στο μέρος του τομέα.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Ακολουθεί τους κανόνες εισόδου HTML5, οι οποίοι είναι λίγο πιο ευμετάβλητοι από τα αυστηρά πρότυπα RFC.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Παρόμοιο με HTML5, αλλά επιτρέπει επίσης διευθύνσεις email χωρίς TLD (π.χ. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Fallback
+'Fallback value if it is an invalid email address.': 'Τιμή fallback αν είναι μη έγκυρη διεύθυνση email.'
+Enumeration: Enumerazione
+'Predefined select options': 'Προκαθορισμένες επιλογές επιλογής'
+Options: Επιλογές
+Value: Τιμή
+Label: Ετικέτα
+'Numeric options': 'Αριθμητικές επιλογές'
+None: Καμία
+'Use column for type hinting': 'Χρήση στήλης για type hinting'
+Soft: Μαλακό
+'Use fallback for invalid values': 'Χρήση fallback για μη έγκυρες τιμές'
+'Throw error on invalid values': 'Εκτέλεση σφάλματος σε μη έγκυρες τιμές'
+'Set the fallback value in case it is empty.': 'Ορισμός τιμής fallback αν είναι κενή.'
+'Will also be used as fallback in soft mode.': 'Θα χρησιμοποιηθεί επίσης ως fallback σε μαλακή λειτουργία.'
+'Parse before validation': 'Ανάλυση πριν την επικύρωση'
+'Trim text': 'Αποκοπή κειμένου'
+'Convert case': 'Μετατροπή πεζών/κεφαλαίων'
+'Capitalize first': 'Κεφαλαίο πρώτο γράμμα'
+'Capitalize Words': 'Κεφαλαία σε λέξεις'
+lowercase: lowercase
+UPPERCASE: ΚΕΦΑΛΑΙΑ
+'Invalid enum config': 'Μη έγκυρη διαμόρφωση enum'
+'Invalid value for enum: {formatted}': 'Μη έγκυρη τιμή για enum: {formatted}'
+Number: Αριθμός
+'Numeric column': 'Αριθμητική στήλη'
+Type: Τύπος
+'A raw number can be used for calculations and number storage.': 'Ένας ωμός αριθμός μπορεί να χρησιμοποιηθεί για υπολογισμούς και αποθήκευση αριθμών.'
+'A formatted number can be used for display.': 'Ένας μορφοποιημένος αριθμός μπορεί να χρησιμοποιηθεί για προβολή.'
+'Raw number': 'Ωμός αριθμός'
+'Format to a number type.': 'Μορφοποίηση σε τύπο αριθμού.'
+Formatted: Μορφοποιημένο
+'Format to a numeric string.': 'Μορφοποίηση σε αριθμητικό string.'
+Rounding: Στρογγυλοποίηση
+'Round halves up': 'Στρογγυλοποίηση μισών προς τα πάνω'
+'Round halves down': 'Στρογγυλοποίηση μισών προς τα κάτω'
+'Round halves to even numbers': 'Στρογγυλοποίηση μισών σε άρτια αριθμούς'
+'Round halves to odd numbers': 'Στρογγυλοποίηση μισών σε περιττούς αριθμούς'
+Decimals: Δεκαδικά
+'Trim trailing zeros (0)': 'Αποκοπή τελικών μηδενικών (0)'
+'Decimal separator': 'Δεκαδικός διαχωριστικός'
+'Thousands separator': 'Διαχωριστικός χιλιάδων'
+none: κανένα
+space: κενό
+Schema: Schema
+'Schema definitions column': 'Στήλη ορισμών schema'
+'Schema source': 'Πηγή schema'
+Manual: Χειροκίνητο
+Storage: Αποθήκευση
+'Schema storage': 'Αποθήκευση schema'
+'Configure column types for each field.': 'Διαμόρφωση τύπων στηλών για κάθε πεδίο.'
+Slug: Slug
+'Format as a slug': 'Μορφοποίηση ως slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: ΚΕΦΑΛΑΙΑ_ΥΠΟΓΡΑΜΜΙΣΗ
+Case: Περίπτωση
+'camel Style': 'στυλ camel'
+'Word separator': 'Διαχωριστικός λέξης'
+dash: παύλα
+underscore: υπογράμιση
+Text: Κείμενο
+'General text column': 'Γενική στήλη κειμένου'
+'Limit length?': 'Περιορισμός μήκους;'
+Max: Max
+Unit: Μονάδα
+Characters: Χαρακτήρες
+Words: Λέξεις
+'Access denied.': 'Αρνηθείσα πρόσβαση.'
+'Invalid request method.': 'Μη έγκυρη μέθοδος αιτήματος.'
+'Entity not found': 'Η οντότητα δεν βρέθηκε'
+'Action not supported: {action}': 'Η ενέργεια δεν υποστηρίζεται: {action}'
+Update: Ενημέρωση
+Create: Δημιουργία
+Account: Λογαριασμός
+'Edit account': 'Επεξεργασία λογαριασμού'
+'Edit user account': 'Επεξεργασία λογαριασμού χρήστη'
+Preferences: Προτιμήσεις
+'Edit preferences': 'Επεξεργασία προτιμήσεων'
+'API tokens': 'Tokens API'
+'Manage API tokens': 'Διαχείριση tokens API'
+'Two-factor authentication': 'Διπλή επαλήθευση ταυτότητας'
+'2FA is active for your account': 'Το 2FA είναι ενεργό για τον λογαριασμό σας'
+'Protect your account with a verification code': 'Προστατέψτε τον λογαριασμό σας με κωδικό επαλήθευσης'
+Disable: Απενεργοποίηση
+Enable: Ενεργοποίηση
+'Account updated successfully.': 'Ο λογαριασμός ενημερώθηκε.'
+Edit: Επεξεργασία
+'Preferences updated successfully.': 'Οι προτιμήσεις ενημερώθηκαν.'
+'Access tokens': 'Tokens πρόσβασης'
+'API Tokens': 'Tokens API'
+'Create API token': 'Δημιουργία token API'
+'Edit API token': 'Επεξεργασία token API'
+'Enable two-factor authentication': 'Ενεργοποίηση διπλής επαλήθευσης ταυτότητας'
+'Enable 2FA': 'Ενεργοποίηση 2FA'
+'Invalid form submission. Please try again.': 'Μη έγκυρη υποβολή φόρμας. Δοκιμάστε ξανά.'
+'The verification code you entered is invalid.': 'Ο κωδικός επαλήθευσης που εισήχθη είναι μη έγκυρος.'
+'Two-factor authentication has been enabled.': 'Η διπλή επαλήθευση ταυτότητας ενεργοποιήθηκε.'
+'Could not send verification email. Please try again.': 'Δεν ήταν δυνατό να αποσταλεί το email επαλήθευσης. Δοκιμάστε ξανά.'
+'Verify your email': 'Επαληθεύστε το email σας'
+'Verify Email': 'Επαλήθευση email'
+'Disable two-factor authentication': 'Απενεργοποίηση διπλής επαλήθευσης ταυτότητας'
+'Disable 2FA': 'Απενεργοποίηση 2FA'
+'Invalid password.': 'Μη έγκυρος κωδικός.'
+'Two-factor authentication has been disabled.': 'Η διπλή επαλήθευση ταυτότητας απενεργοποιήθηκε.'
+Automations: Αυτόματες διαδικασίες
+'Successfully created automation!': 'Η αυτόματη διαδικασία δημιουργήθηκε!'
+'New automation': 'Νέα αυτόματη διαδικασία'
+'Successfully edited automation!': 'Η αυτόματη διαδικασία επεξεργάστηκε!'
+'Edit automation': 'Επεξεργασία αυτόματης διαδικασίας'
+Connections: Συνδέσεις
+'Successfully created connection!': 'Η σύνδεση δημιουργήθηκε!'
+'New connection': 'Νέα σύνδεση'
+'Successfully edited connection!': 'Η σύνδεση επεξεργάστηκε!'
+'Edit connection': 'Επεξεργασία σύνδεσης'
+Flows: Workflows
+'Successfully created flow!': 'Το workflow δημιουργήθηκε!'
+'New flow': 'Νέο workflow'
+'Successfully edited flow!': 'Το workflow επεξεργάστηκε!'
+'Edit flow': 'Επεξεργασία workflow'
+'Connection required': 'Απαιτούμενη σύνδεση'
+'Connection not found': 'Η σύνδεση δεν βρέθηκε'
+'Webservice not found': 'Το webservice δεν βρέθηκε'
+Modules: Ενότητες
+'Please upload a valid ZIP file': 'Ανεβάστε ένα έγκυρο αρχείο ZIP'
+Upload: Ανεβάστε
+'Unable to refresh system cache after module upload.': 'Δεν είναι δυνατόν να ανανεωθεί η cache συστήματος μετά την ανέβασμα της ενότητας.'
+'Install unsuccessful': 'Η εγκατάσταση απέτυχε'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Αδυναμία απεγκατάστασης {moduleName}. Χρησιμοποιείται ακόμη στο σύστημά σας'
+'Uninstall unsuccessful': 'Η απεγκατάσταση απέτυχε'
+'Unable to refresh system cache after module uninstall.': 'Δεν είναι δυνατόν να ανανεωθεί η cache συστήματος μετά την απεγκατάσταση της ενότητας.'
+'{moduleName} successfully uninstalled': '{moduleName} απεγκαταστάθηκε'
+'Invalid module package: {moduleName}': 'Μη έγκυρο πακέτο ενότητας: {moduleName}'
+'Disabled manually': 'Απενεργοποιημένο χειροκίνητα'
+'Unable to refresh system cache after module disable.': 'Δεν είναι δυνατόν να ανανεωθεί η cache συστήματος μετά την απενεργοποίηση της ενότητας.'
+'{moduleName} disabled': '{moduleName} απενεργοποιήθηκε'
+'Unable to disable {moduleName}.': 'Αδυναμία απενεργοποίησης {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Δεν είναι δυνατόν να ανανεωθεί η cache συστήματος μετά την ενεργοποίηση της ενότητας.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Αδυναμία ενεργοποίησης {moduleName}. Απενεργοποιήθηκε ξανά κατά την ανοικοδόμηση της cache.'
+'{moduleName} enabled': '{moduleName} ενεργοποιήθηκε'
+'Cannot move file': 'Αδυναμία μετακίνησης αρχείου'
+'Could not find module in zip file': 'Δεν βρέθηκε ενότητα στο αρχείο zip'
+'Could not parse module namespace': 'Αδυναμία ανάλυσης namespace ενότητας'
+'Cannot unzip file!': 'Αδυναμία εξαγωγής αρχείου!'
+'Cant delete temp folder': 'Αδυναμία διαγραφής προσωρινού φακέλου'
+Configuration: Διαμόρφωση
+'Configure manager to optimize SyncEngine for your server.': 'Διαμορφώστε τον manager για βελτιστοποίηση του SyncEngine για τον server σας.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Αυτόματη εκκίνηση workerών async στο παρασκήνιο για διαχείριση αυτόματων διαδικασιών.'
+Enabled: Ενεργό
+'Cannot enable manager': 'Αδυναμία ενεργοποίησης manager'
+Disabled: Απενεργοποιημένο
+'The manager is controlled by a cronjob.': 'Ο manager ελέγχεται από cronjob.'
+External: Εξωτερικό
+'The manager is controlled externally.': 'Ο manager ελέγχεται εξωτερικά.'
+'Queue size:': 'Μέγεθος ουράς:'
+'Active workers:': 'Ενεργοί worker:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Δημιουργήθηκε: {timestamp} | Ping: {ping}'
+Processes: Διαδικασίες
+System: Σύστημα
+Save: Αποθήκευση
+'Invalid Manager': 'Μη έγκυρο Manager'
+'Configuration saved': 'Η διαμόρφωση αποθηκεύτηκε'
+Routines: Ρουτίνες
+'Successfully created routine!': 'Η ρουτίνα δημιουργήθηκε!'
+'New routine': 'Νέα ρουτίνα'
+'Successfully edited routine!': 'Η ρουτίνα επεξεργάστηκε!'
+'Edit routine': 'Επεξεργασία ρουτίνας'
+Storages: Αποθήκες
+'Successfully created storage!': 'Η αποθήκη δημιουργήθηκε!'
+'New storage': 'Νέα αποθήκη'
+'Successfully edited storage!': 'Η αποθήκη επεξεργάστηκε!'
+'Edit storage': 'Επεξεργασία αποθήκης'
+'Clear cache': 'Εκκαθάριση cache'
+Environment: Περιβάλλον
+'Configure environment setup': 'Διαμόρφωση ρυθμίσεων περιβάλλοντος'
+Vault: Vault
+'Configure vault secrets': 'Διαμόρφωση μυστικών vault'
+'Manage system processes': 'Διαχείριση διαδικασιών συστήματος'
+Import: Εισαγωγή
+'Import JSON configs': 'Εισαγωγή διαμορφώσεων JSON'
+Info: Πληροφορίες
+'System information': 'Πληροφορίες συστήματος'
+Help: Βοήθεια
+'JSON data': 'Δεδομένα JSON'
+'Format must be JSON.': 'Η μορφή πρέπει να είναι JSON.'
+'Import successful': 'Επιτυχής εισαγωγή'
+Users: Χρήστες
+'Successfully created user!': 'Ο χρήστης δημιουργήθηκε!'
+'Successfully edited user!': 'Ο χρήστης επεξεργάστηκε!'
+'You cannot reset your own password.': 'Δεν μπορείτε να επαναφέρετε τον δικό σας κωδικό.'
+'Password reset email sent successfully!': 'Το email επαναφοράς κωδικού αποστάληκε!'
+'An error occurred while resetting the password.': 'Προέκυψε σφάλμα κατά την επαναφορά του κωδικού.'
+'You cannot delete your own account.': 'Δεν μπορείτε να διαγράψετε τον δικό σας λογαριασμό.'
+'Successfully deleted user!': 'Ο χρήστης διαγράφηκε!'
+'Endpoint not found: {value}': 'Το endpoint δεν βρέθηκε: {value}'
+'Automation is not enabled': 'Η αυτόματη διαδικασία δεν είναι ενεργοποιημένη'
+'Automation is already running': 'Η αυτόματη διαδικασία εκτελείται ήδη'
+'File not found': 'Το αρχείο δεν βρέθηκε'
+'Scheduled processes are disabled.': 'Οι προγραμματισμένες διαδικασίες είναι απενεργοποιημένες.'
+'Automation cannot accept a new request right now.': 'Η αυτόματη διαδικασία δεν μπορεί να δεχτεί νέο αίτημα αυτή τη στιγμή.'
+'Entity type not found': 'Ο τύπος οντότητας δεν βρέθηκε'
+'Entity deleted': 'Η οντότητα διαγράφηκε'
+'An error occurred while sending the password reset email.': 'Προέκυψε σφάλμα κατά την αποστολή του email επαναφοράς κωδικού.'
+'Your password reset request': 'Το αίτημά σας για επαναφορά κωδικού'
+'No reset password token found in the URL or in the session.': 'Δεν βρέθηκε token επαναφοράς κωδικού στο URL ή στη συνεδρία.'
+Install: Εγκατάσταση
+'Unknown database error': 'Άγνωστο σφάλμα βάσης δεδομένων'
+'Could not repair database': 'Αδυναμία επισκευής βάσης δεδομένων'
+'Unable to access this page!': 'Αδυναμία πρόσβασης σε αυτή τη σελίδα!'
+Register: Εγγραφή
+Variables: Μεταβλητές
+'Define static variables to be used within the automation.': 'Ορισμός στατικών μεταβλητών για χρήση εντός της αυτόματης διαδικασίας.'
+Source: Πηγή
+'Select the data source for this automation': 'Επιλογή πηγής δεδομένων για αυτή την αυτόματη διαδικασία'
+Request: Αίτημα
+'Extract data from the current request body.': 'Εξαγωγή δεδομένων από το τρέχον σώμα αιτήματος.'
+'Cannot be used with scheduled automations.': 'Δεν μπορεί να χρησιμοποιηθεί με προγραμματισμένες αυτόματες διαδικασίες.'
+Retrieve: Ανακτήστε
+'Retrieve data from a webservice or other custom source.': 'Ανάκτηση δεδομένων από ένα webservice ή άλλη προσαρμοσμένη πηγή.'
+'Run automation in batches': 'Εκτέλεση αυτόματης διαδικασίας σε παρτίδες'
+'Batch method': 'Μέθοδος παρτίδας'
+'Batches are made remotely using retrieve parameters': 'Οι παρτίδες δημιουργούνται απόμακρα χρησιμοποιώντας παραμέτρους ανάκτησης'
+'Batches are created locally': 'Οι παρτίδες δημιουργούνται τοπικά'
+'Limit batch size': 'Περιορισμός μεγέθους παρτίδας'
+'Limit the number of records to fetch/run at once.': 'Περιορισμός αριθμού εγγραφών για ανάκτηση/εκτέλεση ταυτόχρονα.'
+Interval: Διάστημα
+'Set an interval time between each batch.': 'Ορισμός χρόνου διαστήματος μεταξύ κάθε παρτίδας.'
+Seconds: Δευτερόλεπτα
+'Configure where to extract request data from.': 'Διαμόρφωση από πού να εξαχθούν τα δεδομένα αιτήματος.'
+'Request param': 'Παράμετρος αιτήματος'
+'Define the param name to use as the data source.': 'Ορισμός ονόματος παραμέτρου για χρήση ως πηγή δεδομένων.'
+'Leave empty to use the full request data.': 'Αφήστε κενό για χρήση όλων των δεδομένων αιτήματος.'
+'Configure tasks to retrieve the data': 'Διαμόρφωση εργασιών για ανάκτηση δεδομένων'
+'Define source schema structure.': 'Ορισμός δομής schema πηγής.'
+'Predefined schema storage': 'Προκαθορισμένη αποθήκη schema'
+'Manual definitions': 'Χειροκίνητοι ορισμοί'
+'Event handler on empty source': 'EventHandler σε κενή πηγή'
+Cancel: Ακύρωση
+Error: Σφάλμα
+'Optionally trigger error when there is no data available from the source.': 'Προαιρετικά ενεργοποίηση σφάλματος όταν δεν υπάρχουν διαθέσιμα δεδομένα από την πηγή.'
+Actions: Ενέργειες
+'The actions that need to be done with the source data.': 'Οι ενέργειες που πρέπει να γίνουν με τα δεδομένα πηγής.'
+Flow: Workflow
+Routine: Ρουτίνα
+Tasks: Εργασίες
+Events: Γεγονότα
+'Select the behavior on various events in this automation.': 'Επιλογή συμπεριφοράς σε διάφορα γεγονότα σε αυτή την αυτόματη διαδικασία.'
+'On Cancel': 'Σε ακύρωση'
+'Actions to execute when the automation is cancelled.': 'Ενέργειες για εκτέλεση όταν η αυτόματη διαδικασία ακυρώνεται.'
+'On Error': 'Σε σφάλμα'
+'Actions to execute when the automation fails.': 'Ενέργειες για εκτέλεση όταν η αυτόματη διαδικασία αποτυγχάνει.'
+'On Success': 'Σε επιτυχία'
+'Actions to execute when the automation completed successfully.': 'Ενέργειες για εκτέλεση όταν η αυτόματη διαδικασία ολοκληρώθηκε με επιτυχία.'
+Response: Απόκριση
+'What this automation should respond in case of a HTTP request.': 'Τι πρέπει να απαντήσει αυτή η αυτόματη διαδικασία σε περίπτωση αιτήματος HTTP.'
+'Success status and data': 'Κατάσταση επιτυχίας και δεδομένα'
+'Data only': 'Μόνο δεδομένα'
+'Success status only': 'Μόνο κατάσταση επιτυχίας'
+'File Download': 'Λήψη αρχείου'
+'Download file selector': 'Επιλογέας λήψης αρχείου'
+Execution: Εκτέλεση
+'Control how this automation is executed.': 'Έλεγχος τρόπου εκτέλεσης αυτής της αυτόματης διαδικασίας.'
+'Execution mode': 'Λειτουργία εκτέλεσης'
+Single: Μοναδικό
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Μόνο μία εκτέλεση τη φορά και μπλοκάρει νέα αιτήματα ενώ μια εκτέλεση είναι ενεργή ή προγραμματισμένη.'
+Parallel: Παράλληλο
+'Multiple simultaneous execution runs allowed': 'Επιτρέπεται πολλαπλή ταυτόχρονη εκτέλεση'
+Queued: Στην ουρά
+'Accepts new requests but executes only one run at a time.': 'Δέχεται νέα αιτήματα αλλά εκτελεί μόνο μία εκτέλεση τη φορά.'
+'Stale run timeout': 'Timeout παλιάς εκτέλεσης'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Δευτερόλεπτα χωρίς δραστηριότητα πριν μια εκτέλεση θεωρηθεί παλιά και αυτόματα επαναφερθεί.'
+'Defaults to {default}.': 'Η προεπιλογή είναι {default}.'
+'History traces retention limit': 'Όριο διατήρησης ίχνους ιστορικού'
+'Configure execution history of this automation.': 'Διαμόρφωση ιστορικού εκτέλεσης αυτής της αυτόματης διαδικασίας.'
+'Maximum number of stored traces for this automation.': 'Μέγιστος αριθμός αποθηκευμένων ιχνών για αυτή την αυτόματη διαδικασία.'
+'Leave empty to use the global default of {param}.': 'Αφήστε κενό για χρήση της παγκόσμιας προεπιλογής {param}.'
+Status: Κατάσταση
+Default: Προεπιλογή
+Fixed: Σταθερό
+Days: Ημέρες
+Webservice: Webservice
+Trigger: Trigger
+Start: Έναρξη
+Stop: Διακοπή
+Continue: Συνέχεια
+Success: Επιτυχία
+Unknown: Άγνωστο
+Trashed: Στο κάδο απορριμμάτων
+Visible: Ορατό
+Hidden: Κρυφό
+Registered: Εγγεγραμμένο
+Scheduled: Προγραμματισμένο
+Running: Σε εκτέλεση
+Stopped: Διακοπεί
+Failed: Απέτυχε
+Cancelled: Ακυρώθηκε
+Dynamic: Δυναμικό
+Sequence: Σειρά
+'Add steps': 'Προσθήκη βημάτων'
+'Input data': 'Δεδομένα εισόδου'
+'Input variables': 'Μεταβλητές εισόδου'
+Conditions: Συνθήκες
+'Input schema': 'Schema εισόδου'
+'Output schema': 'Schema εξόδου'
+'Data type': 'Τύπος δεδομένων'
+Columns: Στήλες
+Key: Κλειδί
+Name: Όνομα
+'Field name key': 'Κλειδί ονόματος πεδίου'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Από προεπιλογή θα ανακτήσει το κλειδί δείκτη εκτός εάν η τιμή είναι πίνακας που περιέχει πληροφορίες πεδίου.'
+'Field label key': 'Κλειδί ετικέτας πεδίου'
+'Used in case the value is an array containing field information.': 'Χρησιμοποιείται σε περίπτωση που η τιμή είναι πίνακας που περιέχει πληροφορίες πεδίου.'
+'Schema storages': 'Αποθήκες schema'
+'From source schema': 'Από schema πηγής'
+'To target schema': 'Στο schema προορισμού'
+'Format options': 'Επιλογές μορφοποίησης'
+'Response format': 'Μορφή απόκρισης'
+'This webservice does not validate authorization.': 'Αυτό το webservice δεν επικυρώνει την εξουσιοδότηση.'
+'Added to queue!': 'Προστέθηκε στην ουρά!'
+'Finished executing endpoint.': 'Το endpoint ολοκληρώθηκε.'
+'There were errors while executing this endpoint.': 'Υπήρξαν σφάλματα κατά την εκτέλεση αυτού του endpoint.'
+'Dots (.) in refs are forbidden: {ref}': 'Τα σημεία (.) στα ref είναι απαγορευμένα: {ref}'
+'Entity not found for: {ref}': 'Η οντότητα δεν βρέθηκε για: {ref}'
+'Model not found for: {ref} ({class})': 'Το μοντέλο δεν βρέθηκε για: {ref} ({class})'
+'Response param name': 'Όνομα παραμέτρου απόκρισης'
+'The param name where the results are located': 'Το όνομα της παραμέτρου όπου βρίσκονται τα αποτελέσματα'
+'Nested keys are supported: key.nested_key': 'Υποστηρίζονται εσωτερικά κλειδιά: key.nested_key'
+'Key / Column name override to store results': 'Override ονόματος κλειδιού/στήλης για αποθήκευση αποτελεσμάτων'
+'Start with dot (.) for root': 'Ξεκινήστε με τελεία (.) για root'
+Action: Ενέργεια
+'Replace current data with results': 'Αντικατάσταση τρεχόντων δεδομένων με αποτελέσματα'
+'Merge results with current data': 'Ενοποίηση αποτελεσμάτων με τρέχοντα δεδομένα'
+'Insert results into current data without replacing existing values': 'Εισαγωγή αποτελεσμάτων στα τρέχοντα δεδομένα χωρίς αντικατάσταση υφιστάμενων τιμών'
+'Combine recursively?': 'Συνδυασμός αναδρομικά;'
+'Catch errors': 'Πιάσιμο σφαλμάτων'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Ορισμός τρόπου διαχείρισης σφαλμάτων. Όταν ένα σφάλμα ταιριάζει με μια συνθήκη αποτρέπει το σφάλμα και εκτελεί τις καθορισμένες ενέργειες αντί αυτού.'
+'Leave empty to catch all errors.': 'Αφήστε κενό για πιάσιμο όλων των σφαλμάτων.'
+'No actions defined': 'Καθόριστε ενέργειες ορισμένες'
+'Run catch {name}': 'Εκτέλεση catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Ανάκτηση ή ορισμός τιμής στην cache πλαισίου'
+'Set cache': 'Ορισμός cache'
+'Get cache': 'Ανάκτηση cache'
+'Set from data': 'Ορισμός από δεδομένα'
+'Manual value': 'Χειροκίνητη τιμή'
+'Key / Column name': 'Κλειδί / Όνομα στήλης'
+'Leave empty for root': 'Αφήστε κενό για root'
+'Cache value': 'Τιμή cache'
+'Cache tag reference/path': 'Αναφορά/διαδρομή tag cache'
+'Can be used like: {tag}': 'Μπορεί να χρησιμοποιηθεί ως: {tag}'
+Method: Μέθοδος
+Replace: Αντικατάσταση
+Merge: Ενοποίηση
+Append: Προσθήκη
+'Not found action': 'Η ενέργεια δεν βρέθηκε'
+'Action if the tag is not found': 'Ενέργεια αν το tag δεν βρεθεί'
+'Override with empty value': 'Override με κενή τιμή'
+'Skip task': 'Παράλειψη εργασίας'
+'Cache tag reference missing': 'Λείπει αναφορά tag cache'
+Choose: Επιλογή
+'Choose between different options based on conditions': 'Επιλογή μεταξύ διαφορετικών επιλογών βάσει συνθηκών'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Ορισμός επιλογών και συνθηκών τους. Μια συνθήκη είναι έγκυρη εκτελεί μόνο αυτή την επιλογή.'
+'Default tasks': 'Προεπιλεγμένες εργασίες'
+'These tasks will run if none of the option conditions are met.': 'Αυτές οι εργασίες θα εκτελεστούν αν δεν ικανοποιείται καμία από τις συνθήκες της επιλογής.'
+'Run option {name}': 'Εκτέλεση επιλογής {name}'
+'Run default': 'Εκτέλεση προεπιλεγμένου'
+Extract: Εξαγωγή
+'Extract a column from each item in your data': 'Εξαγωγή στήλης από κάθε στοιχείο στα δεδομένα σας'
+'The data column name to extract items from': 'Το όνομα της στήλης δεδομένων για εξαγωγή στοιχείων'
+'The column to extract': 'Η στήλη για εξαγωγή'
+'The target column to put results': 'Η στήλη προορισμού για τοποθέτηση αποτελεσμάτων'
+'Leave empty to use the Key / Column name set above': 'Αφήστε κενό για χρήση Κλειδιού/Ονόματος στήλης που ορίστηκε παραπάνω'
+'No column key configured': 'Δεν έχει ρυθμιστεί κλειδί στήλης'
+'Data not iterable': 'Τα δεδομένα δεν είναι επαναλήψιμα'
+'Could not extract': 'Αδυναμία εξαγωγής'
+Filter: Φίλτρο
+'Filter data based on conditions': 'Φιλτράρισμα δεδομένων βάσει συνθηκών'
+'Leave empty for root iteration': 'Αφήστε κενό για επανάληψη root'
+'Filter method': 'Μέθοδος φιλτραρίσματος'
+'Keep valid rows': 'Διατήρηση έγκυρων γραμμών'
+'Keep invalid rows': 'Διατήρηση μη έγκυρων γραμμών'
+'No conditions configured': 'Δεν έχουν ρυθμιστεί συνθήκες'
+'Data key not found': 'Το κλειδί δεδομένων δεν βρέθηκε'
+Group: Ομάδα
+'Group your data': 'Ομαδοποίηση δεδομένων σας'
+'The data column name to group items for': 'Το όνομα της στήλης δεδομένων για ομαδοποίηση στοιχείων'
+'Group by': 'Ομαδοποίηση κατά'
+'Set column name/key to group by value': 'Ορισμός ονόματος/κλειδιού στήλης για ομαδοποίηση κατά τιμή'
+'Default group key': 'Προεπιλεγμένο κλειδί ομάδας'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Θα χρησιμοποιηθεί όταν η γραμμή δεν περιλαμβάνει την καθορισμένη στήλη ομάδας ή είναι κενή τιμή. Αν δεν οριστεί, η γραμμή θα αφαιρεθεί.'
+'No group column configured': 'Δεν έχει ρυθμιστεί στήλη ομάδας'
+'Invalid group column: {value}': 'Μη έγκυρη στήλη ομάδας: {value}'
+Index: Δείκτης
+'Index your data': 'Δείκτης στα δεδομένα σας'
+'The data column name to index items for': 'Το όνομα της στήλης δεδομένων για δείκτη στοιχείων'
+'Numeric list': 'Αριθμητική λίστα'
+'Associative indexes': 'Συσχετιστικοί δείκτες'
+'New index key': 'Νέο κλειδί δείκτη'
+'The template for the indexed keys': 'Το πρότυπο για τους δεικτοποιημένους κλειδιά'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Χρήση κλειδιών στηλών ως tags: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Δεν έχει ρυθμιστεί μέθοδος δείκτη'
+'No index key template configured': 'Δεν έχει ρυθμιστεί πρότυπο κλειδιού δείκτη'
+Loop: Βρόχος
+'Iterate over a set of rows': 'Επανάληψη σε σύνολο γραμμών'
+'Loop method': 'Μέθοδος βρόχου'
+Row: Γραμμή
+Batches: Παρτίδες
+'Batch size': 'Μέγεθος παρτίδας'
+'Set the number of records to fetch/run at once.': 'Ορισμός αριθμού εγγραφών για ανάκτηση/εκτέλεση ταυτόχρονα.'
+'Data column not found: {key}': 'Η στήλη δεδομένων δεν βρέθηκε: {key}'
+'Data column not iterable: {key}': 'Η στήλη δεδομένων δεν είναι επαναλήψιμη: {key}'
+'Invalid action': 'Μη έγκυρη ενέργεια'
+'No batch size configured': 'Δεν έχει ρυθμιστεί μέγεθος παρτίδας'
+Map: Χάρτης
+'Map key value pairs': 'Χαρτογράφηση ζευγών κλειδιού-τιμής'
+'The data column name for the value that needs to be mapped': 'Το όνομα της στήλης δεδομένων για την τιμή που πρέπει να χαρτογραφηθεί'
+'Nested keys are supported: {example}': 'Υποστηρίζονται εσωτερικά κλειδιά: {example}'
+'Map columns': 'Στήλες χαρτογράφησης'
+'Convert key names and definition schema.': 'Μετατροπή ονομάτων κλειδιών και schema ορισμού.'
+'Map values': 'Τιμές χαρτογράφησης'
+'Convert values for a column': 'Μετατροπή τιμών για στήλη'
+'Only return mapped items?': 'Επιστροφή μόνο χαρτογραφημένων στοιχείων;'
+'This will also reorder your data in the order of your map.': 'Αυτό θα αναδιατάξει επίσης τα δεδομένα σας στη σειρά του χάρτη σας.'
+'Remove old keys?': 'Αφαίρεση παλαιών κλειδιών;'
+'Map source': 'Πηγή χαρτογράφησης'
+Mapper: Χαρτογραφήτρια
+'Convert column types to schema where available?': 'Μετατροπή τύπων στηλών σε schema όπου διαθέσιμο;'
+'No manual map configured.': 'Δεν έχει ρυθμιστεί χειροκίνητος χάρτης.'
+'Cannot map empty data': 'Αδυναμία χαρτογράφησης κενών δεδομένων'
+'Cannot map scalar data': 'Αδυναμία χαρτογράφησης σκαλαρισμένων δεδομένων'
+'Merge columns and/or values': 'Ενοποίηση στηλών και/ή τιμών'
+'The data column name to merge': 'Το όνομα της στήλης δεδομένων για ενοποίηση'
+'Merge values of a column into a single value': 'Ενοποίηση τιμών στήλης σε μία τιμή'
+'Merge columns': 'Ενοποίηση στηλών'
+'Merge both': 'Ενοποίηση και των δύο'
+'Key merge method': 'Μέθοδος ενοποίησης κλειδιών'
+'Merge column key names': 'Ενοποίηση ονομάτων κλειδιών στηλών'
+'Merge column keys using an indexed name': 'Ενοποίηση κλειδιών στηλών χρησιμοποιώντας δεικτοποιημένο όνομα'
+'Merge column keys using a regular expression': 'Ενοποίηση κλειδιών στηλών χρησιμοποιώντας κανονική έκφραση'
+'Column keys that need to be merged': 'Κλειδιά στηλών που πρέπει να ενοποιηθούν'
+'Column key name': 'Όνομα κλειδιού στήλης'
+'Regex to match keys with and merge': 'Regex για αντιστοίχιση κλειδιών με και ενοποίηση'
+'Indexed key to search for and merge': 'Δεικτοποιημένο κλειδί για αναζήτηση και ενοποίηση'
+'Nested keys are not supported': 'Τα εσωτερικά κλειδιά δεν υποστηρίζονται'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Ο δείκτης ξεκινά με'
+'Method to merge values from multiple columns': 'Μέθοδος ενοποίησης τιμών από πολλαπλές στήλες'
+'Each column value will be appended': 'Κάθε τιμή στήλης θα προστεθεί'
+'Latter column values merge into the former': 'Οι τελευταίες τιμές στηλών ενοποιούνται με τις προηγούμενες'
+'Latter column values replaces the former': 'Οι τελευταίες τιμές στηλών αντικαθιστούν τις προηγούμενες'
+'Latter column values insert into the former': 'Οι τελευταίες τιμές στηλών εισάγονται στις προηγούμενες'
+Separator: Διαχωριστικός
+Comma: Κόμμα
+Semicolon: Ερωτηματικό
+Space: Κενό
+Tab: Tab
+'New line': 'Νέα γραμμή'
+'Value template': 'Πρότυπο τιμής'
+'The template for each separate value to be merged': 'Το πρότυπο για κάθε ξεχωριστή τιμή που θα ενοποιηθεί'
+'Remove original column key(s)?': 'Αφαίρεση αρχικού/ων κλειδιού/ών στήλης;'
+'Only keep unique values?': 'Διατήρηση μόνο μοναδικών τιμών;'
+'By default all values are kept.': 'Από προεπιλογή διατηρούνται όλες οι τιμές.'
+'Preserve column keys?': 'Διατήρηση κλειδιών στηλών;'
+'Keep empty values?': 'Διατήρηση κενών τιμών;'
+'By default all empty column values will not be merged.': 'Από προεπιλογή καμία κενή τιμή στήλης δεν θα ενοποιηθεί.'
+'No key configured': 'Δεν έχει ρυθμιστεί κλειδί'
+'No columns defined': 'Δεν έχουν οριστεί στήλες'
+'No key method selected': 'Δεν έχει επιλεγεί μέθοδος κλειδιού'
+'Cannot merge scalar value.': 'Αδυναμία ενοποίησης σκαλαρισμένης τιμής.'
+'Find and replace': 'Εύρεση και αντικατάσταση'
+'The data column name for the values that need to be replaced': 'Το όνομα της στήλης δεδομένων για τις τιμές που πρέπει να αντικατασταθούν'
+'In case the value is a list of values this task will iterate the replacements for all': 'Σε περίπτωση που η τιμή είναι λίστα τιμών αυτή η εργασία θα επαναλάβει τις αντικαταστάσεις για όλα'
+'Replace values': 'Αντικατάσταση τιμών'
+'Replace keys': 'Αντικατάσταση κλειδιών'
+'Replace keys and values': 'Αντικατάσταση κλειδιών και τιμών'
+'Replace recursively?': 'Αντικατάσταση αναδρομικά;'
+Find: Εύρεση
+'Find value not set': 'Η τιμή εύρεσης δεν έχει οριστεί'
+'Cannot replace scalar data': 'Αδυναμία αντικατάστασης σκαλαρισμένων δεδομένων'
+'Retrieve your data from your specific connection': 'Ανάκτηση των δεδομένων σας από τη συγκεκριμένη σύνδεσή σας'
+'The data column name to pass to the webservice': 'Το όνομα της στήλης δεδομένων για παράδοση στο webservice'
+Connection: Σύνδεση
+'Response data': 'Δεδομένα απόκρισης'
+'No connection configured': 'Δεν έχει ρυθμιστεί σύνδεση'
+'Data not found: {key}': 'Τα δεδομένα δεν βρέθηκαν: {key}'
+Send: Αποστολή
+'Send your data to your specific connection': 'Αποστολή των δεδομένων σας στη συγκεκριμένη σύνδεσή σας'
+'Retrieve response data': 'Ανάκτηση δεδομένων απόκρισης'
+Set: Ορισμός
+'Set your own values': 'Ορισμός των δικών σας τιμών'
+'The data column key name for the values that needs to be set': 'Το όνομα κλειδιού στήλης δεδομένων για τις τιμές που πρέπει να οριστούν'
+'Reorder data?': 'Αναδιάταξη δεδομένων;'
+'This will append all configured columns at the end of the current data.': 'Αυτό θα προσθέσει όλες τις ρυθμισμένες στήλη στο τέλος των τρεχόντων δεδομένων.'
+'Force if invalid?': 'Επιβολή αν μη έγκυρο;'
+'When existing data is scalar, create new data collection from values set in this task.': 'Όταν τα υπάρχοντα δεδομένα είναι σκαλαρισμένα, δημιουργία νέας συλλογής δεδομένων από τιμές που ορίζονται σε αυτή την εργασία.'
+'You can still reference the original value through the {placeholder} tag.': 'Μπορείτε ακόμη να αναφερθείτε στην αρχική τιμή μέσω του tag {placeholder}.'
+'Set method': 'Μέθοδος ορισμού'
+'Set column values': 'Ορισμός τιμών στήλης'
+'Set schema': 'Ορισμός schema'
+'Set both': 'Ορισμός και των δύο'
+'Remove columns not defined in schema?': 'Αφαίρεση στηλών που δεν ορίζονται στο schema;'
+'Column key/name': 'Κλειδί/όνομα στήλης'
+'-- Unchanged --': '-- Αμετάβλητο --'
+'Use {wildcard} to insert the current value.': 'Χρήση {wildcard} για εισαγωγή της τρέχουσας τιμής.'
+Unset: Κατάργηση
+'Data is not iterable': 'Τα δεδομένα δεν είναι επαναλήψιμα'
+'No set params configured': 'Δεν έχουν ρυθμιστεί params ορισμού'
+Sort: Ταξινόμηση
+'Sort your data': 'Ταξινόμηση των δεδομένων σας'
+'The data column key name for the values that needs to be sorted': 'Το όνομα κλειδιού στήλης δεδομένων για τις τιμές που πρέπει να ταξινομηθούν'
+'Sort by key / column name': 'Ταξινόμηση κατά κλειδιού/ονόματος στήλης'
+'Sort by value': 'Ταξινόμηση κατά τιμής'
+'Sort by column value': 'Ταξινόμηση κατά τιμής στήλης'
+'Sort by': 'Ταξινόμηση κατά'
+'Set column name/key to sort by value': 'Ορισμός ονόματος/κλειδιού στήλης για ταξινόμηση κατά τιμή'
+Ascending: Αύξουσα
+Descending: Φθίνουσα
+'Ascending natural order': 'Φυσική αύξουσα σειρά'
+'Descending natural order': 'Φυσική φθίνουσα σειρά'
+'No sort method configured': 'Δεν έχει ρυθμιστεί μέθοδος ταξινόμησης'
+'Invalid sort order: {order}': 'Μη έγκυρη σειρά ταξινόμησης: {order}'
+'No sort column configured': 'Δεν έχει ρυθμιστεί στήλη ταξινόμησης'
+Split: Διαχωρισμός
+'Split value and/or split column key into multiple': 'Διαχωρισμός τιμής και/ή κλειδιού στήλης σε πολλαπλά'
+'The data column name to split': 'Το όνομα της στήλης δεδομένων για διαχωρισμό'
+'Split value': 'Τιμή διαχωρισμού'
+'Split into column keys': 'Διαχωρισμός σε κλειδιά στηλών'
+'Split value and split into column keys': 'Διαχωρισμός τιμής και διαχωρισμός σε κλειδιά στηλών'
+'Column key split method': 'Μέθοδος διαχωρισμού κλειδιού στήλης'
+'Split into column keys by providing custom names': 'Διαχωρισμός σε κλειδιά στηλών παρέχοντας προσαρμοσμένα ονόματα'
+'Split into column keys using an indexed name': 'Διαχωρισμός σε κλειδιά στηλών χρησιμοποιώντας δεικτοποιημένο όνομα'
+'Column key names': 'Ονόματα κλειδιών στηλών'
+'Current value index/key (optional)': 'Δείκτης/κλειδί τρέχουσας τιμής (προαιρετικό)'
+'New column key name': 'Νέο όνομα κλειδιού στήλης'
+'Indexed key': 'Δεικτοποιημένο κλειδί'
+'The template for the new indexed keys.': 'Το πρότυπο για τα νέα δεικτοποιημένα κλειδιά.'
+'Remove original key(s)?': 'Αφαίρεση αρχικού/ων κλειδιού/ών;'
+'Regular expression (Regex)': 'Κανονική έκφραση (Regex)'
+'Regular expression': 'Κανονική έκφραση'
+'Regex must be made for splitting values, not matching.': 'Το Regex πρέπει να δημιουργηθεί για διαχωρισμό τιμών, όχι αντιστοίχιση.'
+'Split value column definition': 'Ορισμός στήλης τιμής διαχωρισμού'
+'No action configured': 'Δεν έχει ρυθμιστεί ενέργεια'
+'Loop key not supported': 'Το κλειδί βρόχου δεν υποστηρίζεται'
+'Value is not splittable into list': 'Η τιμή δεν είναι διαχωρίσιμη σε λίστα'
+'Column `{type}` does not exist': 'Η στήλη `{type}` δεν υπάρχει'
+'Value is not splittable into keys': 'Η τιμή δεν είναι διαχωρίσιμη σε κλειδιά'
+'No columns configured': 'Δεν έχουν ρυθμιστεί στήλες'
+Store: Αποθήκευση
+'Get or set a storage': 'Ανάκτηση ή ορισμός αποθήκης'
+'Set storage': 'Ορισμός αποθήκης'
+'Get storage': 'Ανάκτηση αποθήκης'
+'Storage column key/path': 'Κλειδί/διαδρομή στήλης αποθήκης'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Ορισμός διαδρομής όπου αυτή η τιμή θα αποθηκευτεί ή αφήστε κενό. Χρήση τελειών (.) για πλοήγηση στην αποθήκη.'
+'No storage selected': 'Δεν έχει επιλεγεί αποθήκη'
+'Storage not found': 'Η αποθήκη δεν βρέθηκε'
+'Raw storage cannot contain paths': 'Η ωμή αποθήκη δεν μπορεί να περιέχει διαδρομές'
+'This is a raw storage, please select a different storage or change the storage type': 'Αυτή είναι μια ωμή αποθήκη, παρακαλώ επιλέξτε διαφορετική αποθήκη ή αλλάξτε τον τύπο αποθήκης'
+Template: Πρότυπο
+'Create your own modifier template with Twig': 'Δημιουργία δικού σας προτύπου τροποποιητή με Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Οι εξόδου tags {example_var} αναλύονται πριν τον μορφοποιητή Twig ως tags. Μόνο τα statement execute {example_func} αναλύονται στο Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Η τιμή του `data` χρησιμοποιείται για την έξοδο εργασίας. Διαθέσιμες μεταβλητές: `data`, `config`, `cache`, `variables` και `context`.'
+'Add your code here': 'Προσθέστε τον κώδικά σας εδώ'
+'No template set': 'Δεν έχει οριστεί πρότυπο'
+Trace: Ίχνος
+'Trace current status with a log or error.': 'Ίχνος τρέχουσας κατάστασης με log ή σφάλμα.'
+'Trace type': 'Τύπος ιχνούς'
+'Creating an error will result in the trace reporting as failed.': 'Η δημιουργία σφάλματος θα έχει ως αποτέλεσμα το ίχνος να αναφέρεται ως αποτυχία.'
+'Log message': 'Μήνυμα log'
+'Error message': 'Μήνυμα σφάλματος'
+Message: Μήνυμα
+'Extra info': 'Επιπλέον πληροφορίες'
+'Include data?': 'Συμπερίληψη δεδομένων;'
+'Message not configured': 'Το μήνυμα δεν έχει ρυθμιστεί'
+'Trigger something independently from the current flow': 'Trigger κάτι ανεξάρτητα από το τρέχον workflow'
+'Run async?': 'Εκτέλεση async;'
+Experimental: Πειραματικό
+'If the automation is using batches then this trigger will always run async.': 'Αν η αυτόματη διαδικασία χρησιμοποιεί παρτίδες αυτό το trigger θα εκτελεί πάντα async.'
+'Pass current data?': 'Διάδοση τρεχόντων δεδομένων;'
+'Override current data?': 'Override τρεχόντων δεδομένων;'
+'Leave empty to pass root data': 'Αφήστε κενό για διάδοση root δεδομένων'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Ορισμός στατικών μεταβλητών για χρήση με αυτό το trigger. Υφιστάμενες μεταβλητές θα συμπεριληφθούν επίσης.'
+Automation: Αυτόματη διαδικασία
+Wait: Αναμονή
+'Wait for time to pass': 'Αναμονή για να περάσει ο χρόνος'
+'Seconds to wait': 'Δευτερόλεπτα αναμονής'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Σύνδεση σε FTP server για ανέβασμα και/ή κατέβασμα αρχείων'
+'{type} extension is not available': 'Η επέκταση {type} δεν είναι διαθέσιμη'
+Host: Host
+Port: Θύρα
+Username: Όνομα χρήστη
+Password: Κωδικός
+'Passive mode': 'Παθητική λειτουργία'
+'Connect using SSL': 'Σύνδεση με SSL'
+'Process timeout in seconds': 'Timeout διαδικασίας σε δευτερόλεπτα'
+'Cannot connect to {host}': 'Αδυναμία σύνδεσης σε {host}'
+'Cannot login to {host}': 'Αδυναμία σύνδεσης στο {host}'
+'Successfully connected to {host}': 'Συνδέθηκε με {host}'
+'Could not connect to {host}': 'Αδυναμία σύνδεσης σε {host}'
+'HTTP No auth': 'HTTP Χωρίς auth'
+'Connect without authorization': 'Σύνδεση χωρίς εξουσιοδότηση'
+'Allow HTTP': 'Επιτρέψτε HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Επιτρέψτε μη ασφαλή σύνδεση HTTP χωρίς κρυπτογράφηση SSL'
+Endpoint: Endpoint
+'Send current data': 'Αποστολή τρεχόντων δεδομένων'
+'Select data transport location': 'Επιλογή τοποθεσίας μεταφοράς δεδομένων'
+'Request {type}': 'Αίτημα {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Σύνδεση με βασική εξουσιοδότηση'
+'Username / key': 'Όνομα χρήστη / κλειδί'
+'Password / Secret': 'Κωδικός / Μυστικό'
+'HTTP Bearer token': 'Token Bearer HTTP'
+'Connect with Bearer Token authorization': 'Σύνδεση με εξουσιοδότηση Bearer Token'
+Token: Token
+'HTTP Authorization server': 'Server εξουσιοδότησης HTTP'
+'Connect to a HTTP server using an authorization server': 'Σύνδεση σε HTTP server χρησιμοποιώντας server εξουσιοδότησης'
+Body: Σώμα
+Header: Header
+'Redirect url': 'URL ανακατεύθυνσης'
+'Local File system': 'Τοπικό σύστημα αρχείων'
+'Use the local filesystem defined by your environment': 'Χρήση τοπικού συστήματος αρχείων που ορίζεται από το περιβάλλον σας'
+'Root path': 'Διαδρομή root'
+'Relative path?': 'Σχετική διαδρομή;'
+'Makes the root path relative to the SyncEngine installation': 'Κάνει τη διαδρομή root σχετική με την εγκατάσταση SyncEngine'
+'Successfully accessed {root}': 'Πρόσβαση σε {root}'
+'Could not access {root}': 'Αδυναμία πρόσβασης σε {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Σύνδεση σε SFTP server για ανέβασμα και/ή κατέβασμα αρχείων'
+'Authentication type': 'Τύπος επαλήθευσης'
+'Private key': 'Ιδιωτικό κλειδί'
+'Username and password': 'Όνομα χρήστη και κωδικός'
+'Private key password': 'Κωδικός ιδιωτικού κλειδιού'
+'If your private key is password protected, you can fill in that password here': 'Αν το ιδιωτικό σας κλειδί είναι προστατευμένο με κωδικό μπορείτε να εισάγετε αυτόν τον κωδικό εδώ'
+'Cannot login to {host}: {error}': 'Αδυναμία σύνδεσης στο {host}: {error}'
+'Could not rename': 'Αδυναμία μετονομασίας'
+SOAP: SOAP
+'Connect using SOAP': 'Σύνδεση με SOAP'
+'HTTP Authentication': 'Επαλήθευση HTTP'
+'Basic authentication': 'Βασική επαλήθευση'
+'SOAP multistep server': 'Server SOAP πολλαπλών βημάτων'
+'Connect to a SOAP server using multistep setup': 'Σύνδεση σε server SOAP χρησιμοποιώντας πολυβηματική ρύθμιση'
+'SOAP extension is not available': 'Η επέκταση SOAP δεν είναι διαθέσιμη'
+Url: Url
+'The URL for this authentication step': 'Το URL για αυτό το βήμα επαλήθευσης'
+SQL: SQL
+'Connect to a SQL server': 'Σύνδεση σε server SQL'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Δεν υπάρχουν διαθέσιμες επεκτάσεις βάσης δεδομένων, παρακαλώ εγκαταστήστε μία από τις ακόλουθες: {options}'
+'Select database driver': 'Επιλογή driver βάσης δεδομένων'
+Database: Βάση δεδομένων
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Ερώτημα
+'Fetch method': 'Μέθοδος fetch'
+'Associated array': 'Πίνακας συσχέτισης'
+'Key => Value pairs': 'Ζεύγη Κλειδί => Τιμή'
+'Key column': 'Στήλη κλειδιού'
+'Choose the key you want to use as the row key': 'Επιλογή κλειδιού που θέλετε να χρησιμοποιήσετε ως κλειδί γραμμής'
+Path: Διαδρομή
+'Select what you want to retrieve': 'Επιλογή τιθέλετε να ανακτήσετε'
+'File contents': 'Περιεχόμενα αρχείου'
+'List directories and filenames': 'Λίστα φακέλων και ονομάτων αρχείων'
+'List filenames': 'Λίστα ονομάτων αρχείων'
+'List directories': 'Λίστα φακέλων'
+Filename: Όνομα αρχείου
+'Select what action you want to send': 'Επιλογή ενέργειας που θέλετε να στείλετε'
+'Upload file contents': 'Ανέβασμα περιεχομένων αρχείου'
+'Delete file': 'Διαγραφή αρχείου'
+'Create directory': 'Δημιουργία φακέλου'
+'Delete directory': 'Διαγραφή φακέλου'
+'Rename or move a file or directory': 'Μετονομασία ή μετακίνηση αρχείου ή φακέλου'
+'Overwrite if file exists': 'Επιστροφή αν το αρχείο υπάρχει'
+'Directory name': 'Όνομα φακέλου'
+'Old name': 'Παλαιό όνομα'
+'New name': 'Νέο όνομα'
+'Overwrite if new name exists': 'Επιστροφή αν το νέο όνομα υπάρχει'
+'No Filename configured': 'Δεν έχει ρυθμιστεί όνομα αρχείου'
+'Cannot fetch file from {host}, please try passive mode': 'Αδυναμία ανάκτησης αρχείου από {host}, παρακαλώ δοκιμάστε παθητική λειτουργία'
+'Cannot fetch file from {host}': 'Αδυναμία ανάκτησης αρχείου από {host}'
+'Successfully retrieved: {name}': 'Ανακτήθηκε: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Το αρχείο {oldName} υπήρχε, μετονομάστηκε σε {newName}'
+'Could not be write file: {name}': 'Αδυναμία εγγραφής αρχείου: {name}'
+'Successfully uploaded: {name}': 'Ανεβάστηκε: {name}'
+'Could not delete file {name}': 'Αδυναμία διαγραφής αρχείου {name}'
+'Successfully deleted file: {name}': 'Το αρχείο διαγράφηκε: {name}'
+'Cannot read directory from {host}': 'Αδυναμία ανάγνωσης φακέλου από {host}'
+'No directory configured': 'Δεν έχει ρυθμιστεί φάκελος'
+'Could not create directory: {path}': 'Αδυναμία δημιουργίας φακέλου: {path}'
+'Successfully created directory: {path}': 'Ο φάκελος δημιουργήθηκε: {path}'
+'Could not delete directory: {path}': 'Αδυναμία διαγραφής φακέλου: {path}'
+'Successfully deleted: {path}': 'Διαγράφηκε: {path}'
+'Invalid rename configuration': 'Μη έγκυρη διαμόρφωση μετονομασίας'
+'Could not rename: {old} to {new}': 'Αδυναμία μετονομασίας: {old} σε {new}'
+'Successfully renamed: {old} to {new}': 'Μετονομάστηκε: {old} σε {new}'
+'Invalid resource': 'Μη έγκυρη πόλη'
+'Request method': 'Μέθοδος αιτήματος'
+'Request timeout': 'Timeout αιτήματος'
+'Request query': 'Query αιτήματος'
+'Request header': 'Header αιτήματος'
+'Request body': 'Body αιτήματος'
+'SOAP version': 'Έκδοση SOAP'
+'Default (PHP default)': 'Προεπιλογή (PHP προεπιλογή)'
+'SOAP protocol version. Leave empty for PHP default.': 'Έδοση πρωτοκόλλου SOAP. Αφήστε κενό για PHP προεπιλογή.'
+Compression: Συμπίεση
+'Compress SOAP requests and accept compressed responses.': 'Συμπίεση αιτημάτων SOAP και αποδοχή συμπιεσμένων αποκρίσεων.'
+'Connection timeout': 'Timeout σύνδεσης'
+'Maximum time in seconds for the connection to be established.': 'Μέγιστος χρόνος σε δευτερόλεπτα για την εγκαθίδρυση της σύνδεσης.'
+'WSDL mode': 'Λειτουργία WSDL'
+'Will this connection use WSDL file format?': 'Αυτή η σύνδεση θα χρησιμοποιήσει μορφή αρχείου WSDL;'
+'WSDL file url': 'URL αρχείου WSDL'
+'Link to WSDL format that will be filled in for this soap connection': 'Σύνδεσμος σε μορφή WSDL που θα συμπληρωθεί για αυτή τη σύνδεση soap'
+'WSDL cache': 'Cache WSDL'
+'No cache': 'Χωρίς cache'
+'Memory cache': 'Cache μνήμης'
+'Disk/File cache': 'Cache δίσκου/αρχείου'
+Both: Και τα δύο
+'WSDL cache warning': 'Προειδοποίηση cache WSDL'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Η αρχικοποιημένη WSDL cache είναι ενεργή. Αυτό μπορεί να προκαλέσει προβλήματα με ξεπερασμένα αρχεία WSDL και ασφάλεια λόγω κοινής πρόσβασης στο server.'
+'SOAP service namespace': 'Namespace υπηρεσίας SOAP'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Στόχος namespace της υπηρεσίας SOAP. Απαιτείται όταν η λειτουργία WSDL είναι απενεργοποιημένη.'
+'SOAPAction header': 'Header SOAPAction'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Προαιρετική τιμή header HTTP SOAPAction. Απαιτείται από ορισμένους server SOAP.'
+Advanced: Προχωρημένα
+'Override options for the SOAP connection.': 'Επιλογές override για τη σύνδεση SOAP.'
+'SOAP headers': 'Headers SOAP'
+'SOAP operation name': 'Όνομα λειτουργίας SOAP'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Το όνομα της λειτουργίας SOAP για κλήση. Αυτό απαιτείται και για λειτουργία WSDL και non-WSDL.'
+'Use data transport as body?': 'Χρήση μεταφοράς δεδομένων ως body;'
+'SOAP body': 'Body SOAP'
+'Define static variables to be used within the authorization process.': 'Ορισμός στατικών μεταβλητών για χρήση εντός της διαδικασίας εξουσιοδότησης.'
+'Authorized request base config': 'Βασική διαμόρφωση εξουσιοδοτημένου αιτήματος'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Ορισμός βασικής διαμόρφωσης αιτήματος. Αυτό θα χρησιμοποιηθεί για ορισμό των προεπιλεγμένων params για οποιοδήποτε αίτημα χρησιμοποιώντας αυτή τη σύνδεση.'
+'Override host': 'Override host'
+'Authorization process steps': 'Βήματα διαδικασίας εξουσιοδότησης'
+'Define each step for the authorization process.': 'Ορισμός κάθε βήματος της διαδικασίας εξουσιοδότησης.'
+'The param name where the authentication parameters are located': 'Το όνομα του param όπου βρίσκονται οι παράμετροι επαλήθευσης'
+'Tag name': 'Όνομα tag'
+'Choose the tag name in which the response param value is stored': 'Επιλογή ονόματος tag στο οποίο αποθηκεύεται η τιμή param απόκρισης'
+'Example: token': 'Παράδειγμα: token'
+Expiration: Λήξη
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Ορισμός timer λήξης για την τιμή tag ώστε η επανεπαλήθευση να γίνει εντός αυτού του χρονικού πλαισίου'
+'Supported formats:': 'Υποστηριζόμενες μορφές:'
+'Timestamp or date': 'Timestamp ή ημερομηνία'
+'Time format: ({time_format})': 'Μορφή ώρας: ({time_format})'
+'Text format: ({time_string})': 'Μορφή κειμένου: ({time_string})'
+'Response type': 'Τύπος απόκρισης'
+'The type of response the URL will return': 'Ο τύπος της απόκρισης που θα επιστρέψει το URL'
+'Tag storage': 'Αποθήκευση tag'
+'Define the tags you need to store for authentication': 'Ορισμός των tags που χρειάζεστε να αποθηκεύσετε για επαλήθευση'
+'Run next step (default)': 'Εκτέλεση επόμενου βήματος (προεπιλογή)'
+'Skip next step': 'Παράλειψη επόμενου βήματος'
+'Stop loop': 'Διακοπή βρόχου'
+'Run previous step (default)': 'Εκτέλεση προηγούμενου βήματος (προεπιλογή)'
+'Restart loop from beginning': 'Επανεκκίνηση βρόχου από την αρχή'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Αδυναμία επαλήθευσης στο βήμα #{step} από σύνδεση #{connectionID}'
+'Invalid tag name': 'Μη έγκυρο όνομα tag'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Μη έγκυρη ή κενή απόκριση server για tag:{tag} | Param δεν βρέθηκε:{param}'
+'Invalid or empty server response for tag:{tag}': 'Μη έγκυρη ή κενή απόκριση server για tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Είστε σίγουροι ότι θέλετε να απενεργοποιήσετε τη διπλή επαλήθευση ταυτότητας;'
+'You will need to re-enable 2FA after verifying your password': 'Θα χρειαστεί να επανενεργοποιήσετε το 2FA μετά την επαλήθευση του κωδικού σας'
+'Enter your password to confirm': 'Εισάγετε τον κωδικό σας για επιβεβαίωση'
+'Check your email': 'Ελέγξτε το email σας'
+'We sent a 6-digit verification code to your email address': 'Απέστειλαμε έναν 6ψήφιο κωδικό επαλήθευσης στη διεύθυνση email σας'
+'Enter the code from your email': 'Εισάγετε τον κωδικό από το email σας'
+'Resend Code': 'Επαναποστολή κωδικού'
+Verify: Επαλήθευση
+'Choose how you want to receive verification codes': 'Επιλέξτε πώς θέλετε να λαμβάνετε κωδικούς επαλήθευσης'
+'Authenticator App (Recommended)': 'Εφαρμογή Authenticator (συνιστάται)'
+'Scan the QR code with your TOTP app': 'Σαρώστε τον κωδικό QR με την εφαρμογή TOTP σας'
+'Or enter this secret manually:': 'Ή εισάγετε αυτό το μυστικό χειροκίνητα:'
+'Email Verification': 'Επαλήθευση email'
+'We will send a 6-digit code to your email address': 'Θα στείλουμε έναν 6ψήφιο κωδικό στη διεύθυνση email σας'
+'Send Code to Email': 'Αποστολή κωδικού σε email'
+'Create new': 'Δημιουργία νέου'
+Description: Περιγραφή
+Expires: Λήγει
+'No API tokens created': 'Δεν δημιουργήθηκαν tokens API'
+URL: URL
+Uses: Χρήσεις
+'You are about to reset this process, are you sure?': 'Είστε έτοιμοι να επαναφέρετε αυτή τη διαδικασία, είστε σίγουροι;'
+Reset: Επαναφορά
+'Reset automation': 'Επαναφορά αυτόματης διαδικασίας'
+'Quick Edit': 'Γρήγορη επεξεργασία'
+Hide: Απόκρυψη
+Show: Εμφάνιση
+Export: Εξαγωγή
+Trash: Κάδος απορριμμάτων
+Restore: Επαναφορά
+'Delete Permanently': 'Μόνιμη διαγραφή'
+Issue: Έκδοση
+Connected: Συνδεδεμένο
+'Used in': 'Χρησιμοποιείται σε'
+'Last runs': 'Τελευταίες εκτελέσεις'
+'Scheduled runs': 'Προγραμματισμένες εκτελέσεις'
+Steps: Βήματα
+'Message Queue': 'Ουρά μηνυμάτων'
+'Scheduled At': 'Προγραμματισμένο στις'
+'Created At': 'Δημιουργήθηκε στις'
+View: Προβολή
+'Scheduled run': 'Προγραμματισμένη εκτέλεση'
+Delete: Διαγραφή
+'Delete run': 'Διαγραφή εκτέλεσης'
+'Are you sure you want to delete this message?': 'Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το μήνυμα;'
+'Disabled modules.': 'Απενεργοποιημένες ενότητες.'
+Module: Ενότητα
+Requires: Απαιτεί
+Reason: Λόγος
+Uninstall: Απεγκατάσταση
+'Are you sure?': 'Είστε σίγουροι;'
+'This will uninstall module {moduleName} from {vendor}': 'Αυτό θα απεγκαταστήσει την ενότητα {moduleName} από {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Ανεβάστε μια νεότερη έκδοση ενότητας για αντικατάσταση ασύμβατης ενότητας.'
+Version: Έκδοση
+Author: Συγγραφέας
+Manage: Διαχείριση
+Reinstall: Επανεγκατάσταση
+Config: Config
+Task: Εργασία
+Traces: Ίχνη
+'You are about to kill this process, are you sure?': 'Είστε έτοιμοι να διακόψετε αυτή τη διαδικασία, είστε σίγουροι;'
+Kill: Διακοπή
+'New user': 'Νέος χρήστης'
+'Edit user': 'Επεξεργασία χρήστη'
+Roles: Ρόλοι
+'Reset password': 'Επαναφορά κωδικού'
+'Reset password?': 'Επαναφορά κωδικού;'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'Θα αποσταλεί ένα email επαναφοράς κωδικού στο {email}. Ο χρήστης μπορεί τότε να ορίσει τον δικό του κωδικό.'
+'This will delete user {email}': 'Αυτό θα διαγράψει τον χρήστη {email}'
+Visibility: Ορατότητα
+All: Όλα
+Dashboard: Πίνακας ελέγχου
+'Verify Login': 'Επαλήθευση σύνδεσης'
+Login: Σύνδεση
+'Forgot password?': 'Ξεχάσατε τον κωδικό;'
+'Password Reset Email Sent': 'Αποστάληκε email επαναφοράς κωδικού'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Αν υπάρχει λογαριασμός που ταιριάζει με το email σας, τότε μόλις αποστάληκε ένα email που περιέχει έναν σύνδεσμο που μπορείτε να χρησιμοποιήσετε για να επαναφέρετε τον κωδικό σας.'
+'This link will expire in %expiration%': 'Αυτός ο σύνδεσμος θα λήξει σε %expiration%'
+"If you don't receive an email please check your spam folder": "Αν δεν λάβετε email παρακαλώ ελέγξτε τον φάκελο spam σας"
+'Back to login': 'Επιστροφή στη σύνδεση'
+'Try again': 'Δοκιμάστε ξανά'
+'Reset your password': 'Επαναφέρετε τον κωδικό σας'
+'Enter your email address and we will send you a link to reset your password.': 'Εισάγετε τη διεύθυνση email σας και θα σας στείλουμε έναν σύνδεσμο για να επαναφέρετε τον κωδικό σας.'
+'Page not found': 'Η σελίδα δεν βρέθηκε'
+'Oops! An Error Occurred': 'Ουπς! Υπήρξε ένα σφάλμα'
+Back: Επιστροφή
+'Authenticator App': 'Εφαρμογή Authenticator'
+'Fill in the code from your authenticator app': 'Συμπληρώστε τον κωδικό από την εφαρμογή authenticator σας'
+'Fill in the code send to your email': 'Συμπληρώστε τον κωδικό που στάλθηκε στο email σας'
+'There was a problem validating your password reset request': 'Υπήρξε πρόβλημα επικύρωσης του αιτήματος επαναφοράς κωδικού σας'
+'There is already an automation with this ref, please enter a different ref': 'Υπάρχει ήδη μια αυτόματη διαδικασία με αυτό το ref, παρακαλώ εισάγετε διαφορετικό ref'
+'There is already an automation with this name, please enter a different name': 'Υπάρχει ήδη μια αυτόματη διαδικασία με αυτό το όνομα, παρακαλώ εισάγετε διαφορετικό όνομα'
+'There is already an automation with this endpoint, please enter a different name': 'Υπάρχει ήδη μια αυτόματη διαδικασία με αυτό το endpoint, παρακαλώ εισάγετε διαφορετικό όνομα'
+'There is already an account with this email': 'Υπάρχει ήδη λογαριασμός με αυτό το email'
+'Your password should be at least { limit } characters': 'Ο κωδικός σας πρέπει να είναι τουλάχιστον { limit } χαρακτήρες'
+'Please enter a password': 'Παρακαλώ εισάγετε έναν κωδικό'
+'You should agree to our license terms.': 'Θα πρέπει να συμφωνήσετε με τους όρους αδειοδότησής μας.'
+'Please enter your email': 'Παρακαλώ εισάγετε το email σας'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: αξιόπιστος

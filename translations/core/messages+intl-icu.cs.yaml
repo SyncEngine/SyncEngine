@@ -1,0 +1,935 @@
+'Column definitions': 'Definice sloupců'
+'Extend column definitions': 'Rozšířit definice sloupců'
+'Configure custom column types for each field.': 'Konfigurovat vlastní typy sloupců pro každé pole.'
+'Comma Separated Values': 'Hodnoty oddělené čárkou'
+'FormData encoded string': 'String zakódovaný FormData'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'String zakódovaný URL'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Adresa
+'Address column': 'Sloupec adresy'
+Strict: Přísný
+'Address columns': 'Sloupce adresy'
+'Country (Code)': 'Země (Kód)'
+'Column name for: {field}': 'Název sloupce pro: {field}'
+'Administrative Area / Province / State': 'Administrativní oblast / Provincie / Stát'
+'Locality / City': 'Místnost / Město'
+'Dependent Locality': 'Závislá místnost'
+'Postal / ZIP Code': 'PSČ'
+'Sorting Code': 'Třídicí kód'
+'Address Line 1': 'Adresa řádek 1'
+'Address Line 2': 'Adresa řádek 2'
+'Address Line 3': 'Adresa řádek 3'
+Locale: Locale
+Organization: Organizace
+'Given Name': 'Jméno'
+'Additional Name': 'Další jméno'
+'Family Name': 'Příjmení'
+Boolean: Boolean
+'Format as true or false': 'Formátovat jako true nebo false'
+Format: Formát
+Integer: Celé číslo
+'Custom text': 'Vlastní text'
+'Custom number': 'Vlastní číslo'
+'True value': 'Hodnota true'
+'False value': 'Hodnota false'
+'Fallback value': 'Záložní hodnota'
+'Null / Empty': 'Null / Prázdný'
+Custom: Vlastní
+'Fallback custom value': 'Vlastní záložní hodnota'
+'Yes': 'Ano'
+'No': 'Ne'
+Collection: Kolekce
+'A collection of a column type': 'Kolekce typu sloupce'
+Associative: Asociační
+'Column Type': 'Typ sloupce'
+Key/Name: Klíč/Název
+Currency: Měna
+'Currency column for money/price based values': 'Sloupec měny pro hodnoty založené na penězích/cenách'
+'Currency sign': 'Znak měny'
+'Add space between currency sign and value?': 'Přidat mezeru mezi znakem měny a hodnotou?'
+'Put currency sign after value?': 'Umístit znak měny za hodnotu?'
+Date: Datum
+'General date and time column': 'Obecný sloupec data a času'
+Unchanged: Nezměněno
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Prázdný string'
+'Current timestamp as format': 'Aktuální timestamp jako formát'
+'Please check PHP date documentation': 'Prosím zkontrolujte dokumentaci k datům PHP'
+Timezone: Časové pásmo
+'Please check PHP DateTimeZone documentation': 'Prosím zkontrolujte dokumentaci PHP DateTimeZone'
+'Empty value': 'Prázdná hodnota'
+Duration: Doba trvání
+'General duration column': 'Obecný sloupec doby trvání'
+'Please check PHP DateInterval documentation': 'Prosím zkontrolujte dokumentaci PHP DateInterval'
+Email: E-mail
+'Email column': 'Sloupec e-mailu'
+'Validation mode': 'Režim validace'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Zajišťuje, že e-mailová adresa se velmi přísně drží norem RFC. Například neumožňuje IP adresy v části domény.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Dodržuje pravidla vstupu HTML5, která jsou mírně liberálnější než přísné normy RFC.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Podobné jako HTML5, ale také umožňuje e-mailové adresy bez TLD (např. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Záloha
+'Fallback value if it is an invalid email address.': 'Záložní hodnota pokud je neplatná e-mailová adresa.'
+Enumeration: Výčet
+'Predefined select options': 'Předdefinované možnosti výběru'
+Options: Možnosti
+Value: Hodnota
+Label: Štítek
+'Numeric options': 'Číselné možnosti'
+None: Žádný
+'Use column for type hinting': 'Použít sloupec pro type hinting'
+Soft: Měkký
+'Use fallback for invalid values': 'Použít zálohu pro neplatné hodnoty'
+'Throw error on invalid values': 'Vyvolat chybu na neplatných hodnotách'
+'Set the fallback value in case it is empty.': 'Nastavit záložní hodnotu pokud je prázdná.'
+'Will also be used as fallback in soft mode.': 'Bude také použito jako záloha v měkkém režimu.'
+'Parse before validation': 'Parsovat před validací'
+'Trim text': 'Oříznout text'
+'Convert case': 'Převést velikost písmen'
+'Capitalize first': 'Velké první písmeno'
+'Capitalize Words': 'Velká písmena ve slovech'
+lowercase: lowercase
+UPPERCASE: VELKÁ_PÍSMENA
+'Invalid enum config': 'Neplatná konfigurace enum'
+'Invalid value for enum: {formatted}': 'Neplatná hodnota pro enum: {formatted}'
+Number: Číslo
+'Numeric column': 'Číselný sloupec'
+Type: Typ
+'A raw number can be used for calculations and number storage.': 'Surové číslo lze použít pro výpočty a ukládání čísel.'
+'A formatted number can be used for display.': 'Formátované číslo lze použít pro zobrazení.'
+'Raw number': 'Surové číslo'
+'Format to a number type.': 'Formátovat na číselný typ.'
+Formatted: Formátováno
+'Format to a numeric string.': 'Formátovat na číselný string.'
+Rounding: Zaokrouhlení
+'Round halves up': 'Zaokrouhlit půlky nahoru'
+'Round halves down': 'Zaokrouhlit půlky dolů'
+'Round halves to even numbers': 'Zaokrouhlit půlky na sudá čísla'
+'Round halves to odd numbers': 'Zaokrouhlit půlky na lichá čísla'
+Decimals: Desetinná místa
+'Trim trailing zeros (0)': 'Oříznout koncové nuly (0)'
+'Decimal separator': 'Desetinný oddělovač'
+'Thousands separator': 'Oddělovač tisíců'
+none: žádné
+space: mezera
+Schema: Schema
+'Schema definitions column': 'Sloupec definic schema'
+'Schema source': 'Zdroj schema'
+Manual: Ruční
+Storage: Uložení
+'Schema storage': 'Uložení schema'
+'Configure column types for each field.': 'Konfigurovat typy sloupců pro každé pole.'
+Slug: Slug
+'Format as a slug': 'Formátovat jako slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: VELKÁ_PÍSMENA_PRODLUŽENÍ
+Case: Případ
+'camel Style': 'styl camel'
+'Word separator': 'Oddělovač slov'
+dash: pomlčka
+underscore: podtržítko
+Text: Text
+'General text column': 'Obecný sloupec textu'
+'Limit length?': 'Omezit délku?'
+Max: Max
+Unit: Jednotka
+Characters: Znaky
+Words: Slova
+'Access denied.': 'Přístup zamítnut.'
+'Invalid request method.': 'Neplatná metoda požadavku.'
+'Entity not found': 'Entita nenalezena'
+'Action not supported: {action}': 'Akce není podporována: {action}'
+Update: Aktualizovat
+Create: Vytvořit
+Account: Účet
+'Edit account': 'Upravit účet'
+'Edit user account': 'Upravit uživatelský účet'
+Preferences: Předvolby
+'Edit preferences': 'Upravit předvolby'
+'API tokens': 'API tokeny'
+'Manage API tokens': 'Spravovat API tokeny'
+'Two-factor authentication': 'Dvoufaktorové ověřování'
+'2FA is active for your account': '2FA je aktivní pro váš účet'
+'Protect your account with a verification code': 'Chraňte svůj účet ověřovacím kódem'
+Disable: Zakázat
+Enable: Povolit
+'Account updated successfully.': 'Účet aktualizován.'
+Edit: Upravit
+'Preferences updated successfully.': 'Předvolby aktualizovány.'
+'Access tokens': 'Přístupové tokeny'
+'API Tokens': 'API tokeny'
+'Create API token': 'Vytvořit API token'
+'Edit API token': 'Upravit API token'
+'Enable two-factor authentication': 'Povolit dvoufaktorové ověřování'
+'Enable 2FA': 'Povolit 2FA'
+'Invalid form submission. Please try again.': 'Neplatné odeslání formuláře. Zkuste prosím znovu.'
+'The verification code you entered is invalid.': 'Zadaný ověřovací kód je neplatný.'
+'Two-factor authentication has been enabled.': 'Dvoufaktorové ověřování bylo povoleno.'
+'Could not send verification email. Please try again.': 'Nelze odeslat ověřovací e-mail. Zkuste prosím znovu.'
+'Verify your email': 'Ověřit svůj e-mail'
+'Verify Email': 'Ověřit e-mail'
+'Disable two-factor authentication': 'Zakázat dvoufaktorové ověřování'
+'Disable 2FA': 'Zakázat 2FA'
+'Invalid password.': 'Neplatné heslo.'
+'Two-factor authentication has been disabled.': 'Dvoufaktorové ověřování bylo zakázáno.'
+Automations: Automatizace
+'Successfully created automation!': 'Automatizace vytvořena!'
+'New automation': 'Nová automatizace'
+'Successfully edited automation!': 'Automatizace upravena!'
+'Edit automation': 'Upravit automatizaci'
+Connections: Připojení
+'Successfully created connection!': 'Připojení vytvořeno!'
+'New connection': 'Nové připojení'
+'Successfully edited connection!': 'Připojení upraveno!'
+'Edit connection': 'Upravit připojení'
+Flows: Workflows
+'Successfully created flow!': 'Workflow vytvořen!'
+'New flow': 'Nový workflow'
+'Successfully edited flow!': 'Workflow upraven!'
+'Edit flow': 'Upravit workflow'
+'Connection required': 'Vyžadováno připojení'
+'Connection not found': 'Připojení nenalezeno'
+'Webservice not found': 'Webservice nenalezen'
+Modules: Moduly
+'Please upload a valid ZIP file': 'Nahrajte platný ZIP soubor'
+Upload: Nahrat
+'Unable to refresh system cache after module upload.': 'Nelze obnovit systémovou cache po nahrání modulu.'
+'Install unsuccessful': 'Instalace neúspěšná'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Nelze odinstalovat {moduleName}. Je stále používán ve vašem systému'
+'Uninstall unsuccessful': 'Odinstalace neúspěšná'
+'Unable to refresh system cache after module uninstall.': 'Nelze obnovit systémovou cache po odinstalaci modulu.'
+'{moduleName} successfully uninstalled': '{moduleName} odinstalováno'
+'Invalid module package: {moduleName}': 'Neplatný balíček modulu: {moduleName}'
+'Disabled manually': 'Ručně zakázáno'
+'Unable to refresh system cache after module disable.': 'Nelze obnovit systémovou cache po zakázání modulu.'
+'{moduleName} disabled': '{moduleName} zakázáno'
+'Unable to disable {moduleName}.': 'Nelze zakázat {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Nelze obnovit systémovou cache po povolení modulu.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Nelze povolit {moduleName}. Bylo znovu zakázáno během rebuildu cache.'
+'{moduleName} enabled': '{moduleName} povoleno'
+'Cannot move file': 'Nelze přesunout soubor'
+'Could not find module in zip file': 'Nelze najít modul v zip souboru'
+'Could not parse module namespace': 'Nelze parsovat namespace modulu'
+'Cannot unzip file!': 'Nelze rozbalit soubor!'
+'Cant delete temp folder': 'Nelze smazat dočasný adresář'
+Configuration: Konfigurace
+'Configure manager to optimize SyncEngine for your server.': 'Konfigurovat manager pro optimalizaci SyncEngine pro váš server.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Automaticky spouští async workerů na pozadí pro zpracování automatizací.'
+Enabled: Povoleno
+'Cannot enable manager': 'Nelze povolit managera'
+Disabled: Zakázáno
+'The manager is controlled by a cronjob.': 'Manager je řízen cronjobem.'
+External: Externí
+'The manager is controlled externally.': 'Manager je řízen externě.'
+'Queue size:': 'Velikost fronty:'
+'Active workers:': 'Aktivní workerů:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Vytvořeno: {timestamp} | Ping: {ping}'
+Processes: Procesy
+System: Systém
+Save: Uložit
+'Invalid Manager': 'Neplatný Manager'
+'Configuration saved': 'Konfigurace uložena'
+Routines: Routiny
+'Successfully created routine!': 'Rutina vytvořena!'
+'New routine': 'Nová rutina'
+'Successfully edited routine!': 'Rutina upravena!'
+'Edit routine': 'Upravit rutinu'
+Storages: Uložení
+'Successfully created storage!': 'Úložiště vytvořeno!'
+'New storage': 'Nové úložiště'
+'Successfully edited storage!': 'Úložiště upraveno!'
+'Edit storage': 'Upravit úložiště'
+'Clear cache': 'Vyčistit cache'
+Environment: Prostředí
+'Configure environment setup': 'Konfigurovat nastavení prostředí'
+Vault: Vault
+'Configure vault secrets': 'Konfigurovat tajné hodnoty vault'
+'Manage system processes': 'Spravovat systémové procesy'
+Import: Importovat
+'Import JSON configs': 'Importovat JSON konfigurace'
+Info: Info
+'System information': 'Informace o systému'
+Help: Nápověda
+'JSON data': 'JSON data'
+'Format must be JSON.': 'Formát musí být JSON.'
+'Import successful': 'Import úspěšný'
+Users: Uživatelé
+'Successfully created user!': 'Uživatel vytvořen!'
+'Successfully edited user!': 'Uživatel upraven!'
+'You cannot reset your own password.': 'Nelze resetovat své vlastní heslo.'
+'Password reset email sent successfully!': 'E-mail pro resetování hesla odeslán!'
+'An error occurred while resetting the password.': 'Při resetování hesla došlo k chybě.'
+'You cannot delete your own account.': 'Nelze smazat svůj vlastní účet.'
+'Successfully deleted user!': 'Uživatel smazán!'
+'Endpoint not found: {value}': 'Endpoint nenalezen: {value}'
+'Automation is not enabled': 'Automatizace není povolena'
+'Automation is already running': 'Automatizace již běží'
+'File not found': 'Soubor nenalezen'
+'Scheduled processes are disabled.': 'Plánované procesy jsou zakázány.'
+'Automation cannot accept a new request right now.': 'Automatizace nemůže nyní přijmout nový požadavek.'
+'Entity type not found': 'Typ entity nenalezen'
+'Entity deleted': 'Entita smazána'
+'An error occurred while sending the password reset email.': 'Při odesílání e-mailu pro resetování hesla došlo k chybě.'
+'Your password reset request': 'Váš požadavek na resetování hesla'
+'No reset password token found in the URL or in the session.': 'Token pro resetování hesla nenalezen v URL nebo v relaci.'
+Install: Nainstalovat
+'Unknown database error': 'Neznámá chyba databáze'
+'Could not repair database': 'Nelze opravit databázi'
+'Unable to access this page!': 'Nelze získat přístup k této stránce!'
+Register: Registrovat
+Variables: Proměnné
+'Define static variables to be used within the automation.': 'Definovat statické proměnné pro použití uvnitř automatizace.'
+Source: Zdroj
+'Select the data source for this automation': 'Vybrat zdroj dat pro tuto automatizaci'
+Request: Požadavek
+'Extract data from the current request body.': 'Extrahovat data z aktuálního těla požadavku.'
+'Cannot be used with scheduled automations.': 'Nelze použít s plánovanými automatizacemi.'
+Retrieve: Načíst
+'Retrieve data from a webservice or other custom source.': 'Načíst data z webservices nebo jiného vlastního zdroje.'
+'Run automation in batches': 'Spustit automatizaci ve dávkách'
+'Batch method': 'Metoda dávky'
+'Batches are made remotely using retrieve parameters': 'Dávky jsou vytvářeny vzdáleně pomocí parametrů pro načítání'
+'Batches are created locally': 'Dávky jsou vytvářeny lokálně'
+'Limit batch size': 'Omezit velikost dávky'
+'Limit the number of records to fetch/run at once.': 'Omezit počet záznamů k načtení/spuštění najednou.'
+Interval: Interval
+'Set an interval time between each batch.': 'Nastavit časový interval mezi každou dávkou.'
+Seconds: Sekundy
+'Configure where to extract request data from.': 'Konfigurovat odkud extrahovat data požadavku.'
+'Request param': 'Parametr požadavku'
+'Define the param name to use as the data source.': 'Definovat název parametru pro použití jako zdroj dat.'
+'Leave empty to use the full request data.': 'Ponechat prázdné pro použití všech dat požadavku.'
+'Configure tasks to retrieve the data': 'Konfigurovat úkoly pro načtení dat'
+'Define source schema structure.': 'Definovat strukturu schema zdroje.'
+'Predefined schema storage': 'Předdefinované uložení schema'
+'Manual definitions': 'Ruční definice'
+'Event handler on empty source': 'EventHandler na prázdném zdroji'
+Cancel: Zrušit
+Error: Chyba
+'Optionally trigger error when there is no data available from the source.': 'Volitelně vyvolat chybu když nejsou k dispozici žádná data ze zdroje.'
+Actions: Akce
+'The actions that need to be done with the source data.': 'Akce které musí být provedeny se zdrojovými daty.'
+Flow: Workflow
+Routine: Rutina
+Tasks: Úkoly
+Events: Události
+'Select the behavior on various events in this automation.': 'Vybrat chování pro různé události v této automatizaci.'
+'On Cancel': 'Při zrušení'
+'Actions to execute when the automation is cancelled.': 'Akce k provedení když je automatizace zrušena.'
+'On Error': 'Při chybě'
+'Actions to execute when the automation fails.': 'Akce k provedení když automatizace selže.'
+'On Success': 'Při úspěchu'
+'Actions to execute when the automation completed successfully.': 'Akce k provedení když je automatizace úspěšně dokončena.'
+Response: Odpověď
+'What this automation should respond in case of a HTTP request.': 'Co by tato automatizace měla odpovědět v případě HTTP požadavku.'
+'Success status and data': 'Status úspěchu a data'
+'Data only': 'Pouze data'
+'Success status only': 'Pouze status úspěchu'
+'File Download': 'Stahování souboru'
+'Download file selector': 'Selektor stahovaného souboru'
+Execution: Provádění
+'Control how this automation is executed.': 'Řídit jak je tato automatizace prováděna.'
+'Execution mode': 'Režim provádění'
+Single: Jednotlivý
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Pouze jedno spuštění najednou a blokuje nové požadavky zatímco běh je aktivní nebo naplánovaný.'
+Parallel: Paralelní
+'Multiple simultaneous execution runs allowed': 'Více současných běhů povoleno'
+Queued: Ve frontě
+'Accepts new requests but executes only one run at a time.': 'Přijímá nové požadavky ale provádí pouze jedno spuštění najednou.'
+'Stale run timeout': 'Timeout zastaralého běhu'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekundy bez aktivity před tím než je běh považován za zastaralý a automaticky resetován.'
+'Defaults to {default}.': 'Výchozí hodnota je {default}.'
+'History traces retention limit': 'Limit retence stop historie'
+'Configure execution history of this automation.': 'Konfigurovat historii provádění této automatizace.'
+'Maximum number of stored traces for this automation.': 'Maximální počet uložených stop pro tuto automatizaci.'
+'Leave empty to use the global default of {param}.': 'Ponechat prázdné pro použití globální výchozí hodnoty {param}.'
+Status: Stav
+Default: Výchozí
+Fixed: Fixní
+Days: Dny
+Webservice: Webservice
+Trigger: Spouštěč
+Start: Spustit
+Stop: Zastavit
+Continue: Pokračovat
+Success: Úspěch
+Unknown: Neznámý
+Trashed: V koši
+Visible: Viditelný
+Hidden: Skrytý
+Registered: Registrován
+Scheduled: Naplánovaný
+Running: Běžící
+Stopped: Zastavený
+Failed: Selhal
+Cancelled: Zrušen
+Dynamic: Dynamický
+Sequence: Sekvence
+'Add steps': 'Přidat kroky'
+'Input data': 'Vstupní data'
+'Input variables': 'Vstupní proměnné'
+Conditions: Podmínky
+'Input schema': 'Vstupní schema'
+'Output schema': 'Výstupní schema'
+'Data type': 'Typ dat'
+Columns: Sloupce
+Key: Klíč
+Name: Název
+'Field name key': 'Klíč názvu pole'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Výchoze získá klíč indexu pokud hodnota není pole obsahující informace o poli.'
+'Field label key': 'Klíč popisku pole'
+'Used in case the value is an array containing field information.': 'Použito pokud hodnota je pole obsahující informace o poli.'
+'Schema storages': 'Uložení schema'
+'From source schema': 'Ze schema zdroje'
+'To target schema': 'Do cílového schema'
+'Format options': 'Možnosti formátu'
+'Response format': 'Formát odpovědi'
+'This webservice does not validate authorization.': 'Tento webservice nevaliduje autorizaci.'
+'Added to queue!': 'Přidáno do fronty!'
+'Finished executing endpoint.': 'Endpoint dokončen.'
+'There were errors while executing this endpoint.': 'Došlo k chybám při provádění tohoto endpointu.'
+'Dots (.) in refs are forbidden: {ref}': 'Tečky (.) v ref jsou zakázány: {ref}'
+'Entity not found for: {ref}': 'Entita nenalezena pro: {ref}'
+'Model not found for: {ref} ({class})': 'Model nenalezen pro: {ref} ({class})'
+'Response param name': 'Název parametru odpovědi'
+'The param name where the results are located': 'Název parametru kde jsou umístěny výsledky'
+'Nested keys are supported: key.nested_key': 'Vnořené klíče podporovány: key.nested_key'
+'Key / Column name override to store results': 'Override názvu klíče/sloupce pro uložení výsledků'
+'Start with dot (.) for root': 'Začít s tečkou (.) pro root'
+Action: Akce
+'Replace current data with results': 'Nahradit aktuální data výsledky'
+'Merge results with current data': 'Sloučit výsledky s aktuálními daty'
+'Insert results into current data without replacing existing values': 'Vložit výsledky do aktuálních dat bez nahrazení existujících hodnot'
+'Combine recursively?': 'Kombinovat rekurzivně?'
+'Catch errors': 'Chytit chyby'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Definovat jak zacházet s chybami. Když chyba odpovídá podmínce zabrání chybě a spustí definované akce místo toho.'
+'Leave empty to catch all errors.': 'Ponechat prázdné pro chytnutí všech chyb.'
+'No actions defined': 'Žádné akce definovány'
+'Run catch {name}': 'Spustit catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Získat nebo nastavit hodnotu v kontextové cache'
+'Set cache': 'Nastavit cache'
+'Get cache': 'Získat cache'
+'Set from data': 'Nastavit z dat'
+'Manual value': 'Ruční hodnota'
+'Key / Column name': 'Klíč / Název sloupce'
+'Leave empty for root': 'Ponechat prázdné pro root'
+'Cache value': 'Hodnota cache'
+'Cache tag reference/path': 'Reference/cesta tagu cache'
+'Can be used like: {tag}': 'Lze použít jako: {tag}'
+Method: Metoda
+Replace: Nahradit
+Merge: Sloučit
+Append: Připojit
+'Not found action': 'Akce nenalezena'
+'Action if the tag is not found': 'Akce pokud tag není nalezen'
+'Override with empty value': 'Override prázdnou hodnotou'
+'Skip task': 'Přeskočit úkol'
+'Cache tag reference missing': 'Chybí reference tagu cache'
+Choose: Vybrat
+'Choose between different options based on conditions': 'Vybrat mezi různými možnostmi na základě podmínek'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Definovat možnosti a jejich podmínky. Jakmile je podmínka platná spustí pouze tuto možnost.'
+'Default tasks': 'Výchozí úkoly'
+'These tasks will run if none of the option conditions are met.': 'Tyto úkoly budou spuštěny pokud není splněna žádná z podmínek možnosti.'
+'Run option {name}': 'Spustit možnost {name}'
+'Run default': 'Spustit výchozí'
+Extract: Extrahovat
+'Extract a column from each item in your data': 'Extrahovat sloupec z každé položky ve vašich datech'
+'The data column name to extract items from': 'Název datového sloupce pro extrahování položek'
+'The column to extract': 'Sloupec pro extrahování'
+'The target column to put results': 'Cílový sloupec pro umístění výsledků'
+'Leave empty to use the Key / Column name set above': 'Ponechat prázdné pro použití Klíč/Název sloupce nastaveného výše'
+'No column key configured': 'Nekonfigurován klíč sloupce'
+'Data not iterable': 'Data nejsou iterovatelná'
+'Could not extract': 'Nelze extrahovat'
+Filter: Filtr
+'Filter data based on conditions': 'Filtrovat data na základě podmínek'
+'Leave empty for root iteration': 'Ponechat prázdné pro root iteraci'
+'Filter method': 'Metoda filtru'
+'Keep valid rows': 'Uchovat platné řádky'
+'Keep invalid rows': 'Uchovat neplatné řádky'
+'No conditions configured': 'Nekonfigurovány podmínky'
+'Data key not found': 'Klíč dat nenalezen'
+Group: Skupina
+'Group your data': 'Zařadit vaše data'
+'The data column name to group items for': 'Název datového sloupce pro zařazení položek'
+'Group by': 'Zařadit podle'
+'Set column name/key to group by value': 'Nastavit název/klíč sloupce pro zařazení podle hodnoty'
+'Default group key': 'Výchozí klíč skupiny'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Bude použito když řádek neobsahuje definovaný sloupec skupiny nebo je prázdnou hodnotou. Pokud není nastaveno, bude řádek odstraněn.'
+'No group column configured': 'Nekonfigurován sloupec skupiny'
+'Invalid group column: {value}': 'Neplatný sloupec skupiny: {value}'
+Index: Index
+'Index your data': 'Indexovat vaše data'
+'The data column name to index items for': 'Název datového sloupce pro indexování položek'
+'Numeric list': 'Číselný seznam'
+'Associative indexes': 'Asociační indexy'
+'New index key': 'Nový klíč indexu'
+'The template for the indexed keys': 'Šablona pro indexované klíče'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Použít klíče sloupců jako tagy: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Nekonfigurována metoda indexu'
+'No index key template configured': 'Nekonfigurována šablona klíče indexu'
+Loop: Smyčka
+'Iterate over a set of rows': 'Iterovat přes sadu řádků'
+'Loop method': 'Metoda smyčky'
+Row: Řádek
+Batches: Dávky
+'Batch size': 'Velikost dávky'
+'Set the number of records to fetch/run at once.': 'Nastavit počet záznamů k načtení/spuštění najednou.'
+'Data column not found: {key}': 'Datový sloupec nenalezen: {key}'
+'Data column not iterable: {key}': 'Datový sloupec neiterovatelný: {key}'
+'Invalid action': 'Neplatná akce'
+'No batch size configured': 'Nekonfigurována velikost dávky'
+Map: Mapa
+'Map key value pairs': 'Mapovat páry klíč-hodnota'
+'The data column name for the value that needs to be mapped': 'Název datového sloupce pro hodnotu která musí být mapována'
+'Nested keys are supported: {example}': 'Vnořené klíče podporovány: {example}'
+'Map columns': 'Mapovací sloupce'
+'Convert key names and definition schema.': 'Převést názvy klíčů a definice schema.'
+'Map values': 'Mapovací hodnoty'
+'Convert values for a column': 'Převést hodnoty pro sloupec'
+'Only return mapped items?': 'Vrátit pouze mapované položky?'
+'This will also reorder your data in the order of your map.': 'To také přeuspořádá vaše data v pořadí vaší mapy.'
+'Remove old keys?': 'Odstranit staré klíče?'
+'Map source': 'Mapovací zdroj'
+Mapper: Mapovač
+'Convert column types to schema where available?': 'Převést typy sloupců na schema kde dostupné?'
+'No manual map configured.': 'Nekonfigurována ruční mapa.'
+'Cannot map empty data': 'Nelze mapovat prázdná data'
+'Cannot map scalar data': 'Nelze mapovat skalární data'
+'Merge columns and/or values': 'Sloučit sloupce a/nebo hodnoty'
+'The data column name to merge': 'Název datového sloupce pro sloučení'
+'Merge values of a column into a single value': 'Sloučit hodnoty sloupce do jedné hodnoty'
+'Merge columns': 'Sloučit sloupce'
+'Merge both': 'Sloučit oba'
+'Key merge method': 'Metoda sloučení klíčů'
+'Merge column key names': 'Sloučit názvy klíčů sloupců'
+'Merge column keys using an indexed name': 'Sloučit klíče sloupců pomocí indexovaného názvu'
+'Merge column keys using a regular expression': 'Sloučit klíče sloupců pomocí regulárního výrazu'
+'Column keys that need to be merged': 'Klíče sloupců které musí být sloučeny'
+'Column key name': 'Název klíče sloupce'
+'Regex to match keys with and merge': 'Regex pro shodu klíčů se a sloučení'
+'Indexed key to search for and merge': 'Indexovaný klíč pro vyhledání a sloučení'
+'Nested keys are not supported': 'Vnořené klíče nejsou podporovány'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Index začíná s'
+'Method to merge values from multiple columns': 'Metoda pro sloučení hodnot z více sloupců'
+'Each column value will be appended': 'Každá hodnota sloupce bude připojena'
+'Latter column values merge into the former': 'Pozdější hodnoty sloupců se sloučí s předchozími'
+'Latter column values replaces the former': 'Pozdější hodnoty sloupců nahradí předchozí'
+'Latter column values insert into the former': 'Pozdější hodnoty sloupců se vloží do předchozích'
+Separator: Oddělovač
+Comma: Čárka
+Semicolon: Středník
+Space: Mezera
+Tab: Tabulátor
+'New line': 'Nový řádek'
+'Value template': 'Šablona hodnoty'
+'The template for each separate value to be merged': 'Šablona pro každou samostatnou hodnotu k sloučení'
+'Remove original column key(s)?': 'Odstranit původní klíč(e) sloupce?'
+'Only keep unique values?': 'Uchovat pouze unikátní hodnoty?'
+'By default all values are kept.': 'Výchoze jsou všechny hodnoty uchovány.'
+'Preserve column keys?': 'Uchovat klíče sloupců?'
+'Keep empty values?': 'Uchovat prázdné hodnoty?'
+'By default all empty column values will not be merged.': 'Výchoze žádné prázdné hodnoty sloupců nebudou sloučeny.'
+'No key configured': 'Nekonfigurován klíč'
+'No columns defined': 'Nedefinovány sloupce'
+'No key method selected': 'Nevybrána metoda klíče'
+'Cannot merge scalar value.': 'Nelze sloučit skalární hodnotu.'
+'Find and replace': 'Najít a nahradit'
+'The data column name for the values that need to be replaced': 'Název datového sloupce pro hodnoty které musí být nahrazeny'
+'In case the value is a list of values this task will iterate the replacements for all': 'Pokud je hodnota seznamem hodnot tento úkol ziteruje náhrady pro všechny'
+'Replace values': 'Nahradit hodnoty'
+'Replace keys': 'Nahradit klíče'
+'Replace keys and values': 'Nahradit klíče a hodnoty'
+'Replace recursively?': 'Nahradit rekurzivně?'
+Find: Najít
+'Find value not set': 'Hodnota nalezení nenastavena'
+'Cannot replace scalar data': 'Nelze nahradit skalární data'
+'Retrieve your data from your specific connection': 'Načíst vaše data z vašeho specifického připojení'
+'The data column name to pass to the webservice': 'Název datového sloupce pro předání do webservices'
+Connection: Připojení
+'Response data': 'Data odpovědi'
+'No connection configured': 'Nekonfigurováno připojení'
+'Data not found: {key}': 'Data nenalezena: {key}'
+Send: Odeslat
+'Send your data to your specific connection': 'Odeslat vaše data do vašeho specifického připojení'
+'Retrieve response data': 'Načíst data odpovědi'
+Set: Nastavit
+'Set your own values': 'Nastavit své vlastní hodnoty'
+'The data column key name for the values that needs to be set': 'Název klíče datového sloupce pro hodnoty které musí být nastaveny'
+'Reorder data?': 'Přeuspořádat data?'
+'This will append all configured columns at the end of the current data.': 'To připojí všechny konfigurované sloupce na konec aktuálních dat.'
+'Force if invalid?': 'Vynutit pokud neplatné?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Když existující data jsou skalární, vytvořit novou kolekci dat z hodnot nastavených v tomto úkolu.'
+'You can still reference the original value through the {placeholder} tag.': 'Stále můžete odkazovat na původní hodnotu přes tag {placeholder}.'
+'Set method': 'Metoda nastavení'
+'Set column values': 'Nastavit hodnoty sloupce'
+'Set schema': 'Nastavit schema'
+'Set both': 'Nastavit obojí'
+'Remove columns not defined in schema?': 'Odstranit sloupce nedefinované v schema?'
+'Column key/name': 'Klíč/název sloupce'
+'-- Unchanged --': '-- Nezměněno --'
+'Use {wildcard} to insert the current value.': 'Použít {wildcard} pro vložení aktuální hodnoty.'
+Unset: Odstranit
+'Data is not iterable': 'Data nejsou iterovatelná'
+'No set params configured': 'Nekonfigurovány params nastavení'
+Sort: Seřadit
+'Sort your data': 'Seřadit vaše data'
+'The data column key name for the values that needs to be sorted': 'Název klíče datového sloupce pro hodnoty které musí být seřazeny'
+'Sort by key / column name': 'Seřadit podle klíče/názvu sloupce'
+'Sort by value': 'Seřadit podle hodnoty'
+'Sort by column value': 'Seřadit podle hodnoty sloupce'
+'Sort by': 'Seřadit podle'
+'Set column name/key to sort by value': 'Nastavit název/klíč sloupce pro řazení podle hodnoty'
+Ascending: Vzestupně
+Descending: Sestupně
+'Ascending natural order': 'Vzestupné přirozené pořadí'
+'Descending natural order': 'Sestupné přirozené pořadí'
+'No sort method configured': 'Nekonfigurována metoda řazení'
+'Invalid sort order: {order}': 'Neplatné pořadí řazení: {order}'
+'No sort column configured': 'Nekonfigurován sloupec řazení'
+Split: Rozdělit
+'Split value and/or split column key into multiple': 'Rozdělit hodnotu a/nebo klíč sloupce na více'
+'The data column name to split': 'Název datového sloupce pro rozdělení'
+'Split value': 'Hodnota rozdělení'
+'Split into column keys': 'Rozdělit na klíče sloupců'
+'Split value and split into column keys': 'Rozdělit hodnotu a rozdělit na klíče sloupců'
+'Column key split method': 'Metoda rozdělení klíče sloupce'
+'Split into column keys by providing custom names': 'Rozdělit na klíče sloupců poskytnutím vlastních názvů'
+'Split into column keys using an indexed name': 'Rozdělit na klíče sloupců pomocí indexovaného názvu'
+'Column key names': 'Názvy klíčů sloupců'
+'Current value index/key (optional)': 'Index/klíč aktuální hodnoty (volitelné)'
+'New column key name': 'Nový název klíče sloupce'
+'Indexed key': 'Indexovaný klíč'
+'The template for the new indexed keys.': 'Šablona pro nové indexované klíče.'
+'Remove original key(s)?': 'Odstranit původní klíč(e)?'
+'Regular expression (Regex)': 'Regulární výraz (Regex)'
+'Regular expression': 'Regulární výraz'
+'Regex must be made for splitting values, not matching.': 'Regex musí být vytvořen pro rozdělení hodnot, ne pro shodu.'
+'Split value column definition': 'Definice sloupce hodnoty rozdělení'
+'No action configured': 'Nekonfigurována akce'
+'Loop key not supported': 'Klíč smyčky není podporován'
+'Value is not splittable into list': 'Hodnota není dělitelná na seznam'
+'Column `{type}` does not exist': 'Sloupec `{type}` neexistuje'
+'Value is not splittable into keys': 'Hodnota není dělitelná na klíče'
+'No columns configured': 'Nekonfigurovány sloupce'
+Store: Uložit
+'Get or set a storage': 'Získat nebo nastavit úložiště'
+'Set storage': 'Nastavit úložiště'
+'Get storage': 'Získat úložiště'
+'Storage column key/path': 'Klíč/cesta sloupce úložiště'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Nastavit cestu kde bude tato hodnota uložena nebo ponechat prázdné. Použít tečky (.) pro navigaci v úložišti.'
+'No storage selected': 'Nevybráno úložiště'
+'Storage not found': 'Úložiště nenalezeno'
+'Raw storage cannot contain paths': 'Surové úložiště nemůže obsahovat cesty'
+'This is a raw storage, please select a different storage or change the storage type': 'Toto je surové úložiště, prosím vyberte jiné úložiště nebo změňte typ úložiště'
+Template: Šablona
+'Create your own modifier template with Twig': 'Vytvořit vlastní šablonu modifikátoru s Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Výstupní tagy {example_var} jsou parsovány před motorem Twig jako tagy. Pouze statement execute {example_func} jsou parsovány v Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Hodnota `data` je použita pro výstup úkolu. Dostupné proměnné: `data`, `config`, `cache`, `variables` a `context`.'
+'Add your code here': 'Přidejte svůj kód zde'
+'No template set': 'Nenastavena šablona'
+Trace: Stopa
+'Trace current status with a log or error.': 'Sledovat aktuální status s logem nebo chybou.'
+'Trace type': 'Typ stopy'
+'Creating an error will result in the trace reporting as failed.': 'Vytvoření chyby bude mít za následek že stopa bude hlášena jako selhaná.'
+'Log message': 'Zpráva logu'
+'Error message': 'Chybová zpráva'
+Message: Zpráva
+'Extra info': 'Dodatkové informace'
+'Include data?': 'Zahrnout data?'
+'Message not configured': 'Zpráva nekonfigurována'
+'Trigger something independently from the current flow': 'Spustit něco nezávisle na aktuálním workflow'
+'Run async?': 'Spustit async?'
+Experimental: Experimentální
+'If the automation is using batches then this trigger will always run async.': 'Pokud automatizace používá dávky tento spouštěč bude vždy spouštět async.'
+'Pass current data?': 'Předat aktuální data?'
+'Override current data?': 'Override aktuálních dat?'
+'Leave empty to pass root data': 'Ponechat prázdné pro předání root dat'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Definovat statické proměnné pro použití s tímto spouštěčem. Existující proměnné budou také zahrnuty.'
+Automation: Automatizace
+Wait: Čekat
+'Wait for time to pass': 'Čekat až čas projde'
+'Seconds to wait': 'Sekundy k čekání'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Připojit k FTP serveru pro nahrání a/nebo stažení souborů'
+'{type} extension is not available': 'Rozšíření {type} není dostupné'
+Host: Hostitel
+Port: Port
+Username: Uživatelské jméno
+Password: Heslo
+'Passive mode': 'Pasivní režim'
+'Connect using SSL': 'Připojit pomocí SSL'
+'Process timeout in seconds': 'Timeout procesu v sekundách'
+'Cannot connect to {host}': 'Nelze se připojit k {host}'
+'Cannot login to {host}': 'Nelze se přihlásit k {host}'
+'Successfully connected to {host}': 'Připojeno k {host}'
+'Could not connect to {host}': 'Nelze se připojit k {host}'
+'HTTP No auth': 'HTTP Žádná auth'
+'Connect without authorization': 'Připojit bez autorizace'
+'Allow HTTP': 'Povolit HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Povolit nebezpečné HTTP připojení bez šifrování SSL'
+Endpoint: Endpoint
+'Send current data': 'Odeslat aktuální data'
+'Select data transport location': 'Vybrat umístění transportu dat'
+'Request {type}': 'Požadavek {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Připojit s základní autorizací'
+'Username / key': 'Uživatelské jméno / klíč'
+'Password / Secret': 'Heslo / Tajemství'
+'HTTP Bearer token': 'Token Bearer HTTP'
+'Connect with Bearer Token authorization': 'Připojit s autorizací Bearer Token'
+Token: Token
+'HTTP Authorization server': 'Autorizační server HTTP'
+'Connect to a HTTP server using an authorization server': 'Připojit k HTTP serveru pomocí autorizačního serveru'
+Body: Tělo
+Header: Hlavička
+'Redirect url': 'URL přesměrování'
+'Local File system': 'Místní souborový systém'
+'Use the local filesystem defined by your environment': 'Použít místní souborový systém definovaný vaším prostředím'
+'Root path': 'Kořenová cesta'
+'Relative path?': 'Relativní cesta?'
+'Makes the root path relative to the SyncEngine installation': 'Udělá kořenovou cestu relativní k instalaci SyncEngine'
+'Successfully accessed {root}': 'Přístup k {root}'
+'Could not access {root}': 'Nelze získat přístup k {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Připojit k SFTP serveru pro nahrání a/nebo stažení souborů'
+'Authentication type': 'Typ autentizace'
+'Private key': 'Soukromý klíč'
+'Username and password': 'Uživatelské jméno a heslo'
+'Private key password': 'Heslo soukromého klíče'
+'If your private key is password protected, you can fill in that password here': 'Pokud je váš soukromý klíč chráněn heslem můžete zde vyplnit toto heslo'
+'Cannot login to {host}: {error}': 'Nelze se přihlásit k {host}: {error}'
+'Could not rename': 'Nelze přejmenovat'
+SOAP: SOAP
+'Connect using SOAP': 'Připojit pomocí SOAP'
+'HTTP Authentication': 'Autentizace HTTP'
+'Basic authentication': 'Základní autentizace'
+'SOAP multistep server': 'SOAP vícekrokový server'
+'Connect to a SOAP server using multistep setup': 'Připojit k SOAP serveru pomocí vícekrokového nastavení'
+'SOAP extension is not available': 'Rozšíření SOAP není dostupné'
+Url: Url
+'The URL for this authentication step': 'URL pro tento krok autentizace'
+SQL: SQL
+'Connect to a SQL server': 'Připojit k SQL serveru'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Žádná rozšíření databáze nejsou dostupná, prosím nainstalujte jedno z následujících: {options}'
+'Select database driver': 'Vybrat ovladač databáze'
+Database: Databáze
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Dotaz
+'Fetch method': 'Metoda fetch'
+'Associated array': 'Asociační pole'
+'Key => Value pairs': 'Páry Klíč => Hodnota'
+'Key column': 'Klíčový sloupec'
+'Choose the key you want to use as the row key': 'Vybrat klíč který chcete použít jako klíč řádku'
+Path: Cesta
+'Select what you want to retrieve': 'Vybrat co chcete načíst'
+'File contents': 'Obsah souboru'
+'List directories and filenames': 'Vypsat adresáře a názvy souborů'
+'List filenames': 'Vypsat názvy souborů'
+'List directories': 'Vypsat adresáře'
+Filename: Název souboru
+'Select what action you want to send': 'Vybrat jakou akci chcete odeslat'
+'Upload file contents': 'Nahrát obsah souboru'
+'Delete file': 'Smazat soubor'
+'Create directory': 'Vytvořit adresář'
+'Delete directory': 'Smazat adresář'
+'Rename or move a file or directory': 'Přejmenovat nebo přesunout soubor nebo adresář'
+'Overwrite if file exists': 'Přepsat pokud soubor existuje'
+'Directory name': 'Název adresáře'
+'Old name': 'Starý název'
+'New name': 'Nový název'
+'Overwrite if new name exists': 'Přepsat pokud nový název existuje'
+'No Filename configured': 'Nekonfigurován název souboru'
+'Cannot fetch file from {host}, please try passive mode': 'Nelze načíst soubor z {host}, prosím zkuste pasivní režim'
+'Cannot fetch file from {host}': 'Nelze načíst soubor z {host}'
+'Successfully retrieved: {name}': 'Načteno: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Soubor {oldName} existoval, přejmenován na {newName}'
+'Could not be write file: {name}': 'Nelze zapsat soubor: {name}'
+'Successfully uploaded: {name}': 'Nahráno: {name}'
+'Could not delete file {name}': 'Nelze smazat soubor {name}'
+'Successfully deleted file: {name}': 'Soubor smazán: {name}'
+'Cannot read directory from {host}': 'Nelze přečíst adresář z {host}'
+'No directory configured': 'Nekonfigurován adresář'
+'Could not create directory: {path}': 'Nelze vytvořit adresář: {path}'
+'Successfully created directory: {path}': 'Adresář vytvořen: {path}'
+'Could not delete directory: {path}': 'Nelze smazat adresář: {path}'
+'Successfully deleted: {path}': 'Smazáno: {path}'
+'Invalid rename configuration': 'Neplatná konfigurace přejmenování'
+'Could not rename: {old} to {new}': 'Nelze přejmenovat: {old} na {new}'
+'Successfully renamed: {old} to {new}': 'Přejmenováno: {old} na {new}'
+'Invalid resource': 'Neplatný zdroj'
+'Request method': 'Metoda požadavku'
+'Request timeout': 'Timeout požadavku'
+'Request query': 'Query požadavku'
+'Request header': 'Header požadavku'
+'Request body': 'Tělo požadavku'
+'SOAP version': 'Verze SOAP'
+'Default (PHP default)': 'Výchozí (PHP výchozí)'
+'SOAP protocol version. Leave empty for PHP default.': 'Verze protokolu SOAP. Ponechat prázdné pro PHP výchozí.'
+Compression: Komprese
+'Compress SOAP requests and accept compressed responses.': 'Komprimovat požadavky SOAP a přijmout komprimované odpovědi.'
+'Connection timeout': 'Timeout připojení'
+'Maximum time in seconds for the connection to be established.': 'Maximální čas v sekundách pro ustanovení připojení.'
+'WSDL mode': 'Režim WSDL'
+'Will this connection use WSDL file format?': 'Bude toto připojení používat formát souboru WSDL?'
+'WSDL file url': 'URL souboru WSDL'
+'Link to WSDL format that will be filled in for this soap connection': 'Odkaz na formát WSDL který bude vyplněn pro toto soap připojení'
+'WSDL cache': 'Cache WSDL'
+'No cache': 'Žádná cache'
+'Memory cache': 'Paměťová cache'
+'Disk/File cache': 'Disk/Souborová cache'
+Both: Oba
+'WSDL cache warning': 'Varování cache WSDL'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Souborová WSDL cache je povolena. To může způsobit problémy s zastaralými soubory WSDL a bezpečností kvůli sdílenému přístupu na serveru.'
+'SOAP service namespace': 'Namespace SOAP služby'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Cílový namespace SOAP služby. Vyžadováno když režim WSDL je zakázán.'
+'SOAPAction header': 'Header SOAPAction'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Volitelná hodnota header HTTP SOAPAction. Vyžadováno některými SOAP servery.'
+Advanced: Pokročilé
+'Override options for the SOAP connection.': 'Možnosti override pro SOAP připojení.'
+'SOAP headers': 'Headers SOAP'
+'SOAP operation name': 'Název operace SOAP'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Název operace SOAP k vyvolání. To je vyžadováno jak pro režim WSDL tak non-WSDL.'
+'Use data transport as body?': 'Použít transport dat jako tělo?'
+'SOAP body': 'Tělo SOAP'
+'Define static variables to be used within the authorization process.': 'Definovat statické proměnné pro použití uvnitř autorizačního procesu.'
+'Authorized request base config': 'Základní konfigurace autorizovaného požadavku'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definovat základní konfiguraci požadavku. To bude použito pro nastavení výchozích params pro jakýkoliv požadavek používající toto připojení.'
+'Override host': 'Override hostitele'
+'Authorization process steps': 'Kroky autorizačního procesu'
+'Define each step for the authorization process.': 'Definovat každý krok autorizačního procesu.'
+'The param name where the authentication parameters are located': 'Název param kde jsou umístěny autentizační parametry'
+'Tag name': 'Název tagu'
+'Choose the tag name in which the response param value is stored': 'Vybrat název tagu ve kterém je uložena hodnota param odpovědi'
+'Example: token': 'Příklad: token'
+Expiration: Expirace
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Nastavit timer expirace pro hodnotu tagu aby re-autentizace byla provedena v tomto časovém rámci'
+'Supported formats:': 'Podporované formáty:'
+'Timestamp or date': 'Timestamp nebo datum'
+'Time format: ({time_format})': 'Formát času: ({time_format})'
+'Text format: ({time_string})': 'Formát textu: ({time_string})'
+'Response type': 'Typ odpovědi'
+'The type of response the URL will return': 'Typ odpovědi který URL vrátí'
+'Tag storage': 'Úložiště tagů'
+'Define the tags you need to store for authentication': 'Definovat tagy které potřebujete uložit pro autentizaci'
+'Run next step (default)': 'Spustit další krok (výchozí)'
+'Skip next step': 'Přeskočit další krok'
+'Stop loop': 'Zastavit smyčku'
+'Run previous step (default)': 'Spustit předchozí krok (výchozí)'
+'Restart loop from beginning': 'Restartovat smyčku od začátku'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Nelze autentizovat na kroku #{step} z připojení #{connectionID}'
+'Invalid tag name': 'Neplatný název tagu'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Neplatná nebo prázdná odpověď serveru pro tag:{tag} | Param nenalezen:{param}'
+'Invalid or empty server response for tag:{tag}': 'Neplatná nebo prázdná odpověď serveru pro tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Jste si jisti že chcete zakázat dvoufaktorové ověřování?'
+'You will need to re-enable 2FA after verifying your password': 'Budete muset znovu povolit 2FA po ověření vašeho hesla'
+'Enter your password to confirm': 'Zadejte vaše heslo pro potvrzení'
+'Check your email': 'Zkontrolujte váš e-mail'
+'We sent a 6-digit verification code to your email address': 'Odeslali jsme 6místný ověřovací kód na vaši e-mailovou adresu'
+'Enter the code from your email': 'Zadejte kód z vašeho e-mailu'
+'Resend Code': 'Znovu odeslat kód'
+Verify: Ověřit
+'Choose how you want to receive verification codes': 'Vyberte jak chcete přijímat ověřovací kódy'
+'Authenticator App (Recommended)': 'Aplikace Authenticator (doporučeno)'
+'Scan the QR code with your TOTP app': 'Naskenujte QR kód vaší TOTP aplikací'
+'Or enter this secret manually:': 'Nebo zadejte toto tajemství ručně:'
+'Email Verification': 'Ověření e-mailu'
+'We will send a 6-digit code to your email address': 'Pošleme 6místný kód na vaši e-mailovou adresu'
+'Send Code to Email': 'Odeslat kód na e-mail'
+'Create new': 'Vytvořit nový'
+Description: Popis
+Expires: Expireuje
+'No API tokens created': 'Žádné API tokeny vytvořeny'
+URL: URL
+Uses: Použití
+'You are about to reset this process, are you sure?': 'Chystáte se resetovat tento proces, jste si jisti?'
+Reset: Resetovat
+'Reset automation': 'Resetovat automatizaci'
+'Quick Edit': 'Rychlá úprava'
+Hide: Skrýt
+Show: Zobrazit
+Export: Exportovat
+Trash: Koš
+Restore: Obnovit
+'Delete Permanently': 'Trvale smazat'
+Issue: Issue
+Connected: Připojeno
+'Used in': 'Použito v'
+'Last runs': 'Poslední spuštění'
+'Scheduled runs': 'Naplánovaná spuštění'
+Steps: Kroky
+'Message Queue': 'Fronta zpráv'
+'Scheduled At': 'Naplánováno v'
+'Created At': 'Vytvořeno v'
+View: Zobrazit
+'Scheduled run': 'Naplánované spuštění'
+Delete: Smazat
+'Delete run': 'Smazat spuštění'
+'Are you sure you want to delete this message?': 'Jste si jisti že chcete smazat tuto zprávu?'
+'Disabled modules.': 'Zakázané moduly.'
+Module: Modul
+Requires: Vyžaduje
+Reason: Důvod
+Uninstall: Odinstalovat
+'Are you sure?': 'Jste si jisti?'
+'This will uninstall module {moduleName} from {vendor}': 'Tím odinstalujete modul {moduleName} od {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Nahrajte novější verzi modulu pro nahrazení nekompatibilního modulu.'
+Version: Verze
+Author: Autor
+Manage: Spravovat
+Reinstall: Znovu nainstalovat
+Config: Config
+Task: Úkol
+Traces: Stopy
+'You are about to kill this process, are you sure?': 'Chystáte se zabít tento proces, jste si jisti?'
+Kill: Zabít
+'New user': 'Nový uživatel'
+'Edit user': 'Upravit uživatele'
+Roles: Role
+'Reset password': 'Resetovat heslo'
+'Reset password?': 'Resetovat heslo?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'E-mail pro resetování hesla bude odeslán na {email}. Uživatel si pak může nastavit vlastní heslo.'
+'This will delete user {email}': 'Tím smažete uživatele {email}'
+Visibility: Viditelnost
+All: Vše
+Dashboard: Dashboard
+'Verify Login': 'Ověřit přihlášení'
+Login: Přihlášení
+'Forgot password?': 'Zapomněli jste heslo?'
+'Password Reset Email Sent': 'E-mail pro resetování hesla odeslán'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Pokud existuje účet odpovídající vašemu e-mailu, právě byl odeslán e-mail obsahující odkaz který můžete použít k resetování vašeho hesla.'
+'This link will expire in %expiration%': 'Tento odkaz vyprší za %expiration%'
+"If you don't receive an email please check your spam folder": "Pokud neobdržíte e-mail prosím zkontrolujte váš spam adresář"
+'Back to login': 'Zpět k přihlášení'
+'Try again': 'Zkusit znovu'
+'Reset your password': 'Resetujte své heslo'
+'Enter your email address and we will send you a link to reset your password.': 'Zadejte vaši e-mailovou adresu a pošleme vám odkaz pro resetování vašeho hesla.'
+'Page not found': 'Stránka nenalezena'
+'Oops! An Error Occurred': 'Jejda! Došlo k chybě'
+Back: Zpět
+'Authenticator App': 'Aplikace Authenticator'
+'Fill in the code from your authenticator app': 'Vyplňte kód z vaší aplikace authenticator'
+'Fill in the code send to your email': 'Vyplňte kód odeslaný na váš e-mail'
+'There was a problem validating your password reset request': 'Došlo k problému s validací vašeho požadavku na resetování hesla'
+'There is already an automation with this ref, please enter a different ref': 'Již existuje automatizace s tímto ref, prosím zadejte jiný ref'
+'There is already an automation with this name, please enter a different name': 'Již existuje automatizace s tímto názvem, prosím zadejte jiný název'
+'There is already an automation with this endpoint, please enter a different name': 'Již existuje automatizace s tímto endpointem, prosím zadejte jiný název'
+'There is already an account with this email': 'Již existuje účet s tímto e-mailem'
+'Your password should be at least { limit } characters': 'Vaše heslo by mělo mít alespoň { limit } znaků'
+'Please enter a password': 'Prosím zadejte heslo'
+'You should agree to our license terms.': 'Měli byste souhlasit s našimi licenčními podmínkami.'
+'Please enter your email': 'Prosím zadejte váš e-mail'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: důvěryhodný
