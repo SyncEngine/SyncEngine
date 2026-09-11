@@ -56,7 +56,7 @@ class Set extends TaskModel
 					$this->trans(
 						'When existing data is scalar, create new data collection from values set in this task.'
 					),
-					$this->trans( 'You can still reference the original value through the {{ data|String }} tag.' ),
+					$this->trans( 'You can still reference the original value through the {placeholder} tag.', [ 'placeholder' => '{{ data|String }}' ] ),
 				],
 				'type'  => 'switch',
 			],
