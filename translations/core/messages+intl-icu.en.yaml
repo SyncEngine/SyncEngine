@@ -1,22 +1,12 @@
-'Get only products specified by a comma-separated list of product IDs': 'Get only products specified by a comma-separated list of product IDs'
-'Get presentment prices in only certain currencies, specified by a comma-separated list of ISO 4217': 'Get presentment prices in only certain currencies, specified by a comma-separated list of ISO 4217'
-'Get products published before a specified date': 'Get products published before a specified date'
-Date: Date
-'General date and time column': 'General date and time column'
-Format: Format
-'Please check PHP date documentation': 'Please check PHP date documentation'
-Timezone: Timezone
-'Please check PHP DateTimeZone documentation': 'Please check PHP DateTimeZone documentation'
-Boolean: Boolean
-'Format as true or false': 'Format as true or false'
-Integer: Integer
-'Custom text': 'Custom text'
-'True value': 'True value'
-'False value': 'False value'
-'Fallback value': 'Fallback value'
-'Null / Empty': 'Null / Empty'
-Custom: Custom
-'Fallback custom value': 'Fallback custom value'
+'Column definitions': 'Column definitions'
+'Extend column definitions': 'Extend column definitions'
+'Configure custom column types for each field.': 'Configure custom column types for each field.'
+'Comma Separated Values': 'Comma Separated Values'
+'FormData encoded string': 'FormData encoded string'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'URL encoded string'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
 Address: Address
 'Address column': 'Address column'
 Strict: Strict
@@ -36,98 +26,203 @@ Organization: Organization
 'Given Name': 'Given Name'
 'Additional Name': 'Additional Name'
 'Family Name': 'Family Name'
-Number: Number
-'Numeric column': 'Numeric column'
-Type: Type
-Raw: Raw
-'Format to a number type.': 'Format to a number type.'
-Formatted: Formatted
-'Format to a numeric string.': 'Format to a numeric string.'
-Decimals: Decimals
-Rounding: Rounding
-'Round halves up': 'Round halves up'
-'Round halves down': 'Round halves down'
-'Round halves to even numbers': 'Round halves to even numbers'
-'Round halves to odd numbers': 'Round halves to odd numbers'
-'Decimal separator': 'Decimal separator'
-'Thousands separator': 'Thousands separator'
-none: none
-space: space
-Slug: Slug
-'Format as a slug': 'Format as a slug'
-lowercase-dash: lowercase-dash
-UPPERCASE_UNDERSCORE: UPPERCASE_UNDERSCORE
-snake_case: snake_case
-camelCase: camelCase
-Case: Case
-lowercase: lowercase
-UPPERCASE: UPPERCASE
-'Capitalize Words': 'Capitalize Words'
-'Capitalize first': 'Capitalize first'
-'camel Style': 'camel Style'
-'Word separator': 'Word separator'
-dash: dash
-underscore: underscore
+Boolean: Boolean
+'Format as true or false': 'Format as true or false'
+Format: Format
+Integer: Integer
+'Custom text': 'Custom text'
+'Custom number': 'Custom number'
+'True value': 'True value'
+'False value': 'False value'
+'Fallback value': 'Fallback value'
+'Null / Empty': 'Null / Empty'
+Custom: Custom
+'Fallback custom value': 'Fallback custom value'
+'Yes': 'Yes'
+'No': 'No'
+Collection: Collection
+'A collection of a column type': 'A collection of a column type'
+Associative: Associative
+'Column Type': 'Column Type'
+Key/Name: Key/Name
 Currency: Currency
 'Currency column for money/price based values': 'Currency column for money/price based values'
 'Currency sign': 'Currency sign'
 'Add space between currency sign and value?': 'Add space between currency sign and value?'
 'Put currency sign after value?': 'Put currency sign after value?'
-Collection: Collection
-'A collection of a column type': 'A collection of a column type'
-Associative: Associative
-'Column Type': 'Column Type'
+Date: Date
+'General date and time column': 'General date and time column'
+Unchanged: Unchanged
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Empty string'
+'Current timestamp as format': 'Current timestamp as format'
+'Please check PHP date documentation': 'Please check PHP date documentation'
+Timezone: Timezone
+'Please check PHP DateTimeZone documentation': 'Please check PHP DateTimeZone documentation'
+'Empty value': 'Empty value'
+Duration: Duration
+'General duration column': 'General duration column'
+'Please check PHP DateInterval documentation': 'Please check PHP DateInterval documentation'
+Email: Email
+'Email column': 'Email column'
+'Validation mode': 'Validation mode'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Fallback
+'Fallback value if it is an invalid email address.': 'Fallback value if it is an invalid email address.'
+Enumeration: Enumeration
+'Predefined select options': 'Predefined select options'
+Options: Options
+Value: Value
+Label: Label
+'Numeric options': 'Numeric options'
+None: None
+'Use column for type hinting': 'Use column for type hinting'
+Soft: Soft
+'Use fallback for invalid values': 'Use fallback for invalid values'
+'Throw error on invalid values': 'Throw error on invalid values'
+'Set the fallback value in case it is empty.': 'Set the fallback value in case it is empty.'
+'Will also be used as fallback in soft mode.': 'Will also be used as fallback in soft mode.'
+'Parse before validation': 'Parse before validation'
+'Trim text': 'Trim text'
+'Convert case': 'Convert case'
+'Capitalize first': 'Capitalize first'
+'Capitalize Words': 'Capitalize Words'
+lowercase: lowercase
+UPPERCASE: UPPERCASE
+'Invalid enum config': 'Invalid enum config'
+'Invalid value for enum: {formatted}': 'Invalid value for enum: {formatted}'
+Number: Number
+'Numeric column': 'Numeric column'
+Type: Type
+'A raw number can be used for calculations and number storage.': 'A raw number can be used for calculations and number storage.'
+'A formatted number can be used for display.': 'A formatted number can be used for display.'
+'Raw number': 'Raw number'
+'Format to a number type.': 'Format to a number type.'
+Formatted: Formatted
+'Format to a numeric string.': 'Format to a numeric string.'
+Rounding: Rounding
+'Round halves up': 'Round halves up'
+'Round halves down': 'Round halves down'
+'Round halves to even numbers': 'Round halves to even numbers'
+'Round halves to odd numbers': 'Round halves to odd numbers'
+Decimals: Decimals
+'Trim trailing zeros (0)': 'Trim trailing zeros (0)'
+'Decimal separator': 'Decimal separator'
+'Thousands separator': 'Thousands separator'
+none: none
+space: space
 Schema: Schema
 'Schema definitions column': 'Schema definitions column'
 'Schema source': 'Schema source'
 Manual: Manual
 Storage: Storage
 'Schema storage': 'Schema storage'
-'Column definitions': 'Column definitions'
 'Configure column types for each field.': 'Configure column types for each field.'
+Slug: Slug
+'Format as a slug': 'Format as a slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: UPPERCASE_UNDERSCORE
+Case: Case
+'camel Style': 'camel Style'
+'Word separator': 'Word separator'
+dash: dash
+underscore: underscore
 Text: Text
 'General text column': 'General text column'
-'Trim text': 'Trim text'
-'Convert case': 'Convert case'
 'Limit length?': 'Limit length?'
 Max: Max
 Unit: Unit
 Characters: Characters
 Words: Words
+'Access denied.': 'Access denied.'
+'Invalid request method.': 'Invalid request method.'
+'Entity not found': 'Entity not found'
+'Action not supported: {action}': 'Action not supported: {action}'
 Update: Update
 Create: Create
-'API status': 'API status'
-Online: Online
-'Automation is already running.': 'Automation is already running.'
-'Your password reset request': 'Your password reset request'
-'No reset password token found in the URL or in the session.': 'No reset password token found in the URL or in the session.'
-'Unable to access this page!': 'Unable to access this page!'
-Register: Register
-Install: Install
-'Unknown database error': 'Unknown database error'
-Environment: Environment
-System: System
+Account: Account
+'Edit account': 'Edit account'
+'Edit user account': 'Edit user account'
+Preferences: Preferences
+'Edit preferences': 'Edit preferences'
+'API tokens': 'API tokens'
+'Manage API tokens': 'Manage API tokens'
+'Two-factor authentication': 'Two-factor authentication'
+'2FA is active for your account': '2FA is active for your account'
+'Protect your account with a verification code': 'Protect your account with a verification code'
+Disable: Disable
+Enable: Enable
+'Account updated successfully.': 'Account updated successfully.'
+Edit: Edit
+'Preferences updated successfully.': 'Preferences updated successfully.'
+'Access tokens': 'Access tokens'
+'API Tokens': 'API Tokens'
+'Create API token': 'Create API token'
+'Edit API token': 'Edit API token'
+'Enable two-factor authentication': 'Enable two-factor authentication'
+'Enable 2FA': 'Enable 2FA'
+'Invalid form submission. Please try again.': 'Invalid form submission. Please try again.'
+'The verification code you entered is invalid.': 'The verification code you entered is invalid.'
+'Two-factor authentication has been enabled.': 'Two-factor authentication has been enabled.'
+'Could not send verification email. Please try again.': 'Could not send verification email. Please try again.'
+'Verify your email': 'Verify your email'
+'Verify Email': 'Verify Email'
+'Disable two-factor authentication': 'Disable two-factor authentication'
+'Disable 2FA': 'Disable 2FA'
+'Invalid password.': 'Invalid password.'
+'Two-factor authentication has been disabled.': 'Two-factor authentication has been disabled.'
+Automations: Automations
+'Successfully created automation!': 'Successfully created automation!'
+'New automation': 'New automation'
+'Successfully edited automation!': 'Successfully edited automation!'
+'Edit automation': 'Edit automation'
+Connections: Connections
+'Successfully created connection!': 'Successfully created connection!'
+'New connection': 'New connection'
+'Successfully edited connection!': 'Successfully edited connection!'
+'Edit connection': 'Edit connection'
+Flows: Flows
+'Successfully created flow!': 'Successfully created flow!'
+'New flow': 'New flow'
+'Successfully edited flow!': 'Successfully edited flow!'
+'Edit flow': 'Edit flow'
+'Connection required': 'Connection required'
+'Connection not found': 'Connection not found'
+'Webservice not found': 'Webservice not found'
 Modules: Modules
 'Please upload a valid ZIP file': 'Please upload a valid ZIP file'
 Upload: Upload
-'moduleName successfully installed': 'moduleName successfully installed'
-'moduleName successfully updated': 'moduleName successfully updated'
-'Cant run install of moduleName': 'Cant run install of moduleName'
+'Unable to refresh system cache after module upload.': 'Unable to refresh system cache after module upload.'
+'Install unsuccessful': 'Install unsuccessful'
 'Unable to uninstall {moduleName}. It is still used in your system': 'Unable to uninstall {moduleName}. It is still used in your system'
-'{moduleName} successfully uninstalled': '{moduleName} successfully uninstalled'
 'Uninstall unsuccessful': 'Uninstall unsuccessful'
+'Unable to refresh system cache after module uninstall.': 'Unable to refresh system cache after module uninstall.'
+'{moduleName} successfully uninstalled': '{moduleName} successfully uninstalled'
+'Invalid module package: {moduleName}': 'Invalid module package: {moduleName}'
+'Disabled manually': 'Disabled manually'
+'Unable to refresh system cache after module disable.': 'Unable to refresh system cache after module disable.'
+'{moduleName} disabled': '{moduleName} disabled'
+'Unable to disable {moduleName}.': 'Unable to disable {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Unable to refresh system cache after module enable.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Unable to enable {moduleName}. It was disabled again during cache rebuild.'
+'{moduleName} enabled': '{moduleName} enabled'
 'Cannot move file': 'Cannot move file'
 'Could not find module in zip file': 'Could not find module in zip file'
 'Could not parse module namespace': 'Could not parse module namespace'
-'Cant unzip file!': 'Cant unzip file!'
+'Cannot unzip file!': 'Cannot unzip file!'
 'Cant delete temp folder': 'Cant delete temp folder'
 Configuration: Configuration
 'Configure manager to optimize SyncEngine for your server.': 'Configure manager to optimize SyncEngine for your server.'
 Manager: Manager
 'Auto-starts background async workers to handle automations.': 'Auto-starts background async workers to handle automations.'
-Disable: Disable
 Enabled: Enabled
-Enable: Enable
 'Cannot enable manager': 'Cannot enable manager'
 Disabled: Disabled
 'The manager is controlled by a cronjob.': 'The manager is controlled by a cronjob.'
@@ -137,81 +232,498 @@ External: External
 'Active workers:': 'Active workers:'
 'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}'
 Processes: Processes
+System: System
 Save: Save
 'Invalid Manager': 'Invalid Manager'
-Automations: Automations
-'Successfully created automation!': 'Successfully created automation!'
-'New automation': 'New automation'
-'Successfully edited automation!': 'Successfully edited automation!'
-'Edit automation': 'Edit automation'
-Edit: Edit
+'Configuration saved': 'Configuration saved'
+Routines: Routines
+'Successfully created routine!': 'Successfully created routine!'
+'New routine': 'New routine'
+'Successfully edited routine!': 'Successfully edited routine!'
+'Edit routine': 'Edit routine'
+Storages: Storages
+'Successfully created storage!': 'Successfully created storage!'
+'New storage': 'New storage'
+'Successfully edited storage!': 'Successfully edited storage!'
+'Edit storage': 'Edit storage'
+'Clear cache': 'Clear cache'
+Environment: Environment
 'Configure environment setup': 'Configure environment setup'
 Vault: Vault
 'Configure vault secrets': 'Configure vault secrets'
 'Manage system processes': 'Manage system processes'
 Import: Import
 'Import JSON configs': 'Import JSON configs'
+Info: Info
+'System information': 'System information'
+Help: Help
 'JSON data': 'JSON data'
 'Format must be JSON.': 'Format must be JSON.'
 'Import successful': 'Import successful'
-Account: Account
-'Edit account': 'Edit account'
-'Edit user account': 'Edit user account'
-'API tokens': 'API tokens'
-'Manage API tokens': 'Manage API tokens'
-'Access tokens': 'Access tokens'
-'API Tokens': 'API Tokens'
-'Create API token': 'Create API token'
-'Edit API token': 'Edit API token'
-Steps: Steps
-'Successfully created step!': 'Successfully created step!'
-'New step': 'New step'
-'Successfully edited step!': 'Successfully edited step!'
-'Edit step': 'Edit step'
-Storages: Storages
-'Successfully created storage!': 'Successfully created storage!'
-'New storage': 'New storage'
-'Successfully edited storage!': 'Successfully edited storage!'
-'Edit storage': 'Edit storage'
-Flows: Flows
-'Successfully added flow!': 'Successfully added flow!'
-'New flow': 'New flow'
-'Successfully edited flow!': 'Successfully edited flow!'
-'Edit flow': 'Edit flow'
-Connections: Connections
-'Successfully created connection!': 'Successfully created connection!'
-'New connection': 'New connection'
-'Edit connection': 'Edit connection'
+Users: Users
+'Successfully created user!': 'Successfully created user!'
+'Successfully edited user!': 'Successfully edited user!'
+'You cannot reset your own password.': 'You cannot reset your own password.'
+'Password reset email sent successfully!': 'Password reset email sent successfully!'
+'An error occurred while resetting the password.': 'An error occurred while resetting the password.'
+'You cannot delete your own account.': 'You cannot delete your own account.'
+'Successfully deleted user!': 'Successfully deleted user!'
+'Endpoint not found: {value}': 'Endpoint not found: {value}'
+'Automation is not enabled': 'Automation is not enabled'
+'Automation is already running': 'Automation is already running'
+'File not found': 'File not found'
+'Scheduled processes are disabled.': 'Scheduled processes are disabled.'
+'Automation cannot accept a new request right now.': 'Automation cannot accept a new request right now.'
+'Entity type not found': 'Entity type not found'
+'Entity deleted': 'Entity deleted'
+'An error occurred while sending the password reset email.': 'An error occurred while sending the password reset email.'
+'Your password reset request': 'Your password reset request'
+'No reset password token found in the URL or in the session.': 'No reset password token found in the URL or in the session.'
+Install: Install
+'Unknown database error': 'Unknown database error'
+'Could not repair database': 'Could not repair database'
+'Unable to access this page!': 'Unable to access this page!'
+Register: Register
+Variables: Variables
+'Define static variables to be used within the automation.': 'Define static variables to be used within the automation.'
+Source: Source
+'Select the data source for this automation': 'Select the data source for this automation'
+Request: Request
+'Extract data from the current request body.': 'Extract data from the current request body.'
+'Cannot be used with scheduled automations.': 'Cannot be used with scheduled automations.'
+Retrieve: Retrieve
+'Retrieve data from a webservice or other custom source.': 'Retrieve data from a webservice or other custom source.'
+'Run automation in batches': 'Run automation in batches'
+'Batch method': 'Batch method'
+'Batches are made remotely using retrieve parameters': 'Batches are made remotely using retrieve parameters'
+'Batches are created locally': 'Batches are created locally'
+'Limit batch size': 'Limit batch size'
+'Limit the number of records to fetch/run at once.': 'Limit the number of records to fetch/run at once.'
+Interval: Interval
+'Set an interval time between each batch.': 'Set an interval time between each batch.'
+Seconds: Seconds
+'Configure where to extract request data from.': 'Configure where to extract request data from.'
+'Request param': 'Request param'
+'Define the param name to use as the data source.': 'Define the param name to use as the data source.'
+'Leave empty to use the full request data.': 'Leave empty to use the full request data.'
+'Configure tasks to retrieve the data': 'Configure tasks to retrieve the data'
+'Define source schema structure.': 'Define source schema structure.'
+'Predefined schema storage': 'Predefined schema storage'
+'Manual definitions': 'Manual definitions'
+'Event handler on empty source': 'Event handler on empty source'
+Cancel: Cancel
+Error: Error
+'Optionally trigger error when there is no data available from the source.': 'Optionally trigger error when there is no data available from the source.'
+Actions: Actions
+'The actions that need to be done with the source data.': 'The actions that need to be done with the source data.'
+Flow: Flow
+Routine: Routine
+Tasks: Tasks
+Events: Events
+'Select the behavior on various events in this automation.': 'Select the behavior on various events in this automation.'
+'On Cancel': 'On Cancel'
+'Actions to execute when the automation is cancelled.': 'Actions to execute when the automation is cancelled.'
+'On Error': 'On Error'
+'Actions to execute when the automation fails.': 'Actions to execute when the automation fails.'
+'On Success': 'On Success'
+'Actions to execute when the automation completed successfully.': 'Actions to execute when the automation completed successfully.'
+Response: Response
+'What this automation should respond in case of a HTTP request.': 'What this automation should respond in case of a HTTP request.'
+'Success status and data': 'Success status and data'
+'Data only': 'Data only'
+'Success status only': 'Success status only'
+'File Download': 'File Download'
+'Download file selector': 'Download file selector'
+Execution: Execution
+'Control how this automation is executed.': 'Control how this automation is executed.'
+'Execution mode': 'Execution mode'
+Single: Single
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Only one run at a time and blocks new requests while a run is active or scheduled.'
+Parallel: Parallel
+'Multiple simultaneous execution runs allowed': 'Multiple simultaneous execution runs allowed'
+Queued: Queued
+'Accepts new requests but executes only one run at a time.': 'Accepts new requests but executes only one run at a time.'
+'Stale run timeout': 'Stale run timeout'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Seconds without a activity before a run is considered stale and automatically reset.'
+'Defaults to {default}.': 'Defaults to {default}.'
+'History traces retention limit': 'History traces retention limit'
+'Configure execution history of this automation.': 'Configure execution history of this automation.'
+'Maximum number of stored traces for this automation.': 'Maximum number of stored traces for this automation.'
+'Leave empty to use the global default of {param}.': 'Leave empty to use the global default of {param}.'
+Status: Status
+Default: Default
+Fixed: Fixed
+Days: Days
+Webservice: Webservice
+Trigger: Trigger
+Start: Start
+Stop: Stop
+Continue: Continue
+Success: Success
+Unknown: Unknown
+Trashed: Trashed
+Visible: Visible
+Hidden: Hidden
+Registered: Registered
+Scheduled: Scheduled
+Running: Running
+Stopped: Stopped
+Failed: Failed
+Cancelled: Cancelled
+Dynamic: Dynamic
+Sequence: Sequence
+'Add steps': 'Add steps'
+'Input data': 'Input data'
+'Input variables': 'Input variables'
+Conditions: Conditions
+'Input schema': 'Input schema'
+'Output schema': 'Output schema'
+'Data type': 'Data type'
+Columns: Columns
+Key: Key
+Name: Name
+'Field name key': 'Field name key'
+'By default it will fetch the index key unless the value is an array containing field information.': 'By default it will fetch the index key unless the value is an array containing field information.'
+'Field label key': 'Field label key'
+'Used in case the value is an array containing field information.': 'Used in case the value is an array containing field information.'
+'Schema storages': 'Schema storages'
+'From source schema': 'From source schema'
+'To target schema': 'To target schema'
+'Format options': 'Format options'
+'Response format': 'Response format'
+'This webservice does not validate authorization.': 'This webservice does not validate authorization.'
+'Added to queue!': 'Added to queue!'
+'Finished executing endpoint.': 'Finished executing endpoint.'
+'There were errors while executing this endpoint.': 'There were errors while executing this endpoint.'
+'Dots (.) in refs are forbidden: {ref}': 'Dots (.) in refs are forbidden: {ref}'
+'Entity not found for: {ref}': 'Entity not found for: {ref}'
+'Model not found for: {ref} ({class})': 'Model not found for: {ref} ({class})'
+'Response param name': 'Response param name'
+'The param name where the results are located': 'The param name where the results are located'
+'Nested keys are supported: key.nested_key': 'Nested keys are supported: key.nested_key'
+'Key / Column name override to store results': 'Key / Column name override to store results'
+'Start with dot (.) for root': 'Start with dot (.) for root'
+Action: Action
+'Replace current data with results': 'Replace current data with results'
+'Merge results with current data': 'Merge results with current data'
+'Insert results into current data without replacing existing values': 'Insert results into current data without replacing existing values'
+'Combine recursively?': 'Combine recursively?'
+'Catch errors': 'Catch errors'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.'
+'Leave empty to catch all errors.': 'Leave empty to catch all errors.'
+'No actions defined': 'No actions defined'
+'Run catch {name}': 'Run catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Get or set a value in the context cache'
+'Set cache': 'Set cache'
+'Get cache': 'Get cache'
+'Set from data': 'Set from data'
+'Manual value': 'Manual value'
+'Key / Column name': 'Key / Column name'
+'Leave empty for root': 'Leave empty for root'
+'Cache value': 'Cache value'
+'Cache tag reference/path': 'Cache tag reference/path'
+'Can be used like: {tag}': 'Can be used like: {tag}'
+Method: Method
+Replace: Replace
+Merge: Merge
+Append: Append
+'Not found action': 'Not found action'
+'Action if the tag is not found': 'Action if the tag is not found'
+'Override with empty value': 'Override with empty value'
+'Skip task': 'Skip task'
+'Cache tag reference missing': 'Cache tag reference missing'
+Choose: Choose
+'Choose between different options based on conditions': 'Choose between different options based on conditions'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Define the options and their conditions. Once a condition is valid it will run only that option.'
+'Default tasks': 'Default tasks'
+'These tasks will run if none of the option conditions are met.': 'These tasks will run if none of the option conditions are met.'
+'Run option {name}': 'Run option {name}'
+'Run default': 'Run default'
+Extract: Extract
+'Extract a column from each item in your data': 'Extract a column from each item in your data'
+'The data column name to extract items from': 'The data column name to extract items from'
+'The column to extract': 'The column to extract'
+'The target column to put results': 'The target column to put results'
+'Leave empty to use the Key / Column name set above': 'Leave empty to use the Key / Column name set above'
+'No column key configured': 'No column key configured'
+'Data not iterable': 'Data not iterable'
+'Could not extract': 'Could not extract'
+Filter: Filter
+'Filter data based on conditions': 'Filter data based on conditions'
+'Leave empty for root iteration': 'Leave empty for root iteration'
+'Filter method': 'Filter method'
+'Keep valid rows': 'Keep valid rows'
+'Keep invalid rows': 'Keep invalid rows'
+'No conditions configured': 'No conditions configured'
+'Data key not found': 'Data key not found'
+Group: Group
+'Group your data': 'Group your data'
+'The data column name to group items for': 'The data column name to group items for'
+'Group by': 'Group by'
+'Set column name/key to group by value': 'Set column name/key to group by value'
+'Default group key': 'Default group key'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.'
+'No group column configured': 'No group column configured'
+'Invalid group column: {value}': 'Invalid group column: {value}'
+Index: Index
+'Index your data': 'Index your data'
+'The data column name to index items for': 'The data column name to index items for'
+'Numeric list': 'Numeric list'
+'Associative indexes': 'Associative indexes'
+'New index key': 'New index key'
+'The template for the indexed keys': 'The template for the indexed keys'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Use column keys as tags: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'No index method configured'
+'No index key template configured': 'No index key template configured'
+Loop: Loop
+'Iterate over a set of rows': 'Iterate over a set of rows'
+'Loop method': 'Loop method'
+Row: Row
+Batches: Batches
+'Batch size': 'Batch size'
+'Set the number of records to fetch/run at once.': 'Set the number of records to fetch/run at once.'
+'Data column not found: {key}': 'Data column not found: {key}'
+'Data column not iterable: {key}': 'Data column not iterable: {key}'
+'Invalid action': 'Invalid action'
+'No batch size configured': 'No batch size configured'
+Map: Map
+'Map key value pairs': 'Map key value pairs'
+'The data column name for the value that needs to be mapped': 'The data column name for the value that needs to be mapped'
+'Nested keys are supported: {example}': 'Nested keys are supported: {example}'
+'Map columns': 'Map columns'
+'Convert key names and definition schema.': 'Convert key names and definition schema.'
+'Map values': 'Map values'
+'Convert values for a column': 'Convert values for a column'
+'Only return mapped items?': 'Only return mapped items?'
+'This will also reorder your data in the order of your map.': 'This will also reorder your data in the order of your map.'
+'Remove old keys?': 'Remove old keys?'
+'Map source': 'Map source'
+Mapper: Mapper
+'Convert column types to schema where available?': 'Convert column types to schema where available?'
+'No manual map configured.': 'No manual map configured.'
+'Cannot map empty data': 'Cannot map empty data'
+'Cannot map scalar data': 'Cannot map scalar data'
+'Merge columns and/or values': 'Merge columns and/or values'
+'The data column name to merge': 'The data column name to merge'
+'Merge values of a column into a single value': 'Merge values of a column into a single value'
+'Merge columns': 'Merge columns'
+'Merge both': 'Merge both'
+'Key merge method': 'Key merge method'
+'Merge column key names': 'Merge column key names'
+'Merge column keys using an indexed name': 'Merge column keys using an indexed name'
+'Merge column keys using a regular expression': 'Merge column keys using a regular expression'
+'Column keys that need to be merged': 'Column keys that need to be merged'
+'Column key name': 'Column key name'
+'Regex to match keys with and merge': 'Regex to match keys with and merge'
+'Indexed key to search for and merge': 'Indexed key to search for and merge'
+'Nested keys are not supported': 'Nested keys are not supported'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Index starts with'
+'Method to merge values from multiple columns': 'Method to merge values from multiple columns'
+'Each column value will be appended': 'Each column value will be appended'
+'Latter column values merge into the former': 'Latter column values merge into the former'
+'Latter column values replaces the former': 'Latter column values replaces the former'
+'Latter column values insert into the former': 'Latter column values insert into the former'
+Separator: Separator
+Comma: Comma
+Semicolon: Semicolon
+Space: Space
+Tab: Tab
+'New line': 'New line'
+'Value template': 'Value template'
+'The template for each separate value to be merged': 'The template for each separate value to be merged'
+'Remove original column key(s)?': 'Remove original column key(s)?'
+'Only keep unique values?': 'Only keep unique values?'
+'By default all values are kept.': 'By default all values are kept.'
+'Preserve column keys?': 'Preserve column keys?'
+'Keep empty values?': 'Keep empty values?'
+'By default all empty column values will not be merged.': 'By default all empty column values will not be merged.'
+'No key configured': 'No key configured'
+'No columns defined': 'No columns defined'
+'No key method selected': 'No key method selected'
+'Cannot merge scalar value.': 'Cannot merge scalar value.'
+'Find and replace': 'Find and replace'
+'The data column name for the values that need to be replaced': 'The data column name for the values that need to be replaced'
+'In case the value is a list of values this task will iterate the replacements for all': 'In case the value is a list of values this task will iterate the replacements for all'
+'Replace values': 'Replace values'
+'Replace keys': 'Replace keys'
+'Replace keys and values': 'Replace keys and values'
+'Replace recursively?': 'Replace recursively?'
+Find: Find
+'Find value not set': 'Find value not set'
+'Cannot replace scalar data': 'Cannot replace scalar data'
+'Retrieve your data from your specific connection': 'Retrieve your data from your specific connection'
+'The data column name to pass to the webservice': 'The data column name to pass to the webservice'
+Connection: Connection
+'Response data': 'Response data'
+'No connection configured': 'No connection configured'
+'Data not found: {key}': 'Data not found: {key}'
+Send: Send
+'Send your data to your specific connection': 'Send your data to your specific connection'
+'Retrieve response data': 'Retrieve response data'
+Set: Set
+'Set your own values': 'Set your own values'
+'The data column key name for the values that needs to be set': 'The data column key name for the values that needs to be set'
+'Reorder data?': 'Reorder data?'
+'This will append all configured columns at the end of the current data.': 'This will append all configured columns at the end of the current data.'
+'Force if invalid?': 'Force if invalid?'
+'When existing data is scalar, create new data collection from values set in this task.': 'When existing data is scalar, create new data collection from values set in this task.'
+'You can still reference the original value through the {placeholder} tag.': 'You can still reference the original value through the {placeholder} tag.'
+'Set method': 'Set method'
+'Set column values': 'Set column values'
+'Set schema': 'Set schema'
+'Set both': 'Set both'
+'Remove columns not defined in schema?': 'Remove columns not defined in schema?'
+'Column key/name': 'Column key/name'
+'-- Unchanged --': '-- Unchanged --'
+'Use {wildcard} to insert the current value.': 'Use {wildcard} to insert the current value.'
+Unset: Unset
+'Data is not iterable': 'Data is not iterable'
+'No set params configured': 'No set params configured'
+Sort: Sort
+'Sort your data': 'Sort your data'
+'The data column key name for the values that needs to be sorted': 'The data column key name for the values that needs to be sorted'
+'Sort by key / column name': 'Sort by key / column name'
+'Sort by value': 'Sort by value'
+'Sort by column value': 'Sort by column value'
+'Sort by': 'Sort by'
+'Set column name/key to sort by value': 'Set column name/key to sort by value'
+Ascending: Ascending
+Descending: Descending
+'Ascending natural order': 'Ascending natural order'
+'Descending natural order': 'Descending natural order'
+'No sort method configured': 'No sort method configured'
+'Invalid sort order: {order}': 'Invalid sort order: {order}'
+'No sort column configured': 'No sort column configured'
+Split: Split
+'Split value and/or split column key into multiple': 'Split value and/or split column key into multiple'
+'The data column name to split': 'The data column name to split'
+'Split value': 'Split value'
+'Split into column keys': 'Split into column keys'
+'Split value and split into column keys': 'Split value and split into column keys'
+'Column key split method': 'Column key split method'
+'Split into column keys by providing custom names': 'Split into column keys by providing custom names'
+'Split into column keys using an indexed name': 'Split into column keys using an indexed name'
+'Column key names': 'Column key names'
+'Current value index/key (optional)': 'Current value index/key (optional)'
+'New column key name': 'New column key name'
+'Indexed key': 'Indexed key'
+'The template for the new indexed keys.': 'The template for the new indexed keys.'
+'Remove original key(s)?': 'Remove original key(s)?'
+'Regular expression (Regex)': 'Regular expression (Regex)'
+'Regular expression': 'Regular expression'
+'Regex must be made for splitting values, not matching.': 'Regex must be made for splitting values, not matching.'
+'Split value column definition': 'Split value column definition'
+'No action configured': 'No action configured'
+'Loop key not supported': 'Loop key not supported'
+'Value is not splittable into list': 'Value is not splittable into list'
+'Column `{type}` does not exist': 'Column `{type}` does not exist'
+'Value is not splittable into keys': 'Value is not splittable into keys'
+'No columns configured': 'No columns configured'
+Store: Store
+'Get or set a storage': 'Get or set a storage'
+'Set storage': 'Set storage'
+'Get storage': 'Get storage'
+'Storage column key/path': 'Storage column key/path'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.'
+'No storage selected': 'No storage selected'
+'Storage not found': 'Storage not found'
+'Raw storage cannot contain paths': 'Raw storage cannot contain paths'
+'This is a raw storage, please select a different storage or change the storage type': 'This is a raw storage, please select a different storage or change the storage type'
+Template: Template
+'Create your own modifier template with Twig': 'Create your own modifier template with Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.'
+'Add your code here': 'Add your code here'
+'No template set': 'No template set'
+Trace: Trace
+'Trace current status with a log or error.': 'Trace current status with a log or error.'
+'Trace type': 'Trace type'
+'Creating an error will result in the trace reporting as failed.': 'Creating an error will result in the trace reporting as failed.'
+'Log message': 'Log message'
+'Error message': 'Error message'
+Message: Message
+'Extra info': 'Extra info'
+'Include data?': 'Include data?'
+'Message not configured': 'Message not configured'
+'Trigger something independently from the current flow': 'Trigger something independently from the current flow'
+'Run async?': 'Run async?'
+Experimental: Experimental
+'If the automation is using batches then this trigger will always run async.': 'If the automation is using batches then this trigger will always run async.'
+'Pass current data?': 'Pass current data?'
+'Override current data?': 'Override current data?'
+'Leave empty to pass root data': 'Leave empty to pass root data'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Define static variables to be used for this trigger. Existing variables will also be included.'
+Automation: Automation
+Wait: Wait
+'Wait for time to pass': 'Wait for time to pass'
+'Seconds to wait': 'Seconds to wait'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Connect to a FTP server to upload and/or download files'
+'{type} extension is not available': '{type} extension is not available'
+Host: Host
+Port: Port
+Username: Username
+Password: Password
+'Passive mode': 'Passive mode'
+'Connect using SSL': 'Connect using SSL'
+'Process timeout in seconds': 'Process timeout in seconds'
+'Cannot connect to {host}': 'Cannot connect to {host}'
+'Cannot login to {host}': 'Cannot login to {host}'
+'Successfully connected to {host}': 'Successfully connected to {host}'
+'Could not connect to {host}': 'Could not connect to {host}'
 'HTTP No auth': 'HTTP No auth'
 'Connect without authorization': 'Connect without authorization'
-Host: Host
+'Allow HTTP': 'Allow HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Allow unsafe HTTP connection without SSL encryption'
 Endpoint: Endpoint
 'Send current data': 'Send current data'
 'Select data transport location': 'Select data transport location'
 'Request {type}': 'Request {type}'
-'Successfully connected to {host}': 'Successfully connected to {host}'
-'Could not connected to {host}': 'Could not connected to {host}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Connect with basic authorization'
+'Username / key': 'Username / key'
+'Password / Secret': 'Password / Secret'
+'HTTP Bearer token': 'HTTP Bearer token'
+'Connect with Bearer Token authorization': 'Connect with Bearer Token authorization'
+Token: Token
+'HTTP Authorization server': 'HTTP Authorization server'
+'Connect to a HTTP server using an authorization server': 'Connect to a HTTP server using an authorization server'
+Body: Body
+Header: Header
+'Redirect url': 'Redirect url'
 'Local File system': 'Local File system'
 'Use the local filesystem defined by your environment': 'Use the local filesystem defined by your environment'
 'Root path': 'Root path'
+'Relative path?': 'Relative path?'
+'Makes the root path relative to the SyncEngine installation': 'Makes the root path relative to the SyncEngine installation'
 'Successfully accessed {root}': 'Successfully accessed {root}'
 'Could not access {root}': 'Could not access {root}'
 SFTP: SFTP
 'Connect to a SFTP server to upload and/or download files': 'Connect to a SFTP server to upload and/or download files'
-Port: Port
 'Authentication type': 'Authentication type'
 'Private key': 'Private key'
 'Username and password': 'Username and password'
 'Private key password': 'Private key password'
 'If your private key is password protected, you can fill in that password here': 'If your private key is password protected, you can fill in that password here'
-Username: Username
-Password: Password
-'Cannot login to {host}': 'Cannot login to {host}'
+'Cannot login to {host}: {error}': 'Cannot login to {host}: {error}'
+'Could not rename': 'Could not rename'
+SOAP: SOAP
+'Connect using SOAP': 'Connect using SOAP'
+'HTTP Authentication': 'HTTP Authentication'
+'Basic authentication': 'Basic authentication'
+'SOAP multistep server': 'SOAP multistep server'
+'Connect to a SOAP server using multistep setup': 'Connect to a SOAP server using multistep setup'
+'SOAP extension is not available': 'SOAP extension is not available'
+Url: Url
+'The URL for this authentication step': 'The URL for this authentication step'
 SQL: SQL
 'Connect to a SQL server': 'Connect to a SQL server'
-'Select database driver': 'Select database driver'
 MySQLi: MySQLi
 PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'No database extensions are available, please install one of the following: {options}'
+'Select database driver': 'Select database driver'
 Database: Database
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: Query
@@ -220,45 +732,6 @@ Query: Query
 'Key => Value pairs': 'Key => Value pairs'
 'Key column': 'Key column'
 'Choose the key you want to use as the row key': 'Choose the key you want to use as the row key'
-'HTTP Authorization server': 'HTTP Authorization server'
-'Connect to a HTTP server using an authorization server': 'Connect to a HTTP server using an authorization server'
-Body: Body
-Header: Header
-'Redirect url': 'Redirect url'
-Variables: Variables
-'Define static variables to be used within the authorization process.': 'Define static variables to be used within the authorization process.'
-'Authorized request base config': 'Authorized request base config'
-'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Define the base request configuration. This will be used to set the default params for any request using this connection.'
-'Override host': 'Override host'
-'Authorization process steps': 'Authorization process steps'
-'Define each step for the authorization process.': 'Define each step for the authorization process.'
-Request: Request
-Response: Response
-Actions: Actions
-Url: Url
-'The URL for this authentication step': 'The URL for this authentication step'
-'Tag storage': 'Tag storage'
-'Define the tags you need to store for authentication': 'Define the tags you need to store for authentication'
-'Response type': 'Response type'
-'The type of response the URL will return': 'The type of response the URL will return'
-'Response param name': 'Response param name'
-'The param name where the authentication parameters are located': 'The param name where the authentication parameters are located'
-'Tag name': 'Tag name'
-'Choose the tag name in which the response param value is stored': 'Choose the tag name in which the response param value is stored'
-'Example: token': 'Example: token'
-'Expiration in hours': 'Expiration in hours'
-'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
-Success: Success
-'Run next step (default)': 'Run next step (default)'
-'Skip next step': 'Skip next step'
-'Stop loop': 'Stop loop'
-Error: Error
-'Run previous step (default)': 'Run previous step (default)'
-'Restart loop from beginning': 'Restart loop from beginning'
-'Cannot authenticate on step #{step} from connection #{connectionID}': 'Cannot authenticate on step #{step} from connection #{connectionID}'
-'Invalid tag name': 'Invalid tag name'
-'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Invalid or empty server response for tag:{tag} | Param not found:{param}'
-'Invalid or empty server response for tag:{tag}': 'Invalid or empty server response for tag:{tag}'
 Path: Path
 'Select what you want to retrieve': 'Select what you want to retrieve'
 'File contents': 'File contents'
@@ -277,7 +750,6 @@ Filename: Filename
 'Old name': 'Old name'
 'New name': 'New name'
 'Overwrite if new name exists': 'Overwrite if new name exists'
-'No action configured': 'No action configured'
 'No Filename configured': 'No Filename configured'
 'Cannot fetch file from {host}, please try passive mode': 'Cannot fetch file from {host}, please try passive mode'
 'Cannot fetch file from {host}': 'Cannot fetch file from {host}'
@@ -298,320 +770,166 @@ Filename: Filename
 'Successfully renamed: {old} to {new}': 'Successfully renamed: {old} to {new}'
 'Invalid resource': 'Invalid resource'
 'Request method': 'Request method'
+'Request timeout': 'Request timeout'
 'Request query': 'Request query'
 'Request header': 'Request header'
 'Request body': 'Request body'
-SOAP: SOAP
-'Connect using SOAP': 'Connect using SOAP'
+'SOAP version': 'SOAP version'
+'Default (PHP default)': 'Default (PHP default)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP protocol version. Leave empty for PHP default.'
+Compression: Compression
+'Compress SOAP requests and accept compressed responses.': 'Compress SOAP requests and accept compressed responses.'
+'Connection timeout': 'Connection timeout'
+'Maximum time in seconds for the connection to be established.': 'Maximum time in seconds for the connection to be established.'
 'WSDL mode': 'WSDL mode'
 'Will this connection use WSDL file format?': 'Will this connection use WSDL file format?'
 'WSDL file url': 'WSDL file url'
 'Link to WSDL format that will be filled in for this soap connection': 'Link to WSDL format that will be filled in for this soap connection'
-'Soap function from WSDL': 'Soap function from WSDL'
-'Data to fill WSDL to make the call': 'Data to fill WSDL to make the call'
-'Soap headers': 'Soap headers'
-FTP: FTP
-'Connect to a FTP server to upload and/or download files': 'Connect to a FTP server to upload and/or download files'
-'Passive mode': 'Passive mode'
-'Connect using SSL': 'Connect using SSL'
-'Timeout in seconds': 'Timeout in seconds'
-'Cannot connect to {host}': 'Cannot connect to {host}'
-'SOAP multistep server': 'SOAP multistep server'
-'Connect to a SOAP server using multistep setup': 'Connect to a SOAP server using multistep setup'
-'HTTP Bearer token': 'HTTP Bearer token'
-'Connect with Bearer Token authorization': 'Connect with Bearer Token authorization'
-Token: Token
-'Method not found: {name}': 'Method not found: {name}'
-'HTTP Basic': 'HTTP Basic'
-'Connect with basic authorization': 'Connect with basic authorization'
-'Username / key': 'Username / key'
-'Password / Secret': 'Password / Secret'
-'The param name where the results are located': 'The param name where the results are located'
-'Nested keys are supported: key.nested_key': 'Nested keys are supported: key.nested_key'
-'Key / Column name override to store results': 'Key / Column name override to store results'
-'Use a dot (.) for root': 'Use a dot (.) for root'
-Action: Action
-'Replace current data with results': 'Replace current data with results'
-'Merge results with current data': 'Merge results with current data'
-Choose: Choose
-'Choose between different options based on conditions': 'Choose between different options based on conditions'
-Options: Options
-'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Define the options and their conditions. Once a condition is valid it will run only that option.'
-Conditions: Conditions
-Tasks: Tasks
-'Default tasks': 'Default tasks'
-'These tasks will run if none of the option conditions are met.': 'These tasks will run if none of the option conditions are met.'
-Group: Group
-'Group your data': 'Group your data'
-'Key / Column name': 'Key / Column name'
-'The data column name to group items for': 'The data column name to group items for'
-'Leave empty for root': 'Leave empty for root'
-'Group by': 'Group by'
-'Set column name/key to group by value': 'Set column name/key to group by value'
-'Default group key': 'Default group key'
-'Will be used when the row does not include the defined group column. If not set, the row will be removed.': 'Will be used when the row does not include the defined group column. If not set, the row will be removed.'
-'No group column configured': 'No group column configured'
-'Data not iterable': 'Data not iterable'
-Index: Index
-'Index your data': 'Index your data'
-'The data column name to index items for': 'The data column name to index items for'
-Method: Method
-'Numeric list': 'Numeric list'
-'Associative indexes': 'Associative indexes'
-'New index key': 'New index key'
-'The template for the indexed keys': 'The template for the indexed keys'
-'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Use column keys as tags: {tag} | Wildcards: {wildcards}'
-'No index method configured': 'No index method configured'
-'No index key template configured': 'No index key template configured'
-Retrieve: Retrieve
-'Retrieve your data from your specific connection': 'Retrieve your data from your specific connection'
-'The data column name to pass to the webservice': 'The data column name to pass to the webservice'
-'Nested keys are supported: {example}': 'Nested keys are supported: {example}'
-Connection: Connection
-'Response data': 'Response data'
-'Data not found: {key}': 'Data not found: {key}'
-'Response info for Task: {ref}': 'Response info for Task: {ref}'
-Store: Store
-'Get or set a storage': 'Get or set a storage'
-'Set storage': 'Set storage'
-'Get storage': 'Get storage'
-'Storage column key/path': 'Storage column key/path'
-'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.'
-Replace: Replace
-Merge: Merge
-Append: Append
-'Not found action': 'Not found action'
-'Action if the tag is not found': 'Action if the tag is not found'
-'Override with empty value': 'Override with empty value'
-'Skip task': 'Skip task'
-'No storage selected': 'No storage selected'
-'Storage not found': 'Storage not found'
-'Formatted storage cannot contain paths': 'Formatted storage cannot contain paths'
-'This is a formatted storage, please select a different storage or change the storage type': 'This is a formatted storage, please select a different storage or change the storage type'
-Map: Map
-'Map key value pairs': 'Map key value pairs'
-'The data column name for the value that needs to be mapped': 'The data column name for the value that needs to be mapped'
-'Map columns': 'Map columns'
-'Convert key names and definition schema.': 'Convert key names and definition schema.'
-'Map values': 'Map values'
-'Convert values for a column': 'Convert values for a column'
-'Only return mapped items?': 'Only return mapped items?'
-'This will also reorder your data in the order of your map.': 'This will also reorder your data in the order of your map.'
-'Remove old keys?': 'Remove old keys?'
-'Map source': 'Map source'
-Mapper: Mapper
-'From source schema': 'From source schema'
-'To target schema': 'To target schema'
-'Convert column types to schema where available?': 'Convert column types to schema where available?'
-'No manual map configured.': 'No manual map configured.'
-'Cannot map empty data': 'Cannot map empty data'
-'Cannot map scalar data': 'Cannot map scalar data'
-Cache: Cache
-'Get or set a value in the context cache': 'Get or set a value in the context cache'
-'Set cache': 'Set cache'
-'Get cache': 'Get cache'
-'Cache tag reference/path': 'Cache tag reference/path'
-'Can be used like: {tag}': 'Can be used like: {tag}'
-'Cache tag reference missing': 'Cache tag reference missing'
-Trigger: Trigger
-'Trigger something independently from the current flow': 'Trigger something independently from the current flow'
-'Run async?': 'Run async?'
-'If the automation is using batches then this trigger will always run async.': 'If the automation is using batches then this trigger will always run async.'
-'Pass current data?': 'Pass current data?'
-'Override current data?': 'Override current data?'
-'Define static variables to be used for this trigger. Existing variables will also be included.': 'Define static variables to be used for this trigger. Existing variables will also be included.'
-Automation: Automation
-Flow: Flow
-Step: Step
-'Invalid action': 'Invalid action'
-Trace: Trace
-'Trace current status with a log or error.': 'Trace current status with a log or error.'
-'Trace type': 'Trace type'
-'Creating an error will result in the trace reporting as failed.': 'Creating an error will result in the trace reporting as failed.'
-'Log message': 'Log message'
-'Error message': 'Error message'
-Message: Message
-'Extra info': 'Extra info'
-'Message not configured': 'Message not configured'
-Set: Set
-'Set your own values': 'Set your own values'
-'The data column key name for the values that needs to be set': 'The data column key name for the values that needs to be set'
-'Reorder data?': 'Reorder data?'
-'This will append all configured columns at the end of the current data.': 'This will append all configured columns at the end of the current data.'
-'Column key/name': 'Column key/name'
-Value: Value
-'-- Unchanged --': '-- Unchanged --'
-'Use {wildcard} to insert the current value.': 'Use {wildcard} to insert the current value.'
-Unset: Unset
-'Data key not iterable': 'Data key not iterable'
-'No set params configured': 'No set params configured'
-'Merge columns and/or values': 'Merge columns and/or values'
-'The data column name to merge': 'The data column name to merge'
-'Merge values of a column into a single value': 'Merge values of a column into a single value'
-'Merge columns': 'Merge columns'
-'Merge both': 'Merge both'
-'Key merge method': 'Key merge method'
-'Merge column key names': 'Merge column key names'
-'Merge column keys using an indexed name': 'Merge column keys using an indexed name'
-'Column keys that need to be merged': 'Column keys that need to be merged'
-'Indexed key to search for and merge': 'Indexed key to search for and merge'
-'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
-'Index starts with': 'Index starts with'
-'Method to merge values from multiple columns': 'Method to merge values from multiple columns'
-'List, reach column value will be appended': 'List, reach column value will be appended'
-'Collection, the latter column values merges into the former': 'Collection, the latter column values merges into the former'
-'Collection, the latter column values replaces the former': 'Collection, the latter column values replaces the former'
-'Collection, the latter column values append into the former': 'Collection, the latter column values append into the former'
-Separator: Separator
-Comma: Comma
-Semicolon: Semicolon
-Tab: Tab
-'New line': 'New line'
-'Value template': 'Value template'
-'The template for each separate value to be merged': 'The template for each separate value to be merged'
-'Remove original column key(s)?': 'Remove original column key(s)?'
-'Only keep unique values?': 'Only keep unique values?'
-'By default all values are kept.': 'By default all values are kept.'
-'Keep empty values?': 'Keep empty values?'
-'By default all empty column values will not be merged.': 'By default all empty column values will not be merged.'
-'No key configured': 'No key configured'
-'No columns defined': 'No columns defined'
-'No key method selected': 'No key method selected'
-'Find and replace': 'Find and replace'
-'The data column name for the values that need to be replaced': 'The data column name for the values that need to be replaced'
-'In case the value is a list of values this task will iterate the replacements for all': 'In case the value is a list of values this task will iterate the replacements for all'
-'Replace values': 'Replace values'
-'Replace keys': 'Replace keys'
-'Replace keys and values': 'Replace keys and values'
-'Replace recursively?': 'Replace recursively?'
-Find: Find
-'Cannot replace scalar data': 'Cannot replace scalar data'
-Sort: Sort
-'Sort your data': 'Sort your data'
-'Sort by key': 'Sort by key'
-'Sort by column value': 'Sort by column value'
-'Sort by': 'Sort by'
-'Set column name/key to sort by value': 'Set column name/key to sort by value'
-Ascending: Ascending
-Descending: Descending
-'Ascending natural order': 'Ascending natural order'
-'Descending natural order': 'Descending natural order'
-'No sort method configured': 'No sort method configured'
-'Invalid sort order: {order}': 'Invalid sort order: {order}'
-'No sort column configured': 'No sort column configured'
-Filter: Filter
-'Filter data based on conditions': 'Filter data based on conditions'
-'Leave empty for root iteration': 'Leave empty for root iteration'
-'Filter method': 'Filter method'
-'Keep valid rows': 'Keep valid rows'
-'Keep invalid rows': 'Keep invalid rows'
-'No conditions configured': 'No conditions configured'
-Template: Template
-'Create your own modifier template with Twig': 'Create your own modifier template with Twig'
-'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.'
-'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.': 'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.'
-'Add your code here': 'Add your code here'
-'No template set': 'No template set'
-Loop: Loop
-'Iterate over a set of rows': 'Iterate over a set of rows'
-'Loop method': 'Loop method'
-Row: Row
-Batches: Batches
-'Batch size': 'Batch size'
-'Set the number of records to fetch/run at once.': 'Set the number of records to fetch/run at once.'
-'No batch size configured': 'No batch size configured'
-Split: Split
-'Split value and/or split column key into multiple': 'Split value and/or split column key into multiple'
-'The data column name to split': 'The data column name to split'
-'Split value': 'Split value'
-'Split into column keys': 'Split into column keys'
-'Split value and split into column keys': 'Split value and split into column keys'
-'Column key split method': 'Column key split method'
-'Split into column keys by providing custom names': 'Split into column keys by providing custom names'
-'Split into column keys using an indexed name': 'Split into column keys using an indexed name'
-'Column key names': 'Column key names'
-'Current value index/key (optional)': 'Current value index/key (optional)'
-'New column key name': 'New column key name'
-'Indexed key': 'Indexed key'
-'The template for the new indexed keys.': 'The template for the new indexed keys.'
-'Remove original key(s)?': 'Remove original key(s)?'
-'Loop key not supported': 'Loop key not supported'
-'Value is not splittable into list': 'Value is not splittable into list'
-'Value is not splittable into keys': 'Value is not splittable into keys'
-'No columns configured': 'No columns configured'
-Send: Send
-'Send your data to your specific connection': 'Send your data to your specific connection'
-'Retrieve response data': 'Retrieve response data'
-Wait: Wait
-'Wait for time to pass': 'Wait for time to pass'
-'Seconds to wait': 'Seconds to wait'
-Webservice: Webservice
-'Define static variables to be used within the automation.': 'Define static variables to be used within the automation.'
-Source: Source
-'Select the data source for this automation': 'Select the data source for this automation'
-'Request param': 'Request param'
-'Configure tasks to retrieve the data': 'Configure tasks to retrieve the data'
-'Run automation in batches': 'Run automation in batches'
-'Batch method': 'Batch method'
-'Batches are made remotely using retrieve parameters': 'Batches are made remotely using retrieve parameters'
-'Batches are created locally': 'Batches are created locally'
-'Limit batch size': 'Limit batch size'
-'Limit the number of records to fetch/run at once.': 'Limit the number of records to fetch/run at once.'
-Interval: Interval
-'Set an interval time between each batch.': 'Set an interval time between each batch.'
-Seconds: Seconds
-'The actions that need to be done with the source data.': 'The actions that need to be done with the source data.'
-'What this automation should respond in case of a HTTP request.': 'What this automation should respond in case of a HTTP request.'
-'Success and data': 'Success and data'
-'Data only': 'Data only'
-'Success only': 'Success only'
-'Data type': 'Data type'
-Columns: Columns
-Key: Key
-Name: Name
-'Field name key': 'Field name key'
-'By default it will fetch the index key unless the value is an array containing field information.': 'By default it will fetch the index key unless the value is an array containing field information.'
-'Field label key': 'Field label key'
-'Used in case the value is an array containing field information.': 'Used in case the value is an array containing field information.'
-'Schema storages': 'Schema storages'
-'Format options': 'Format options'
-'Response format': 'Response format'
-'This webservice does not validate authorization.': 'This webservice does not validate authorization.'
-'Add steps': 'Add steps'
+'WSDL cache': 'WSDL cache'
+'No cache': 'No cache'
+'Memory cache': 'Memory cache'
+'Disk/File cache': 'Disk/File cache'
+Both: Both
+'WSDL cache warning': 'WSDL cache warning'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.'
+'SOAP service namespace': 'SOAP service namespace'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Target namespace of the SOAP service. Required when WSDL mode is disabled.'
+'SOAPAction header': 'SOAPAction header'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Optional SOAPAction HTTP header value. Required by some SOAP servers.'
+Advanced: Advanced
+'Override options for the SOAP connection.': 'Override options for the SOAP connection.'
+'SOAP headers': 'SOAP headers'
+'SOAP operation name': 'SOAP operation name'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.'
+'Use data transport as body?': 'Use data transport as body?'
+'SOAP body': 'SOAP body'
+'Define static variables to be used within the authorization process.': 'Define static variables to be used within the authorization process.'
+'Authorized request base config': 'Authorized request base config'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Define the base request configuration. This will be used to set the default params for any request using this connection.'
+'Override host': 'Override host'
+'Authorization process steps': 'Authorization process steps'
+'Define each step for the authorization process.': 'Define each step for the authorization process.'
+'The param name where the authentication parameters are located': 'The param name where the authentication parameters are located'
+'Tag name': 'Tag name'
+'Choose the tag name in which the response param value is stored': 'Choose the tag name in which the response param value is stored'
+'Example: token': 'Example: token'
+Expiration: Expiration
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
+'Supported formats:': 'Supported formats:'
+'Timestamp or date': 'Timestamp or date'
+'Time format: ({time_format})': 'Time format: ({time_format})'
+'Text format: ({time_string})': 'Text format: ({time_string})'
+'Response type': 'Response type'
+'The type of response the URL will return': 'The type of response the URL will return'
+'Tag storage': 'Tag storage'
+'Define the tags you need to store for authentication': 'Define the tags you need to store for authentication'
+'Run next step (default)': 'Run next step (default)'
+'Skip next step': 'Skip next step'
+'Stop loop': 'Stop loop'
+'Run previous step (default)': 'Run previous step (default)'
+'Restart loop from beginning': 'Restart loop from beginning'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Cannot authenticate on step #{step} from connection #{connectionID}'
+'Invalid tag name': 'Invalid tag name'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Invalid or empty server response for tag:{tag} | Param not found:{param}'
+'Invalid or empty server response for tag:{tag}': 'Invalid or empty server response for tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Are you sure you want to disable two-factor authentication?'
+'You will need to re-enable 2FA after verifying your password': 'You will need to re-enable 2FA after verifying your password'
+'Enter your password to confirm': 'Enter your password to confirm'
+'Check your email': 'Check your email'
+'We sent a 6-digit verification code to your email address': 'We sent a 6-digit verification code to your email address'
+'Enter the code from your email': 'Enter the code from your email'
+'Resend Code': 'Resend Code'
+Verify: Verify
+'Choose how you want to receive verification codes': 'Choose how you want to receive verification codes'
+'Authenticator App (Recommended)': 'Authenticator App (Recommended)'
+'Scan the QR code with your TOTP app': 'Scan the QR code with your TOTP app'
+'Or enter this secret manually:': 'Or enter this secret manually:'
+'Email Verification': 'Email Verification'
+'We will send a 6-digit code to your email address': 'We will send a 6-digit code to your email address'
+'Send Code to Email': 'Send Code to Email'
+'Create new': 'Create new'
+Description: Description
+Expires: Expires
+'No API tokens created': 'No API tokens created'
+URL: URL
+Uses: Uses
+'You are about to reset this process, are you sure?': 'You are about to reset this process, are you sure?'
+Reset: Reset
+'Reset automation': 'Reset automation'
+'Quick Edit': 'Quick Edit'
+Hide: Hide
+Show: Show
+Export: Export
+Trash: Trash
+Restore: Restore
+'Delete Permanently': 'Delete Permanently'
+Issue: Issue
+Connected: Connected
+'Used in': 'Used in'
+'Last runs': 'Last runs'
+'Scheduled runs': 'Scheduled runs'
+Steps: Steps
+'Message Queue': 'Message Queue'
+'Scheduled At': 'Scheduled At'
+'Created At': 'Created At'
+View: View
+'Scheduled run': 'Scheduled run'
+Delete: Delete
+'Delete run': 'Delete run'
+'Are you sure you want to delete this message?': 'Are you sure you want to delete this message?'
+'Disabled modules.': 'Disabled modules.'
+Module: Module
+Requires: Requires
+Reason: Reason
+Uninstall: Uninstall
+'Are you sure?': 'Are you sure?'
+'This will uninstall module {moduleName} from {vendor}': 'This will uninstall module {moduleName} from {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Upload a newer module version to replace an incompatible module.'
+Version: Version
+Author: Author
+Manage: Manage
+Reinstall: Reinstall
+Config: Config
 Task: Task
-'No data found': 'No data found'
-'Added to queue!': 'Added to queue!'
-'Reset your password': 'Reset your password'
-'Enter your email address and we will send you a link to reset your password.': 'Enter your email address and we will send you a link to reset your password.'
-'Back to login': 'Back to login'
+Traces: Traces
+'You are about to kill this process, are you sure?': 'You are about to kill this process, are you sure?'
+Kill: Kill
+'New user': 'New user'
+'Edit user': 'Edit user'
+Roles: Roles
+'Reset password': 'Reset password'
+'Reset password?': 'Reset password?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'A password reset email will be sent to {email}. The user can then set their own password.'
+'This will delete user {email}': 'This will delete user {email}'
+Visibility: Visibility
+All: All
+Dashboard: Dashboard
+'Verify Login': 'Verify Login'
+Login: Login
+'Forgot password?': 'Forgot password?'
 'Password Reset Email Sent': 'Password Reset Email Sent'
 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.'
 'This link will expire in %expiration%': 'This link will expire in %expiration%'
 "If you don't receive an email please check your spam folder": "If you don't receive an email please check your spam folder"
+'Back to login': 'Back to login'
 'Try again': 'Try again'
-Login: Login
-'Forgot password?': 'Forgot password?'
-Traces: Traces
-Status: Status
-Info: Info
-View: View
-'Used in': 'Used in'
-Module: Module
-Description: Description
-Version: Version
-Author: Author
-'This will edit this step for all flows!': 'This will edit this step for all flows!'
-Welcome: Welcome
-Dashboard: Dashboard
-URL: URL
-Uses: Uses
-'Create new': 'Create new'
-Expires: Expires
-'No API tokens created': 'No API tokens created'
-'Last runs': 'Last runs'
-'Scheduled runs': 'Scheduled runs'
+'Reset your password': 'Reset your password'
+'Enter your email address and we will send you a link to reset your password.': 'Enter your email address and we will send you a link to reset your password.'
+'Page not found': 'Page not found'
+'Oops! An Error Occurred': 'Oops! An Error Occurred'
 Back: Back
-Email: Email
-Finished executing endpoint: 'Finished executing endpoint'
-There were errors while executing this endpoint: 'There were errors while executing this endpoint'
-This will uninstall module {moduleName} from {vendor}: 'This will uninstall module {moduleName} from {vendor}'
+'Authenticator App': 'Authenticator App'
+'Fill in the code from your authenticator app': 'Fill in the code from your authenticator app'
+'Fill in the code send to your email': 'Fill in the code send to your email'
+'There was a problem validating your password reset request': 'There was a problem validating your password reset request'
+'There is already an automation with this ref, please enter a different ref': 'There is already an automation with this ref, please enter a different ref'
+'There is already an automation with this name, please enter a different name': 'There is already an automation with this name, please enter a different name'
+'There is already an automation with this endpoint, please enter a different name': 'There is already an automation with this endpoint, please enter a different name'
+'There is already an account with this email': 'There is already an account with this email'
+'Your password should be at least { limit } characters': 'Your password should be at least { limit } characters'
+'Please enter a password': 'Please enter a password'
+'You should agree to our license terms.': 'You should agree to our license terms.'
+'Please enter your email': 'Please enter your email'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: trusted
