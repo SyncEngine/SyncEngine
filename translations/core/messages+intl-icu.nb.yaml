@@ -1,0 +1,935 @@
+'Column definitions': 'Kolonnedefinisjoner'
+'Extend column definitions': 'Utvid kolonnedefinisjoner'
+'Configure custom column types for each field.': 'Konfigurer tilpassede kolonnetyper for hvert felt.'
+'Comma Separated Values': 'Kommaadskilte verdier'
+'FormData encoded string': 'FormData-kodet streng'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'URL-kodet streng'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Adresse
+'Address column': 'Adressekolonne'
+Strict: Streng
+'Address columns': 'Adressekolonner'
+'Country (Code)': 'Land (Kode)'
+'Column name for: {field}': 'Kolonnnavn for: {field}'
+'Administrative Area / Province / State': 'Administrativt område / Provins / Delstat'
+'Locality / City': 'Sted / By'
+'Dependent Locality': 'Avhengig sted'
+'Postal / ZIP Code': 'Postnummer'
+'Sorting Code': 'Sorteringskode'
+'Address Line 1': 'Adresse linje 1'
+'Address Line 2': 'Adresse linje 2'
+'Address Line 3': 'Adresse linje 3'
+Locale: Locale
+Organization: Organisasjon
+'Given Name': 'Fornavn'
+'Additional Name': 'Tilleggsnavn'
+'Family Name': 'Etternavn'
+Boolean: Boolean
+'Format as true or false': 'Formater som true eller false'
+Format: Format
+Integer: Heltall
+'Custom text': 'Tilpasset tekst'
+'Custom number': 'Tilpasset nummer'
+'True value': 'True-verdi'
+'False value': 'False-verdi'
+'Fallback value': 'Fallback-verdi'
+'Null / Empty': 'Null / Tom'
+Custom: Tilpasset
+'Fallback custom value': 'Tilpasset fallback-verdi'
+'Yes': 'Ja'
+'No': 'Nei'
+Collection: Samling
+'A collection of a column type': 'En samling av en kolonnetype'
+Associative: Assosiativ
+'Column Type': 'Kolonnetype'
+Key/Name: Nøkkel/Navn
+Currency: Valuta
+'Currency column for money/price based values': 'Valutakolonne for penge/prisbaserte verdier'
+'Currency sign': 'Valutasymbol'
+'Add space between currency sign and value?': 'Legge til mellomrom mellom valutasymbol og verdi?'
+'Put currency sign after value?': 'Plassere valutasymbol etter verdi?'
+Date: Dato
+'General date and time column': 'Generell dato- og tidkolonne'
+Unchanged: Uendret
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Tom streng'
+'Current timestamp as format': 'Nåværende timestamp som format'
+'Please check PHP date documentation': 'Vennligst sjekk PHP datodokumentasjon'
+Timezone: Tidssone
+'Please check PHP DateTimeZone documentation': 'Vennligst sjekk PHP DateTimeZone-dokumentasjon'
+'Empty value': 'Tom verdi'
+Duration: Varighet
+'General duration column': 'Generell varighetskolonne'
+'Please check PHP DateInterval documentation': 'Vennligst sjekk PHP DateInterval-dokumentasjon'
+Email: E-post
+'Email column': 'E-postkolonne'
+'Validation mode': 'Valideringsmodus'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Sikrer at e-postadressen følger RFC-standarden svært nøye. Tillater for eksempel ikke IP-adresser i domenedelen.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Følger HTML5-innsettingsreglene som er litt mer tillatende enn de strenge RFC-standardene.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Liknende HTML5 men tillater også e-postadresser uten TLD (f.eks. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Fallback
+'Fallback value if it is an invalid email address.': 'Fallback-verdi hvis det er en ugyldig e-postadresse.'
+Enumeration: Oppramming
+'Predefined select options': 'Forhåndsdefinerte valgmuligheter'
+Options: Alternativer
+Value: Verdi
+Label: Etikett
+'Numeric options': 'Numeriske alternativer'
+None: Ingen
+'Use column for type hinting': 'Bruk kolonne for typehinting'
+Soft: Myk
+'Use fallback for invalid values': 'Bruk fallback for ugyldige verdier'
+'Throw error on invalid values': 'Kaste feil ved ugyldige verdier'
+'Set the fallback value in case it is empty.': 'Sett fallback-verdien hvis den er tom.'
+'Will also be used as fallback in soft mode.': 'Brukes også som fallback i myk modus.'
+'Parse before validation': 'Parser før validering'
+'Trim text': 'Klipp av tekst'
+'Convert case': 'Konverter bokstavstørrelse'
+'Capitalize first': 'Stor forbogstav'
+'Capitalize Words': 'Store forbokstaver i ord'
+lowercase: lowercase
+UPPERCASE: VERSALER
+'Invalid enum config': 'Ugyldig enum-konfigurasjon'
+'Invalid value for enum: {formatted}': 'Ugyldig verdi for enum: {formatted}'
+Number: Nummer
+'Numeric column': 'Numerisk kolonne'
+Type: Type
+'A raw number can be used for calculations and number storage.': 'Et rånummer kan brukes til beregninger og lagring.'
+'A formatted number can be used for display.': 'Et formateret nummer kan brukes for visning.'
+'Raw number': 'Rånummer'
+'Format to a number type.': 'Formater til en nummertype.'
+Formatted: Formatert
+'Format to a numeric string.': 'Formater til en numerisk streng.'
+Rounding: Avrunding
+'Round halves up': 'Avrund halve opp'
+'Round halves down': 'Avrund halve ned'
+'Round halves to even numbers': 'Avrund halve til jevne tall'
+'Round halves to odd numbers': 'Avrund halve til oddetall'
+Decimals: Desimaler
+'Trim trailing zeros (0)': 'Fjern etterfølgende nuller (0)'
+'Decimal separator': 'Desimalseparator'
+'Thousands separator': 'Tusensplitter'
+none: ingen
+space: mellomrom
+Schema: Skjema
+'Schema definitions column': 'Skjemadefinisjonkolonne'
+'Schema source': 'Kildeskjema'
+Manual: Manuell
+Storage: Lagring
+'Schema storage': 'Skjema lagring'
+'Configure column types for each field.': 'Konfigurer kolonnetyper for hvert felt.'
+Slug: Slug
+'Format as a slug': 'Formater som en slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: VERSALER_UNDERSTREK
+Case: Tilfelle
+'camel Style': 'camel-stil'
+'Word separator': 'Ordsplitter'
+dash: bindestrek
+underscore: understrek
+Text: Tekst
+'General text column': 'Generell tekstkolonne'
+'Limit length?': 'Begrense lengde?'
+Max: Maks
+Unit: Enhets
+Characters: Tegn
+Words: Ord
+'Access denied.': 'Tilgang nektet.'
+'Invalid request method.': 'Ugyldig forespørselsmetode.'
+'Entity not found': 'Enhet ikke funnet'
+'Action not supported: {action}': 'Handling ikke støttet: {action}'
+Update: Oppdater
+Create: Opprett
+Account: Konto
+'Edit account': 'Rediger konto'
+'Edit user account': 'Rediger brukerkonto'
+Preferences: Preferanser
+'Edit preferences': 'Rediger preferanser'
+'API tokens': 'API-tokens'
+'Manage API tokens': 'Administrer API-tokens'
+'Two-factor authentication': 'To-faktor autentisering'
+'2FA is active for your account': '2FA er aktiv for din konto'
+'Protect your account with a verification code': 'Beskytt kontoen din med en verifiseringskode'
+Disable: Deaktiver
+Enable: Aktiver
+'Account updated successfully.': 'Konto oppdatert.'
+Edit: Rediger
+'Preferences updated successfully.': 'Preferanser oppdatert.'
+'Access tokens': 'Tilgangstokens'
+'API Tokens': 'API-tokens'
+'Create API token': 'Opprett API-token'
+'Edit API token': 'Rediger API-token'
+'Enable two-factor authentication': 'Aktiver to-faktor autentisering'
+'Enable 2FA': 'Aktiver 2FA'
+'Invalid form submission. Please try again.': 'Ugyldig forminnsending. Vennligst prøv igjen.'
+'The verification code you entered is invalid.': 'Den oppgitte verifiseringskoden er ugyldig.'
+'Two-factor authentication has been enabled.': 'To-faktor autentisering har blitt aktivert.'
+'Could not send verification email. Please try again.': 'Kunne ikke sende verifiserings-e-post. Vennligst prøv igjen.'
+'Verify your email': 'Verifiser din e-post'
+'Verify Email': 'Verifiser e-post'
+'Disable two-factor authentication': 'Deaktiver to-faktor autentisering'
+'Disable 2FA': 'Deaktiver 2FA'
+'Invalid password.': 'Ugyldig passord.'
+'Two-factor authentication has been disabled.': 'To-faktor autentisering har blitt deaktivert.'
+Automations: Automatiseringer
+'Successfully created automation!': 'Automatisering opprettet!'
+'New automation': 'Ny automatisering'
+'Successfully edited automation!': 'Automatisering redigert!'
+'Edit automation': 'Rediger automatisering'
+Connections: Tilkoblinger
+'Successfully created connection!': 'Tilkobling opprettet!'
+'New connection': 'Ny tilkobling'
+'Successfully edited connection!': 'Tilkobling redigert!'
+'Edit connection': 'Rediger tilkobling'
+Flows: Workflows
+'Successfully created flow!': 'Workflow opprettet!'
+'New flow': 'Ny workflow'
+'Successfully edited flow!': 'Workflow redigert!'
+'Edit flow': 'Rediger workflow'
+'Connection required': 'Tilkobling kreves'
+'Connection not found': 'Tilkobling ikke funnet'
+'Webservice not found': 'Webservice ikke funnet'
+Modules: Moduler
+'Please upload a valid ZIP file': 'Last opp en gyldig ZIP-fil'
+Upload: Last opp
+'Unable to refresh system cache after module upload.': 'Kan ikke oppdatere systemcache etter modulopplasting.'
+'Install unsuccessful': 'Installasjon mislyktes'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Kan ikke avinstallere {moduleName}. Den brukes fortsatt i systemet ditt'
+'Uninstall unsuccessful': 'Avinstallasjon mislyktes'
+'Unable to refresh system cache after module uninstall.': 'Kan ikke oppdatere systemcache etter modulavinstallasjon.'
+'{moduleName} successfully uninstalled': '{moduleName} har blitt avinstallert'
+'Invalid module package: {moduleName}': 'Ugyldig modulpakke: {moduleName}'
+'Disabled manually': 'Deaktivert manuelt'
+'Unable to refresh system cache after module disable.': 'Kan ikke oppdatere systemcache etter moduldeaktivering.'
+'{moduleName} disabled': '{moduleName} deaktivert'
+'Unable to disable {moduleName}.': 'Kan ikke deaktivere {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Kan ikke oppdatere systemcache etter modulaktivering.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Kan ikke aktivere {moduleName}. Den ble deaktivert igjen under cacherekonstruksjon.'
+'{moduleName} enabled': '{moduleName} aktivert'
+'Cannot move file': 'Kan ikke flytte fil'
+'Could not find module in zip file': 'Kunne ikke finne modul i zip-fil'
+'Could not parse module namespace': 'Kunne ikke parse modulnamespace'
+'Cannot unzip file!': 'Kan ikke pakke ut fil!'
+'Cant delete temp folder': 'Kan ikke slette midlertidig mappe'
+Configuration: Konfigurasjon
+'Configure manager to optimize SyncEngine for your server.': 'Konfigurer manager for å optimalisere SyncEngine for din server.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Autostarter bakgrunnsasync-workers for å håndtere automatiseringer.'
+Enabled: Aktivert
+'Cannot enable manager': 'Kan ikke aktivere manager'
+Disabled: Deaktivert
+'The manager is controlled by a cronjob.': 'Managern styres av en cronjob.'
+External: Ekstern
+'The manager is controlled externally.': 'Managern styres eksternt.'
+'Queue size:': 'Køstorrelse:'
+'Active workers:': 'Aktive workers:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Opprettet: {timestamp} | Ping: {ping}'
+Processes: Prosesser
+System: System
+Save: Lagre
+'Invalid Manager': 'Ugyldig Manager'
+'Configuration saved': 'Konfigurasjon lagret'
+Routines: Rutiner
+'Successfully created routine!': 'Rutine opprettet!'
+'New routine': 'Ny rutine'
+'Successfully edited routine!': 'Rutine redigert!'
+'Edit routine': 'Rediger rutine'
+Storages: Lagringer
+'Successfully created storage!': 'Lagring opprettet!'
+'New storage': 'Ny lagring'
+'Successfully edited storage!': 'Lagring redigert!'
+'Edit storage': 'Rediger lagring'
+'Clear cache': 'Tøm cache'
+Environment: Miljø
+'Configure environment setup': 'Konfigurer miljøoppsett'
+Vault: Vault
+'Configure vault secrets': 'Konfigurer vaulthemmeligheter'
+'Manage system processes': 'Administrer systemprosesser'
+Import: Importer
+'Import JSON configs': 'Importer JSON-konfigurasjoner'
+Info: Info
+'System information': 'Systeminformasjon'
+Help: Hjelp
+'JSON data': 'JSON-data'
+'Format must be JSON.': 'Formatet må være JSON.'
+'Import successful': 'Import vellykket'
+Users: Brukere
+'Successfully created user!': 'Bruker opprettet!'
+'Successfully edited user!': 'Bruker redigert!'
+'You cannot reset your own password.': 'Du kan ikke nullstille ditt eget passord.'
+'Password reset email sent successfully!': 'Passordnullstillings-e-post sendt!'
+'An error occurred while resetting the password.': 'Det oppstod en feil under nullstilling av passordet.'
+'You cannot delete your own account.': 'Du kan ikke slette din egen konto.'
+'Successfully deleted user!': 'Bruker slettet!'
+'Endpoint not found: {value}': 'Endpoint ikke funnet: {value}'
+'Automation is not enabled': 'Automatisering er ikke aktivert'
+'Automation is already running': 'Automatisering kjører allerede'
+'File not found': 'Fil ikke funnet'
+'Scheduled processes are disabled.': 'Planlagte prosesser er deaktivert.'
+'Automation cannot accept a new request right now.': 'Automatisering kan ikke akseptere en ny forespørsel akkurat nå.'
+'Entity type not found': 'Enhetstype ikke funnet'
+'Entity deleted': 'Enhet slettet'
+'An error occurred while sending the password reset email.': 'Det oppstod en feil under sending av passordnullstillings-e-post.'
+'Your password reset request': 'Din passordnullstillingsforespørsel'
+'No reset password token found in the URL or in the session.': 'Ingen nullstillings-token funnet i URL-en eller økten.'
+Install: Installer
+'Unknown database error': 'Ukjent databasefeil'
+'Could not repair database': 'Kunne ikke reparere database'
+'Unable to access this page!': 'Kan ikke få tilgang til denne siden!'
+Register: Registrer
+Variables: Variable
+'Define static variables to be used within the automation.': 'Definer statiske variable å brukes innen automatiseringen.'
+Source: Kilde
+'Select the data source for this automation': 'Velg databasen for denne automatiseringen'
+Request: Forespørsel
+'Extract data from the current request body.': 'Ekstraher data fra nåværende forespørselsbody.'
+'Cannot be used with scheduled automations.': 'Kan ikke brukes med planlagte automatiseringer.'
+Retrieve: Hent
+'Retrieve data from a webservice or other custom source.': 'Hent data fra en webservice eller annen kilde.'
+'Run automation in batches': 'Kjør automatisering i batch'
+'Batch method': 'Batchmetode'
+'Batches are made remotely using retrieve parameters': 'Batches lages eksternt med henteparametere'
+'Batches are created locally': 'Batches opprettes lokalt'
+'Limit batch size': 'Begrense batchstørrelse'
+'Limit the number of records to fetch/run at once.': 'Begrens antallet poster å hente/kjøre på én gang.'
+Interval: Intervall
+'Set an interval time between each batch.': 'Sett et tidsintervall mellom hver batch.'
+Seconds: Sekunder
+'Configure where to extract request data from.': 'Konfigurer hvor forespørselsdata skal ekstraheres fra.'
+'Request param': 'Forespørselfparam'
+'Define the param name to use as the data source.': 'Definer parameternavnet å bruke som databas.'
+'Leave empty to use the full request data.': 'La stå tom for å bruke hele forespørselsdataen.'
+'Configure tasks to retrieve the data': 'Konfigurer oppgaver for å hente data'
+'Define source schema structure.': 'Definer kildeskjemastuktur.'
+'Predefined schema storage': 'Forhåndsdefinert skjema lagring'
+'Manual definitions': 'Manuelle definisjoner'
+'Event handler on empty source': 'EventHandler på tom kilde'
+Cancel: Avbryt
+Error: Feil
+'Optionally trigger error when there is no data available from the source.': 'Valgfritt utløse feil når det ikke finnes data fra kilden.'
+Actions: Handlinger
+'The actions that need to be done with the source data.': 'Handlingene som må gjøres med kildedataen.'
+Flow: Workflow
+Routine: Rutine
+Tasks: Oppgaver
+Events: Hendelser
+'Select the behavior on various events in this automation.': 'Velg oppførsel ved ulike hendelser i denne automatiseringen.'
+'On Cancel': 'Ved avbrytelse'
+'Actions to execute when the automation is cancelled.': 'Handlinger å utføre når automatiseringen avbrytes.'
+'On Error': 'Ved feil'
+'Actions to execute when the automation fails.': 'Handlinger å utføre når automatiseringen mislykkes.'
+'On Success': 'Ved suksess'
+'Actions to execute when the automation completed successfully.': 'Handlinger å utføre når automatiseringen fullførtes.'
+Response: Svar
+'What this automation should respond in case of a HTTP request.': 'Hva denne automatiseringen skal svare ved en HTTP-forespørsel.'
+'Success status and data': 'Suksesstatus og data'
+'Data only': 'Kun data'
+'Success status only': 'Kun suksesstatus'
+'File Download': 'Filnedlasting'
+'Download file selector': 'Nedlastingsfilvelger'
+Execution: Eksekvering
+'Control how this automation is executed.': 'Styr hvordan denne automatiseringen eksekveres.'
+'Execution mode': 'Eksekveringsmodus'
+Single: Enkelt
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Kun én kjøring om gangen og blokkerer nye forespørsler mens en kjøring er aktiv eller planlagt.'
+Parallel: Parallel
+'Multiple simultaneous execution runs allowed': 'Flere samtidige eksekveringer tillatt'
+Queued: I kø
+'Accepts new requests but executes only one run at a time.': 'Aksepterer nye forespørsler men kjører kun én kjøring om gangen.'
+'Stale run timeout': 'Stale run timeout'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder uten aktivitet før en kjøring anses stale og automatisk nullstilles.'
+'Defaults to {default}.': 'Standardinnstilling er {default}.'
+'History traces retention limit': 'Historikksporing beholdningsgrense'
+'Configure execution history of this automation.': 'Konfigurer eksekveringshistorikk for denne automatiseringen.'
+'Maximum number of stored traces for this automation.': 'Maksimalt antall lagrede sporinger for denne automatiseringen.'
+'Leave empty to use the global default of {param}.': 'La stå tom for å bruke global standard på {param}.'
+Status: Status
+Default: Standard
+Fixed: Fast
+Days: Dager
+Webservice: Webservice
+Trigger: Trigger
+Start: Start
+Stop: Stop
+Continue: Fortsett
+Success: Suksess
+Unknown: Ukjent
+Trashed: I papirkurven
+Visible: Synlig
+Hidden: Skjult
+Registered: Registrert
+Scheduled: Planlagt
+Running: Kjører
+Stopped: Stoppet
+Failed: Mislykket
+Cancelled: Avbrutt
+Dynamic: Dynamisk
+Sequence: Sekvens
+'Add steps': 'Legg til steg'
+'Input data': 'Inndata'
+'Input variables': 'Innvariable'
+Conditions: Betingelser
+'Input schema': 'Innskjemaskjema'
+'Output schema': 'Utskjemaschema'
+'Data type': 'Datatype'
+Columns: Kolonner
+Key: Nøkkel
+Name: Navn
+'Field name key': 'Feltnøkkelnavn'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Henter standard indekseringsnøkkelen med mindre verdien er en array med feltinformasjon.'
+'Field label key': 'Feltetikett nøkkel'
+'Used in case the value is an array containing field information.': 'Brukes hvis verdien er en array med feltinformasjon.'
+'Schema storages': 'Skjema lagringer'
+'From source schema': 'Fra kildeskjema'
+'To target schema': 'Til målschema'
+'Format options': 'Formateringsalternativer'
+'Response format': 'Svarformat'
+'This webservice does not validate authorization.': 'Denne webservicen validerer ikke autorisasjon.'
+'Added to queue!': 'Lagt til i kø!'
+'Finished executing endpoint.': 'Endpoint eksekvert ferdig.'
+'There were errors while executing this endpoint.': 'Det var feil under eksekvering av dette endpointet.'
+'Dots (.) in refs are forbidden: {ref}': 'Prikker (.) i refs er forbudt: {ref}'
+'Entity not found for: {ref}': 'Enhet ikke funnet for: {ref}'
+'Model not found for: {ref} ({class})': 'Modell ikke funnet for: {ref} ({class})'
+'Response param name': 'Svarparameternavn'
+'The param name where the results are located': 'Parameternavnet der resultatene er plassert'
+'Nested keys are supported: key.nested_key': 'Innebygde nøkler støttes: key.nested_key'
+'Key / Column name override to store results': 'Nøkkel/kolonnavn-override for å lagre resultater'
+'Start with dot (.) for root': 'Start med punktum (.) for root'
+Action: Handling
+'Replace current data with results': 'Erstatt nåværende data med resultater'
+'Merge results with current data': 'Slå sammen resultater med nåværende data'
+'Insert results into current data without replacing existing values': 'Sett inn resultater i nåværende data uten å erstatte eksisterende verdier'
+'Combine recursively?': 'Kombinere rekursivt?'
+'Catch errors': 'Fange feil'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Definer hvordan feil skal håndteres. Når en feil matcher en betingelse forhindres feilen og definerte handlinger kjøres i stedet.'
+'Leave empty to catch all errors.': 'La stå tom for å fange alle feil.'
+'No actions defined': 'Ingen handlinger definert'
+'Run catch {name}': 'Kjør catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Hent eller sett en verdi i kontekst-cachen'
+'Set cache': 'Sett cache'
+'Get cache': 'Hent cache'
+'Set from data': 'Sett fra data'
+'Manual value': 'Manuell verdi'
+'Key / Column name': 'Nøkkel / Kolonnnavn'
+'Leave empty for root': 'La stå tom for root'
+'Cache value': 'Cachverdi'
+'Cache tag reference/path': 'Cache-tag referanse/sti'
+'Can be used like: {tag}': 'Kan brukes som: {tag}'
+Method: Metode
+Replace: Erstatt
+Merge: Slå sammen
+Append: Legg til
+'Not found action': 'Handling ikke funnet'
+'Action if the tag is not found': 'Handling hvis taggen ikke finnes'
+'Override with empty value': 'Overskriv med tom verdi'
+'Skip task': 'Hopp over oppgave'
+'Cache tag reference missing': 'Cache-tag referanse mangler'
+Choose: Velg
+'Choose between different options based on conditions': 'Velg mellom ulike alternativer basert på betingelser'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Definer alternativene og deres betingelser. Når en betingelse er gyldig kjøres kun det alternativet.'
+'Default tasks': 'Standardoppgaver'
+'These tasks will run if none of the option conditions are met.': 'Disse oppgavene kjøres hvis ingen av alternativbetingelsene er oppfylt.'
+'Run option {name}': 'Kjør alternativ {name}'
+'Run default': 'Kjør standard'
+Extract: Ekstraher
+'Extract a column from each item in your data': 'Ekstraher en kolonne fra hvert element i dine data'
+'The data column name to extract items from': 'Datkolonnens navn å ekstrahere elementer fra'
+'The column to extract': 'Kolommen å ekstrahere'
+'The target column to put results': 'Målkolommen å plassere resultater i'
+'Leave empty to use the Key / Column name set above': 'La stå tom for å bruke nøkkel/kolonnavn ovenfor'
+'No column key configured': 'Ingen kolonnnøkkel konfigurert'
+'Data not iterable': 'Data ikke itererbar'
+'Could not extract': 'Kunne ikke ekstrahere'
+Filter: Filter
+'Filter data based on conditions': 'Filtrer data basert på betingelser'
+'Leave empty for root iteration': 'La stå tom for root-iterasjon'
+'Filter method': 'Filtermetode'
+'Keep valid rows': 'Behold gyldige rader'
+'Keep invalid rows': 'Behold ugyldige rader'
+'No conditions configured': 'Ingen betingelser konfigurert'
+'Data key not found': 'Datanykkel ikke funnet'
+Group: Gruppe
+'Group your data': 'Grupper dine data'
+'The data column name to group items for': 'Datkolonnens navn å gruppere elementer for'
+'Group by': 'Grupper etter'
+'Set column name/key to group by value': 'Sett kolonnnavn/nøkkel å gruppere etter verdi'
+'Default group key': 'Standardgruppe nøkkel'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Brukes når raden ikke inneholder den definerte gruppekolumnen eller er en tom verdi. Hvis ikke satt fjernes raden.'
+'No group column configured': 'Ingen gruppekolumn konfigurert'
+'Invalid group column: {value}': 'Ugyldig gruppekolumn: {value}'
+Index: Indeks
+'Index your data': 'Indexer dine data'
+'The data column name to index items for': 'Datkolonnens navn å indeksere elementer for'
+'Numeric list': 'Numerisk liste'
+'Associative indexes': 'Assosierte indekser'
+'New index key': 'Ny indeks-nøkkel'
+'The template for the indexed keys': 'Mallen for de indekserede nøklene'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Bruk kolonnnøkler som tagger: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Ingen indeksmetode konfigurert'
+'No index key template configured': 'Ingen indeks-nøkkelsmal konfigurert'
+Loop: Løkke
+'Iterate over a set of rows': 'Iterer over en sett med rader'
+'Loop method': 'Løkkemetode'
+Row: Rad
+Batches: Batches
+'Batch size': 'Batchstørrelse'
+'Set the number of records to fetch/run at once.': 'Sett antallet poster å hente/kjøre på én gang.'
+'Data column not found: {key}': 'Datkolonne ikke funnet: {key}'
+'Data column not iterable: {key}': 'Datkolonne ikke itererbar: {key}'
+'Invalid action': 'Ugyldig handling'
+'No batch size configured': 'Ingen batchstørrelse konfigurert'
+Map: Kartlegg
+'Map key value pairs': 'Kartlegg nøkkel-verdi-par'
+'The data column name for the value that needs to be mapped': 'Datkolonnens navn for verdien som må kartlegges'
+'Nested keys are supported: {example}': 'Innebygde nøkler støttes: {example}'
+'Map columns': 'Kartleggningskolumner'
+'Convert key names and definition schema.': 'Konverter nøkkelnavn og definisjonsskjema.'
+'Map values': 'Kartverdi-verdier'
+'Convert values for a column': 'Konverter verdier for en kolonne'
+'Only return mapped items?': 'Kun returnere kartlagte elementer?'
+'This will also reorder your data in the order of your map.': 'Dette vil også omordne dine data i rekkefølgen av din kartlegging.'
+'Remove old keys?': 'Fjerne gamle nøkler?'
+'Map source': 'Kartleggingskilde'
+Mapper: Kartlegger
+'Convert column types to schema where available?': 'Konverter kolonnetyper til skjema der tilgjengelig?'
+'No manual map configured.': 'Ingen manuell kartlegging konfigurert.'
+'Cannot map empty data': 'Kan ikke kartlegge tomme data'
+'Cannot map scalar data': 'Kan ikke kartlegge skalærdata'
+'Merge columns and/or values': 'Slå sammen kolumner og/eller verdier'
+'The data column name to merge': 'Datkolonnens navn å slå sammen'
+'Merge values of a column into a single value': 'Slå sammen verdier av en kolonne til én verdi'
+'Merge columns': 'Slå sammen kolumner'
+'Merge both': 'Slå sammen begge'
+'Key merge method': 'Nøkkel-sammenfletning metode'
+'Merge column key names': 'Slå sammen kolonnnøkkelnvn'
+'Merge column keys using an indexed name': 'Slå sammen kolonnnøkler med et indeksnavn'
+'Merge column keys using a regular expression': 'Slå sammen kolonnnøkler med et regulært uttrykk'
+'Column keys that need to be merged': 'Kolonnnøkler som må slås sammen'
+'Column key name': 'Kolonnnøkkelsnavn'
+'Regex to match keys with and merge': 'Regex for å matche nøkler med og slå sammen'
+'Indexed key to search for and merge': 'Indeksert nøkkel å søke etter og slå sammen'
+'Nested keys are not supported': 'Innebygde nøkler støttes ikke'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Indeks starter med'
+'Method to merge values from multiple columns': 'Metode for å slå sammen verdier fra flere kolumner'
+'Each column value will be appended': 'Hver kolonneverdi legges til'
+'Latter column values merge into the former': 'Siste kolonneverdier slås sammen med den forrige'
+'Latter column values replaces the former': 'Siste kolonneverdier erstatter den forrige'
+'Latter column values insert into the former': 'Siste kolonneverdier settes inn i den forrige'
+Separator: Separator
+Comma: Kommategn
+Semicolon: Semikolon
+Space: Mellomrom
+Tab: Tab
+'New line': 'Ny linje'
+'Value template': 'Verdi mal'
+'The template for each separate value to be merged': 'Mallen for hver separat verdi som skal slås sammen'
+'Remove original column key(s)?': 'Fjerne originale kolonnnøkler?'
+'Only keep unique values?': 'Kun beholde unike verdier?'
+'By default all values are kept.': 'Som standard beholdes alle verdier.'
+'Preserve column keys?': 'Beholde kolonnnøkler?'
+'Keep empty values?': 'Beholde tomme verdier?'
+'By default all empty column values will not be merged.': 'Som standard slås ingen tomme kolonneverdier sammen.'
+'No key configured': 'Ingen nøkkel konfigurert'
+'No columns defined': 'Ingen kolumner definert'
+'No key method selected': 'Ingen nøkkelmetode valgt'
+'Cannot merge scalar value.': 'Kan ikke slå sammen skalær verdi.'
+'Find and replace': 'Finn og erstatt'
+'The data column name for the values that need to be replaced': 'Datkolonnens navn for verdiene som må erstattes'
+'In case the value is a list of values this task will iterate the replacements for all': 'Hvis verdien er en liste itereres erstatningene for alle'
+'Replace values': 'Erstatt verdier'
+'Replace keys': 'Erstatt nøkler'
+'Replace keys and values': 'Erstatt nøkler og verdier'
+'Replace recursively?': 'Erstatt rekursivt?'
+Find: Finn
+'Find value not set': 'Finnverdi ikke satt'
+'Cannot replace scalar data': 'Kan ikke erstatte skalærdata'
+'Retrieve your data from your specific connection': 'Hent dine data fra din spesifikke tilkobling'
+'The data column name to pass to the webservice': 'Datkolonnens navn å sende til webservicen'
+Connection: Tilkobling
+'Response data': 'Svar-data'
+'No connection configured': 'Ingen tilkobling konfigurert'
+'Data not found: {key}': 'Data ikke funnet: {key}'
+Send: Send
+'Send your data to your specific connection': 'Send dine data til din spesifikke tilkobling'
+'Retrieve response data': 'Hent svar-data'
+Set: Sett
+'Set your own values': 'Sett dine egne verdier'
+'The data column key name for the values that needs to be set': 'Datkolonnens nøkkelnavn for verdiene som må settes'
+'Reorder data?': 'Omordne data?'
+'This will append all configured columns at the end of the current data.': 'Dette legger til alle konfigurerte kolumner på slutten av nåværende data.'
+'Force if invalid?': 'Tving ved ugyldig?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Hvis eksisterende data er skalær opprettes ny datamling fra verdier satt i denne oppgaven.'
+'You can still reference the original value through the {placeholder} tag.': 'Du kan fortsatt referere til originalet via {placeholder} taggen.'
+'Set method': 'Sett metode'
+'Set column values': 'Sett kolonneverdier'
+'Set schema': 'Sett skjema'
+'Set both': 'Sett begge'
+'Remove columns not defined in schema?': 'Fjerne kolumner ikke definert i skjema?'
+'Column key/name': 'Kolonnnøkkel/navn'
+'-- Unchanged --': '-- Uendret --'
+'Use {wildcard} to insert the current value.': 'Bruk {wildcard} for å sette inn nåværende verdi.'
+Unset: Fjern
+'Data is not iterable': 'Data er ikke itererbar'
+'No set params configured': 'Ingen sett-params konfigurert'
+Sort: Sorter
+'Sort your data': 'Sorter dine data'
+'The data column key name for the values that needs to be sorted': 'Datkolonnens nøkkelnavn for verdiene som må sorteres'
+'Sort by key / column name': 'Sorter etter nøkkel/kolonnavn'
+'Sort by value': 'Sorter etter verdi'
+'Sort by column value': 'Sorter etter kolonneverdi'
+'Sort by': 'Sorter etter'
+'Set column name/key to sort by value': 'Sett kolonnnavn/nøkkel å sortere etter verdi'
+Ascending: Stigende
+Descending: Synkende
+'Ascending natural order': 'Stigende naturlig rekkefølge'
+'Descending natural order': 'Synkende naturlig rekkefølge'
+'No sort method configured': 'Ingen sorteringsmetode konfigurert'
+'Invalid sort order: {order}': 'Ugyldig sorteringsrekkefølge: {order}'
+'No sort column configured': 'Ingen sorteringskolonne konfigurert'
+Split: Del opp
+'Split value and/or split column key into multiple': 'Del opp verdi og/eller kolonnnøkkel i flere'
+'The data column name to split': 'Datkolonnens navn å dele opp'
+'Split value': 'Del opp verdi'
+'Split into column keys': 'Del opp til kolonnnøkler'
+'Split value and split into column keys': 'Del opp verdi og del opp til kolonnnøkler'
+'Column key split method': 'Kolonnnøkkelsplit metode'
+'Split into column keys by providing custom names': 'Del opp til kolonnnøkler ved å gi tilpassede navn'
+'Split into column keys using an indexed name': 'Del opp til kolonnnøkler med et indeksnavn'
+'Column key names': 'Kolonnnøkkelsnavn'
+'Current value index/key (optional)': 'Nåværende verdi indeks/nøkkel (valgfritt)'
+'New column key name': 'Ny kolonnnøkkelsnavn'
+'Indexed key': 'Indeksert nøkkel'
+'The template for the new indexed keys.': 'Mallen for de nye indekserede nøklene.'
+'Remove original key(s)?': 'Fjerne originale nøkler?'
+'Regular expression (Regex)': 'Regulært uttrykk (Regex)'
+'Regular expression': 'Regulært uttrykk'
+'Regex must be made for splitting values, not matching.': 'Regex må lages for å dele opp verdier, ikke matche.'
+'Split value column definition': 'Del opp kolonndefinisjon for verdi'
+'No action configured': 'Ingen handling konfigurert'
+'Loop key not supported': 'Løkkenøkkel støttes ikke'
+'Value is not splittable into list': 'Verdi kan ikke deles opp til liste'
+'Column `{type}` does not exist': 'Kolonne `{type}` finnes ikke'
+'Value is not splittable into keys': 'Verdi kan ikke deles opp til nøkler'
+'No columns configured': 'Ingen kolumner konfigurert'
+Store: Lagre
+'Get or set a storage': 'Hent eller sett en lagring'
+'Set storage': 'Sett lagring'
+'Get storage': 'Hent lagring'
+'Storage column key/path': 'Lagringskolonnnøkkel/sti'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Sett stien der denne verdien vil bli lagret eller la stå tom. Bruk prikker (.) for å navigere i lagringen.'
+'No storage selected': 'Ingen lagring valgt'
+'Storage not found': 'Lagring ikke funnet'
+'Raw storage cannot contain paths': 'Rålagring kan ikke inneholde stier'
+'This is a raw storage, please select a different storage or change the storage type': 'Dette er en rålagring, vennligst velg en annen lagring eller endre lagringstypen'
+Template: Mal
+'Create your own modifier template with Twig': 'Opprett din egen modifikatormal med Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Utdata-tagger {example_var} parses før Twig-malen som tagger. Kun execute-uttalelser {example_func} parses i Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Verdien av `data` brukes for oppgaveutdata. Tilgjengelige variable: `data`, `config`, `cache`, `variables` og `context`.'
+'Add your code here': 'Legg til din kode her'
+'No template set': 'Ingen mal satt'
+Trace: Spor
+'Trace current status with a log or error.': 'Spor nåværende status med en logg eller feil.'
+'Trace type': 'Spor-type'
+'Creating an error will result in the trace reporting as failed.': 'Opprette en feil som resulterer i at sporet rapporteres som mislykket.'
+'Log message': 'Logg melding'
+'Error message': 'Feilmelding'
+Message: Melding
+'Extra info': 'Ekstra informasjon'
+'Include data?': 'Inkludere data?'
+'Message not configured': 'Melding ikke konfigurert'
+'Trigger something independently from the current flow': 'Trigger noe uavhengig av nåværende workflow'
+'Run async?': 'Kjøre async?'
+Experimental: Eksperimentell
+'If the automation is using batches then this trigger will always run async.': 'Hvis automatiseringen bruker batches vil denne triggeren alltid kjøre async.'
+'Pass current data?': 'Videresende nåværende data?'
+'Override current data?': 'Overskrive nåværende data?'
+'Leave empty to pass root data': 'La stå tom for å videresende root-data'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Definer statiske variable å brukes for denne triggeren. Eksisterende variable inkluderes også.'
+Automation: Automatisering
+Wait: Vent
+'Wait for time to pass': 'Vent på at tid går'
+'Seconds to wait': 'Sekunder å vente'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Koble til en FTP-server for å laste opp og/eller laste ned filer'
+'{type} extension is not available': '{type} extensjon er ikke tilgjengelig'
+Host: Vert
+Port: Port
+Username: Brukernavn
+Password: Passord
+'Passive mode': 'Passiv modus'
+'Connect using SSL': 'Koble med SSL'
+'Process timeout in seconds': 'Prosess timeout i sekunder'
+'Cannot connect to {host}': 'Kan ikke koble til {host}'
+'Cannot login to {host}': 'Kan ikke logge inn på {host}'
+'Successfully connected to {host}': 'Koblet til {host}'
+'Could not connect to {host}': 'Kunne ikke koble til {host}'
+'HTTP No auth': 'HTTP Ingen auth'
+'Connect without authorization': 'Koble uten autorisasjon'
+'Allow HTTP': 'Tillat HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Till usikker HTTP-tilkobling uten SSL-kryptering'
+Endpoint: Endpoint
+'Send current data': 'Send nåværende data'
+'Select data transport location': 'Velg datatransportlocatie'
+'Request {type}': 'Forespørsel {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Koble med basic autorisasjon'
+'Username / key': 'Brukernavn / nøkkel'
+'Password / Secret': 'Passord / Hemmelighet'
+'HTTP Bearer token': 'HTTP Bearer-token'
+'Connect with Bearer Token authorization': 'Koble med Bearer Token-autorisaasjon'
+Token: Token
+'HTTP Authorization server': 'HTTP Autorisasjonsserver'
+'Connect to a HTTP server using an authorization server': 'Koble til en HTTP-server med en autorisasjonsserver'
+Body: Body
+Header: Header
+'Redirect url': 'Redirect-url'
+'Local File system': 'Lokalt filsystem'
+'Use the local filesystem defined by your environment': 'Bruk det lokale filsystemet definert av ditt miljø'
+'Root path': 'Root-sti'
+'Relative path?': 'Relativ sti?'
+'Makes the root path relative to the SyncEngine installation': 'Gjør root-stien relativ til SyncEngine-installasjonen'
+'Successfully accessed {root}': 'Fått tilgang til {root}'
+'Could not access {root}': 'Kunne ikke få tilgang til {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Koble til en SFTP-server for å laste opp og/eller laste ned filer'
+'Authentication type': 'Autentiseringstype'
+'Private key': 'Privat nøkkel'
+'Username and password': 'Brukernavn og passord'
+'Private key password': 'Passord privat nøkkel'
+'If your private key is password protected, you can fill in that password here': 'Hvis din private nøkkel er passordskyddet kan du fylle inn det passordet her'
+'Cannot login to {host}: {error}': 'Kan ikke logge inn på {host}: {error}'
+'Could not rename': 'Kunne ikke omdøpe'
+SOAP: SOAP
+'Connect using SOAP': 'Koble med SOAP'
+'HTTP Authentication': 'HTTP-autentisering'
+'Basic authentication': 'Basic-autentisering'
+'SOAP multistep server': 'SOAP-multistep-server'
+'Connect to a SOAP server using multistep setup': 'Koble til en SOAP-server med multistep-oppsett'
+'SOAP extension is not available': 'SOAP-extensjon er ikke tilgjengelig'
+Url: Url
+'The URL for this authentication step': 'URL-en for dette autentiseringssteget'
+SQL: SQL
+'Connect to a SQL server': 'Koble til en SQL-server'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Ingen database-extensjoner tilgjengelig, installer en av følgende: {options}'
+'Select database driver': 'Velg database-driver'
+Database: Database
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Forespørsel
+'Fetch method': 'Hentemetode'
+'Associated array': 'Assosiert array'
+'Key => Value pairs': 'Nøkkel => Verdi-par'
+'Key column': 'Nøkkelskolonne'
+'Choose the key you want to use as the row key': 'Velg nøkkelen du vil bruke som radnøkkel'
+Path: Sti
+'Select what you want to retrieve': 'Velg hva du vil hente'
+'File contents': 'Filinnhold'
+'List directories and filenames': 'List opp mapper og filnavn'
+'List filenames': 'List opp filnavn'
+'List directories': 'List opp mapper'
+Filename: Filnavn
+'Select what action you want to send': 'Velg hvilken handling du vil sende'
+'Upload file contents': 'Last opp filinnhold'
+'Delete file': 'Slett fil'
+'Create directory': 'Opprett mappe'
+'Delete directory': 'Slett mappe'
+'Rename or move a file or directory': 'Omdøp eller flytt en fil eller mappe'
+'Overwrite if file exists': 'Overskriv hvis filen finnes'
+'Directory name': 'Mappnavn'
+'Old name': 'Gammelt navn'
+'New name': 'Nytt navn'
+'Overwrite if new name exists': 'Overskriv hvis nytt navn eksisterer'
+'No Filename configured': 'Ingen filnavn konfigurert'
+'Cannot fetch file from {host}, please try passive mode': 'Kan ikke hente fil fra {host}, vennligst prøv passiv modus'
+'Cannot fetch file from {host}': 'Kan ikke hente fil fra {host}'
+'Successfully retrieved: {name}': 'Hentet: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Fil {oldName} eksisterte, omdøpt til {newName}'
+'Could not be write file: {name}': 'Kunne ikke skrive fil: {name}'
+'Successfully uploaded: {name}': 'Lastet opp: {name}'
+'Could not delete file {name}': 'Kunne ikke slette fil {name}'
+'Successfully deleted file: {name}': 'Fil slettet: {name}'
+'Cannot read directory from {host}': 'Kan ikke lese mappe fra {host}'
+'No directory configured': 'Ingen mappe konfigurert'
+'Could not create directory: {path}': 'Kunne ikke opprette mappe: {path}'
+'Successfully created directory: {path}': 'Mappe opprettet: {path}'
+'Could not delete directory: {path}': 'Kunne ikke slette mappe: {path}'
+'Successfully deleted: {path}': 'Slettet: {path}'
+'Invalid rename configuration': 'Ugyldig omdøpningskonfigurasjon'
+'Could not rename: {old} to {new}': 'Kunne ikke omdøpe: {old} til {new}'
+'Successfully renamed: {old} to {new}': 'Omdøpt: {old} til {new}'
+'Invalid resource': 'Ugyldig ressurs'
+'Request method': 'Forespørselsmetode'
+'Request timeout': 'Forespørselfimeout'
+'Request query': 'Forespørselsquery'
+'Request header': 'Forespørselheader'
+'Request body': 'Forespørselsbody'
+'SOAP version': 'SOAP-versjon'
+'Default (PHP default)': 'Standard (PHP-standard)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protokollversjon. La stå tom for PHP-standard.'
+Compression: Komprimering
+'Compress SOAP requests and accept compressed responses.': 'Komprimer SOAP-forespørsler og accepter komprimerte svar.'
+'Connection timeout': 'Tilkoblingstimeout'
+'Maximum time in seconds for the connection to be established.': 'Maksimal tid i sekunder for å etablere tilkoblingen.'
+'WSDL mode': 'WSDL-modus'
+'Will this connection use WSDL file format?': 'Kommer denne tilkoblingen til å bruke WSDL-filformat?'
+'WSDL file url': 'WSDL-fil-url'
+'Link to WSDL format that will be filled in for this soap connection': 'Lenke til WSDL-format fylles ut for denne soap-tilkoblingen'
+'WSDL cache': 'WSDL-cache'
+'No cache': 'Ingen cache'
+'Memory cache': 'Minne-cache'
+'Disk/File cache': 'Disk/Fil-cache'
+Both: Begge
+'WSDL cache warning': 'WSDL-cache advarsel'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Filbasert WSDL-cache er aktivert. Dette kan forårsake problemer med utdaterte WSDL-filer og sikkerhet pga delt tilgang på serveren.'
+'SOAP service namespace': 'SOAP-service namespace'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Mål-namespace for SOAP-service. Kreves når WSDL-modus er deaktivert.'
+'SOAPAction header': 'SOAPAction-header'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Valgfri SOAPAction HTTP-headerv verdi. Kreves av noen SOAP-servere.'
+Advanced: Avansert
+'Override options for the SOAP connection.': 'Overskrivingsalternativer for SOAP-tilkoblingen.'
+'SOAP headers': 'SOAP-headers'
+'SOAP operation name': 'SOAP-operasjonsnavn'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Navnet på SOAP-operasjonen å kalle. Dette kreves for både WSDL og ikke-WSDL-modus.'
+'Use data transport as body?': 'Bruk datatransport som body?'
+'SOAP body': 'SOAP-body'
+'Define static variables to be used within the authorization process.': 'Definer statiske variable å brukes innen autorisasjonsprosessen.'
+'Authorized request base config': 'Autorisert forespørsel base-config'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definer base-forespørselskonfigurasjon. Dette brukes for å sette standardparams for alle forespørsler med denne tilkoblingen.'
+'Override host': 'Overskriv vert'
+'Authorization process steps': 'Autorisasjonsprosesser steg'
+'Define each step for the authorization process.': 'Definer hvert steg for autorisasjonsprosessen.'
+'The param name where the authentication parameters are located': 'Parameternavnet der autentiseringsparametrene er plassert'
+'Tag name': 'Taggnamn'
+'Choose the tag name in which the response param value is stored': 'Velg taggnamnet der svar-paramverdien lagres'
+'Example: token': 'Eksempel: token'
+Expiration: Utløp
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Sett en utløpstimer for taggverdien slik at re-autentisering gjøres innenfor dette tidsrommet'
+'Supported formats:': 'Format som støttes:'
+'Timestamp or date': 'Timestamp eller dato'
+'Time format: ({time_format})': 'Tidsformat: ({time_format})'
+'Text format: ({time_string})': 'Tekstformat: ({time_string})'
+'Response type': 'Svar-type'
+'The type of response the URL will return': 'Typen av svar URL-en vil returnere'
+'Tag storage': 'Tag-lagring'
+'Define the tags you need to store for authentication': 'Definer taggene du trenger å lagre for autentisering'
+'Run next step (default)': 'Kjør neste steg (standard)'
+'Skip next step': 'Hopp over neste steg'
+'Stop loop': 'Stopp løkke'
+'Run previous step (default)': 'Kjør forrige steg (standard)'
+'Restart loop from beginning': 'Starte om løkke fra begynnelsen'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Kan ikke autentisere på steg #{step} fra tilkobling #{connectionID}'
+'Invalid tag name': 'Ugyldig taggnamn'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Ugyldig eller tomt server-svar for tag:{tag} | Param ikke funnet:{param}'
+'Invalid or empty server response for tag:{tag}': 'Ugyldig eller tomt server-svar for tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Er du sikker på at du vil deaktivere to-faktor autentisering?'
+'You will need to re-enable 2FA after verifying your password': 'Du må aktivere 2FA igjen etter å ha verifisert passordet ditt'
+'Enter your password to confirm': 'Skriv inn passordet ditt for å bekrefte'
+'Check your email': 'Sjekk din e-post'
+'We sent a 6-digit verification code to your email address': 'Vi har sendt en 6-sifret verifiseringskode til din e-postadresse'
+'Enter the code from your email': 'Skriv inn koden fra din e-post'
+'Resend Code': 'Send kode igjen'
+Verify: Verifiser
+'Choose how you want to receive verification codes': 'Velg hvordan du vil motta verifiseringskoder'
+'Authenticator App (Recommended)': 'Authenticator App (anbefalt)'
+'Scan the QR code with your TOTP app': 'Skann QR-koden med din TOTP-app'
+'Or enter this secret manually:': 'Eller skriv inn denne hemmeligheten manuelt:'
+'Email Verification': 'E-postverifisering'
+'We will send a 6-digit code to your email address': 'Vi sender en 6-sifret kode til din e-postadresse'
+'Send Code to Email': 'Send kode til e-post'
+'Create new': 'Opprett ny'
+Description: Beskrivelse
+Expires: Utløper
+'No API tokens created': 'Ingen API-tokens opprettet'
+URL: URL
+Uses: Bruk
+'You are about to reset this process, are you sure?': 'Du er i ferd med å nullstille denne prosessen, er du sikker?'
+Reset: Nullstill
+'Reset automation': 'Nullstill automatisering'
+'Quick Edit': 'Hurtigredigering'
+Hide: Skjul
+Show: Vis
+Export: Eksporter
+Trash: Papirkurv
+Restore: Gjenopprett
+'Delete Permanently': 'Slett permanent'
+Issue: Utgivelse
+Connected: Tilkoblet
+'Used in': 'Brukt i'
+'Last runs': 'Siste kjøringar'
+'Scheduled runs': 'Planlagte kjøringar'
+Steps: Steg
+'Message Queue': 'Meldingskø'
+'Scheduled At': 'Planlagt kl.'
+'Created At': 'Opprettet kl.'
+View: Vis
+'Scheduled run': 'Planlagt kjøring'
+Delete: Slett
+'Delete run': 'Slett kjøring'
+'Are you sure you want to delete this message?': 'Er du sikker på at du vil slette denne meldingen?'
+'Disabled modules.': 'Deaktiverte moduler.'
+Module: Modul
+Requires: Krever
+Reason: Årsak
+Uninstall: Avinstaller
+'Are you sure?': 'Er du sikker?'
+'This will uninstall module {moduleName} from {vendor}': 'Dette avinstallerer modul {moduleName} fra {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Last opp en nyere modulversjon for å erstatte en inkompatibel modul.'
+Version: Versjon
+Author: Forfatter
+Manage: Administrer
+Reinstall: Installer om
+Config: Config
+Task: Oppgave
+Traces: Spor
+'You are about to kill this process, are you sure?': 'Du er i ferd med å drepe denne prosessen, er du sikker?'
+Kill: Drepe
+'New user': 'Ny bruker'
+'Edit user': 'Rediger bruker'
+Roles: Roller
+'Reset password': 'Nullstill passord'
+'Reset password?': 'Nullstill passord?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'En passordnullstillings-e-post sendes til {email}. Brukeren kan deretter sette sitt eget passord.'
+'This will delete user {email}': 'Dette sletter bruker {email}'
+Visibility: Synlighet
+All: Alle
+Dashboard: Dashbord
+'Verify Login': 'Verifiser innlogging'
+Login: Innlogging
+'Forgot password?': 'Glemt passord?'
+'Password Reset Email Sent': 'Passordnullstillings-e-post sendt'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Hvis en konto matchende din e-post eksisterer er det nettopp sendt en e-post inneholdende en lenke du kan bruke for å nullstille passordet ditt.'
+'This link will expire in %expiration%': 'Denne lenken utløper om %expiration%'
+"If you don't receive an email please check your spam folder": "Hvis du ikke mottar en e-post vennligst sjekk din spam-mappe"
+'Back to login': 'Tilbake til innlogging'
+'Try again': 'Prøv igjen'
+'Reset your password': 'Nullstill passordet ditt'
+'Enter your email address and we will send you a link to reset your password.': 'Skriv inn din e-postadresse og vi sender deg en lenke for å nullstille passordet ditt.'
+'Page not found': 'Side ikke funnet'
+'Oops! An Error Occurred': 'Oops! Det oppstod en feil'
+Back: Tilbake
+'Authenticator App': 'Authenticator App'
+'Fill in the code from your authenticator app': 'Fyll inn koden fra din authenticator-app'
+'Fill in the code send to your email': 'Fyll inn koden sendt til din e-post'
+'There was a problem validating your password reset request': 'Det var et problem med å validere din passordnullstillingsforespørsel'
+'There is already an automation with this ref, please enter a different ref': 'Det finnes allerede en automatisering med denne ref, vennligst skriv inn en annen ref'
+'There is already an automation with this name, please enter a different name': 'Det finnes allerede en automatisering med dette navnet, vennligst skriv inn et annet navn'
+'There is already an automation with this endpoint, please enter a different name': 'Det finnes allerede en automatisering med dette endpointet, vennligst skriv inn et annet navn'
+'There is already an account with this email': 'Det finnes allerede en konto med denne e-posten'
+'Your password should be at least { limit } characters': 'Ditt passord bør være minst { limit } tegn'
+'Please enter a password': 'Vennligst skriv inn et passord'
+'You should agree to our license terms.': 'Du bør godkjenne våre lisensvilkår.'
+'Please enter your email': 'Vennligst skriv inn din e-post'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: betrodd

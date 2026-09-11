@@ -1,0 +1,935 @@
+'Column definitions': 'Kolumndefinitioner'
+'Extend column definitions': 'Utöka kolumndefinitioner'
+'Configure custom column types for each field.': 'Konfigurera anpassade kolumntyper för varje fält.'
+'Comma Separated Values': 'Kommateckenseparerade värden'
+'FormData encoded string': 'FormData-kodad sträng'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'URL-kodad sträng'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Adress
+'Address column': 'Adresskolumn'
+Strict: Strikt
+'Address columns': 'Adresskolumner'
+'Country (Code)': 'Land (Kod)'
+'Column name for: {field}': 'Kolumnnamn för: {field}'
+'Administrative Area / Province / State': 'Administrativt område / Provins / Delstat'
+'Locality / City': 'Ort / Stad'
+'Dependent Locality': 'Underordnad ort'
+'Postal / ZIP Code': 'Postnummer'
+'Sorting Code': 'Sorteringskod'
+'Address Line 1': 'Adressrad 1'
+'Address Line 2': 'Adressrad 2'
+'Address Line 3': 'Adressrad 3'
+Locale: Språkvariant
+Organization: Organisation
+'Given Name': 'Förnamn'
+'Additional Name': 'Tilläggsnamn'
+'Family Name': 'Efternamn'
+Boolean: Boolean
+'Format as true or false': 'Formatera som true eller false'
+Format: Formatering
+Integer: Heltal
+'Custom text': 'Anpassad text'
+'Custom number': 'Anpassat nummer'
+'True value': 'True-värde'
+'False value': 'False-värde'
+'Fallback value': 'Fallbaktvärde'
+'Null / Empty': 'Null / Tom'
+Custom: Anpassad
+'Fallback custom value': 'Anpassat fallbaktvärde'
+'Yes': 'Ja'
+'No': 'Nej'
+Collection: Samling
+'A collection of a column type': 'En samling av en kolumntyp'
+Associative: Associativ
+'Column Type': 'Kolumntyp'
+Key/Name: Nyckel/Namn
+Currency: Valuta
+'Currency column for money/price based values': 'Valutakolumn för penning/prisbaserade värden'
+'Currency sign': 'Valutatecken'
+'Add space between currency sign and value?': 'Lägg till mellanslag mellan valutatecken och värde?'
+'Put currency sign after value?': 'Placera valutatecken efter värde?'
+Date: Datum
+'General date and time column': 'Allmän datum- och tidkolumn'
+Unchanged: Oförändrad
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Tom sträng'
+'Current timestamp as format': 'Nuvarande timestamp som format'
+'Please check PHP date documentation': 'Vänligen kontrollera PHP datumdokumentation'
+Timezone: Tidszon
+'Please check PHP DateTimeZone documentation': 'Vänligen kontrollera PHP DateTimeZone-dokumentation'
+'Empty value': 'Tomt värde'
+Duration: Varaktighet
+'General duration column': 'Allmän varaktighetskolumn'
+'Please check PHP DateInterval documentation': 'Vänligen kontrollera PHP DateInterval-dokumentation'
+Email: E-post
+'Email column': 'E-postkolumn'
+'Validation mode': 'Valideringsläge'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Säkerställer att e-postadressen följer RFC-standarden mycket nära. Tillåter till exempel inte IP-adresser i domändelen.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Följer HTML5-inmatningsregler som är något mer tillåtande än de strikta RFC-standarderna.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Liknande HTML5 men tillåter även e-postadresser utan TLD (t.ex. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Fallbakt
+'Fallback value if it is an invalid email address.': 'Fallbaktvärde om det är en ogiltig e-postadress.'
+Enumeration: Uppräkning
+'Predefined select options': 'Fördefinierade alternativ'
+Options: Alternativ
+Value: Värde
+Label: Etikett
+'Numeric options': 'Numeriska alternativ'
+None: Ingen
+'Use column for type hinting': 'Använd kolumn för typindikator'
+Soft: Mjuk
+'Use fallback for invalid values': 'Använd fallbakt för ogiltiga värden'
+'Throw error on invalid values': 'Utforma fel vid ogiltiga värden'
+'Set the fallback value in case it is empty.': 'Ställ in fallbaktvärdet om det är tomt.'
+'Will also be used as fallback in soft mode.': 'Används också som fallbakt i mjukt läge.'
+'Parse before validation': 'Parsera innan validering'
+'Trim text': 'Klipp av text'
+'Convert case': 'Konvertera teckenstorlek'
+'Capitalize first': 'Stor bokstav först'
+'Capitalize Words': 'Stor bokstav i orden'
+lowercase: lowercase
+UPPERCASE: VERSALER
+'Invalid enum config': 'Ogiltig enum-konfiguration'
+'Invalid value for enum: {formatted}': 'Ogiltigt värde för enum: {formatted}'
+Number: Nummer
+'Numeric column': 'Numerisk kolumn'
+Type: Typ
+'A raw number can be used for calculations and number storage.': 'Ett rånummer kan användas för beräkningar och lagring.'
+'A formatted number can be used for display.': 'Ett formaterat nummer kan användas för visning.'
+'Raw number': 'Rånummer'
+'Format to a number type.': 'Formatera till en nummertyp.'
+Formatted: Formaterad
+'Format to a numeric string.': 'Formatera till en numerisk sträng.'
+Rounding: Avrundning
+'Round halves up': 'Avrunda halvvägs upp'
+'Round halves down': 'Avrunda halvvägs ner'
+'Round halves to even numbers': 'Avrunda halvvägs till jämna tal'
+'Round halves to odd numbers': 'Avrunda halvvägs till udda tal'
+Decimals: Decimaler
+'Trim trailing zeros (0)': 'Ta bort efterföljande nollor (0)'
+'Decimal separator': 'Decimalavgränsare'
+'Thousands separator': 'Tusentalsavgränsare'
+none: inga
+space: mellanslag
+Schema: Schema
+'Schema definitions column': 'Schemadefinitionskolumn'
+'Schema source': 'Källschema'
+Manual: Manuell
+Storage: Lagring
+'Schema storage': 'Schemalagring'
+'Configure column types for each field.': 'Konfigurera kolumntyper för varje fält.'
+Slug: Slug
+'Format as a slug': 'Formatera som en slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: VERSALER_UNDERSTRÄCK
+Case: Fall
+'camel Style': 'camel-stil'
+'Word separator': 'Ordavgränsare'
+dash: bindestreck
+underscore: understreck
+Text: Text
+'General text column': 'Allmän textkolumn'
+'Limit length?': 'Begränsa längd?'
+Max: Max
+Unit: Enhet
+Characters: Tecken
+Words: Ord
+'Access denied.': 'Åtkomst nekad.'
+'Invalid request method.': 'Ogiltig begäransmetod.'
+'Entity not found': 'Entitet hittades inte'
+'Action not supported: {action}': 'Åtgärd stöds inte: {action}'
+Update: Uppdatera
+Create: Skapa
+Account: Konto
+'Edit account': 'Redigera konto'
+'Edit user account': 'Redigera användarkonto'
+Preferences: Preferenser
+'Edit preferences': 'Redigera preferenser'
+'API tokens': 'API-token'
+'Manage API tokens': 'Hantera API-token'
+'Two-factor authentication': 'Tvåfaktorsautentisering'
+'2FA is active for your account': '2FA är aktivt för ditt konto'
+'Protect your account with a verification code': 'Skydda ditt konto med en verifieringskod'
+Disable: Inaktivera
+Enable: Aktivera
+'Account updated successfully.': 'Kontot har uppdaterats.'
+Edit: Redigera
+'Preferences updated successfully.': 'Preferenser uppdaterade.'
+'Access tokens': 'Åtkomsttoken'
+'API Tokens': 'API-token'
+'Create API token': 'Skapa API-token'
+'Edit API token': 'Redigera API-token'
+'Enable two-factor authentication': 'Aktivera tvåfaktorsautentisering'
+'Enable 2FA': 'Aktivera 2FA'
+'Invalid form submission. Please try again.': 'Ogiltigt formulärinskick. Försök igen.'
+'The verification code you entered is invalid.': 'Den inmatade verifieringskoden är ogiltig.'
+'Two-factor authentication has been enabled.': 'Tvåfaktorsautentisering har aktiverats.'
+'Could not send verification email. Please try again.': 'Kunde inte skicka verifierings-e-post. Försök igen.'
+'Verify your email': 'Verifiera din e-post'
+'Verify Email': 'Verifiera e-post'
+'Disable two-factor authentication': 'Inaktivera tvåfaktorsautentisering'
+'Disable 2FA': 'Inaktivera 2FA'
+'Invalid password.': 'Ogiltigt lösenord.'
+'Two-factor authentication has been disabled.': 'Tvåfaktorsautentisering har inaktiverats.'
+Automations: Automatiseringar
+'Successfully created automation!': 'Automatisering skapad!'
+'New automation': 'Ny automatisering'
+'Successfully edited automation!': 'Automatisering redigerad!'
+'Edit automation': 'Redigera automatisering'
+Connections: Anslutningar
+'Successfully created connection!': 'Anslutning skapad!'
+'New connection': 'Ny anslutning'
+'Successfully edited connection!': 'Anslutning redigerad!'
+'Edit connection': 'Redigera anslutning'
+Flows: Workflows
+'Successfully created flow!': 'Workflow skapad!'
+'New flow': 'Ny workflow'
+'Successfully edited flow!': 'Workflow redigerad!'
+'Edit flow': 'Redigera workflow'
+'Connection required': 'Anslutning krävs'
+'Connection not found': 'Anslutning hittades inte'
+'Webservice not found': 'Webservice hittades inte'
+Modules: Moduler
+'Please upload a valid ZIP file': 'Ladda upp en giltig ZIP-fil'
+Upload: Ladda upp
+'Unable to refresh system cache after module upload.': 'Kan inte uppdatera systemcache efter moduluppladdning.'
+'Install unsuccessful': 'Installation misslyckades'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Kan inte avinstallera {moduleName}. Den används fortfarande i ditt system'
+'Uninstall unsuccessful': 'Avinstallation misslyckades'
+'Unable to refresh system cache after module uninstall.': 'Kan inte uppdatera systemcache efter modulavinstallation.'
+'{moduleName} successfully uninstalled': '{moduleName} har avinstallerats'
+'Invalid module package: {moduleName}': 'Ogiltig modulpaket: {moduleName}'
+'Disabled manually': 'Inaktiverad manuellt'
+'Unable to refresh system cache after module disable.': 'Kan inte uppdatera systemcache efter modulavaktivering.'
+'{moduleName} disabled': '{moduleName} inaktiverad'
+'Unable to disable {moduleName}.': 'Kan inte inaktivera {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Kan inte uppdatera systemcache efter modulaktivering.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Kan inte aktivera {moduleName}. Den inaktiverades igen under cacherekonstruktion.'
+'{moduleName} enabled': '{moduleName} aktiverad'
+'Cannot move file': 'Kan inte flytta fil'
+'Could not find module in zip file': 'Kunde inte hitta modul i zip-fil'
+'Could not parse module namespace': 'Kunde inte parsera modulnamespace'
+'Cannot unzip file!': 'Kan inte packa upp fil!'
+'Cant delete temp folder': 'Kan inte ta bort tillfällig mapp'
+Configuration: Konfiguration
+'Configure manager to optimize SyncEngine for your server.': 'Konfigurera manager för att optimera SyncEngine för din server.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Autostartar bakgrundsasync-workers för att hantera automatiseringar.'
+Enabled: Aktiverad
+'Cannot enable manager': 'Kan inte aktivera manager'
+Disabled: Inaktiverad
+'The manager is controlled by a cronjob.': 'Managern styrs av en cronjob.'
+External: Extern
+'The manager is controlled externally.': 'Managern styrs externt.'
+'Queue size:': 'Köstorlek:'
+'Active workers:': 'Aktiva workers:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Skapad: {timestamp} | Ping: {ping}'
+Processes: Processer
+System: System
+Save: Spara
+'Invalid Manager': 'Ogiltig Manager'
+'Configuration saved': 'Konfiguration sparad'
+Routines: Rutiner
+'Successfully created routine!': 'Rutin skapad!'
+'New routine': 'Ny rutin'
+'Successfully edited routine!': 'Rutin redigerad!'
+'Edit routine': 'Redigera rutin'
+Storages: Lagringar
+'Successfully created storage!': 'Lagring skapad!'
+'New storage': 'Ny lagring'
+'Successfully edited storage!': 'Lagring redigerad!'
+'Edit storage': 'Redigera lagring'
+'Clear cache': 'Rensa cache'
+Environment: Miljö
+'Configure environment setup': 'Konfigurera miljöinställningar'
+Vault: Vault
+'Configure vault secrets': 'Konfigurera vaulthemligheter'
+'Manage system processes': 'Hantera systemprocesser'
+Import: Importera
+'Import JSON configs': 'Importera JSON-konfigurationer'
+Info: Info
+'System information': 'Systeminformation'
+Help: Hjälp
+'JSON data': 'JSON-data'
+'Format must be JSON.': 'Formatet måste vara JSON.'
+'Import successful': 'Import lyckad'
+Users: Användare
+'Successfully created user!': 'Användare skapad!'
+'Successfully edited user!': 'Användare redigerad!'
+'You cannot reset your own password.': 'Du kan inte återställa ditt eget lösenord.'
+'Password reset email sent successfully!': 'Lösenordsåterställnings-e-post skickad!'
+'An error occurred while resetting the password.': 'Ett fel inträffade vid återställning av lösenordet.'
+'You cannot delete your own account.': 'Du kan inte ta bort ditt eget konto.'
+'Successfully deleted user!': 'Användare borttagen!'
+'Endpoint not found: {value}': 'Endpoint hittades inte: {value}'
+'Automation is not enabled': 'Automatisering är inte aktiverad'
+'Automation is already running': 'Automatisering körs redan'
+'File not found': 'Fil hittades inte'
+'Scheduled processes are disabled.': 'Planerade processer är inaktiverade.'
+'Automation cannot accept a new request right now.': 'Automatisering kan inte acceptera en ny begäran just nu.'
+'Entity type not found': 'Entitetstyp hittades inte'
+'Entity deleted': 'Entitet borttagen'
+'An error occurred while sending the password reset email.': 'Ett fel inträffade vid skickande av lösenordsåterställnings-e-post.'
+'Your password reset request': 'Din lösenordsåterställningsbegäran'
+'No reset password token found in the URL or in the session.': 'Ingen återställningstoken hittad i URL:n eller sessionen.'
+Install: Installera
+'Unknown database error': 'Okänt databasfel'
+'Could not repair database': 'Kunde inte reparera databas'
+'Unable to access this page!': 'Kan inte komma åt denna sida!'
+Register: Registrera
+Variables: Variabler
+'Define static variables to be used within the automation.': 'Definiera statiska variabler att användas inom automatiseringen.'
+Source: Källa
+'Select the data source for this automation': 'Välj databasen för denna automatisering'
+Request: Begäran
+'Extract data from the current request body.': 'Extrahera data från nuvarande begäransbody.'
+'Cannot be used with scheduled automations.': 'Kan inte användas med planerade automatiseringar.'
+Retrieve: Hämta
+'Retrieve data from a webservice or other custom source.': 'Hämta data från en webservice eller annan källa.'
+'Run automation in batches': 'Kör automatisering i batch'
+'Batch method': 'Batchmetod'
+'Batches are made remotely using retrieve parameters': 'Batches skapas externt med hämtparametrar'
+'Batches are created locally': 'Batches skapas lokalt'
+'Limit batch size': 'Begränsa batchstorlek'
+'Limit the number of records to fetch/run at once.': 'Begränsa antalet poster att hämta/köra på samma gång.'
+Interval: Intervall
+'Set an interval time between each batch.': 'Ställ in en tidsintervall mellan varje batch.'
+Seconds: Sekunder
+'Configure where to extract request data from.': 'Konfigurera var begäransdata ska extraheras från.'
+'Request param': 'Begäransparam'
+'Define the param name to use as the data source.': 'Definiera parameternamnet att använda som databas.'
+'Leave empty to use the full request data.': 'Lämna tomt för att använda hela begäransdata.'
+'Configure tasks to retrieve the data': 'Konfigurera uppgifter för att hämta data'
+'Define source schema structure.': 'Definiera källschemastruktur.'
+'Predefined schema storage': 'Fördefinierad schemalagring'
+'Manual definitions': 'Manuella definitioner'
+'Event handler on empty source': 'EventHandler på tom källa'
+Cancel: Avbryt
+Error: Fel
+'Optionally trigger error when there is no data available from the source.': 'Välj ut att trigga fel när ingen data finns tillgänglig från källan.'
+Actions: Åtgärder
+'The actions that need to be done with the source data.': 'Åtgärderna som behöver utföras med källdata.'
+Flow: Workflow
+Routine: Rutin
+Tasks: Uppgifter
+Events: Händelser
+'Select the behavior on various events in this automation.': 'Välj beteende vid olika händelser i denna automatisering.'
+'On Cancel': 'Vid avbrott'
+'Actions to execute when the automation is cancelled.': 'Åtgärder att utföra när automatiseringen avbryts.'
+'On Error': 'Vid fel'
+'Actions to execute when the automation fails.': 'Åtgärder att utföra när automatiseringen misslyckas.'
+'On Success': 'Vid framgång'
+'Actions to execute when the automation completed successfully.': 'Åtgärder att utföra när automatiseringen slutfördes.'
+Response: Svar
+'What this automation should respond in case of a HTTP request.': 'Vad denna automatisering ska svara vid en HTTP-begäran.'
+'Success status and data': 'Framgångsstatus och data'
+'Data only': 'Endast data'
+'Success status only': 'Endast framgångsstatus'
+'File Download': 'Filnedladdning'
+'Download file selector': 'Nedladdningsfilväljare'
+Execution: Exekvering
+'Control how this automation is executed.': 'Styr hur denna automatisering exekveras.'
+'Execution mode': 'Exekveringsläge'
+Single: Enskild
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Endast en körning i taget och blockerar nya begärningar medan en körning är aktiv eller planerad.'
+Parallel: Parallel
+'Multiple simultaneous execution runs allowed': 'Flera samtidiga exekveringar tillåtna'
+Queued: I kö
+'Accepts new requests but executes only one run at a time.': 'Accepterar nya begärningar men exekverar endast en körning i taget.'
+'Stale run timeout': 'Stale run timeout'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder utan aktivitet innan en körning anses stale och automatiskt återställs.'
+'Defaults to {default}.': 'Standardinställning är {default}.'
+'History traces retention limit': 'Historikspårningsbehållningsgräns'
+'Configure execution history of this automation.': 'Konfigurera exekveringshistorik för denna automatisering.'
+'Maximum number of stored traces for this automation.': 'Maximalt antal lagrade spårningar för denna automatisering.'
+'Leave empty to use the global default of {param}.': 'Lämna tomt för att använda global standard på {param}.'
+Status: Status
+Default: Standard
+Fixed: Fast
+Days: Dagar
+Webservice: Webservice
+Trigger: Trigger
+Start: Start
+Stop: Stop
+Continue: Fortsätt
+Success: Framgång
+Unknown: Okänd
+Trashed: I papperskorgen
+Visible: Synlig
+Hidden: Dold
+Registered: Registrerad
+Scheduled: Planerad
+Running: Körs
+Stopped: Stoppad
+Failed: Misslyckad
+Cancelled: Avbruten
+Dynamic: Dynamisk
+Sequence: Sekvens
+'Add steps': 'Lägg till steg'
+'Input data': 'Inmatningsdata'
+'Input variables': 'Inmatningsvariabler'
+Conditions: Villkor
+'Input schema': 'Inmatningsschema'
+'Output schema': 'Utskriftsschema'
+'Data type': 'Datatyp'
+Columns: Kolumner
+Key: Nyckel
+Name: Namn
+'Field name key': 'Fältnyckel'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Hämtar standard indexnyckeln om värdet inte är en array med fältinformation.'
+'Field label key': 'Fältetikett nyckel'
+'Used in case the value is an array containing field information.': 'Används om värdet är en array med fältinformation.'
+'Schema storages': 'Schemalagringar'
+'From source schema': 'Från källschema'
+'To target schema': 'Till målschema'
+'Format options': 'Formateringsalternativ'
+'Response format': 'Svarformat'
+'This webservice does not validate authorization.': 'Denna webservice validerar inte auktorisation.'
+'Added to queue!': 'Lagd till i kö!'
+'Finished executing endpoint.': 'Endpoint exekverad färdigt.'
+'There were errors while executing this endpoint.': 'Det förekom fel vid exekvering av denna endpoint.'
+'Dots (.) in refs are forbidden: {ref}': 'Prikker (.) i refs är förbjudna: {ref}'
+'Entity not found for: {ref}': 'Entitet hittades inte för: {ref}'
+'Model not found for: {ref} ({class})': 'Modell hittades inte för: {ref} ({class})'
+'Response param name': 'Svarparameternamn'
+'The param name where the results are located': 'Parameternamnet där resultaten finns'
+'Nested keys are supported: key.nested_key': 'Nästlade nycklar stöds: key.nested_key'
+'Key / Column name override to store results': 'Nyckel/kolumnnamn-override för att lagra resultat'
+'Start with dot (.) for root': 'Börja med punkt (.) för root'
+Action: Åtgärd
+'Replace current data with results': 'Ersätt nuvarande data med resultat'
+'Merge results with current data': 'Sammanfoga resultat med nuvarande data'
+'Insert results into current data without replacing existing values': 'Infoga resultat i nuvarande data utan att ersätta befintliga värden'
+'Combine recursively?': 'Kombinera rekursivt?'
+'Catch errors': 'Fånga fel'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Definiera hur fel ska hanteras. När ett fel matchar ett villkor förhindras felet och definierade åtgärder körs istället.'
+'Leave empty to catch all errors.': 'Lämna tomt för att fånga alla fel.'
+'No actions defined': 'Inga åtgärder definierade'
+'Run catch {name}': 'Kör catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Hämta eller ställ in ett värde i kontext-cachen'
+'Set cache': 'Ställ in cache'
+'Get cache': 'Hämta cache'
+'Set from data': 'Ställ in från data'
+'Manual value': 'Manuellt värde'
+'Key / Column name': 'Nyckel / Kolumnnamn'
+'Leave empty for root': 'Lämna tomt för root'
+'Cache value': 'Cachvärde'
+'Cache tag reference/path': 'Cache-taggregatreferens/sti'
+'Can be used like: {tag}': 'Kan användas som: {tag}'
+Method: Metod
+Replace: Ersätt
+Merge: Sammanfoga
+Append: Lägg till
+'Not found action': 'Åtgärd inte hittad'
+'Action if the tag is not found': 'Åtgärd om taggen inte hittas'
+'Override with empty value': 'Överskriv med tomt värde'
+'Skip task': 'Hoppa över uppgift'
+'Cache tag reference missing': 'Cache-taggregatreferens saknas'
+Choose: Välj
+'Choose between different options based on conditions': 'Välj mellan olika alternativ baserat på villkor'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Definiera alternativen och deras villkor. När ett villkor är giltigt körs endast det alternativet.'
+'Default tasks': 'Standarduppgifter'
+'These tasks will run if none of the option conditions are met.': 'Dessa uppgifter körs om inga av alternativvillkoren är uppfyllda.'
+'Run option {name}': 'Kör alternativ {name}'
+'Run default': 'Kör standard'
+Extract: Extrahera
+'Extract a column from each item in your data': 'Extrahera en kolumn från varje objekt i dina data'
+'The data column name to extract items from': 'Datkolonnens namn att extrahera objekt från'
+'The column to extract': 'Kolumnen att extrahera'
+'The target column to put results': 'Målkolumnen att placera resultat i'
+'Leave empty to use the Key / Column name set above': 'Lämna tomt för att använda nyckel/kolumnnamn ovan'
+'No column key configured': 'Ingen kolonnnyckel konfigurerad'
+'Data not iterable': 'Data inte itererbar'
+'Could not extract': 'Kunde inte extrahera'
+Filter: Filter
+'Filter data based on conditions': 'Filtrera data baserat på villkor'
+'Leave empty for root iteration': 'Lämna tomt för root-iteration'
+'Filter method': 'Filtermetod'
+'Keep valid rows': 'Behåll giltiga rader'
+'Keep invalid rows': 'Behåll ogiltiga rader'
+'No conditions configured': 'Inga villkor konfigurerade'
+'Data key not found': 'Datanyckel inte hittad'
+Group: Grupp
+'Group your data': 'Gruppera dina data'
+'The data column name to group items for': 'Datkolonnens namn att gruppera objekt för'
+'Group by': 'Gruppera efter'
+'Set column name/key to group by value': 'Ställ in kolumnnamn/nyckel att gruppera efter värde'
+'Default group key': 'Standardgrupp nyckel'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Används när raden inte innehåller den definierade gruppkolumnen eller är tom. Om inte inställd tas raden bort.'
+'No group column configured': 'Ingen gruppkolumn konfigurerad'
+'Invalid group column: {value}': 'Ogiltig gruppkolumn: {value}'
+Index: Index
+'Index your data': 'Indexera dina data'
+'The data column name to index items for': 'Datkolonnens namn att indexera objekt för'
+'Numeric list': 'Numerisk lista'
+'Associative indexes': 'Associerade index'
+'New index key': 'Ny indexnyckel'
+'The template for the indexed keys': 'Mallen för de indexerade nycklarna'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Använd kolonnnycklar som taggar: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Ingen indexmetod konfigurerad'
+'No index key template configured': 'Ingen indexnyckelmall konfigurerad'
+Loop: Loop
+'Iterate over a set of rows': 'Iterera över en uppsättning rader'
+'Loop method': 'Loopmetod'
+Row: Rad
+Batches: Batches
+'Batch size': 'Batchstorlek'
+'Set the number of records to fetch/run at once.': 'Ställ in antalet poster att hämta/köra på samma gång.'
+'Data column not found: {key}': 'Datkolonn inte hittad: {key}'
+'Data column not iterable: {key}': 'Datkolonn inte itererbar: {key}'
+'Invalid action': 'Ogiltig åtgärd'
+'No batch size configured': 'Ingen batchstorlek konfigurerad'
+Map: Kartlägg
+'Map key value pairs': 'Kartlägg nyckelvärdespar'
+'The data column name for the value that needs to be mapped': 'Datkolonnens namn för värdet som ska kartläggas'
+'Nested keys are supported: {example}': 'Nästlade nycklar stöds: {example}'
+'Map columns': 'Kartläggningskolumner'
+'Convert key names and definition schema.': 'Konvertera nyckelnamn och definitionschema.'
+'Map values': 'Kartläggningsvärden'
+'Convert values for a column': 'Konvertera värden för en kolumn'
+'Only return mapped items?': 'Endast returnera kartlagda objekt?'
+'This will also reorder your data in the order of your map.': 'Detta kommer också att omordna dina data i ordningen av din kartläggning.'
+'Remove old keys?': 'Ta bort gamla nycklar?'
+'Map source': 'Kartläggningskälla'
+Mapper: Kartläggare
+'Convert column types to schema where available?': 'Konvertera kolumntyper till schema där tillgängligt?'
+'No manual map configured.': 'Ingen manuell kartläggning konfigurerad.'
+'Cannot map empty data': 'Kan inte kartlägga tom data'
+'Cannot map scalar data': 'Kan inte kartlägga skalärdata'
+'Merge columns and/or values': 'Sammanfoga kolumner och/eller värden'
+'The data column name to merge': 'Datkolonnens namn att sammanfoga'
+'Merge values of a column into a single value': 'Sammanfoga värden av en kolumn till ett enda värde'
+'Merge columns': 'Sammanfoga kolumner'
+'Merge both': 'Sammanfoga båda'
+'Key merge method': 'Nyckelsammanfogning metod'
+'Merge column key names': 'Sammanfoga kolonnnyckelnamn'
+'Merge column keys using an indexed name': 'Sammanfoga kolonnnycklar med ett indexerat namn'
+'Merge column keys using a regular expression': 'Sammanfoga kolonnnycklar med ett reguljärt uttryck'
+'Column keys that need to be merged': 'Kolonnnycklar som behöver sammanfogas'
+'Column key name': 'Kolonnnyckelnamn'
+'Regex to match keys with and merge': 'Regex för att matcha nycklar med och sammanfoga'
+'Indexed key to search for and merge': 'Indexerad nyckel att söka efter och sammanfoga'
+'Nested keys are not supported': 'Nästlade nycklar stöds inte'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Index börjar med'
+'Method to merge values from multiple columns': 'Metod för att sammanfoga värden från flera kolumner'
+'Each column value will be appended': 'Varje kolonnvärde läggs till'
+'Latter column values merge into the former': 'Senare kolonnvärden sammanfogas med den tidigare'
+'Latter column values replaces the former': 'Senare kolonnvärden ersätter den tidigare'
+'Latter column values insert into the former': 'Senare kolonnvärden infogas i den tidigare'
+Separator: Avgränsare
+Comma: Kommatecken
+Semicolon: Semikolon
+Space: Mellanslag
+Tab: Tab
+'New line': 'Ny rad'
+'Value template': 'Värde mall'
+'The template for each separate value to be merged': 'Mallen för varje separat värde att sammanfoga'
+'Remove original column key(s)?': 'Ta bort original kolonnnyckel(ar)?'
+'Only keep unique values?': 'Endast behålla unika värden?'
+'By default all values are kept.': 'Som standard behålls alla värden.'
+'Preserve column keys?': 'Behålla kolonnnycklar?'
+'Keep empty values?': 'Behålla tomma värden?'
+'By default all empty column values will not be merged.': 'Som standard sammanfogas inga tomma kolonnvärden.'
+'No key configured': 'Ingen nyckel konfigurerad'
+'No columns defined': 'Inga kolumner definierade'
+'No key method selected': 'Ingen nyckelmetod vald'
+'Cannot merge scalar value.': 'Kan inte sammanfoga skalär värde.'
+'Find and replace': 'Hitta och ersätt'
+'The data column name for the values that need to be replaced': 'Datkolonnens namn för värdena som behöver ersättas'
+'In case the value is a list of values this task will iterate the replacements for all': 'Om värdet är en lista itereras ersättningarna för alla'
+'Replace values': 'Ersätt värden'
+'Replace keys': 'Ersätt nycklar'
+'Replace keys and values': 'Ersätt nycklar och värden'
+'Replace recursively?': 'Ersätt rekursivt?'
+Find: Hitta
+'Find value not set': 'Hittat värde inte inställt'
+'Cannot replace scalar data': 'Kan inte ersätta skalärdata'
+'Retrieve your data from your specific connection': 'Hämta dina data från din specifika anslutning'
+'The data column name to pass to the webservice': 'Datkolonnens namn att skicka till webservicen'
+Connection: Anslutning
+'Response data': 'Svar-data'
+'No connection configured': 'Ingen anslutning konfigurerad'
+'Data not found: {key}': 'Data inte hittad: {key}'
+Send: Skicka
+'Send your data to your specific connection': 'Skicka dina data till din specifika anslutning'
+'Retrieve response data': 'Hämta svar-data'
+Set: Ställ in
+'Set your own values': 'Ställ in dina egna värden'
+'The data column key name for the values that needs to be set': 'Datkolonnens nyckelnamn för värden som behöver ställas in'
+'Reorder data?': 'Omordna data?'
+'This will append all configured columns at the end of the current data.': 'Detta lägger till alla konfigurerade kolumner på slutet av nuvarande data.'
+'Force if invalid?': 'Tvinga vid ogiltig?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Om befintlig data är skalär skapas ny datamling från värden inställda i denna uppgift.'
+'You can still reference the original value through the {placeholder} tag.': 'Du kan fortfarande referera till originalet via {placeholder} taggen.'
+'Set method': 'Inställningsmetod'
+'Set column values': 'Ställ in kolonnvärden'
+'Set schema': 'Ställ in schema'
+'Set both': 'Ställ in båda'
+'Remove columns not defined in schema?': 'Ta bort kolumner inte definierade i schema?'
+'Column key/name': 'Kolonnnyckel/namn'
+'-- Unchanged --': '-- Oförändrad --'
+'Use {wildcard} to insert the current value.': 'Använd {wildcard} för att infoga nuvarande värde.'
+Unset: Avinstallera
+'Data is not iterable': 'Data är inte itererbar'
+'No set params configured': 'Inga inställningsparams konfigurerade'
+Sort: Sortera
+'Sort your data': 'Sortera dina data'
+'The data column key name for the values that needs to be sorted': 'Datkolonnens nyckelnamn för värden som behöver sorteras'
+'Sort by key / column name': 'Sortera efter nyckel/kolumnnamn'
+'Sort by value': 'Sortera efter värde'
+'Sort by column value': 'Sortera efter kolonnvärde'
+'Sort by': 'Sortera efter'
+'Set column name/key to sort by value': 'Ställ in kolumnnamn/nyckel att sortera efter värde'
+Ascending: Stigande
+Descending: Fallande
+'Ascending natural order': 'Stigande naturlig ordning'
+'Descending natural order': 'Fallande naturlig ordning'
+'No sort method configured': 'Ingen sorteringsmetod konfigurerad'
+'Invalid sort order: {order}': 'Ogiltig sorteringsordning: {order}'
+'No sort column configured': 'Ingen sorteringskolumn konfigurerad'
+Split: Dela
+'Split value and/or split column key into multiple': 'Dela värde och/eller kolonnnyckel i flera'
+'The data column name to split': 'Datkolonnens namn att dela'
+'Split value': 'Delat värde'
+'Split into column keys': 'Dela till kolonnnycklar'
+'Split value and split into column keys': 'Dela värde och dela till kolonnnycklar'
+'Column key split method': 'Kolonnnyckel delningsmetod'
+'Split into column keys by providing custom names': 'Dela till kolonnnycklar genom att ange anpassade namn'
+'Split into column keys using an indexed name': 'Dela till kolonnnycklar med ett indexerat namn'
+'Column key names': 'Kolonnnyckelnamn'
+'Current value index/key (optional)': 'Nuvarande värde index/nyckel (valfritt)'
+'New column key name': 'Ny kolonnnyckelnamn'
+'Indexed key': 'Indexerad nyckel'
+'The template for the new indexed keys.': 'Mallen för de nya indexerade nycklarna.'
+'Remove original key(s)?': 'Ta bort original nyckel(ar)?'
+'Regular expression (Regex)': 'Reguljärt uttryck (Regex)'
+'Regular expression': 'Reguljärt uttryck'
+'Regex must be made for splitting values, not matching.': 'Regex måste göras för att dela värden, inte matcha.'
+'Split value column definition': 'Dela kolonndefinition för värde'
+'No action configured': 'Ingen åtgärd konfigurerad'
+'Loop key not supported': 'Loopnyckel stöds inte'
+'Value is not splittable into list': 'Värde kan inte delas till lista'
+'Column `{type}` does not exist': 'Kolonn `{type}` finns inte'
+'Value is not splittable into keys': 'Värde kan inte delas till nycklar'
+'No columns configured': 'Inga kolumner konfigurerade'
+Store: Lagra
+'Get or set a storage': 'Hämta eller ställ in en lagring'
+'Set storage': 'Ställ in lagring'
+'Get storage': 'Hämta lagring'
+'Storage column key/path': 'Lagringskolonnnyckel/sti'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Ställ in stigen där detta värde kommer att lagras eller lämna tomt. Använd punkter (.) för att navigera i lagringen.'
+'No storage selected': 'Ingen lagring vald'
+'Storage not found': 'Lagring inte hittad'
+'Raw storage cannot contain paths': 'Rålagring kan inte innehålla stigar'
+'This is a raw storage, please select a different storage or change the storage type': 'Detta är en rålagring, välj en annan lagring eller ändra lagringstypen'
+Template: Mall
+'Create your own modifier template with Twig': 'Skapa din egen modifieringsmall med Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Utgångstags {example_var} parsas innan Twig-mallen som taggar. Endast execute-uttal {example_func} parsas i Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Värdet av `data` används för uppgiftsutmatning. Tillgängliga variabler: `data`, `config`, `cache`, `variables` och `context`.'
+'Add your code here': 'Lägg till din kod här'
+'No template set': 'Ingen mall inställd'
+Trace: Spårning
+'Trace current status with a log or error.': 'Spåra nuvarande status med en logg eller fel.'
+'Trace type': 'Spårningstyp'
+'Creating an error will result in the trace reporting as failed.': 'Skapa ett fel vilket resulterar i att spårningen rapporteras som misslyckad.'
+'Log message': 'Loggmeddelande'
+'Error message': 'Felmeddelande'
+Message: Meddelande
+'Extra info': 'Extra information'
+'Include data?': 'Inkludera data?'
+'Message not configured': 'Meddelande inte konfigurerat'
+'Trigger something independently from the current flow': 'Trigga något oberoende av nuvarande workflow'
+'Run async?': 'Köra async?'
+Experimental: Experimentell
+'If the automation is using batches then this trigger will always run async.': 'Om automatiseringen använder batches kommer denna trigger alltid att köra async.'
+'Pass current data?': 'Vidarebefordra nuvarande data?'
+'Override current data?': 'Överskriv nuvarande data?'
+'Leave empty to pass root data': 'Lämna tomt för att vidarebefordra root-data'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Definiera statiska variabler att användas för denna trigger. Befintliga variabler inkluderas också.'
+Automation: Automatisering
+Wait: Vänta
+'Wait for time to pass': 'Vänta på att tid går'
+'Seconds to wait': 'Sekunder att vänta'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Anslut till en FTP-server för att ladda upp och/eller ladda ner filer'
+'{type} extension is not available': '{type} extension är inte tillgänglig'
+Host: Värdfert
+Port: Port
+Username: Användarnamn
+Password: Lösenord
+'Passive mode': 'Passivt läge'
+'Connect using SSL': 'Anslut med SSL'
+'Process timeout in seconds': 'Processtimeout i sekunder'
+'Cannot connect to {host}': 'Kan inte ansluta till {host}'
+'Cannot login to {host}': 'Kan inte logga in på {host}'
+'Successfully connected to {host}': 'Ansluten till {host}'
+'Could not connect to {host}': 'Kunde inte ansluta till {host}'
+'HTTP No auth': 'HTTP Ingen auth'
+'Connect without authorization': 'Anslut utan auktorisation'
+'Allow HTTP': 'Tillåt HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Tillå usäker HTTP-anslutning utan SSL-kryptering'
+Endpoint: Endpoint
+'Send current data': 'Skicka nuvarande data'
+'Select data transport location': 'Välj datatransportplats'
+'Request {type}': 'Begäran {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Anslut med basic auktorisation'
+'Username / key': 'Användarnamn / nyckel'
+'Password / Secret': 'Lösenord / Hemlighet'
+'HTTP Bearer token': 'HTTP Bearer-token'
+'Connect with Bearer Token authorization': 'Anslut med Bearer Token-auktorisation'
+Token: Token
+'HTTP Authorization server': 'HTTP Auktorisationsserver'
+'Connect to a HTTP server using an authorization server': 'Anslut till en HTTP-server med en auktorisationsserver'
+Body: Body
+Header: Header
+'Redirect url': 'Redirect-url'
+'Local File system': 'Lokalt filsystem'
+'Use the local filesystem defined by your environment': 'Använd det lokala filsystemet definierat av din miljö'
+'Root path': 'Root-sti'
+'Relative path?': 'Relativ stig?'
+'Makes the root path relative to the SyncEngine installation': 'Gör root-stigen relativ till SyncEngine-installationen'
+'Successfully accessed {root}': 'Åtkomst till {root}'
+'Could not access {root}': 'Kunde inte få åtkomst till {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Anslut till en SFTP-server för att ladda upp och/eller ladda ner filer'
+'Authentication type': 'Autentiseringstyp'
+'Private key': 'Privat nyckel'
+'Username and password': 'Användarnamn och lösenord'
+'Private key password': 'Lösenord privat nyckel'
+'If your private key is password protected, you can fill in that password here': 'Om din privata nyckel är lösenordsskyddad kan du fylla i det lösenordet här'
+'Cannot login to {host}: {error}': 'Kan inte logga in på {host}: {error}'
+'Could not rename': 'Kunde inte döpa om'
+SOAP: SOAP
+'Connect using SOAP': 'Anslut med SOAP'
+'HTTP Authentication': 'HTTP-autentisering'
+'Basic authentication': 'Basic-autentisering'
+'SOAP multistep server': 'SOAP-multistep-server'
+'Connect to a SOAP server using multistep setup': 'Anslut till en SOAP-server med multistep-uppsättning'
+'SOAP extension is not available': 'SOAP-extension är inte tillgänglig'
+Url: Url
+'The URL for this authentication step': 'URL:n för denna autentiseringssteg'
+SQL: SQL
+'Connect to a SQL server': 'Anslut till en SQL-server'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Inga database-extensions tillgängliga, installera en av följande: {options}'
+'Select database driver': 'Välj database-driver'
+Database: Databas
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Fråga
+'Fetch method': 'Hämtningsmetod'
+'Associated array': 'Associerad array'
+'Key => Value pairs': 'Nyckel => Värde-par'
+'Key column': 'Nyckelkolumn'
+'Choose the key you want to use as the row key': 'Välj nyckeln du vill använda som radnyckel'
+Path: Stig
+'Select what you want to retrieve': 'Välj vad du vill hämta'
+'File contents': 'Filinnehåll'
+'List directories and filenames': 'Lista mappar och filnamn'
+'List filenames': 'Lista filnamn'
+'List directories': 'Lista mappar'
+Filename: Filnamn
+'Select what action you want to send': 'Välj vilken åtgärd du vill skicka'
+'Upload file contents': 'Ladda upp filinnehåll'
+'Delete file': 'Ta bort fil'
+'Create directory': 'Skapa mapp'
+'Delete directory': 'Ta bort mapp'
+'Rename or move a file or directory': 'Döp om eller flytta en fil eller mapp'
+'Overwrite if file exists': 'Skriv över om filen finns'
+'Directory name': 'Mappnamn'
+'Old name': 'Gammalt namn'
+'New name': 'Nytt namn'
+'Overwrite if new name exists': 'Skriv över om nytt namn finns'
+'No Filename configured': 'Inget filnamn konfigurerat'
+'Cannot fetch file from {host}, please try passive mode': 'Kan inte hämta fil från {host}, försök passivt läge'
+'Cannot fetch file from {host}': 'Kan inte hämta fil från {host}'
+'Successfully retrieved: {name}': 'Hämtad: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Fil {oldName} fanns, döpt om till {newName}'
+'Could not be write file: {name}': 'Kunde inte skriva fil: {name}'
+'Successfully uploaded: {name}': 'Uppladdad: {name}'
+'Could not delete file {name}': 'Kunde inte ta bort fil {name}'
+'Successfully deleted file: {name}': 'Fil borttagen: {name}'
+'Cannot read directory from {host}': 'Kan inte läsa mapp från {host}'
+'No directory configured': 'Ingen mapp konfigurerad'
+'Could not create directory: {path}': 'Kunde inte skapa mapp: {path}'
+'Successfully created directory: {path}': 'Mapp skapad: {path}'
+'Could not delete directory: {path}': 'Kunde inte ta bort mapp: {path}'
+'Successfully deleted: {path}': 'Borttagen: {path}'
+'Invalid rename configuration': 'Ogiltig omdöpningskonfiguration'
+'Could not rename: {old} to {new}': 'Kunde inte döpa om: {old} till {new}'
+'Successfully renamed: {old} to {new}': 'Omdöpt: {old} till {new}'
+'Invalid resource': 'Ogiltig resurs'
+'Request method': 'Begäransmetod'
+'Request timeout': 'Begärans timeout'
+'Request query': 'Begäransquery'
+'Request header': 'Begäransheader'
+'Request body': 'Begäransbody'
+'SOAP version': 'SOAP-version'
+'Default (PHP default)': 'Standard (PHP-standard)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protokollversion. Lämna tomt för PHP-standard.'
+Compression: Kompression
+'Compress SOAP requests and accept compressed responses.': 'Komprimera SOAP-begärningar och acceptera komprimerade svar.'
+'Connection timeout': 'Anslutningstimeout'
+'Maximum time in seconds for the connection to be established.': 'Maximal tid i sekunder för att etablera anslutningen.'
+'WSDL mode': 'WSDL-läge'
+'Will this connection use WSDL file format?': 'Kommer denna anslutning att använda WSDL-filformat?'
+'WSDL file url': 'WSDL-fil-url'
+'Link to WSDL format that will be filled in for this soap connection': 'Länk till WSDL-format som fylls i för denna soap-anslutning'
+'WSDL cache': 'WSDL-cache'
+'No cache': 'Ingen cache'
+'Memory cache': 'Minnescache'
+'Disk/File cache': 'Disk/Fil-cache'
+Both: Båda
+'WSDL cache warning': 'WSDL-cache varning'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Filbaserad WSDL-cache är aktiverad. Detta kan orsaka problem med föråldrade WSDL-filer och säkerhet pga delad åtkomst på servern.'
+'SOAP service namespace': 'SOAP-service namespace'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Mål-namespace för SOAP-service. Krävs när WSDL-läge är inaktiverat.'
+'SOAPAction header': 'SOAPAction-header'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Valfri SOAPAction HTTP-headervärde. Krävs av vissa SOAP-servrar.'
+Advanced: Avancerad
+'Override options for the SOAP connection.': 'Överskrivningsalternativ för SOAP-anslutningen.'
+'SOAP headers': 'SOAP-headers'
+'SOAP operation name': 'SOAP-operationens namn'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Namnet på SOAP-operationen att anropa. Detta krävs för både WSDL och icke-WSDL-läge.'
+'Use data transport as body?': 'Använd datatransport som body?'
+'SOAP body': 'SOAP-body'
+'Define static variables to be used within the authorization process.': 'Definiera statiska variabler att användas inom auktorisationsprocessen.'
+'Authorized request base config': 'Auktoriserad begäransbas-config'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definiera bas-begäranskonfiguration. Detta används för att ställa in standardparams för alla begärningar med denna anslutning.'
+'Override host': 'Överskriv värd'
+'Authorization process steps': 'Auktoriseringsprocesssteg'
+'Define each step for the authorization process.': 'Definiera varje steg för auktorisationsprocessen.'
+'The param name where the authentication parameters are located': 'Parameternamnet där autentiseringsparametrarna finns'
+'Tag name': 'Taggnamn'
+'Choose the tag name in which the response param value is stored': 'Välj taggnamnet där svar-paramvärdet lagras'
+'Example: token': 'Exempel: token'
+Expiration: Upphörande
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Ställ in en upphörendetimer för taggvärdet så att re-autentisering görs inom detta tidsrum'
+'Supported formats:': 'Format som stöds:'
+'Timestamp or date': 'Timestamp eller datum'
+'Time format: ({time_format})': 'Tidsformat: ({time_format})'
+'Text format: ({time_string})': 'Textformat: ({time_string})'
+'Response type': 'Svarstyp'
+'The type of response the URL will return': 'Typen av svar URL:n kommer att returnera'
+'Tag storage': 'Taglagring'
+'Define the tags you need to store for authentication': 'Definiera taggarna du behöver lagra för autentisering'
+'Run next step (default)': 'Kör nästa steg (standard)'
+'Skip next step': 'Hoppa över nästa steg'
+'Stop loop': 'Stoppa loop'
+'Run previous step (default)': 'Kör föregående steg (standard)'
+'Restart loop from beginning': 'Starta om loop från början'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Kan inte autentisera på steg #{step} från anslutning #{connectionID}'
+'Invalid tag name': 'Ogiltigt taggnamn'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Ogiltigt eller tomt server-svar för tag:{tag} | Param inte hittad:{param}'
+'Invalid or empty server response for tag:{tag}': 'Ogiltigt eller tomt server-svar för tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Är du säker på att du vill inaktivera tvåfaktorsautentisering?'
+'You will need to re-enable 2FA after verifying your password': 'Du måste aktivera 2FA igen efter att ha verifierat ditt lösenord'
+'Enter your password to confirm': 'Ange ditt lösenord för att bekräfta'
+'Check your email': 'Kontrollera din e-post'
+'We sent a 6-digit verification code to your email address': 'Vi har skickat en 6-siffrig verifieringskod till din e-postadress'
+'Enter the code from your email': 'Ange koden från din e-post'
+'Resend Code': 'Skicka kod igen'
+Verify: Verifiera
+'Choose how you want to receive verification codes': 'Välj hur du vill ta emot verifieringskoder'
+'Authenticator App (Recommended)': 'Authenticator App (rekommenderad)'
+'Scan the QR code with your TOTP app': 'Skanna QR-koden med din TOTP-app'
+'Or enter this secret manually:': 'Eller ange denna hemlighet manuellt:'
+'Email Verification': 'E-postverifiering'
+'We will send a 6-digit code to your email address': 'Vi skickar en 6-siffrig kod till din e-postadress'
+'Send Code to Email': 'Skicka kod till e-post'
+'Create new': 'Skapa ny'
+Description: Beskrivning
+Expires: Upphör
+'No API tokens created': 'Inga API-token skapade'
+URL: URL
+Uses: Användningar
+'You are about to reset this process, are you sure?': 'Du är på väg att återställa denna process, är du säker?'
+Reset: Återställ
+'Reset automation': 'Återställ automatisering'
+'Quick Edit': 'Snabbredigering'
+Hide: Dölj
+Show: Visa
+Export: Exportera
+Trash: Papperskorg
+Restore: Återställ
+'Delete Permanently': 'Radera permanent'
+Issue: Utgåva
+Connected: Ansluten
+'Used in': 'Används i'
+'Last runs': 'Senaste körningar'
+'Scheduled runs': 'Planerade körningar'
+Steps: Steg
+'Message Queue': 'Meddelandekö'
+'Scheduled At': 'Planerad kl.'
+'Created At': 'Skapad kl.'
+View: Visa
+'Scheduled run': 'Planerad körning'
+Delete: Radera
+'Delete run': 'Radera körning'
+'Are you sure you want to delete this message?': 'Är du säker på att du vill radera detta meddelande?'
+'Disabled modules.': 'Inaktiverade moduler.'
+Module: Modul
+Requires: Kräver
+Reason: Anledning
+Uninstall: Avinstallera
+'Are you sure?': 'Är du säker?'
+'This will uninstall module {moduleName} from {vendor}': 'Detta avinstallerar modul {moduleName} från {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Ladda upp en nyare modulversion för att ersätta en inkompatibel modul.'
+Version: Version
+Author: Författare
+Manage: Hantera
+Reinstall: Installera om
+Config: Config
+Task: Uppgift
+Traces: Spårningar
+'You are about to kill this process, are you sure?': 'Du är på väg att döda denna process, är du säker?'
+Kill: Döda
+'New user': 'Ny användare'
+'Edit user': 'Redigera användare'
+Roles: Roller
+'Reset password': 'Återställ lösenord'
+'Reset password?': 'Återställ lösenord?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'En lösenordsåterställnings-e-post skickas till {email}. Användaren kan sedan ställa in sitt eget lösenord.'
+'This will delete user {email}': 'Detta raderar användare {email}'
+Visibility: Synlighet
+All: Alla
+Dashboard: Dashboard
+'Verify Login': 'Verifiera inloggning'
+Login: Inloggning
+'Forgot password?': 'Glömt lösenord?'
+'Password Reset Email Sent': 'Lösenordsåterställnings-e-post skickad'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Om ett konto matchande din e-post finns har en e-post skickats innehållande en länk du kan använda för att återställa ditt lösenord.'
+'This link will expire in %expiration%': 'Denna länk upphör om %expiration%'
+"If you don't receive an email please check your spam folder": "Om du inte tar emot en e-post kontrollera din skräppostmapp"
+'Back to login': 'Tillbaka till inloggning'
+'Try again': 'Försök igen'
+'Reset your password': 'Återställ ditt lösenord'
+'Enter your email address and we will send you a link to reset your password.': 'Ange din e-postadress och vi skickar dig en länk för att återställa ditt lösenord.'
+'Page not found': 'Sida hittades inte'
+'Oops! An Error Occurred': 'Oj! Ett fel inträffade'
+Back: Tillbaka
+'Authenticator App': 'Authenticator App'
+'Fill in the code from your authenticator app': 'Fyll i koden från din authenticator-app'
+'Fill in the code send to your email': 'Fyll i koden skickad till din e-post'
+'There was a problem validating your password reset request': 'Det förekom ett problem med att validera din lösenordsåterställningsbegäran'
+'There is already an automation with this ref, please enter a different ref': 'Det finns redan en automatisering med denna ref, vänligen ange en annan ref'
+'There is already an automation with this name, please enter a different name': 'Det finns redan en automatisering med detta namn, vänligen ange ett annat namn'
+'There is already an automation with this endpoint, please enter a different name': 'Det finns redan en automatisering med denna endpoint, vänligen ange ett annat namn'
+'There is already an account with this email': 'Det finns redan ett konto med denna e-post'
+'Your password should be at least { limit } characters': 'Ditt lösenord bör vara minst { limit } tecken'
+'Please enter a password': 'Vänligen ange ett lösenord'
+'You should agree to our license terms.': 'Du bör godkänna våra licensvillkor.'
+'Please enter your email': 'Vänligen ange din e-post'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: betrodd
