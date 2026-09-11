@@ -1,0 +1,935 @@
+'Column definitions': 'Definicje kolumn'
+'Extend column definitions': 'Rozszerz definicje kolumn'
+'Configure custom column types for each field.': 'Skonfiguruj niestandardowe typy kolumn dla każdego pola.'
+'Comma Separated Values': 'Wartości oddzielone przecinkami'
+'FormData encoded string': 'String zakodowany FormData'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'String zakodowany URL'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": "YAML Ain't Markup Language"
+Address: Adres
+'Address column': 'Kolumna adresu'
+Strict: Ścisły
+'Address columns': 'Kolumny adresu'
+'Country (Code)': 'Kraj (Kod)'
+'Column name for: {field}': 'Nazwa kolumny dla: {field}'
+'Administrative Area / Province / State': 'Obszar administracyjny / Prowincja / Stan'
+'Locality / City': 'Miejscowość / Miasto'
+'Dependent Locality': 'Zależna miejscowość'
+'Postal / ZIP Code': 'Kod pocztowy'
+'Sorting Code': 'Kod sortowania'
+'Address Line 1': 'Linia adresu 1'
+'Address Line 2': 'Linia adresu 2'
+'Address Line 3': 'Linia adresu 3'
+Locale: Locale
+Organization: Organizacja
+'Given Name': 'Imię'
+'Additional Name': 'Dodatkowe imię'
+'Family Name': 'Nazwisko'
+Boolean: Boolean
+'Format as true or false': 'Sformatuj jako true lub false'
+Format: Format
+Integer: Całkowity
+'Custom text': 'Tekst niestandardowy'
+'Custom number': 'Numer niestandardowy'
+'True value': 'Wartość true'
+'False value': 'Wartość false'
+'Fallback value': 'Wartość zapasowa'
+'Null / Empty': 'Null / Pusty'
+Custom: Niestandardowy
+'Fallback custom value': 'Niestandardowa wartość zapasowa'
+'Yes': 'Tak'
+'No': 'Nie'
+Collection: Kolekcja
+'A collection of a column type': 'Kolekcja typu kolumny'
+Associative: Asocjacyjny
+'Column Type': 'Typ kolumny'
+Key/Name: Klucz/Nazwa
+Currency: Waluta
+'Currency column for money/price based values': 'Kolumna waluty dla wartości pieniężnych/cenowych'
+'Currency sign': 'Symbol waluty'
+'Add space between currency sign and value?': 'Dodać odstęp między symbolem waluty a wartością?'
+'Put currency sign after value?': 'Umieścić symbol waluty po wartości?'
+Date: Data
+'General date and time column': 'Ogólna kolumna daty i czasu'
+Unchanged: Niezmieniony
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Pusty string'
+'Current timestamp as format': 'Aktualny timestamp jako format'
+'Please check PHP date documentation': 'Sprawdź dokumentację daty PHP'
+Timezone: Strefa czasowa
+'Please check PHP DateTimeZone documentation': 'Sprawdź dokumentację DateTimeZone PHP'
+'Empty value': 'Pusta wartość'
+Duration: Czas trwania
+'General duration column': 'Ogólna kolumna czasu trwania'
+'Please check PHP DateInterval documentation': 'Sprawdź dokumentację DateInterval PHP'
+Email: E-mail
+'Email column': 'Kolumna e-mail'
+'Validation mode': 'Tryb walidacji'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Zapewnia, że adres e-mail ściśle przestrzega standardów RFC. Na przykład nie pozwala na adresy IP w części domeny.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Postępuje zgodnie z regułami wprowadzania HTML5, które są nieco bardziej liberalne niż ścisłe standardy RFC.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Podobny do HTML5, ale pozwala również na adresy e-mail bez TLD (np. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Zapasowy
+'Fallback value if it is an invalid email address.': 'Wartość zapasowa jeśli to nieprawidłowy adres e-mail.'
+Enumeration: Wyliczenie
+'Predefined select options': 'Predefiniowane opcje wyboru'
+Options: Opcje
+Value: Wartość
+Label: Etykieta
+'Numeric options': 'Opcje numeryczne'
+None: Brak
+'Use column for type hinting': 'Użyj kolumny do type hinting'
+Soft: Miękki
+'Use fallback for invalid values': 'Użyj wartości zapasowej dla nieprawidłowych wartości'
+'Throw error on invalid values': 'Wyrzucić błąd dla nieprawidłowych wartości'
+'Set the fallback value in case it is empty.': 'Ustawić wartość zapasową jeśli jest pusta.'
+'Will also be used as fallback in soft mode.': 'Będzie również używany jako zapasowy w trybie miękkim.'
+'Parse before validation': 'Analizować przed walidacją'
+'Trim text': 'Przyciąć tekst'
+'Convert case': 'Konwertuj wielkość liter'
+'Capitalize first': 'Wielka litera na początku'
+'Capitalize Words': 'Wielkie litery w słowach'
+lowercase: lowercase
+UPPERCASE: WIELKIE_LITERY
+'Invalid enum config': 'Nieprawidłowa konfiguracja enum'
+'Invalid value for enum: {formatted}': 'Nieprawidłowa wartość dla enum: {formatted}'
+Number: Numer
+'Numeric column': 'Kolumna numeryczna'
+Type: Typ
+'A raw number can be used for calculations and number storage.': 'Surowy numer może być używany do obliczeń i przechowywania liczb.'
+'A formatted number can be used for display.': 'Sformatowany numer może być używany do wyświetlania.'
+'Raw number': 'Surowy numer'
+'Format to a number type.': 'Sformatuj do typu numerycznego.'
+Formatted: Sformatowany
+'Format to a numeric string.': 'Sformatuj do stringa numerycznego.'
+Rounding: Zaokrąglanie
+'Round halves up': 'Zaokrąglaj połowy w górę'
+'Round halves down': 'Zaokrąglaj połowy w dół'
+'Round halves to even numbers': 'Zaokrąglaj połowy do liczb parzystych'
+'Round halves to odd numbers': 'Zaokrąglaj połowy do liczb nieparzystych'
+Decimals: Dziesiętne
+'Trim trailing zeros (0)': 'Usuń końcowe zera (0)'
+'Decimal separator': 'Separator dziesiętny'
+'Thousands separator': 'Separator tysięcy'
+none: brak
+space: spacja
+Schema: Schema
+'Schema definitions column': 'Kolumna definicji schema'
+'Schema source': 'Źródło schema'
+Manual: Ręczny
+Storage: Przechowywanie
+'Schema storage': 'Przechowywanie schema'
+'Configure column types for each field.': 'Skonfiguruj typy kolumn dla każdego pola.'
+Slug: Slug
+'Format as a slug': 'Sformatuj jako slug'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: WIELKIE_LITERY_POLOWKA
+Case: Przypadek
+'camel Style': 'styl camel'
+'Word separator': 'Separator słów'
+dash: myślnik
+underscore: podkreślenie
+Text: Tekst
+'General text column': 'Ogólna kolumna tekstu'
+'Limit length?': 'Ograniczyć długość?'
+Max: Maks
+Unit: Jednostka
+Characters: Znaki
+Words: Słowa
+'Access denied.': 'Dostęp zabroniony.'
+'Invalid request method.': 'Nieprawidłowa metoda żądania.'
+'Entity not found': 'Encja nie znaleziona'
+'Action not supported: {action}': 'Akcja nieobsługiwana: {action}'
+Update: Aktualizuj
+Create: Utwórz
+Account: Konto
+'Edit account': 'Edytuj konto'
+'Edit user account': 'Edytuj konto użytkownika'
+Preferences: Preferencje
+'Edit preferences': 'Edytuj preferencje'
+'API tokens': 'Tokeny API'
+'Manage API tokens': 'Zarządzaj tokenami API'
+'Two-factor authentication': 'Uwierzytelnianie dwuskładnikowe'
+'2FA is active for your account': '2FA jest aktywne dla Twojego konta'
+'Protect your account with a verification code': 'Chroń swoje konto kodem weryfikacyjnym'
+Disable: Wyłącz
+Enable: Włącz
+'Account updated successfully.': 'Konto zaktualizowane.'
+Edit: Edytuj
+'Preferences updated successfully.': 'Preferencje zaktualizowane.'
+'Access tokens': 'Tokeny dostępu'
+'API Tokens': 'Tokeny API'
+'Create API token': 'Utwórz token API'
+'Edit API token': 'Edytuj token API'
+'Enable two-factor authentication': 'Włącz uwierzytelnianie dwuskładnikowe'
+'Enable 2FA': 'Włącz 2FA'
+'Invalid form submission. Please try again.': 'Nieprawidłowe wysłanie formularza. Spróbuj ponownie.'
+'The verification code you entered is invalid.': 'Wprowadzony kod weryfikacyjny jest nieprawidłowy.'
+'Two-factor authentication has been enabled.': 'Uwierzytelnianie dwuskładnikowe zostało włączone.'
+'Could not send verification email. Please try again.': 'Nie udało się wysłać e-maila weryfikacyjnego. Spróbuj ponownie.'
+'Verify your email': 'Zweryfikuj swój e-mail'
+'Verify Email': 'Zweryfikuj e-mail'
+'Disable two-factor authentication': 'Wyłącz uwierzytelnianie dwuskładnikowe'
+'Disable 2FA': 'Wyłącz 2FA'
+'Invalid password.': 'Nieprawidłowe hasło.'
+'Two-factor authentication has been disabled.': 'Uwierzytelnianie dwuskładnikowe zostało wyłączone.'
+Automations: Automatyzacje
+'Successfully created automation!': 'Automatyzacja utworzona!'
+'New automation': 'Nowa automatyzacja'
+'Successfully edited automation!': 'Automatyzacja edytowana!'
+'Edit automation': 'Edytuj automatyzację'
+Connections: Połączenia
+'Successfully created connection!': 'Połączenie utworzone!'
+'New connection': 'Nowe połączenie'
+'Successfully edited connection!': 'Połączenie edytowane!'
+'Edit connection': 'Edytuj połączenie'
+Flows: Workflows
+'Successfully created flow!': 'Workflow utworzony!'
+'New flow': 'Nowy workflow'
+'Successfully edited flow!': 'Workflow edytowany!'
+'Edit flow': 'Edytuj workflow'
+'Connection required': 'Wymagane połączenie'
+'Connection not found': 'Połączenie nie znalezione'
+'Webservice not found': 'Webservice nie znaleziony'
+Modules: Moduły
+'Please upload a valid ZIP file': 'Prześlij prawidłowy plik ZIP'
+Upload: Prześlij
+'Unable to refresh system cache after module upload.': 'Nie udało się odświeżyć cache systemu po przesłaniu modułu.'
+'Install unsuccessful': 'Instalacja nieudana'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Nie można odinstalować {moduleName}. Jest nadal używany w Twoim systemie'
+'Uninstall unsuccessful': 'Odinstalowanie nieudane'
+'Unable to refresh system cache after module uninstall.': 'Nie udało się odświeżyć cache systemu po odinstalowaniu modułu.'
+'{moduleName} successfully uninstalled': '{moduleName} odinstalowany'
+'Invalid module package: {moduleName}': 'Nieprawidłowy pakiet modułu: {moduleName}'
+'Disabled manually': 'Wyłączony ręcznie'
+'Unable to refresh system cache after module disable.': 'Nie udało się odświeżyć cache systemu po wyłączeniu modułu.'
+'{moduleName} disabled': '{moduleName} wyłączony'
+'Unable to disable {moduleName}.': 'Nie można wyłączyć {moduleName}.'
+'Unable to refresh system cache after module enable.': 'Nie udało się odświeżyć cache systemu po włączeniu modułu.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Nie można włączyć {moduleName}. Został ponownie wyłączony podczas odbudowy cache.'
+'{moduleName} enabled': '{moduleName} włączony'
+'Cannot move file': 'Nie można przenieść pliku'
+'Could not find module in zip file': 'Nie znaleziono modułu w pliku zip'
+'Could not parse module namespace': 'Nie udało się przeanalizować namespace modułu'
+'Cannot unzip file!': 'Nie można wypakować pliku!'
+'Cant delete temp folder': 'Nie można usunąć tymczasowego folderu'
+Configuration: Konfiguracja
+'Configure manager to optimize SyncEngine for your server.': 'Skonfiguruj manager aby zoptymalizować SyncEngine dla Twojego serwera.'
+Manager: Manager
+'Auto-starts background async workers to handle automations.': 'Automatycznie uruchamia workerów async w tle do obsługi automatyzacji.'
+Enabled: Włączony
+'Cannot enable manager': 'Nie można włączyć managera'
+Disabled: Wyłączony
+'The manager is controlled by a cronjob.': 'Manager jest kontrolowany przez cronjob.'
+External: Zewnętrzny
+'The manager is controlled externally.': 'Manager jest kontrolowany zewnętrznie.'
+'Queue size:': 'Rozmiar kolejki:'
+'Active workers:': 'Aktywni workerzy:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Worker-ID #{pid} | Utworzony: {timestamp} | Ping: {ping}'
+Processes: Procesy
+System: System
+Save: Zapisz
+'Invalid Manager': 'Nieprawidłowy Manager'
+'Configuration saved': 'Konfiguracja zapisana'
+Routines: Routiny
+'Successfully created routine!': 'Rutyna utworzona!'
+'New routine': 'Nowa rutyna'
+'Successfully edited routine!': 'Rutyna edytowana!'
+'Edit routine': 'Edytuj rutynę'
+Storages: Przechowywania
+'Successfully created storage!': 'Przechowanie utworzone!'
+'New storage': 'Nowe przechowanie'
+'Successfully edited storage!': 'Przechowanie edytowane!'
+'Edit storage': 'Edytuj przechowanie'
+'Clear cache': 'Wyczyść cache'
+Environment: Środowisko
+'Configure environment setup': 'Skonfiguruj ustawienia środowiska'
+Vault: Vault
+'Configure vault secrets': 'Skonfiguruj tajne klucze vault'
+'Manage system processes': 'Zarządzaj procesami systemu'
+Import: Importuj
+'Import JSON configs': 'Importuj konfiguracje JSON'
+Info: Info
+'System information': 'Informacje o systemie'
+Help: Pomoc
+'JSON data': 'Dane JSON'
+'Format must be JSON.': 'Format musi być JSON.'
+'Import successful': 'Import udany'
+Users: Użytkownicy
+'Successfully created user!': 'Użytkownik utworzony!'
+'Successfully edited user!': 'Użytkownik edytowany!'
+'You cannot reset your own password.': 'Nie możesz zresetować własnego hasła.'
+'Password reset email sent successfully!': 'E-mail resetowania hasła wysłany!'
+'An error occurred while resetting the password.': 'Wystąpił błąd podczas resetowania hasła.'
+'You cannot delete your own account.': 'Nie możesz usunąć własnego konta.'
+'Successfully deleted user!': 'Użytkownik usunięty!'
+'Endpoint not found: {value}': 'Endpoint nie znaleziony: {value}'
+'Automation is not enabled': 'Automatyzacja nie włączona'
+'Automation is already running': 'Automatyzacja już działa'
+'File not found': 'Plik nie znaleziony'
+'Scheduled processes are disabled.': 'Procesy zaplanowane są wyłączone.'
+'Automation cannot accept a new request right now.': 'Automatyzacja nie może przyjąć nowego żądania w tej chwili.'
+'Entity type not found': 'Typ encji nie znaleziony'
+'Entity deleted': 'Encja usunięta'
+'An error occurred while sending the password reset email.': 'Wystąpił błąd podczas wysyłania e-maila resetowania hasła.'
+'Your password reset request': 'Twoje żądanie resetowania hasła'
+'No reset password token found in the URL or in the session.': 'Nie znaleziono tokenu resetowania w URL lub sesji.'
+Install: Zainstaluj
+'Unknown database error': 'Nieznany błąd bazy danych'
+'Could not repair database': 'Nie udało się naprawić bazy danych'
+'Unable to access this page!': 'Nie można uzyskać dostępu do tej strony!'
+Register: Zarejestruj
+Variables: Zmienne
+'Define static variables to be used within the automation.': 'Zdefiniuj zmienne statyczne do użycia wewnątrz automatyzacji.'
+Source: Źródło
+'Select the data source for this automation': 'Wybierz źródło danych dla tej automatyzacji'
+Request: Żądanie
+'Extract data from the current request body.': 'Wyekstrahuj dane z bieżącego ciała żądania.'
+'Cannot be used with scheduled automations.': 'Nie może być używane z zaplanowanymi automatyzacjami.'
+Retrieve: Pobierz
+'Retrieve data from a webservice or other custom source.': 'Pobierz dane z webservices lub innego źródła niestandardowego.'
+'Run automation in batches': 'Uruchom automatyzację w partiach'
+'Batch method': 'Metoda partii'
+'Batches are made remotely using retrieve parameters': 'Partie tworzone są zdalnie przy użyciu parametrów pobierania'
+'Batches are created locally': 'Partie tworzone są lokalnie'
+'Limit batch size': 'Ogranicz rozmiar partii'
+'Limit the number of records to fetch/run at once.': 'Ogranicz liczbę rekordów do pobrania/uruchomienia na raz.'
+Interval: Interwał
+'Set an interval time between each batch.': 'Ustaw czas interwału między każdą partią.'
+Seconds: Sekundy
+'Configure where to extract request data from.': 'Skonfiguruj skąd ekstrahować dane żądania.'
+'Request param': 'Parametr żądania'
+'Define the param name to use as the data source.': 'Zdefiniuj nazwę parametru do użycia jako źródło danych.'
+'Leave empty to use the full request data.': 'Pozostaw puste aby użyć pełnych danych żądania.'
+'Configure tasks to retrieve the data': 'Skonfiguruj zadania do pobrania danych'
+'Define source schema structure.': 'Zdefiniuj strukturę schema źródła.'
+'Predefined schema storage': 'Przechowanie schema predefiniowane'
+'Manual definitions': 'Definicje ręczne'
+'Event handler on empty source': 'EventHandler na pustym źródle'
+Cancel: Anuluj
+Error: Błąd
+'Optionally trigger error when there is no data available from the source.': 'Opcjonalnie uruchom błąd gdy nie ma danych dostępnych z źródła.'
+Actions: Akcje
+'The actions that need to be done with the source data.': 'Akcje które muszą być wykonane z danymi źródłowymi.'
+Flow: Workflow
+Routine: Rutyna
+Tasks: Zadania
+Events: Wydarzenia
+'Select the behavior on various events in this automation.': 'Wybierz zachowanie na różnych wydarzeniach w tej automatyzacji.'
+'On Cancel': 'Przy anulowaniu'
+'Actions to execute when the automation is cancelled.': 'Akcje do wykonania gdy automatyzacja jest anulowana.'
+'On Error': 'W przypadku błędu'
+'Actions to execute when the automation fails.': 'Akcje do wykonania gdy automatyzacja zawodzi.'
+'On Success': 'Przy sukcesie'
+'Actions to execute when the automation completed successfully.': 'Akcje do wykonania gdy automatyzacja ukończona pomyślnie.'
+Response: Odpowiedź
+'What this automation should respond in case of a HTTP request.': 'Co ta automatyzacja powinna odpowiedzieć w przypadku żądania HTTP.'
+'Success status and data': 'Status sukcesu i dane'
+'Data only': 'Tylko dane'
+'Success status only': 'Tylko status sukcesu'
+'File Download': 'Pobieranie pliku'
+'Download file selector': 'Selektor pliku do pobrania'
+Execution: Wykonanie
+'Control how this automation is executed.': 'Kontroluj jak ta automatyzacja jest wykonywana.'
+'Execution mode': 'Tryb wykonania'
+Single: Pojedynczy
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Tylko jedno uruchomienie na raz i blokuje nowe żądania podczas gdy uruchomienie jest aktywne lub zaplanowane.'
+Parallel: Równoległy
+'Multiple simultaneous execution runs allowed': 'Wielokrotne jednoczesne uruchomienia dozwolone'
+Queued: W kolejce
+'Accepts new requests but executes only one run at a time.': 'Przyjmuje nowe żądania ale wykonuje tylko jedno uruchomienie na raz.'
+'Stale run timeout': 'Timeout starego uruchomienia'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekundy bez aktywności przed uruchomieniem jest uważane za stare i automatycznie resetowane.'
+'Defaults to {default}.': 'Domyślnie {default}.'
+'History traces retention limit': 'Limit retencji ścieżek historii'
+'Configure execution history of this automation.': 'Skonfiguruj historię wykonania tej automatyzacji.'
+'Maximum number of stored traces for this automation.': 'Maksymalna liczba przechowywanych ścieżek dla tej automatyzacji.'
+'Leave empty to use the global default of {param}.': 'Pozostaw puste aby użyć globalnego domyślnego {param}.'
+Status: Status
+Default: Domyślne
+Fixed: Stałe
+Days: Dni
+Webservice: Webservice
+Trigger: Trigger
+Start: Start
+Stop: Stop
+Continue: Kontynuuj
+Success: Sukces
+Unknown: Nieznany
+Trashed: W koszu
+Visible: Widoczny
+Hidden: Ukryty
+Registered: Zarejestrowany
+Scheduled: Zaplanowany
+Running: Działający
+Stopped: Zatrzymany
+Failed: Nieudany
+Cancelled: Anulowany
+Dynamic: Dynamiczny
+Sequence: Sekwencja
+'Add steps': 'Dodaj kroki'
+'Input data': 'Dane wejściowe'
+'Input variables': 'Zmienne wejściowe'
+Conditions: Warunki
+'Input schema': 'Schema wejściowa'
+'Output schema': 'Schema wyjściowa'
+'Data type': 'Typ danych'
+Columns: Kolumny
+Key: Klucz
+Name: Nazwa
+'Field name key': 'Klucz nazwy pola'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Domyślnie pobierze klucz indeksu chyba że wartość jest tablicą zawierającą informację o polu.'
+'Field label key': 'Klucz etykiety pola'
+'Used in case the value is an array containing field information.': 'Używane jeśli wartość jest tablicą zawierającą informację o polu.'
+'Schema storages': 'Przechowania schema'
+'From source schema': 'Ze schema źródła'
+'To target schema': 'Do schema docelowego'
+'Format options': 'Opcje formatu'
+'Response format': 'Format odpowiedzi'
+'This webservice does not validate authorization.': 'Ten webservice nie waliduje autoryzacji.'
+'Added to queue!': 'Dodany do kolejki!'
+'Finished executing endpoint.': 'Endpoint wykonany.'
+'There were errors while executing this endpoint.': 'Wystąpiły błędy podczas wykonywania tego endpointu.'
+'Dots (.) in refs are forbidden: {ref}': 'Kropki (.) w ref są zabronione: {ref}'
+'Entity not found for: {ref}': 'Encja nie znaleziona dla: {ref}'
+'Model not found for: {ref} ({class})': 'Model nie znaleziony dla: {ref} ({class})'
+'Response param name': 'Nazwa parametru odpowiedzi'
+'The param name where the results are located': 'Nazwa parametru gdzie znajdują się wyniki'
+'Nested keys are supported: key.nested_key': 'Zagnieżdżone klucze obsługiwane: key.nested_key'
+'Key / Column name override to store results': 'Override nazwy klucza/kolumny do przechowania wyników'
+'Start with dot (.) for root': 'Zacznij od kropki (.) dla root'
+Action: Akcja
+'Replace current data with results': 'Zastąp bieżące dane wynikami'
+'Merge results with current data': 'Połącz wyniki z bieżącymi danymi'
+'Insert results into current data without replacing existing values': 'Wstaw wyniki do bieżących danych bez zastępowania istniejących wartości'
+'Combine recursively?': 'Połączyć rekursywnie?'
+'Catch errors': 'Chwyć błędy'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Zdefiniuj jak obsługiwać błędy. Gdy błąd pasuje do warunku zapobiega błędowi i uruchamia zdefiniowane akcje zamiast tego.'
+'Leave empty to catch all errors.': 'Pozostaw puste aby chwyć wszystkie błędy.'
+'No actions defined': 'Brak zdefiniowanych akcji'
+'Run catch {name}': 'Uruchom catch {name}'
+Cache: Cache
+'Get or set a value in the context cache': 'Pobierz lub ustaw wartość w cache kontekstu'
+'Set cache': 'Ustaw cache'
+'Get cache': 'Pobierz cache'
+'Set from data': 'Ustaw z danych'
+'Manual value': 'Wartość ręczna'
+'Key / Column name': 'Klucz / Nazwa kolumny'
+'Leave empty for root': 'Pozostaw puste dla root'
+'Cache value': 'Wartość cache'
+'Cache tag reference/path': 'Referencja/scieżka tagu cache'
+'Can be used like: {tag}': 'Może być użyty jak: {tag}'
+Method: Metoda
+Replace: Zastąp
+Merge: Połącz
+Append: Dołącz
+'Not found action': 'Akcja nie znaleziona'
+'Action if the tag is not found': 'Akcja jeśli tag nie zostanie znaleziony'
+'Override with empty value': 'Override pustą wartością'
+'Skip task': 'Pomiń zadanie'
+'Cache tag reference missing': 'Brak referencji tagu cache'
+Choose: Wybierz
+'Choose between different options based on conditions': 'Wybierz między różnymi opcjami na podstawie warunków'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Zdefiniuj opcje i ich warunki. Gdy warunek jest prawidłowy uruchomi tylko tę opcję.'
+'Default tasks': 'Domyślne zadania'
+'These tasks will run if none of the option conditions are met.': 'Te zadania zostaną uruchomione jeśli żaden z warunków opcji nie zostanie spełniony.'
+'Run option {name}': 'Uruchom opcję {name}'
+'Run default': 'Uruchom domyślne'
+Extract: Ekstrahuj
+'Extract a column from each item in your data': 'Ekstrahuj kolumnę z każdego elementu w Twoich danych'
+'The data column name to extract items from': 'Nazwa kolumny danych do ekstrahowania elementów'
+'The column to extract': 'Kolumna do ekstrahowania'
+'The target column to put results': 'Kolumna docelowa do umieszczenia wyników'
+'Leave empty to use the Key / Column name set above': 'Pozostaw puste aby użyć Klucz/Nazwa kolumny ustawionej powyżej'
+'No column key configured': 'Brak skonfigurowanego klucza kolumny'
+'Data not iterable': 'Dane nieiterowalne'
+'Could not extract': 'Nie udało się ekstrahować'
+Filter: Filtrowanie
+'Filter data based on conditions': 'Filtruj dane na podstawie warunków'
+'Leave empty for root iteration': 'Pozostaw puste dla iteracji root'
+'Filter method': 'Metoda filtrowania'
+'Keep valid rows': 'Zachowaj prawidłowe wiersze'
+'Keep invalid rows': 'Zachowaj nieprawidłowe wiersze'
+'No conditions configured': 'Brak skonfigurowanych warunków'
+'Data key not found': 'Klucz danych nie znaleziony'
+Group: Grupa
+'Group your data': 'Grupuj Twoje dane'
+'The data column name to group items for': 'Nazwa kolumny danych do grupowania elementów'
+'Group by': 'Grupuj według'
+'Set column name/key to group by value': 'Ustaw nazwę/klucz kolumny do grupowania według wartości'
+'Default group key': 'Domyślny klucz grupy'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Będzie używane gdy wiersz nie zawiera zdefiniowanej kolumny grupy lub jest pustą wartością. Jeśli nie ustawione, wiersz zostanie usunięty.'
+'No group column configured': 'Brak skonfigurowanej kolumny grupy'
+'Invalid group column: {value}': 'Nieprawidłowa kolumna grupy: {value}'
+Index: Indeks
+'Index your data': 'Indeksuj Twoje dane'
+'The data column name to index items for': 'Nazwa kolumny danych do indeksowania elementów'
+'Numeric list': 'Lista numeryczna'
+'Associative indexes': 'Indeksy asociacyjne'
+'New index key': 'Nowy klucz indeksu'
+'The template for the indexed keys': 'Szablon dla zindeksowanych kluczy'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Użyj kluczy kolumn jako tagów: {tag} | Wildcards: {wildcards}'
+'No index method configured': 'Brak skonfigurowanej metody indeksowania'
+'No index key template configured': 'Brak skonfigurowanego szablonu klucza indeksu'
+Loop: Pętla
+'Iterate over a set of rows': 'Iteruj po zbiorze wierszy'
+'Loop method': 'Metoda pętli'
+Row: Wiersz
+Batches: Partie
+'Batch size': 'Rozmiar partii'
+'Set the number of records to fetch/run at once.': 'Ustaw liczbę rekordów do pobrania/uruchomienia na raz.'
+'Data column not found: {key}': 'Kolumna danych nie znaleziona: {key}'
+'Data column not iterable: {key}': 'Kolumna danych nieiterowalna: {key}'
+'Invalid action': 'Nieprawidłowa akcja'
+'No batch size configured': 'Brak skonfigurowanego rozmiaru partii'
+Map: Mapowanie
+'Map key value pairs': 'Mapuj pary klucz-wartość'
+'The data column name for the value that needs to be mapped': 'Nazwa kolumny danych dla wartości która musi być zmapowana'
+'Nested keys are supported: {example}': 'Zagnieżdżone klucze obsługiwane: {example}'
+'Map columns': 'Kolumny mapowania'
+'Convert key names and definition schema.': 'Konwertuj nazwy kluczy i schema definicji.'
+'Map values': 'Wartości mapowania'
+'Convert values for a column': 'Konwertuj wartości dla kolumny'
+'Only return mapped items?': 'Zwrócić tylko zmapowane elementy?'
+'This will also reorder your data in the order of your map.': 'To również ponownie posortuje Twoje dane w kolejności Twojego mapowania.'
+'Remove old keys?': 'Usunąć stare klucze?'
+'Map source': 'Źródło mapowania'
+Mapper: Mapowanie
+'Convert column types to schema where available?': 'Konwertować typy kolumn do schema gdzie dostępne?'
+'No manual map configured.': 'Brak skonfigurowanego ręcznego mapowania.'
+'Cannot map empty data': 'Nie można zmapować pustych danych'
+'Cannot map scalar data': 'Nie można zmapować danych skalarnych'
+'Merge columns and/or values': 'Połącz kolumny i/lub wartości'
+'The data column name to merge': 'Nazwa kolumny danych do połączenia'
+'Merge values of a column into a single value': 'Połącz wartości kolumny w jedną wartość'
+'Merge columns': 'Połącz kolumny'
+'Merge both': 'Połącz oba'
+'Key merge method': 'Metoda łączenia kluczy'
+'Merge column key names': 'Połącz nazwy kluczy kolumn'
+'Merge column keys using an indexed name': 'Połącz klucze kolumn używając zindeksowanej nazwy'
+'Merge column keys using a regular expression': 'Połącz klucze kolumn używając wyrażenia regularnego'
+'Column keys that need to be merged': 'Klucze kolumn które muszą być połączone'
+'Column key name': 'Nazwa klucza kolumny'
+'Regex to match keys with and merge': 'Regex do dopasowania kluczy z i połączenia'
+'Indexed key to search for and merge': 'Zindeksowany klucz do wyszukania i połączenia'
+'Nested keys are not supported': 'Zagnieżdżone klucze nieobsługiwane'
+'Wildcards: {wildcards}': 'Wildcards: {wildcards}'
+'Index starts with': 'Indeks zaczyna się od'
+'Method to merge values from multiple columns': 'Metoda łączenia wartości z wielu kolumn'
+'Each column value will be appended': 'Każda wartość kolumny zostanie dołączona'
+'Latter column values merge into the former': 'Ostatnie wartości kolumn łączą się z poprzednimi'
+'Latter column values replaces the former': 'Ostatnie wartości kolumn zastępują poprzednie'
+'Latter column values insert into the former': 'Ostatnie wartości kolumn wstawiane są do poprzednich'
+Separator: Separator
+Comma: Przecinek
+Semicolon: Średnik
+Space: Spacja
+Tab: Tabulacja
+'New line': 'Nowa linia'
+'Value template': 'Szablon wartości'
+'The template for each separate value to be merged': 'Szablon dla każdej oddzielnej wartości do połączenia'
+'Remove original column key(s)?': 'Usunąć oryginalne klucz(e) kolumny?'
+'Only keep unique values?': 'Zachować tylko unikalne wartości?'
+'By default all values are kept.': 'Domyślnie wszystkie wartości są zachowywane.'
+'Preserve column keys?': 'Zachować klucze kolumn?'
+'Keep empty values?': 'Zachować puste wartości?'
+'By default all empty column values will not be merged.': 'Domyślnie żadne puste wartości kolumn nie zostaną połączone.'
+'No key configured': 'Brak skonfigurowanego klucza'
+'No columns defined': 'Brak zdefiniowanych kolumn'
+'No key method selected': 'Brak wybranej metody klucza'
+'Cannot merge scalar value.': 'Nie można połączyć wartości skalarniej.'
+'Find and replace': 'Znajdź i zastąp'
+'The data column name for the values that need to be replaced': 'Nazwa kolumny danych dla wartości które muszą być zastąpione'
+'In case the value is a list of values this task will iterate the replacements for all': 'Jeśli wartość jest listą wartości to to zadanie ziteruje zastąpienia dla wszystkich'
+'Replace values': 'Zastąp wartości'
+'Replace keys': 'Zastąp klucze'
+'Replace keys and values': 'Zastąp klucze i wartości'
+'Replace recursively?': 'Zastąpić rekursywnie?'
+Find: Znajdź
+'Find value not set': 'Wartość znalezienia nie ustawiona'
+'Cannot replace scalar data': 'Nie można zastąpić danych skalarnych'
+'Retrieve your data from your specific connection': 'Pobierz Twoje dane z Twojego konkretnego połączenia'
+'The data column name to pass to the webservice': 'Nazwa kolumny danych do przekazania do webservices'
+Connection: Połączenie
+'Response data': 'Dane odpowiedzi'
+'No connection configured': 'Brak skonfigurowanego połączenia'
+'Data not found: {key}': 'Dane nie znalezione: {key}'
+Send: Wyślij
+'Send your data to your specific connection': 'Wyślij Twoje dane do Twojego konkretnego połączenia'
+'Retrieve response data': 'Pobierz dane odpowiedzi'
+Set: Ustaw
+'Set your own values': 'Ustaw swoje własne wartości'
+'The data column key name for the values that needs to be set': 'Nazwa klucza kolumny danych dla wartości które muszą być ustawione'
+'Reorder data?': 'Ponownie posortować dane?'
+'This will append all configured columns at the end of the current data.': 'To dołączy wszystkie skonfigurowane kolumny na końcu bieżących danych.'
+'Force if invalid?': 'Wymusić jeśli nieprawidłowe?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Gdy istniejące dane są skalarnie, utwórz nową kolekcję danych z wartości ustawionych w tym zadaniu.'
+'You can still reference the original value through the {placeholder} tag.': 'Wciąż możesz odnieść się do oryginalnej wartości poprzez tag {placeholder}.'
+'Set method': 'Metoda ustawienia'
+'Set column values': 'Ustaw wartości kolumny'
+'Set schema': 'Ustaw schema'
+'Set both': 'Ustaw oba'
+'Remove columns not defined in schema?': 'Usunąć kolumny nie zdefiniowane w schema?'
+'Column key/name': 'Klucz/nazwa kolumny'
+'-- Unchanged --': '-- Niezmieniony --'
+'Use {wildcard} to insert the current value.': 'Użyj {wildcard} aby wstawić bieżącą wartość.'
+Unset: Usuń
+'Data is not iterable': 'Dane nie są iterowalne'
+'No set params configured': 'Brak skonfigurowanych param ustawienia'
+Sort: Sortuj
+'Sort your data': 'Posortuj Twoje dane'
+'The data column key name for the values that needs to be sorted': 'Nazwa klucza kolumny danych dla wartości które muszą być posortowane'
+'Sort by key / column name': 'Sortuj według klucza/nazwy kolumny'
+'Sort by value': 'Sortuj według wartości'
+'Sort by column value': 'Sortuj według wartości kolumny'
+'Sort by': 'Sortuj według'
+'Set column name/key to sort by value': 'Ustaw nazwę/klucz kolumny do sortowania według wartości'
+Ascending: Rosnąco
+Descending: Malejąco
+'Ascending natural order': 'Rosnąca kolejność naturalna'
+'Descending natural order': 'Malejąca kolejność naturalna'
+'No sort method configured': 'Brak skonfigurowanej metody sortowania'
+'Invalid sort order: {order}': 'Nieprawidłowa kolejność sortowania: {order}'
+'No sort column configured': 'Brak skonfigurowanej kolumny sortowania'
+Split: Podziel
+'Split value and/or split column key into multiple': 'Podziel wartość i/lub klucz kolumny na wiele'
+'The data column name to split': 'Nazwa kolumny danych do podziału'
+'Split value': 'Wartość podziału'
+'Split into column keys': 'Podziel na klucze kolumn'
+'Split value and split into column keys': 'Podziel wartość i podziel na klucze kolumn'
+'Column key split method': 'Metoda podziału klucza kolumny'
+'Split into column keys by providing custom names': 'Podziel na klucze kolumn dostarczając niestandardowe nazwy'
+'Split into column keys using an indexed name': 'Podziel na klucze kolumn używając zindeksowanej nazwy'
+'Column key names': 'Nazwy kluczy kolumn'
+'Current value index/key (optional)': 'Indeks/klucz bieżącej wartości (opcjonalne)'
+'New column key name': 'Nowa nazwa klucza kolumny'
+'Indexed key': 'Zindeksowany klucz'
+'The template for the new indexed keys.': 'Szablon dla nowych zindeksowanych kluczy.'
+'Remove original key(s)?': 'Usunąć oryginalne klucz(e)?'
+'Regular expression (Regex)': 'Wyrażenie regularne (Regex)'
+'Regular expression': 'Wyrażenie regularne'
+'Regex must be made for splitting values, not matching.': 'Regex musi być stworzony do dzielenia wartości, nie dopasowywania.'
+'Split value column definition': 'Definicja kolumny wartości podziału'
+'No action configured': 'Brak skonfigurowanej akcji'
+'Loop key not supported': 'Klucz pętli nieobsługiwany'
+'Value is not splittable into list': 'Wartość nie jest dzielona na listę'
+'Column `{type}` does not exist': 'Kolumna `{type}` nie istnieje'
+'Value is not splittable into keys': 'Wartość nie jest dzielona na klucze'
+'No columns configured': 'Brak skonfigurowanych kolumn'
+Store: Przechowuj
+'Get or set a storage': 'Pobierz lub ustaw przechowanie'
+'Set storage': 'Ustaw przechowanie'
+'Get storage': 'Pobierz przechowanie'
+'Storage column key/path': 'Klucz/scieżka kolumny przechowania'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Ustaw ścieżkę gdzie ta wartość będzie przechowana lub pozostaw puste. Użyj kropek (.) aby nawigować w przechowaniu.'
+'No storage selected': 'Brak wybranego przechowania'
+'Storage not found': 'Przechowanie nie znalezione'
+'Raw storage cannot contain paths': 'Surowe przechowanie nie może zawierać ścieżek'
+'This is a raw storage, please select a different storage or change the storage type': 'To jest surowe przechowanie, proszę wybrać inne przechowanie lub zmienić typ przechowania'
+Template: Szablon
+'Create your own modifier template with Twig': 'Stwórz swój własny szablon modyfikatora z Twig'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Tagi wyjścia {example_var} są analizowane przed silnikiem szablonu Twig jako tagi. Tylko statement execute {example_func} są analizowane w Twig.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Wartość `data` jest używana dla wyjścia zadania. Dostępne zmienne: `data`, `config`, `cache`, `variables` i `context`.'
+'Add your code here': 'Dodaj swój kod tutaj'
+'No template set': 'Brak ustawionego szablonu'
+Trace: Ślad
+'Trace current status with a log or error.': 'Śledź bieżący status z logiem lub błędem.'
+'Trace type': 'Typ śladu'
+'Creating an error will result in the trace reporting as failed.': 'Stworzenie błędu spowoduje że ślad zostanie zgłoszony jako nieudany.'
+'Log message': 'Wiadomość log'
+'Error message': 'Wiadomość błędu'
+Message: Wiadomość
+'Extra info': 'Dodatkowe informacje'
+'Include data?': 'Dołączyć dane?'
+'Message not configured': 'Wiadomość nie skonfigurowana'
+'Trigger something independently from the current flow': 'Uruchom coś niezależnie od bieżącego workflow'
+'Run async?': 'Uruchomić async?'
+Experimental: Eksperymentalny
+'If the automation is using batches then this trigger will always run async.': 'Jeśli automatyzacja używa partii to ten trigger będzie zawsze uruchamiał async.'
+'Pass current data?': 'Przekazać bieżące dane?'
+'Override current data?': 'Override bieżących danych?'
+'Leave empty to pass root data': 'Pozostaw puste aby przekazać dane root'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Zdefiniuj zmienne statyczne do użycia dla tego triggera. Istniejące zmienne również zostaną uwzględnione.'
+Automation: Automatyzacja
+Wait: Czekaj
+'Wait for time to pass': 'Czekaj aż czas minie'
+'Seconds to wait': 'Sekundy do czekania'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Połącz się z serwerem FTP aby przesłać i/lub pobrać pliki'
+'{type} extension is not available': 'Rozszerzenie {type} nie jest dostępne'
+Host: Host
+Port: Port
+Username: Nazwa użytkownika
+Password: Hasło
+'Passive mode': 'Tryb pasywny'
+'Connect using SSL': 'Połącz używając SSL'
+'Process timeout in seconds': 'Timeout procesu w sekundach'
+'Cannot connect to {host}': 'Nie można połączyć się z {host}'
+'Cannot login to {host}': 'Nie można zalogować się do {host}'
+'Successfully connected to {host}': 'Połączono z {host}'
+'Could not connect to {host}': 'Nie udało się połączyć z {host}'
+'HTTP No auth': 'HTTP Brak auth'
+'Connect without authorization': 'Połącz bez autoryzacji'
+'Allow HTTP': 'Zezwól na HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Zezwól na niebezpieczne połączenie HTTP bez szyfrowania SSL'
+Endpoint: Endpoint
+'Send current data': 'Wyślij bieżące dane'
+'Select data transport location': 'Wybierz lokalizację transportu danych'
+'Request {type}': 'Żądanie {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Połącz z podstawową autoryzacją'
+'Username / key': 'Nazwa użytkownika / klucz'
+'Password / Secret': 'Hasło / Tajemnica'
+'HTTP Bearer token': 'Token Bearer HTTP'
+'Connect with Bearer Token authorization': 'Połącz z autoryzacją Bearer Token'
+Token: Token
+'HTTP Authorization server': 'Serwer autoryzacji HTTP'
+'Connect to a HTTP server using an authorization server': 'Połącz się z serwerem HTTP używając serwera autoryzacji'
+Body: Body
+Header: Header
+'Redirect url': 'URL przekierowania'
+'Local File system': 'Lokalny system plików'
+'Use the local filesystem defined by your environment': 'Użyj lokalnego systemu plików zdefiniowanego przez Twoje środowisko'
+'Root path': 'Ścieżka root'
+'Relative path?': 'Ścieżka względna?'
+'Makes the root path relative to the SyncEngine installation': 'Ustawia ścieżkę root względną do instalacji SyncEngine'
+'Successfully accessed {root}': 'Uzyskano dostęp do {root}'
+'Could not access {root}': 'Nie udało się uzyskać dostępu do {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Połącz się z serwerem SFTP aby przesłać i/lub pobrać pliki'
+'Authentication type': 'Typ uwierzytelniania'
+'Private key': 'Klucz prywatny'
+'Username and password': 'Nazwa użytkownika i hasło'
+'Private key password': 'Hasło klucza prywatnego'
+'If your private key is password protected, you can fill in that password here': 'Jeśli Twój klucz prywatny jest chroniony hasłem możesz wpisać to hasło tutaj'
+'Cannot login to {host}: {error}': 'Nie można zalogować się do {host}: {error}'
+'Could not rename': 'Nie udało się zmienić nazwy'
+SOAP: SOAP
+'Connect using SOAP': 'Połącz używając SOAP'
+'HTTP Authentication': 'Uwierzytelnianie HTTP'
+'Basic authentication': 'Podstawowe uwierzytelnianie'
+'SOAP multistep server': 'Serwer SOAP wielokrokowy'
+'Connect to a SOAP server using multistep setup': 'Połącz się z serwerem SOAP używając konfiguracji wielokrokowej'
+'SOAP extension is not available': 'Rozszerzenie SOAP nie jest dostępne'
+Url: Url
+'The URL for this authentication step': 'URL dla tego kroku uwierzytelniania'
+SQL: SQL
+'Connect to a SQL server': 'Połącz się z serwerem SQL'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Brak dostępnych rozszerzeń bazy danych, proszę zainstalować jedno z następujących: {options}'
+'Select database driver': 'Wybierz driver bazy danych'
+Database: Baza danych
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Zapytanie
+'Fetch method': 'Metoda fetch'
+'Associated array': 'Tablica asociacyjna'
+'Key => Value pairs': 'Pary Klucz => Wartość'
+'Key column': 'Kolumna klucza'
+'Choose the key you want to use as the row key': 'Wybierz klucz który chcesz użyć jako klucz wiersza'
+Path: Ścieżka
+'Select what you want to retrieve': 'Wybierz co chcesz pobrać'
+'File contents': 'Zawartość pliku'
+'List directories and filenames': 'Wymień katalogi i nazwy plików'
+'List filenames': 'Wymień nazwy plików'
+'List directories': 'Wymień katalogi'
+Filename: Nazwa pliku
+'Select what action you want to send': 'Wybierz jaką akcję chcesz wysłać'
+'Upload file contents': 'Prześlij zawartość pliku'
+'Delete file': 'Usuń plik'
+'Create directory': 'Utwórz katalog'
+'Delete directory': 'Usuń katalog'
+'Rename or move a file or directory': 'Zmień nazwę lub przenieś plik lub katalog'
+'Overwrite if file exists': 'Nadpisz jeśli plik istnieje'
+'Directory name': 'Nazwa katalogu'
+'Old name': 'Stara nazwa'
+'New name': 'Nowa nazwa'
+'Overwrite if new name exists': 'Nadpisz jeśli nowa nazwa istnieje'
+'No Filename configured': 'Brak skonfigurowanej nazwy pliku'
+'Cannot fetch file from {host}, please try passive mode': 'Nie można pobrać pliku z {host}, proszę spróbować trybu pasywnego'
+'Cannot fetch file from {host}': 'Nie można pobrać pliku z {host}'
+'Successfully retrieved: {name}': 'Pobrano: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Plik {oldName} istniał, zmieniono nazwę na {newName}'
+'Could not be write file: {name}': 'Nie udało się napisać pliku: {name}'
+'Successfully uploaded: {name}': 'Przesłano: {name}'
+'Could not delete file {name}': 'Nie udało się usunąć pliku {name}'
+'Successfully deleted file: {name}': 'Plik usunięty: {name}'
+'Cannot read directory from {host}': 'Nie można odczytać katalogu z {host}'
+'No directory configured': 'Brak skonfigurowanego katalogu'
+'Could not create directory: {path}': 'Nie udało się utworzyć katalogu: {path}'
+'Successfully created directory: {path}': 'Katalog utworzony: {path}'
+'Could not delete directory: {path}': 'Nie udało się usunąć katalogu: {path}'
+'Successfully deleted: {path}': 'Usunięto: {path}'
+'Invalid rename configuration': 'Nieprawidłowa konfiguracja zmiany nazwy'
+'Could not rename: {old} to {new}': 'Nie udało się zmienić nazwy: {old} na {new}'
+'Successfully renamed: {old} to {new}': 'Zmieniono nazwę: {old} na {new}'
+'Invalid resource': 'Nieprawidłowy zasób'
+'Request method': 'Metoda żądania'
+'Request timeout': 'Timeout żądania'
+'Request query': 'Zapytanie żądania'
+'Request header': 'Header żądania'
+'Request body': 'Body żądania'
+'SOAP version': 'Wersja SOAP'
+'Default (PHP default)': 'Domyślne (PHP domyślne)'
+'SOAP protocol version. Leave empty for PHP default.': 'Wersja protokołu SOAP. Pozostaw puste dla PHP domyślnego.'
+Compression: Kompresja
+'Compress SOAP requests and accept compressed responses.': 'Kompresuj żądania SOAP i akceptuj skompresowane odpowiedzi.'
+'Connection timeout': 'Timeout połączenia'
+'Maximum time in seconds for the connection to be established.': 'Maksymalny czas w sekundach na ustanowienie połączenia.'
+'WSDL mode': 'Tryb WSDL'
+'Will this connection use WSDL file format?': 'Czy to połączenie będzie używać formatu pliku WSDL?'
+'WSDL file url': 'URL pliku WSDL'
+'Link to WSDL format that will be filled in for this soap connection': 'Link do formatu WSDL który zostanie wypełniony dla tego połączenia soap'
+'WSDL cache': 'Cache WSDL'
+'No cache': 'Brak cache'
+'Memory cache': 'Cache pamięci'
+'Disk/File cache': 'Cache dysku/pliku'
+Both: Oba
+'WSDL cache warning': 'Ostrzeżenie cache WSDL'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Plikowa cache WSDL jest aktywna. Może to powodować problemy z nieaktualnymi plikami WSDL i bezpieczeństwem przez współdzielony dostęp na serwerze.'
+'SOAP service namespace': 'Namespace usługi SOAP'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'Namespace docelowy usługi SOAP. Wymagane gdy tryb WSDL jest wyłączony.'
+'SOAPAction header': 'Header SOAPAction'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Opcjonalna wartość header HTTP SOAPAction. Wymagana przez niektóre serwery SOAP.'
+Advanced: Zaawansowane
+'Override options for the SOAP connection.': 'Opcje override dla połączenia SOAP.'
+'SOAP headers': 'Headers SOAP'
+'SOAP operation name': 'Nazwa operacji SOAP'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Nazwa operacji SOAP do wywołania. Jest wymagane zarówno dla trybu WSDL jak i nie-WSDL.'
+'Use data transport as body?': 'Użyć transportu danych jako body?'
+'SOAP body': 'Body SOAP'
+'Define static variables to be used within the authorization process.': 'Zdefiniuj zmienne statyczne do użycia wewnątrz procesu autoryzacji.'
+'Authorized request base config': 'Konfiguracja bazowa autoryzowanego żądania'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Zdefiniuj konfigurację bazową żądania. To zostanie użyte do ustawienia domyślnych params dla dowolnego żądania używającego tego połączenia.'
+'Override host': 'Override hosta'
+'Authorization process steps': 'Kroki procesu autoryzacji'
+'Define each step for the authorization process.': 'Zdefiniuj każdy krok procesu autoryzacji.'
+'The param name where the authentication parameters are located': 'Nazwa param gdzie znajdują się parametry uwierzytelniania'
+'Tag name': 'Nazwa tagu'
+'Choose the tag name in which the response param value is stored': 'Wybierz nazwę tagu w którym przechowana jest wartość param odpowiedzi'
+'Example: token': 'Przykład: token'
+Expiration: Wygaśnięcie
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Ustaw timer wygaśnięcia dla wartości tagu aby re-uwierzytelnianie zostało wykonane w tym okresie czasu'
+'Supported formats:': 'Obsługiwane formaty:'
+'Timestamp or date': 'Timestamp lub data'
+'Time format: ({time_format})': 'Format czasu: ({time_format})'
+'Text format: ({time_string})': 'Format tekstu: ({time_string})'
+'Response type': 'Typ odpowiedzi'
+'The type of response the URL will return': 'Typ odpowiedzi który URL zwróci'
+'Tag storage': 'Przechowanie tagu'
+'Define the tags you need to store for authentication': 'Zdefiniuj tagi które musisz przechować do uwierzytelniania'
+'Run next step (default)': 'Uruchom następny krok (domyślne)'
+'Skip next step': 'Pomiń następny krok'
+'Stop loop': 'Zatrzymaj pętlę'
+'Run previous step (default)': 'Uruchom poprzedni krok (domyślne)'
+'Restart loop from beginning': 'Restartuj pętlę od początku'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Nie można uwierzytelnić na kroku #{step} z połączenia #{connectionID}'
+'Invalid tag name': 'Nieprawidłowa nazwa tagu'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Nieprawidłowa lub pusta odpowiedź serwera dla tag:{tag} | Param nie znaleziony:{param}'
+'Invalid or empty server response for tag:{tag}': 'Nieprawidłowa lub pusta odpowiedź serwera dla tag:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Czy na pewno chcesz wyłączyć uwierzytelnianie dwuskładnikowe?'
+'You will need to re-enable 2FA after verifying your password': 'Będziesz musiał ponownie włączyć 2FA po zweryfikowaniu hasła'
+'Enter your password to confirm': 'Wpisz swoje hasło aby potwierdzić'
+'Check your email': 'Sprawdź swój e-mail'
+'We sent a 6-digit verification code to your email address': 'Wysłaliśmy 6-cyfrowy kod weryfikacyjny na Twój adres e-mail'
+'Enter the code from your email': 'Wpisz kod z Twojego e-maila'
+'Resend Code': 'Wyślij kod ponownie'
+Verify: Zweryfikuj
+'Choose how you want to receive verification codes': 'Wybierz jak chcesz otrzymywać kody weryfikacyjne'
+'Authenticator App (Recommended)': 'Aplikacja Authenticator (zalecana)'
+'Scan the QR code with your TOTP app': 'Zeskanuj kod QR swoją aplikacją TOTP'
+'Or enter this secret manually:': 'Lub wpisz ten sekret ręcznie:'
+'Email Verification': 'Weryfikacja e-mail'
+'We will send a 6-digit code to your email address': 'Wyślemy 6-cyfrowy kod na Twój adres e-mail'
+'Send Code to Email': 'Wyślij kod na e-mail'
+'Create new': 'Utwórz nowy'
+Description: Opis
+Expires: Wygasa
+'No API tokens created': 'Brak utworzonych tokenów API'
+URL: URL
+Uses: Użycia
+'You are about to reset this process, are you sure?': 'Zamieniasz zresetować ten proces, czy na pewno?'
+Reset: Resetuj
+'Reset automation': 'Resetuj automatyzację'
+'Quick Edit': 'Szybka edycja'
+Hide: Ukryj
+Show: Pokaż
+Export: Eksportuj
+Trash: Kosz
+Restore: Przywróć
+'Delete Permanently': 'Usuń trwale'
+Issue: Issue
+Connected: Połączony
+'Used in': 'Używane w'
+'Last runs': 'Ostatnie uruchomienia'
+'Scheduled runs': 'Zaplanowane uruchomienia'
+Steps: Kroki
+'Message Queue': 'Kolejka wiadomości'
+'Scheduled At': 'Zaplanowano o'
+'Created At': 'Utworzono o'
+View: Widok
+'Scheduled run': 'Zaplanowane uruchomienie'
+Delete: Usuń
+'Delete run': 'Usuń uruchomienie'
+'Are you sure you want to delete this message?': 'Czy na pewno chcesz usunąć tę wiadomość?'
+'Disabled modules.': 'Wyłączone moduły.'
+Module: Moduł
+Requires: Wymaga
+Reason: Powód
+Uninstall: Odinstaluj
+'Are you sure?': 'Czy na pewno?'
+'This will uninstall module {moduleName} from {vendor}': 'To odinstaluje moduł {moduleName} od {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Prześlij nowszą wersję modułu aby zastąpić niekompatybilny moduł.'
+Version: Wersja
+Author: Autor
+Manage: Zarządzaj
+Reinstall: Zainstaluj ponownie
+Config: Config
+Task: Zadanie
+Traces: Ślady
+'You are about to kill this process, are you sure?': 'Zamieniasz zabić ten proces, czy na pewno?'
+Kill: Zabij
+'New user': 'Nowy użytkownik'
+'Edit user': 'Edytuj użytkownika'
+Roles: Role
+'Reset password': 'Resetuj hasło'
+'Reset password?': 'Resetować hasło?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'E-mail resetowania hasła zostanie wysłany na {email}. Użytkownik może wtedy ustawić własne hasło.'
+'This will delete user {email}': 'To usunie użytkownika {email}'
+Visibility: Widoczność
+All: Wszystkie
+Dashboard: Panel główny
+'Verify Login': 'Zweryfikuj logowanie'
+Login: Logowanie
+'Forgot password?': 'Zapomniałeś hasła?'
+'Password Reset Email Sent': 'E-mail resetowania hasła wysłany'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Jeśli istnieje konto pasujące do Twojego e-maila, to właśnie został wysłany e-mail zawierający link który możesz użyć do zresetowania hasła.'
+'This link will expire in %expiration%': 'Ten link wygaśnie za %expiration%'
+"If you don't receive an email please check your spam folder": "Jeśli nie otrzymasz e-maila proszę sprawdź swój folder spam"
+'Back to login': 'Powrót do logowania'
+'Try again': 'Spróbuj ponownie'
+'Reset your password': 'Zresetuj swoje hasło'
+'Enter your email address and we will send you a link to reset your password.': 'Wpisz swój adres e-mail i wyślemy Ci link do zresetowania hasła.'
+'Page not found': 'Strona nie znaleziona'
+'Oops! An Error Occurred': 'Ups! Wystąpił błąd'
+Back: Wróć
+'Authenticator App': 'Aplikacja Authenticator'
+'Fill in the code from your authenticator app': 'Wypełnij kod z Twojej aplikacji authenticator'
+'Fill in the code send to your email': 'Wypełnij kod wysłany na Twój e-mail'
+'There was a problem validating your password reset request': 'Wystąpił problem z walidacją Twojego żądania resetowania hasła'
+'There is already an automation with this ref, please enter a different ref': 'Istnieje już automatyzacja z tym ref, proszę wpisać inny ref'
+'There is already an automation with this name, please enter a different name': 'Istnieje już automatyzacja z tą nazwą, proszę wpisać inną nazwę'
+'There is already an automation with this endpoint, please enter a different name': 'Istnieje już automatyzacja z tym endpointem, proszę wpisać inną nazwę'
+'There is already an account with this email': 'Istnieje już konto z tym e-mailem'
+'Your password should be at least { limit } characters': 'Twoje hasło powinno mieć przynajmniej { limit } znaków'
+'Please enter a password': 'Proszę wpisać hasło'
+'You should agree to our license terms.': 'Powinieneś zgodzić się z naszymi warunkami licencji.'
+'Please enter your email': 'Proszę wpisz swój e-mail'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: zaufany
