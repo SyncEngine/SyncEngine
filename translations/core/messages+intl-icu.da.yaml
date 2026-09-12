@@ -278,7 +278,7 @@ Users: Brugere
 'Entity deleted': 'Enhed slettet'
 'An error occurred while sending the password reset email.': 'Der opstod en fejl under sendelse af adgangskode-nulstillings-e-mail.'
 'Your password reset request': 'Din adgangskode-nulstillingsanmodning'
-'No reset password token found in the URL or in the session.': 'Ingen nulstillings-token fundet i URL'en eller sessionen.'
+'No reset password token found in the URL or in the session.': "Ingen nulstillings-token fundet i URL'en eller sessionen."
 Install: Installer
 'Unknown database error': 'Ukendt databasefejl'
 'Could not repair database': 'Kunne ikke reparere database'
@@ -717,7 +717,7 @@ SOAP: SOAP
 'Connect to a SOAP server using multistep setup': 'Forbind til en SOAP-server med multi-trin opsætning'
 'SOAP extension is not available': 'SOAP-udvidelse er ikke tilgængelig'
 Url: Url
-'The URL for this authentication step': 'URL'en til denne godkendelsestrin'
+'The URL for this authentication step': "URL'en til denne godkendelsestrin'"
 SQL: SQL
 'Connect to a SQL server': 'Forbind til en SQL-server'
 MySQLi: MySQLi
@@ -820,7 +820,7 @@ Expiration: Udløb
 'Time format: ({time_format})': 'Tidsformat: ({time_format})'
 'Text format: ({time_string})': 'Tekstformat: ({time_string})'
 'Response type': 'Svar-type'
-'The type of response the URL will return': 'Typen af svar URL'en vil returnere'
+'The type of response the URL will return': "Typen af svar URL'en vil returnere"
 'Tag storage': 'Tag-lager'
 'Define the tags you need to store for authentication': 'Definér de tags du skal lagre til godkendelse'
 'Run next step (default)': 'Kør næste trin (standard)'

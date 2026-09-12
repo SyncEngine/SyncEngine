@@ -827,7 +827,7 @@ Expiration: Scadenza
 'Skip next step': 'Salta prossimo passo'
 'Stop loop': 'Ferma ciclo'
 'Run previous step (default)': 'Esegui passo precedente (predefinito)'
-'Restart loop from beginning': 'Riavvia ciclo dall'inizio'
+'Restart loop from beginning': "Riavvia ciclo dall'inizio"
 'Cannot authenticate on step #{step} from connection #{connectionID}': 'Impossibile autenticare al passo #{step} dalla connessione #{connectionID}'
 'Invalid tag name': 'Nome tag non valido'
 'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Risposta server non valida o vuota per tag:{tag} | Param non trovato:{param}'
