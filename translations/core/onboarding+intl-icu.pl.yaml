@@ -6,7 +6,7 @@ onboarding.dashboard.welcome.body: |
 
 onboarding.dashboard.menu.title: 'Menu Nawigacyjne'
 onboarding.dashboard.menu.body: |
-  Pasek boczny to Twoja główna nawogacja.
+  Pasek boczny to Twoja główna nawigacja.
 
   Możesz zwinąć menu, aby skupić się na swojej zawartości.
 
@@ -20,7 +20,7 @@ onboarding.dashboard.automations.title: 'Automatyzacje'
 onboarding.dashboard.automations.body: |
   Automatyzacje to kontenery najwyższego poziomu, które orchestrują Twoje przepływy pracy. Każda automatyzacja może zawierać wiele przepływów i definiować, jak są uruchamiane: ręcznie, zgodnie z harmonogramem lub przez zdarzenia.
 
-  Automatyzacje zapewniają historię wykonania (traces), abyś mógł zinspectować każde wykonanie, zobaczyć jakie dane zostały przetworzone i debugować wszelkie problemy.
+  Automatyzacje zapewniają historię wykonania (traces), abyś mógł sprawdzić każde wykonanie, zobaczyć jakie dane zostały przetworzone i debugować wszelkie problemy.
 
 onboarding.dashboard.flows.title: 'Przepływy'
 onboarding.dashboard.flows.body: |
