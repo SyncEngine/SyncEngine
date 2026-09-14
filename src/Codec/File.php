@@ -11,11 +11,11 @@ class File extends CodecModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'binary';
 		$this->name        = $this->trans( 'File' );
 		$this->description = $this->trans( 'Handle binary file data (raw bytes)' );
-
-		parent::__construct();
 	}
 
 	public function getFormats(): array
