@@ -3,13 +3,13 @@
 namespace SyncEngine\Tests\Webservice;
 
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use SyncEngine\Model\CodecModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Structure\ValueObject\Blob;
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
 use SyncEngine\Tests\TestCase\BaseTestCase;
-use SyncEngine\Webservice\Helper\Result;
 
 class HttpUploadTest extends BaseTestCase
 {
@@ -25,6 +25,13 @@ class HttpUploadTest extends BaseTestCase
 	protected function getMockHttp(): MockHttp
 	{
 		return WebserviceModel::get( 'MockHttp' );
+	}
+
+	public function testFileCodecLocator(): void
+	{
+		$codec = CodecModel::get( 'File' );
+
+		$this->assertInstanceOf( CodecModel::class, $codec );
 	}
 
 	// ── Send (upload) ──────────────────────────────────────────────────────────
