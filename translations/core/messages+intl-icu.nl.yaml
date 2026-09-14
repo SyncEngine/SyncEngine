@@ -188,11 +188,11 @@ Connections: Verbindingen
 'New connection': 'Nieuwe verbinding'
 'Successfully edited connection!': 'Verbinding succesvol bewerkt!'
 'Edit connection': 'Verbinding bewerken'
-Flows: Workflows
-'Successfully created flow!': 'Workflow succesvol aangemaakt!'
-'New flow': 'Nieuwe workflow'
-'Successfully edited flow!': 'Workflow succesvol bewerkt!'
-'Edit flow': 'Workflow bewerken'
+Flows: Flows
+'Successfully created flow!': 'Flow succesvol aangemaakt!'
+'New flow': 'Nieuwe flow'
+'Successfully edited flow!': 'Flow succesvol bewerkt!'
+'Edit flow': 'Flow bewerken'
 'Connection required': 'Verbinding vereist'
 'Connection not found': 'Verbinding niet gevonden'
 'Webservice not found': 'Webservice niet gevonden'
@@ -238,7 +238,7 @@ Save: Opslaan
 'Configuration saved': 'Configuratie opgeslagen'
 Routines: Routines
 'Successfully created routine!': 'Routine succesvol aangemaakt!'
-'New routine': 'Nieuwe routine'
+'New routine': 'Nieuwe Routine'
 'Successfully edited routine!': 'Routine succesvol bewerkt!'
 'Edit routine': 'Routine bewerken'
 Storages: Opslagen
@@ -250,7 +250,7 @@ Storages: Opslagen
 Environment: Omgeving
 'Configure environment setup': 'Omgevingsinstellingen configureren'
 Vault: Kluis
-'Configure vault secrets': 'Kluisgeheimen configureren'
+'Configure vault secrets': 'Kluis-Secrets configureren'
 'Manage system processes': 'Systeemprocessen beheren'
 Import: Importeren
 'Import JSON configs': 'JSON-configs importeren'
@@ -316,7 +316,7 @@ Error: Fout
 'Optionally trigger error when there is no data available from the source.': 'Activeer optioneel een fout als er geen gegevens beschikbaar zijn uit de bron.'
 Actions: Acties
 'The actions that need to be done with the source data.': 'De acties die met de brongegevens moeten worden uitgevoerd.'
-Flow: Workflow
+Flow: Flow
 Routine: Routine
 Tasks: Taken
 Events: Evenementen
@@ -346,9 +346,9 @@ Queued: In wachtrij
 'Stale run timeout': 'Timeout voor verouderde uitvoering'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Seconden zonder activiteit voordat een uitvoering als verouderd wordt beschouwd en automatisch wordt gereset.'
 'Defaults to {default}.': 'Standaardinstelling is {default}.'
-'History traces retention limit': 'Retentie limiet voor geschiedenis traces'
+'History traces retention limit': 'Retentiegrens voor historische verlopen'
 'Configure execution history of this automation.': 'Configureer uitvoeringsgeschiedenis van deze automatisering.'
-'Maximum number of stored traces for this automation.': 'Maximaal aantal opgeslagen traces voor deze automatisering.'
+'Maximum number of stored traces for this automation.': 'Maximaal aantal opgeslagen verlopen voor deze automatisering.'
 'Leave empty to use the global default of {param}.': 'Laat leeg om de globale standaard van {param} te gebruiken.'
 Status: Status
 Default: Standaard
@@ -637,17 +637,17 @@ Template: Sjabloon
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'De waarde van `data` wordt gebruikt voor de taakuitvoer. Beschikbare variabelen: `data`, `config`, `cache`, `variables` en `context`.'
 'Add your code here': 'Voeg uw code hier toe'
 'No template set': 'Geen sjabloon ingesteld'
-Trace: Trace
-'Trace current status with a log or error.': 'Traceer huidige status met een log of fout.'
-'Trace type': 'Trace-type'
-'Creating an error will result in the trace reporting as failed.': 'Het aanmaken van een fout zal resulteren in de trace die als gefaald wordt gerapporteerd.'
+Trace: Verloop
+'Trace current status with a log or error.': 'Registreer huidige status met een log of fout.'
+'Trace type': 'Verloop-type'
+'Creating an error will result in the trace reporting as failed.': 'Het aanmaken van een fout zal resulteren in het verloop dat als mislukt wordt gerapporteerd.'
 'Log message': 'Logbericht'
 'Error message': 'Foutmelding'
 Message: Bericht
 'Extra info': 'Extra informatie'
 'Include data?': 'Gegevens opnemen?'
 'Message not configured': 'Bericht niet geconfigureerd'
-'Trigger something independently from the current flow': 'Activeer iets onafhankelijk van de huidige workflow'
+'Trigger something independently from the current flow': 'Activeer iets onafhankelijk van de huidige flow'
 'Run async?': 'Async uitvoeren?'
 Experimental: Experimenteel
 'If the automation is using batches then this trigger will always run async.': 'Als de automatisering batches gebruikt, zal deze trigger altijd async worden uitgevoerd.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basisauthenticatie'
 'Connect with basic authorization': 'Verbind met basisautorizatie'
 'Username / key': 'Gebruikersnaam / sleutel'
-'Password / Secret': 'Wachtwoord / Geheim'
+'Password / Secret': 'Wachtwoord / Secret'
 'HTTP Bearer token': 'HTTP Bearer-token'
 'Connect with Bearer Token authorization': 'Verbind met Bearer Token autorisatie'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Verifiëren
 'Choose how you want to receive verification codes': 'Kies hoe u verificatiecodes wilt ontvangen'
 'Authenticator App (Recommended)': 'Authenticator-app (aanbevolen)'
 'Scan the QR code with your TOTP app': 'Scan de QR-code met uw TOTP-app'
-'Or enter this secret manually:': 'Of voer dit geheim handmatig in:'
+'Or enter this secret manually:': 'Of voer dit Secret handmatig in:'
 'Email Verification': 'E-mailverificatie'
 'We will send a 6-digit code to your email address': 'We sturen een 6-cijferige code naar uw e-mailadres'
 'Send Code to Email': 'Code naar e-mail verzenden'
@@ -887,11 +887,11 @@ Uninstall: Verwijderen
 'Upload a newer module version to replace an incompatible module.': 'Upload een nieuwere moduleversie om een incompatibele module te vervangen.'
 Version: Versie
 Author: Auteur
-Beheren: Beheren
+Manage: Beheren
 Reinstall: Opnieuw installeren
 Config: Config
 Task: Taak
-Traces: Traces
+Traces: Verlopen
 'You are about to kill this process, are you sure?': 'U staat op het punt dit proces te beëindigen, bent u zeker?'
 Kill: Dood
 'New user': 'Nieuwe gebruiker'
@@ -991,8 +991,8 @@ Restrictions: Beperkingen
 'Repeat Password': 'Wachtwoord herhalen'
 'The password fields must match.': 'De wachtwoordvelden moeten overeenkomen.'
 Debug: Debuggen
-'Change your app secret. Will autogenerate if empty.': 'Verander je app-secret. Wordt automatisch gegenereerd als het leeg is.'
-Secret: Geheim
+'Change your app secret. Will autogenerate if empty.': 'Verander je app-Secret. Wordt automatisch gegenereerd als het leeg is.'
+Secret: Secret
 Mailer: Mailer
 'Email sender': 'E-mail afzender'
 'Send email logs to': 'Stuur e-maillogs naar'

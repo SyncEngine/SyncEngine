@@ -20,24 +20,24 @@ onboarding.dashboard.automations.title: 'Automatyzacje'
 onboarding.dashboard.automations.body: |
   Automatyzacje to kontenery najwyższego poziomu, które orchestrują Twoje przepływy pracy. Każda automatyzacja może zawierać wiele przepływów i definiować, jak są uruchamiane: ręcznie, zgodnie z harmonogramem lub przez zdarzenia.
 
-  Automatyzacje zapewniają historię wykonania (traces), abyś mógł sprawdzić każde wykonanie, zobaczyć jakie dane zostały przetworzone i debugować wszelkie problemy.
+  Automatyzacje zapewniają historię wykonania (przebiegi), abyś mógł przejrzeć każde wykonanie, zobaczyć jakie dane zostały przetworzone i debugować wszelkie problemy.
 
 onboarding.dashboard.flows.title: 'Przepływy'
 onboarding.dashboard.flows.body: |
-  Przepływy definiują sekwencję wykonania w ramach automatyzacji. Każdy przepływ zawiera serię kroków, gdzie każdy krok uruchamia Rutynę.
+  Przepływy definiują sekwencję wykonania w ramach automatyzacji. Każdy przepływ zawiera serię kroków, gdzie każdy krok uruchamia Procedurę.
 
-  Dane płyną z jednej rutyny do następnej, przy czym każda rutyna wykonuje określoną funkcję, taką jak pobieranie danych, transformacja i wysyłanie ich do innego systemu. Przepływy wykonują się sekwencyjnie domyślnie.
+  Dane płyną z jednej Procedury do następnej, przy czym każda Procedura wykonuje określoną funkcję, taką jak pobieranie danych, transformacja i wysyłanie ich do innego systemu. Przepływy wykonują się sekwencyjnie domyślnie.
 
-onboarding.dashboard.routines.title: 'Rutyny'
+onboarding.dashboard.routines.title: 'Procedury'
 onboarding.dashboard.routines.body: |
-  Rutyny to ponownie wykorzystywane sekwencje akcji (Zadań), które wykonują określoną funkcję.
+  Procedury to ponownie wykorzystywane sekwencje akcji (Zadań), które wykonują określoną funkcję.
 
-  Każda rutyna jest ponownie wykorzystywana, modułowa i może być wywoływana przez jedną lub więcej Przepływy, dając Ci niesamowitą elastyczność i wydajność.
+  Każda Procedura jest ponownie wykorzystywana, modułowa i może być wywoływana przez jedną lub więcej Przepływy, dając Ci niesamowitą elastyczność i wydajność.
 
 onboarding.dashboard.storages.title: 'Magazyny'
 onboarding.dashboard.storages.body: |
   Magazyny w SyncEngine to bezpieczne, trwałe kontenery używane do przechowywania strukturyzowanych danych, które mogą być dostępne w ramach Twoich automatyzacji.
-  Działają jako Twoja pamięć długoterminowa, pozwalając przepływom i rutynom zapisywać i pobierać informacje między wykonaniami.
+  Działają jako Twoja pamięć długoterminowa, pozwalając przepływom i Procedurom zapisywać i pobierać informacje między wykonaniami.
 
   Magazyny są idealne do przechowywania ponownie wykorzystywanych lub współdzielonych danych, wartości konfiguracji i wyników, do których chcesz uzyskać dostęp później, bez polegania na zewnętrznych bazach danych lub API.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Panel systemowy daje szybki dostęp do:
 
   • Konfiguracji ustawień SyncEngine
-  • Zarządzania sekretami i wrażliwymi wartościami w Vault
+  • Zarządzania Secrets i wrażliwymi wartościami w Vault
   • Monitorowania pracowników w tle
   • Wyświetlania informacji o systemie
   • itp.
@@ -72,12 +72,12 @@ onboarding.dashboard.summary.body: |
   • Połączenia łączą Twoje systemy
   • Automatyzacje orchestrują przepływy pracy
   • Przepływy definiują sekwencje wykonania
-  • Rutyny to ponownie wykorzystywane sekwencje akcji
+  • Procedury to ponownie wykorzystywane sekwencje akcji
   • Zadania to pojedyncze akcje
   • Magazyny przechowują trwałe dane
   • Moduły dodają nową funkcjonalność
 
-  Zacznij od utworzenia Połączenia, a następnie zbuduj swój pierwszy Przepływ z Rutynami i Zadaniami.
+  Zacznij od utworzenia Połączenia, a następnie zbuduj swój pierwszy Przepływ z Procedurą i Zadaniami.
 
 onboarding.dashboard.help.title: 'Potrzebujesz ponownie pomocy?'
 onboarding.dashboard.help.body: |

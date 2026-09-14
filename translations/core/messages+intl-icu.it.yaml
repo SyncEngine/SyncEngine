@@ -188,11 +188,11 @@ Connections: Connessioni
 'New connection': 'Nuova connessione'
 'Successfully edited connection!': 'Connessione modificata!'
 'Edit connection': 'Modifica connessione'
-Flows: Workflow
-'Successfully created flow!': 'Workflow creato!'
-'New flow': 'Nuovo workflow'
-'Successfully edited flow!': 'Workflow modificato!'
-'Edit flow': 'Modifica workflow'
+Flows: Flussi
+'Successfully created flow!': 'Flusso creato!'
+'New flow': 'Nuovo flusso'
+'Successfully edited flow!': 'Flusso modificato!'
+'Edit flow': 'Modifica flusso'
 'Connection required': 'Connessione richiesta'
 'Connection not found': 'Connessione non trovata'
 'Webservice not found': 'Webservice non trovato'
@@ -236,11 +236,11 @@ System: Sistema
 Save: Salva
 'Invalid Manager': 'Manager non valido'
 'Configuration saved': 'Configurazione salvata'
-Routines: Routine
+Routines: Routines
 'Successfully created routine!': 'Routine creata!'
-'New routine': 'Nuova routine'
+'New routine': 'Nuova Routine'
 'Successfully edited routine!': 'Routine modificata!'
-'Edit routine': 'Modifica routine'
+'Edit routine': 'Modifica Routine'
 Storages: Archiviazioni
 'Successfully created storage!': 'Archiviazione creata!'
 'New storage': 'Nuova archiviazione'
@@ -250,7 +250,7 @@ Storages: Archiviazioni
 Environment: Ambiente
 'Configure environment setup': 'Configura setup ambiente'
 Vault: Vault
-'Configure vault secrets': 'Configura segreti vault'
+'Configure vault secrets': 'Configura vault Secrets'
 'Manage system processes': 'Gestisci processi di sistema'
 Import: Importa
 'Import JSON configs': 'Importa configurazioni JSON'
@@ -316,7 +316,7 @@ Error: Errore
 'Optionally trigger error when there is no data available from the source.': 'Attiva opzionalmente errore quando non ci sono dati disponibili dalla fonte.'
 Actions: Azioni
 'The actions that need to be done with the source data.': 'Le azioni che devono essere fatte con i dati della fonte.'
-Flow: Workflow
+Flow: Flusso
 Routine: Routine
 Tasks: Attività
 Events: Eventi
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Connetti con autorizzazione base'
 'Username / key': 'Nome utente / chiave'
-'Password / Secret': 'Password / Segreto'
+'Password / Secret': 'Password / Secret'
 'HTTP Bearer token': 'Token Bearer HTTP'
 'Connect with Bearer Token authorization': 'Connetti con autorizzazione Bearer Token'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Verifica
 'Choose how you want to receive verification codes': 'Scegli come vuoi ricevere i codici di verifica'
 'Authenticator App (Recommended)': 'App Authenticator (consigliata)'
 'Scan the QR code with your TOTP app': 'Scansiona il codice QR con la tua app TOTP'
-'Or enter this secret manually:': 'O inserisci questo segreto manualmente:'
+'Or enter this secret manually:': 'O inserisci questo Secret manualmente:'
 'Email Verification': 'Verifica email'
 'We will send a 6-digit code to your email address': 'Invieremo un codice a 6 cifre al tuo indirizzo email'
 'Send Code to Email': 'Invia codice via email'
@@ -950,7 +950,7 @@ Enclosure: Incapsulamento
 'Key separator': 'Separatore di chiave'
 "Sets the separator for array's keys during its flattening": "Imposta il separatore per le chiavi dell'array durante la sua appiattimento"
 'Escape formula': 'Formula di escape'
-"Escapes fields containing formulas by prepending them with a `\t` character": "Fa l'escape dei campi contenenti formule preprendendoli con un carattere `\t`"
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Fa l''escape dei campi contenenti formule preprendendoli con un carattere `\t`'
 'No headers': 'Senza intestazioni'
 "Disables header in the encoded CSV": "Disabilita l'intestazione nel CSV codificato"
 'As collection': 'Come collezione'
@@ -991,8 +991,8 @@ Restrictions: Restrizioni
 'Repeat Password': 'Ripeti password'
 'The password fields must match.': 'I campi della password devono corrispondere.'
 Debug: Debug
-"Change your app secret. Will autogenerate if empty.": "Cambia il tuo secret dell'app. Sarà autogenerato se vuoto."
-Secret: Segreto
+"Change your app secret. Will autogenerate if empty.": "Cambia il tuo Secret dell'app. Sarà autogenerato se vuoto."
+Secret: Secret
 Mailer: Mittente
 'Email sender': 'Mittente email'
 'Send email logs to': 'Invia log email a'

@@ -20,24 +20,24 @@ onboarding.dashboard.automations.title: 'Automatizaciones'
 onboarding.dashboard.automations.body: |
   Las automatizaciones son los contenedores de nivel superior que orquestan tus flujos de trabajo. Cada automatización puede contener múltiples flujos y definir cómo se activan: manualmente, en un horario o por eventos.
 
-  Las automatizaciones proporcionan historial de ejecución (traces) para que puedas inspeccionar cada ejecución, ver qué datos se procesaron y depurar cualquier problema.
+  Las automatizaciones proporcionan historial de ejecución (transcursos) para que puedas inspeccionar cada ejecución, ver qué datos se procesaron y depurar cualquier problema.
 
 onboarding.dashboard.flows.title: 'Flujos'
 onboarding.dashboard.flows.body: |
   Los flujos definen la secuencia de ejecución dentro de una automatización. Cada flujo contiene una serie de pasos, donde cada paso activa una Rutina.
 
-  Los datos fluyen de una rutina a la siguiente, con cada rutina realizando una función específica, como recuperar datos, transformarlos y enviarlos a otro sistema. Los flujos se ejecutan en secuencia por defecto.
+  Los datos fluyen de una Rutina a la siguiente, con cada Rutina realizando una función específica, como recuperar datos, transformarlos y enviarlos a otro sistema. Los flujos se ejecutan en secuencia por defecto.
 
 onboarding.dashboard.routines.title: 'Rutinas'
 onboarding.dashboard.routines.body: |
-  Las rutinas son secuencias reutilizables de acciones (Tareas) que realizan una función específica.
+  Las Rutinas son secuencias reutilizables de acciones (Tareas) que realizan una función específica.
 
-  Cada rutina es reutilizable, modular y puede ser llamada por uno o más Flujos, dándote increíble flexibilidad y eficiencia.
+  Cada Rutina es reutilizable, modular y puede ser llamada por uno o más Flujos, dándote increíble flexibilidad y eficiencia.
 
 onboarding.dashboard.storages.title: 'Almacenes'
 onboarding.dashboard.storages.body: |
   Los almacenes en SyncEngine son contenedores seguros y persistentes utilizados para almacenar datos estructurados que se pueden acceder entre tus automatizaciones.
-  Actúan como tu memoria a largo plazo, permitiendo a flujos y rutinas guardar y recuperar información entre ejecuciones.
+  Actúan como tu memoria a largo plazo, permitiendo a flujos y Rutinas guardar y recuperar información entre ejecuciones.
 
   Los almacenes son ideales para guardar datos reutilizables o compartidos, valores de configuración y resultados a los que quieras acceder más tarde, sin depender de bases de datos o APIs externas.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   El panel del sistema te da acceso rápido a:
 
   • Configurar ajustes de SyncEngine
-  • Gestionar secretos y valores sensibles en el Vault
+  • Gestionar Secrets y valores sensibles en el Vault
   • Monitorear trabajadores en segundo plano
   • Ver información del sistema
   • etc.
@@ -72,7 +72,7 @@ onboarding.dashboard.summary.body: |
   • Las conexiones unen tus sistemas
   • Las automatizaciones orquestan flujos de trabajo
   • Los flujos definen secuencias de ejecución
-  • Las rutinas son secuencias reutilizables de acciones
+  • Las Rutinas son secuencias reutilizables de acciones
   • Las tareas son las acciones individuales
   • Los almacenes guardan datos persistentes
   • Los módulos añaden nueva funcionalidad

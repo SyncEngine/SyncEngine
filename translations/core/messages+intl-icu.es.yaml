@@ -188,11 +188,11 @@ Connections: Conexiones
 'New connection': 'Nueva conexión'
 'Successfully edited connection!': '¡Conexión editada!'
 'Edit connection': 'Editar conexión'
-Flows: Flujos de trabajo (Workflows)
-'Successfully created flow!': '¡Workflow creado!'
-'New flow': 'Nuevo workflow'
-'Successfully edited flow!': '¡Workflow editado!'
-'Edit flow': 'Editar workflow'
+Flows: Flujos
+'Successfully created flow!': '¡Flujo creado!'
+'New flow': 'Nuevo flujo'
+'Successfully edited flow!': '¡Flujo editado!'
+'Edit flow': 'Editar flujo'
 'Connection required': 'Conexión requerida'
 'Connection not found': 'Conexión no encontrada'
 'Webservice not found': 'Webservice no encontrado'
@@ -250,7 +250,7 @@ Storages: Almacenamientos
 Environment: Entorno
 'Configure environment setup': 'Configurar configuración del entorno'
 Vault: Vault
-'Configure vault secrets': 'Configurar secretos del vault'
+'Configure vault secrets': 'Configurar Secrets del vault'
 'Manage system processes': 'Gestionar procesos del sistema'
 Import: Importar
 'Import JSON configs': 'Importar configuraciones JSON'
@@ -316,7 +316,7 @@ Error: Error
 'Optionally trigger error when there is no data available from the source.': 'Opcionalmente activar error cuando no hay datos disponibles de la fuente.'
 Actions: Acciones
 'The actions that need to be done with the source data.': 'Las acciones que deben hacerse con los datos de origen.'
-Flow: Workflow
+Flow: Flujo
 Routine: Rutina
 Tasks: Tareas
 Events: Eventos
@@ -346,9 +346,9 @@ Queued: En cola
 'Stale run timeout': 'Timeout de ejecución obsoleta'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Segundos sin actividad antes de que una ejecución se considere obsoleta y se restablezca automáticamente.'
 'Defaults to {default}.': 'El valor predeterminado es {default}.'
-'History traces retention limit': 'Límite de retención de trazos del historial'
+'History traces retention limit': 'Límite de retención de transcursos del historial'
 'Configure execution history of this automation.': 'Configurar el historial de ejecución de esta automatización.'
-'Maximum number of stored traces for this automation.': 'Número máximo de trazos almacenados para esta automatización.'
+'Maximum number of stored traces for this automation.': 'Número máximo de transcursos almacenados para esta automatización.'
 'Leave empty to use the global default of {param}.': 'Dejar vacío para usar el valor global predeterminado de {param}.'
 Status: Estado
 Default: Predeterminado
@@ -637,10 +637,10 @@ Template: Plantilla
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'El valor de `data` se usa para la salida de la tarea. Variables disponibles: `data`, `config`, `cache`, `variables` y `context`.'
 'Add your code here': 'Agrega tu código aquí'
 'No template set': 'No hay plantilla establecida'
-Trace: Trazo
-'Trace current status with a log or error.': 'Trazar estado actual con un log o error.'
-'Trace type': 'Tipo de trazo'
-'Creating an error will result in the trace reporting as failed.': 'Crear un error resultará en el trazo reportado como fallido.'
+Trace: Transcurso
+'Trace current status with a log or error.': 'Registrar estado actual con un log o error.'
+'Trace type': 'Tipo de transcurso'
+'Creating an error will result in the trace reporting as failed.': 'Crear un error resultará en el transcurso reportado como fallido.'
 'Log message': 'Mensaje de log'
 'Error message': 'Mensaje de error'
 Message: Mensaje
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Conectar con autorización básica'
 'Username / key': 'Nombre de usuario / clave'
-'Password / Secret': 'Contraseña / Secreto'
+'Password / Secret': 'Contraseña / Secret'
 'HTTP Bearer token': 'Token Bearer HTTP'
 'Connect with Bearer Token authorization': 'Conectar con autorización Bearer Token'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Verificar
 'Choose how you want to receive verification codes': 'Elige cómo quieres recibir los códigos de verificación'
 'Authenticator App (Recommended)': 'App Authenticator (recomendada)'
 'Scan the QR code with your TOTP app': 'Escanea el código QR con tu app TOTP'
-'Or enter this secret manually:': 'O ingresa este secreto manualmente:'
+'Or enter this secret manually:': 'O ingresa este Secret manualmente:'
 'Email Verification': 'Verificación de correo electrónico'
 'We will send a 6-digit code to your email address': 'Enviaremos un código de 6 dígitos a tu dirección de correo electrónico'
 'Send Code to Email': 'Enviar código por correo electrónico'
@@ -891,7 +891,7 @@ Manage: Gestionar
 Reinstall: Reinstalar
 Config: Config
 Task: Tarea
-Traces: Trazos
+Traces: Transcursos
 'You are about to kill this process, are you sure?': 'Estás a punto de terminar este proceso, ¿estás seguro?'
 Kill: Terminar
 'New user': 'Nuevo usuario'
@@ -991,8 +991,8 @@ Restrictions: Restricciones
 'Repeat Password': 'Repetir contraseña'
 'The password fields must match.': 'Los campos de contraseña deben coincidir.'
 Debug: Depuración
-'Change your app secret. Will autogenerate if empty.': 'Cambie su app secret. Se autogenerará si está vacío.'
-Secret: Secreto
+'Change your app secret. Will autogenerate if empty.': 'Cambie su app Secret. Se autogenerará si está vacío.'
+Secret: Secret
 Mailer: Remitente
 'Email sender': 'Remitente de correo electrónico'
 'Send email logs to': 'Enviar registros de correo a'

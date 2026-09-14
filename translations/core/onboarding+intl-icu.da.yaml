@@ -24,20 +24,20 @@ onboarding.dashboard.automations.body: |
 
 onboarding.dashboard.flows.title: 'Flyter'
 onboarding.dashboard.flows.body: |
-  Flyter definerer sekvensen av utførelse innenfor en automatisering. Hver flyt inneholder en serie med steg, der hvert steg utløser en Rutine.
+  Flyter definerer sekvensen av utførelse innenfor en automatisering. Hver flyt inneholder en serie med steg, der hvert steg utløser en Routine.
 
-  Data flyter fra én rutine til neste, der hver rutine utfører en spesifikk funksjon, som å hente data, transformere dem og sende dem til et annet system. Flyter utføres i sekvens som standard.
+  Data flyter fra én Routine til neste, der hver Routine utfører en spesifikk funksjon, som å hente data, transformere dem og sende dem til et annet system. Flyter utføres i sekvens som standard.
 
-onboarding.dashboard.routines.title: 'Rutiner'
+onboarding.dashboard.routines.title: 'Routines'
 onboarding.dashboard.routines.body: |
-  Rutiner er gjenbrukbare sekvenser av handlinger (Oppgaver) som utfører en spesifikk funksjon.
+  Routines er gjenbrukbare sekvenser av handlinger (Oppgaver) som utfører en spesifikk funksjon.
 
-  Hver rutine er gjenbrukbar, modulær og kan kalles av én eller flere Flyter, noe som gir deg utrolig fleksibilitet og effektivitet.
+  Hver Routine er gjenbrukbar, modulær og kan kalles av én eller flere Flyter, noe som gir deg utrolig fleksibilitet og effektivitet.
 
 onboarding.dashboard.storages.title: 'Lagring'
 onboarding.dashboard.storages.body: |
   Lagringer i SyncEngine er sikre, vedvarende containere brukt til å holde strukturerte data som kan akseseres på tvers av automatiseringene dine.
-  De fungerer som ditt langtidshukommelse, lar flyter og rutiner lagre og hente informasjon mellom kjøringene.
+  De fungerer som ditt langtidshukommelse, lar flyter og Routines lagre og hente informasjon mellom kjøringene.
 
   Lagringer er ideelle for å lagre gjenbrukbare eller delte data, konfigurasjonsverdier og resultater du vil aksesere senere, uten å stole på eksterne databaser eller API-er.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Systemdashboardet gir deg rask tilgang til:
 
   • Konfigurere SyncEngine-innstillinger
-  • Administrere hemmeligheter og sensitive verdier i Vault
+  • Administrere Secrets og sensitive verdier i Vault
   • Overvåke bakgrunnsarbeidere
   • Se systeminformasjon
   • osv.
@@ -72,12 +72,12 @@ onboarding.dashboard.summary.body: |
   • Tilkoblinger broer mellom systemene dine
   • Automatiseringer orchestrerer arbeidsflyter
   • Flyter definerer utførelsessekvenser
-  • Rutiner er gjenbrukbare sekvenser av handlinger
+  • Routines er gjenbrukbare sekvenser av handlinger
   • Oppgaver er de enkelte handlingene
   • Lagringer holder vedvarende data
   • Moduler legger til ny funksjonalitet
 
-  Begynn med å opprette en Tilkobling, bygg deretter din første Flyt med Rutiner og Oppgaver.
+  Begynn med å opprette en Tilkobling, bygg deretter din første Flyt med Routines og Oppgaver.
 
 onboarding.dashboard.help.title: 'Trenger du igjen hjelp?'
 onboarding.dashboard.help.body: |

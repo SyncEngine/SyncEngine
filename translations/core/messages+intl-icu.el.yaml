@@ -178,21 +178,21 @@ Edit: Επεξεργασία
 'Disable 2FA': 'Απενεργοποίηση 2FA'
 'Invalid password.': 'Μη έγκυρος κωδικός.'
 'Two-factor authentication has been disabled.': 'Η διπλή επαλήθευση ταυτότητας απενεργοποιήθηκε.'
-Automations: Αυτόματες διαδικασίες
-'Successfully created automation!': 'Η αυτόματη διαδικασία δημιουργήθηκε!'
-'New automation': 'Νέα αυτόματη διαδικασία'
-'Successfully edited automation!': 'Η αυτόματη διαδικασία επεξεργάστηκε!'
-'Edit automation': 'Επεξεργασία αυτόματης διαδικασίας'
+Automations: Αυτοματοποιήσεις
+'Successfully created automation!': 'Η αυτοματοποίηση δημιουργήθηκε!'
+'New automation': 'Νέα αυτοματοποίηση'
+'Successfully edited automation!': 'Η αυτοματοποίηση επεξεργάστηκε!'
+'Edit automation': 'Επεξεργασία αυτοματοποίησης'
 Connections: Συνδέσεις
 'Successfully created connection!': 'Η σύνδεση δημιουργήθηκε!'
 'New connection': 'Νέα σύνδεση'
 'Successfully edited connection!': 'Η σύνδεση επεξεργάστηκε!'
 'Edit connection': 'Επεξεργασία σύνδεσης'
-Flows: Workflows
-'Successfully created flow!': 'Το workflow δημιουργήθηκε!'
-'New flow': 'Νέο workflow'
-'Successfully edited flow!': 'Το workflow επεξεργάστηκε!'
-'Edit flow': 'Επεξεργασία workflow'
+Flows: Ροές
+'Successfully created flow!': 'Η ροή δημιουργήθηκε!'
+'New flow': 'Νέα ροή'
+'Successfully edited flow!': 'Η ροή επεξεργάστηκε!'
+'Edit flow': 'Επεξεργασία ροής'
 'Connection required': 'Απαιτούμενη σύνδεση'
 'Connection not found': 'Η σύνδεση δεν βρέθηκε'
 'Webservice not found': 'Το webservice δεν βρέθηκε'
@@ -221,7 +221,7 @@ Upload: Ανεβάστε
 Configuration: Διαμόρφωση
 'Configure manager to optimize SyncEngine for your server.': 'Διαμορφώστε τον manager για βελτιστοποίηση του SyncEngine για τον server σας.'
 Manager: Manager
-'Auto-starts background async workers to handle automations.': 'Αυτόματη εκκίνηση workerών async στο παρασκήνιο για διαχείριση αυτόματων διαδικασιών.'
+'Auto-starts background async workers to handle automations.': 'Αυτόματη εκκίνηση workerών async στο παρασκήνιο για διαχείριση αυτοματοποιήσεων.'
 Enabled: Ενεργό
 'Cannot enable manager': 'Αδυναμία ενεργοποίησης manager'
 Disabled: Απενεργοποιημένο
@@ -236,7 +236,7 @@ System: Σύστημα
 Save: Αποθήκευση
 'Invalid Manager': 'Μη έγκυρο Manager'
 'Configuration saved': 'Η διαμόρφωση αποθηκεύτηκε'
-Routines: Ρουτίνες
+Routines: Διαδικασίες
 'Successfully created routine!': 'Η ρουτίνα δημιουργήθηκε!'
 'New routine': 'Νέα ρουτίνα'
 'Successfully edited routine!': 'Η ρουτίνα επεξεργάστηκε!'
@@ -250,7 +250,7 @@ Storages: Αποθήκες
 Environment: Περιβάλλον
 'Configure environment setup': 'Διαμόρφωση ρυθμίσεων περιβάλλοντος'
 Vault: Vault
-'Configure vault secrets': 'Διαμόρφωση μυστικών vault'
+'Configure vault secrets': 'Διαμόρφωση vault Secrets'
 'Manage system processes': 'Διαχείριση διαδικασιών συστήματος'
 Import: Εισαγωγή
 'Import JSON configs': 'Εισαγωγή διαμορφώσεων JSON'
@@ -316,8 +316,8 @@ Error: Σφάλμα
 'Optionally trigger error when there is no data available from the source.': 'Προαιρετικά ενεργοποίηση σφάλματος όταν δεν υπάρχουν διαθέσιμα δεδομένα από την πηγή.'
 Actions: Ενέργειες
 'The actions that need to be done with the source data.': 'Οι ενέργειες που πρέπει να γίνουν με τα δεδομένα πηγής.'
-Flow: Workflow
-Routine: Ρουτίνα
+Flow: Ροή
+Routine: Διαδικασία
 Tasks: Εργασίες
 Events: Γεγονότα
 'Select the behavior on various events in this automation.': 'Επιλογή συμπεριφοράς σε διάφορα γεγονότα σε αυτή την αυτόματη διαδικασία.'
@@ -346,9 +346,9 @@ Queued: Στην ουρά
 'Stale run timeout': 'Timeout παλιάς εκτέλεσης'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Δευτερόλεπτα χωρίς δραστηριότητα πριν μια εκτέλεση θεωρηθεί παλιά και αυτόματα επαναφερθεί.'
 'Defaults to {default}.': 'Η προεπιλογή είναι {default}.'
-'History traces retention limit': 'Όριο διατήρησης ίχνους ιστορικού'
+'History traces retention limit': 'Όριο διατήρησης πορείας ιστορικού'
 'Configure execution history of this automation.': 'Διαμόρφωση ιστορικού εκτέλεσης αυτής της αυτόματης διαδικασίας.'
-'Maximum number of stored traces for this automation.': 'Μέγιστος αριθμός αποθηκευμένων ιχνών για αυτή την αυτόματη διαδικασία.'
+'Maximum number of stored traces for this automation.': 'Μέγιστος αριθμός αποθηκευμένων πορειών για αυτή την αυτοματοποίηση.'
 'Leave empty to use the global default of {param}.': 'Αφήστε κενό για χρήση της παγκόσμιας προεπιλογής {param}.'
 Status: Κατάσταση
 Default: Προεπιλογή
@@ -637,17 +637,17 @@ Template: Πρότυπο
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Η τιμή του `data` χρησιμοποιείται για την έξοδο εργασίας. Διαθέσιμες μεταβλητές: `data`, `config`, `cache`, `variables` και `context`.'
 'Add your code here': 'Προσθέστε τον κώδικά σας εδώ'
 'No template set': 'Δεν έχει οριστεί πρότυπο'
-Trace: Ίχνος
-'Trace current status with a log or error.': 'Ίχνος τρέχουσας κατάστασης με log ή σφάλμα.'
-'Trace type': 'Τύπος ιχνούς'
-'Creating an error will result in the trace reporting as failed.': 'Η δημιουργία σφάλματος θα έχει ως αποτέλεσμα το ίχνος να αναφέρεται ως αποτυχία.'
+Trace: Πορεία
+'Trace current status with a log or error.': 'Παρακολούθηση τρέχουσας κατάστασης με log ή σφάλμα.'
+'Trace type': 'Τύπος πορείας'
+'Creating an error will result in the trace reporting as failed.': 'Η δημιουργία σφάλματος θα έχει ως αποτέλεσμα η πορεία να αναφέρεται ως αποτυχία.'
 'Log message': 'Μήνυμα log'
 'Error message': 'Μήνυμα σφάλματος'
 Message: Μήνυμα
 'Extra info': 'Επιπλέον πληροφορίες'
 'Include data?': 'Συμπερίληψη δεδομένων;'
 'Message not configured': 'Το μήνυμα δεν έχει ρυθμιστεί'
-'Trigger something independently from the current flow': 'Trigger κάτι ανεξάρτητα από το τρέχον workflow'
+'Trigger something independently from the current flow': 'Εκτέλεση κάτι ανεξάρτητα από την τρέχουσα ροή'
 'Run async?': 'Εκτέλεση async;'
 Experimental: Πειραματικό
 'If the automation is using batches then this trigger will always run async.': 'Αν η αυτόματη διαδικασία χρησιμοποιεί παρτίδες αυτό το trigger θα εκτελεί πάντα async.'
@@ -655,7 +655,7 @@ Experimental: Πειραματικό
 'Override current data?': 'Override τρεχόντων δεδομένων;'
 'Leave empty to pass root data': 'Αφήστε κενό για διάδοση root δεδομένων'
 'Define static variables to be used for this trigger. Existing variables will also be included.': 'Ορισμός στατικών μεταβλητών για χρήση με αυτό το trigger. Υφιστάμενες μεταβλητές θα συμπεριληφθούν επίσης.'
-Automation: Αυτόματη διαδικασία
+Automation: Αυτοματοποίηση
 Wait: Αναμονή
 'Wait for time to pass': 'Αναμονή για να περάσει ο χρόνος'
 'Seconds to wait': 'Δευτερόλεπτα αναμονής'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Σύνδεση με βασική εξουσιοδότηση'
 'Username / key': 'Όνομα χρήστη / κλειδί'
-'Password / Secret': 'Κωδικός / Μυστικό'
+'Password / Secret': 'Κωδικός / Secret'
 'HTTP Bearer token': 'Token Bearer HTTP'
 'Connect with Bearer Token authorization': 'Σύνδεση με εξουσιοδότηση Bearer Token'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Επαλήθευση
 'Choose how you want to receive verification codes': 'Επιλέξτε πώς θέλετε να λαμβάνετε κωδικούς επαλήθευσης'
 'Authenticator App (Recommended)': 'Εφαρμογή Authenticator (συνιστάται)'
 'Scan the QR code with your TOTP app': 'Σαρώστε τον κωδικό QR με την εφαρμογή TOTP σας'
-'Or enter this secret manually:': 'Ή εισάγετε αυτό το μυστικό χειροκίνητα:'
+'Or enter this secret manually:': 'Ή εισάγετε αυτό το Secret χειροκίνητα:'
 'Email Verification': 'Επαλήθευση email'
 'We will send a 6-digit code to your email address': 'Θα στείλουμε έναν 6ψήφιο κωδικό στη διεύθυνση email σας'
 'Send Code to Email': 'Αποστολή κωδικού σε email'
@@ -891,7 +891,7 @@ Manage: Διαχείριση
 Reinstall: Επανεγκατάσταση
 Config: Config
 Task: Εργασία
-Traces: Ίχνη
+Traces: Πορείες
 'You are about to kill this process, are you sure?': 'Είστε έτοιμοι να διακόψετε αυτή τη διαδικασία, είστε σίγουροι;'
 Kill: Διακοπή
 'New user': 'Νέος χρήστης'
@@ -991,8 +991,8 @@ Restrictions: Περιορισμοί
 'Repeat Password': 'Επαναλάβετε τον κωδικό'
 'The password fields must match.': 'Τα πεδία κωδικού πρέπει να ταιριάζουν.'
 Debug: Επισκευή
-'Change your app secret. Will autogenerate if empty.': 'Αλλάξτε το μυστικό της εφαρμογής σας. Θα αυτοδημιουργηθεί αν είναι κενό.'
-Secret: Μυστικό
+'Change your app secret. Will autogenerate if empty.': 'Αλλάξτε το Secret της εφαρμογής σας. Θα αυτοδημιουργηθεί αν είναι κενό.'
+Secret: Secret
 Mailer: Αποστολέας
 'Email sender': 'Αποστολέας email'
 'Send email logs to': 'Αποστολή log email σε'

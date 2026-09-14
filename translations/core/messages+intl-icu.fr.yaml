@@ -178,21 +178,21 @@ Edit: Modifier
 'Disable 2FA': 'Désactiver la 2FA'
 'Invalid password.': 'Mot de passe invalide.'
 'Two-factor authentication has been disabled.': "L'authentification à deux facteurs a été désactivée."
-Automations: Automations
-'Successfully created automation!': 'Automation créée avec succès !'
-'New automation': 'Nouvelle automation'
-'Successfully edited automation!': 'Automation modifiée avec succès !'
-'Edit automation': "Modifier l'automation"
+Automations: Automatisations
+'Successfully created automation!': 'Automatisation créée avec succès !'
+'New automation': 'Nouvelle automatisation'
+'Successfully edited automation!': 'Automatisation modifiée avec succès !'
+'Edit automation': "Modifier l'automatisation"
 Connections: Connexions
 'Successfully created connection!': 'Connexion créée avec succès !'
 'New connection': 'Nouvelle connexion'
 'Successfully edited connection!': 'Connexion modifiée avec succès !'
 'Edit connection': 'Modifier la connexion'
-Flows: Workflows
-'Successfully created flow!': 'Workflow créé avec succès !'
-'New flow': 'Nouveau workflow'
-'Successfully edited flow!': 'Workflow modifié avec succès !'
-'Edit flow': 'Modifier le workflow'
+Flows: Flux
+'Successfully created flow!': 'Flux créé avec succès !'
+'New flow': 'Nouveau flux'
+'Successfully edited flow!': 'Flux modifié avec succès !'
+'Edit flow': 'Modifier le flux'
 'Connection required': 'Connexion requise'
 'Connection not found': 'Connexion introuvable'
 'Webservice not found': 'Webservice introuvable'
@@ -221,7 +221,7 @@ Upload: Télécharger
 Configuration: Configuration
 'Configure manager to optimize SyncEngine for your server.': 'Configurer le manager pour optimiser SyncEngine pour votre serveur.'
 Manager: Manager
-'Auto-starts background async workers to handle automations.': 'Démarrage automatique des workers async en arrière-plan pour gérer les automations.'
+'Auto-starts background async workers to handle automations.': 'Démarrage automatique des workers async en arrière-plan pour gérer les automatisations.'
 Enabled: Activé
 'Cannot enable manager': "Impossible d'activer le manager"
 Disabled: Désactivé
@@ -238,9 +238,9 @@ Save: Enregistrer
 'Configuration saved': 'Configuration enregistrée'
 Routines: Routines
 'Successfully created routine!': 'Routine créée avec succès !'
-'New routine': 'Nouvelle routine'
+'New routine': 'Nouvelle Routine'
 'Successfully edited routine!': 'Routine modifiée avec succès !'
-'Edit routine': 'Modifier la routine'
+'Edit routine': 'Modifier la Routine'
 Storages: Stockages
 'Successfully created storage!': 'Stockage créé avec succès !'
 'New storage': 'Nouveau stockage'
@@ -250,7 +250,7 @@ Storages: Stockages
 Environment: Environnement
 'Configure environment setup': "Configurer la configuration de l'environnement"
 Vault: Coffre
-'Configure vault secrets': 'Configurer les secrets du coffre'
+'Configure vault secrets': 'Configurer les Secrets du coffre'
 'Manage system processes': 'Gérer les processus système'
 Import: Importer
 'Import JSON configs': 'Importer des configs JSON'
@@ -269,11 +269,11 @@ Users: Utilisateurs
 'You cannot delete your own account.': 'Vous ne pouvez pas supprimer votre propre compte.'
 'Successfully deleted user!': 'Utilisateur supprimé avec succès !'
 'Endpoint not found: {value}': 'Endpoint introuvable : {value}'
-'Automation is not enabled': "L'automation n'est pas activée"
-'Automation is already running': "L'automation est déjà en cours d'exécution"
+'Automation is not enabled': "L'automatisation n'est pas activée"
+'Automation is already running': "L'automatisation est déjà en cours d'exécution"
 'File not found': 'Fichier introuvable'
 'Scheduled processes are disabled.': 'Les processus planifiés sont désactivés.'
-'Automation cannot accept a new request right now.': "L'automation ne peut pas accepter de nouvelle requête pour le moment."
+'Automation cannot accept a new request right now.': "L'automatisation ne peut pas accepter de nouvelle requête pour le moment."
 'Entity type not found': "Type d'entité introuvable"
 'Entity deleted': 'Entité supprimée'
 'An error occurred while sending the password reset email.': "Une erreur s'est produite lors de l'envoi de l'email de réinitialisation."
@@ -285,15 +285,15 @@ Install: Installer
 'Unable to access this page!': "Impossible d'accéder à cette page !"
 Register: S'inscrire
 Variables: Variables
-'Define static variables to be used within the automation.': "Définir des variables statiques à utiliser dans l'automation."
+'Define static variables to be used within the automation.': "Définir des variables statiques à utiliser dans l'automatisation."
 Source: Source
-'Select the data source for this automation': 'Sélectionner la source de données pour cette automation'
+'Select the data source for this automation': 'Sélectionner la source de données pour cette automatisation'
 Request: Requête
 'Extract data from the current request body.': 'Extraire les données du corps de la requête actuelle.'
-'Cannot be used with scheduled automations.': 'Ne peut pas être utilisé avec des automations planifiées.'
+'Cannot be used with scheduled automations.': 'Ne peut pas être utilisé avec des automatisations planifiées.'
 Retrieve: Récupérer
 'Retrieve data from a webservice or other custom source.': 'Récupérer des données depuis un webservice ou une autre source personnalisée.'
-'Run automation in batches': "Exécuter l'automation par lots"
+'Run automation in batches': "Exécuter l'automatisation par lots"
 'Batch method': 'Méthode de lot'
 'Batches are made remotely using retrieve parameters': 'Les lots sont créés à distance avec les paramètres de récupération'
 'Batches are created locally': 'Les lots sont créés localement'
@@ -316,26 +316,26 @@ Error: Erreur
 'Optionally trigger error when there is no data available from the source.': "Optionnellement déclencher une erreur s'il n'y a pas de données disponibles."
 Actions: Actions
 'The actions that need to be done with the source data.': 'Les actions à effectuer avec les données source.'
-Flow: Workflow
+Flow: Flux
 Routine: Routine
 Tasks: Tâches
 Events: Événements
-'Select the behavior on various events in this automation.': 'Sélectionner le comportement pour divers événements dans cette automation.'
+'Select the behavior on various events in this automation.': 'Sélectionner le comportement pour divers événements dans cette automatisation.'
 'On Cancel': "À l'annulation"
-'Actions to execute when the automation is cancelled.': "Actions à exécuter lorsque l'automation est annulée."
+'Actions to execute when the automation is cancelled.': "Actions à exécuter lorsque l'automatisation est annulée."
 'On Error': "En cas d'erreur"
-'Actions to execute when the automation fails.': "Actions à exécuter en cas d'échec de l'automation."
+'Actions to execute when the automation fails.': "Actions à exécuter en cas d'échec de l'automatisation."
 'On Success': "En cas de succès"
-'Actions to execute when the automation completed successfully.': "Actions à exécuter lorsque l'automation est complétée avec succès."
+'Actions to execute when the automation completed successfully.': "Actions à exécuter lorsque l'automatisation est complétée avec succès."
 Response: Réponse
-'What this automation should respond in case of a HTTP request.': 'Réponse de cette automation en cas de requête HTTP.'
+'What this automation should respond in case of a HTTP request.': 'Réponse de cette automatisation en cas de requête HTTP.'
 'Success status and data': 'Statut et données de succès'
 'Data only': 'Données uniquement'
 'Success status only': 'Statut de succès uniquement'
 'File Download': 'Téléchargement de fichier'
 'Download file selector': 'Sélecteur de téléchargement de fichier'
 Execution: Exécution
-'Control how this automation is executed.': "Contrôler l'exécution de cette automation."
+'Control how this automation is executed.': "Contrôler l'exécution de cette automatisation."
 'Execution mode': "Mode d'exécution"
 Single: Unique
 'Only one run at a time and blocks new requests while a run is active or scheduled.': "Une seule exécution à la fois, bloque les nouvelles requêtes pendant qu'une exécution est active ou planifiée."
@@ -347,8 +347,8 @@ Queued: En file d'attente
 'Seconds without a activity before a run is considered stale and automatically reset.': "Secondes sans activité avant qu'une exécution soit considérée inactive et automatiquement réinitialisée."
 'Defaults to {default}.': "Par défaut : {default}."
 'History traces retention limit': "Limite de rétention des traces d'historique"
-'Configure execution history of this automation.': "Configurer l'historique d'exécution de cette automation."
-'Maximum number of stored traces for this automation.': "Nombre maximum de traces stockées pour cette automation."
+'Configure execution history of this automation.': "Configurer l'historique d'exécution de cette automatisation."
+'Maximum number of stored traces for this automation.': "Nombre maximum de traces stockées pour cette automatisation."
 'Leave empty to use the global default of {param}.': "Laisser vide pour utiliser la valeur globale par défaut : {param}."
 Status: Statut
 Default: Défaut
@@ -647,15 +647,15 @@ Message: Message
 'Extra info': 'Infos supplémentaires'
 'Include data?': 'Inclure les données ?'
 'Message not configured': 'Message non configuré'
-'Trigger something independently from the current flow': 'Déclencher quelque chose indépendamment du workflow actuel'
+'Trigger something independently from the current flow': 'Déclencher quelque chose indépendamment du flux actuel'
 'Run async?': 'Exécuter en async ?'
 Experimental: Expérimental
-'If the automation is using batches then this trigger will always run async.': "Si l'automation utilise des lots, ce déclencheur s'exécutera toujours en async."
+'If the automation is using batches then this trigger will always run async.': "Si l'automatisation utilise des lots, ce déclencheur s'exécutera toujours en async."
 'Pass current data?': 'Passer les données actuelles ?'
 'Override current data?': 'Surcharger les données actuelles ?'
 'Leave empty to pass root data': 'Laisser vide pour passer les données racine'
 'Define static variables to be used for this trigger. Existing variables will also be included.': 'Définir des variables statiques à utiliser pour ce déclencheur. Les variables existantes seront également incluses.'
-Automation: Automation
+Automation: Automatisation
 Wait: Attendre
 'Wait for time to pass': 'Attendre que le temps passe'
 'Seconds to wait': 'Secondes à attendre'
@@ -843,7 +843,7 @@ Verify: "Vérifier"
 'Choose how you want to receive verification codes': "Choisissez comment recevoir les codes de vérification"
 'Authenticator App (Recommended)': "Application Authenticator (Recommandé)"
 'Scan the QR code with your TOTP app': "Scannez le QR code avec votre application TOTP"
-'Or enter this secret manually:': 'Ou saisissez ce secret manuellement :'
+'Or enter this secret manually:': 'Ou saisissez ce Secret manuellement :'
 'Email Verification': 'Vérification par email'
 'We will send a 6-digit code to your email address': 'Nous enverrons un code à 6 chiffres à votre adresse email'
 'Send Code to Email': 'Envoyer le code par email'
@@ -855,7 +855,7 @@ URL: URL
 Uses: Utilisations
 'You are about to reset this process, are you sure?': "Vous êtes sur le point de réinitialiser ce processus. Êtes-vous sûr ?"
 Reset: Réinitialiser
-'Reset automation': "Réinitialiser l'automation"
+'Reset automation': "Réinitialiser l'automatisation"
 'Quick Edit': 'Édition rapide'
 Hide: Masquer
 Show: Afficher
@@ -922,9 +922,9 @@ Back: Retour
 'Fill in the code from your authenticator app': 'Saisissez le code de votre application authenticator'
 'Fill in the code send to your email': 'Saisissez le code envoyé à votre email'
 'There was a problem validating your password reset request': 'Il y a eu un problème lors de la validation de votre demande de réinitialisation'
-'There is already an automation with this ref, please enter a different ref': 'Il existe déjà une automation avec ce ref. Veuillez entrer un autre ref.'
-'There is already an automation with this name, please enter a different name': 'Il existe déjà une automation avec ce nom. Veuillez entrer un autre nom.'
-'There is already an automation with this endpoint, please enter a different name': 'Il existe déjà une automation avec cet endpoint. Veuillez entrer un autre nom.'
+'There is already an automation with this ref, please enter a different ref': 'Il existe déjà une automatisation avec ce ref. Veuillez entrer un autre ref.'
+'There is already an automation with this name, please enter a different name': 'Il existe déjà une automatisation avec ce nom. Veuillez entrer un autre nom.'
+'There is already an automation with this endpoint, please enter a different name': 'Il existe déjà une automatisation avec cet endpoint. Veuillez entrer un autre nom.'
 'There is already an account with this email': 'Il existe déjà un compte avec cet email'
 'Your password should be at least { limit } characters': 'Votre mot de passe doit contenir au moins { limit } caractères'
 'Please enter a password': 'Veuillez entrer un mot de passe'
@@ -991,7 +991,7 @@ Restrictions: Restrictions
 'Repeat Password': 'Répéter le mot de passe'
 'The password fields must match.': 'Les champs de mot de passe doivent correspondre.'
 Debug: Débogage
-"Change your app secret. Will autogenerate if empty.": "Modifiez votre secret d'application. Sera auto-généré s'il est vide."
+"Change your app secret. Will autogenerate if empty.": "Modifiez votre Secret d'application. Sera auto-généré s'il est vide."
 Secret: Secret
 Mailer: Expéditeur
 "Email sender": "Expéditeur d'email"

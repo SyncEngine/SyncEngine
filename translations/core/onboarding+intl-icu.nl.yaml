@@ -18,26 +18,26 @@ onboarding.dashboard.connections.body: |
 
 onboarding.dashboard.automations.title: 'Automatiseringen'
 onboarding.dashboard.automations.body: |
-  Automatiseringen zijn containers op hoogste niveau die je workflows orchestreren. Elke automatisering kan meerdere flows bevatten en definiëren hoe ze worden geactiveerd: handmatig, op een planning of door gebeurtenissen.
+  Automatiseringen zijn containers op hoogste niveau die je flows orchestreren. Elke automatisering kan meerdere flows bevatten en definiëren hoe ze worden geactiveerd: handmatig, op een planning of door gebeurtenissen.
 
-  Automatiseringen bieden uitvoeringsgeschiedenis (traces) zodat je elke run kunt inspecteren, kunt zien welke gegevens zijn verwerkt en eventuele problemen kunt opsporen.
+  Automatiseringen bieden uitvoeringsgeschiedenis (verlopen) zodat je elke run kunt inspecteren, kunt zien welke gegevens zijn verwerkt en eventuele problemen kunt opsporen.
 
 onboarding.dashboard.flows.title: 'Flows'
 onboarding.dashboard.flows.body: |
   Flows definiëren de volgorde van uitvoering binnen een automatisering. Elke flow bevat een serie stappen, waarbij elke stap een Routine activeert.
 
-  Gegevens stromen van de ene routine naar de volgende, met elke routine die een specifieke functie uitvoert, zoals het ophalen van gegevens, transformeren en verzenden naar een ander systeem. Flows voeren standaard sequentieel uit.
+  Gegevens stromen van de ene Routine naar de volgende, met elke Routine die een specifieke functie uitvoert, zoals het ophalen van gegevens, transformeren en verzenden naar een ander systeem. Flows voeren standaard sequentieel uit.
 
 onboarding.dashboard.routines.title: 'Routines'
 onboarding.dashboard.routines.body: |
   Routines zijn herbruikbare sequenties van acties (Taken) die een specifieke functie uitvoeren.
 
-  Elke routine is herbruikbaar, modulair en kan worden aangeroepen door één of meerdere Flows, wat je ongelooflijke flexibiliteit en efficiëntie geeft.
+  Elke Routine is herbruikbaar, modulair en kan worden aangeroepen door één of meerdere Flows, wat je ongelooflijke flexibiliteit en efficiëntie geeft.
 
 onboarding.dashboard.storages.title: 'Opslag'
 onboarding.dashboard.storages.body: |
   Opslagen in SyncEngine zijn veilige, persistente containers gebruikt om gestructureerde gegevens vast te houden die over je automatiseringen heen kunnen worden benaderd.
-  Ze fungeren als je langetermijngeheugen, waardoor flows en routines informatie tussen runs kunnen opslaan en ophalen.
+  Ze fungeren als je langetermijngeheugen, waardoor flows en Routines informatie tussen runs kunnen opslaan en ophalen.
 
   Opslagen zijn ideaal voor het opslaan van herbruikbare of gedeelde gegevens, configuratiewaarden en resultaten waar je later toegang toe wilt hebben, zonder te vertrouwen op externe databases of API's.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Het systeemdashboard geeft je snelle toegang tot:
 
   • SyncEngine-instellingen configureren
-  • Secrets en gevoelige waarden beheren in de Vault
+  • Secrets en gevoelige waarden beheren in de kluis
   • Achtergrondwerkers monitoren
   • Systeemgegevens bekijken
   • etc.
@@ -70,7 +70,7 @@ onboarding.dashboard.summary.body: |
   Je kent nu de kernconcepten van SyncEngine:
 
   • Verbindingen bruggen tussen je systemen
-  • Automatiseringen orchestreren workflows
+  • Automatiseringen orchestreren flows
   • Flows definiëren uitvoeringsvolgorde
   • Routines zijn herbruikbare sequenties van acties
   • Taken zijn de individuele acties

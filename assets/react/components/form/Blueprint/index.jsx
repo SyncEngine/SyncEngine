@@ -302,10 +302,10 @@ export default function BlueprintControl( props ) {
 		<VStack gap={2}>
 			{ /*
 			<InputGroup>
-				<ConfirmModal trigger="onChange" callback={ selectBlueprint } text={ t('You will loose your current configuration') }>
+				<ConfirmModal trigger="onChange" callback={ selectBlueprint } text={ t('You will lose your current configuration') }>
 					<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } />
 				</ConfirmModal>
-				<ConfirmModal callback={ selectManual } text={ t('You will loose your current configuration') }>
+				<ConfirmModal callback={ selectManual } text={ t('You will lose your current configuration') }>
 					<Button variant="secondary" outline>{ t('Manual') }</Button>
 				</ConfirmModal>
 			</InputGroup>

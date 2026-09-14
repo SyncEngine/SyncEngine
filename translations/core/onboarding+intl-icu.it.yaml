@@ -20,24 +20,24 @@ onboarding.dashboard.automations.title: 'Automazioni'
 onboarding.dashboard.automations.body: |
   Le automazioni sono i contenitori di livello superiore che orchestrano i tuoi flussi di lavoro. Ogni automazione può contenere più flussi e definire come vengono attivati: manualmente, su un programma o da eventi.
 
-  Le automazioni forniscono la cronologia di esecuzione (traces) così puoi ispezionare ogni esecuzione, vedere quali dati sono stati elaborati e risolvere eventuali problemi.
+  Le automazioni forniscono la cronologia di esecuzione (tracce) così puoi ispezionare ogni esecuzione, vedere quali dati sono stati elaborati e risolvere eventuali problemi.
 
 onboarding.dashboard.flows.title: 'Flussi'
 onboarding.dashboard.flows.body: |
   I flussi definiscono la sequenza di esecuzione all'interno di un'automazione. Ogni flusso contiene una serie di passaggi, dove ogni passaggio attiva una Routine.
 
-  I dati scorrono da una routine all'altra, con ogni routine che svolge una funzione specifica, come recuperare dati, trasformarli e inviarli a un altro sistema. I flussi vengono eseguiti in sequenza per impostazione predefinita.
+  I dati scorrono da una Routine all'altra, con ogni Routine che svolge una funzione specifica, come recuperare dati, trasformarli e inviarli a un altro sistema. I flussi vengono eseguiti in sequenza per impostazione predefinita.
 
-onboarding.dashboard.routines.title: 'Routine'
+onboarding.dashboard.routines.title: 'Routines'
 onboarding.dashboard.routines.body: |
-  Le routine sono sequenze riutilizzabili di azioni (Task) che svolgono una funzione specifica.
+  Le Routine sono sequenze riutilizzabili di azioni (Task) che svolgono una funzione specifica.
 
-  Ogni routine è riutilizzabile, modulare e può essere chiamata da uno o più Flussi, offrendoti incredibile flessibilità ed efficienza.
+  Ogni Routine è riutilizzabile, modulare e può essere chiamata da uno o più Flussi, offrendoti incredibile flessibilità ed efficienza.
 
 onboarding.dashboard.storages.title: 'Archiviazioni'
 onboarding.dashboard.storages.body: |
   Le archiviazioni in SyncEngine sono contenitori sicuri e persistenti utilizzati per contenere dati strutturati che possono essere accessibili tra le tue automazioni.
-  Agiscono come la tua memoria a lungo termine, consentendo ai flussi e alle routine di salvare e recuperare informazioni tra le esecuzioni.
+  Agiscono come la tua memoria a lungo termine, consentendo ai flussi e alle Routine di salvare e recuperare informazioni tra le esecuzioni.
 
   Le archiviazioni sono ideali per salvare dati riutilizzabili o condivisi, valori di configurazione e risultati a cui vuoi accedere in seguito, senza affidarti a database o API esterni.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   La dashboard di sistema ti dà accesso rapido a:
 
   • Configurare le impostazioni SyncEngine
-  • Gestire i segreti e i valori sensibili nel Vault
+  • Gestire i Secrets e i valori sensibili nel Vault
   • Monitorare i worker in background
   • Visualizzare le informazioni di sistema
   • ecc.
@@ -72,7 +72,7 @@ onboarding.dashboard.summary.body: |
   • Le connessioni collegano i tuoi sistemi
   • Le automazioni orchestrano i flussi di lavoro
   • I flussi definiscono le sequenze di esecuzione
-  • Le routine sono sequenze riutilizzabili di azioni
+  • Le Routine sono sequenze riutilizzabili di azioni
   • I task sono le azioni individuali
   • Le archiviazioni conservano i dati persistenti
   • I moduli aggiungono nuova funzionalità

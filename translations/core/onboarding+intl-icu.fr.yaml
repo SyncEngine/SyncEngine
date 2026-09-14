@@ -18,26 +18,26 @@ onboarding.dashboard.connections.body: |
 
 onboarding.dashboard.automations.title: 'Automatisations'
 onboarding.dashboard.automations.body: |
-  Les automatisations sont les conteneurs de niveau supérieur qui orchestrent vos workflows. Chaque automation peut contenir plusieurs flux et définir comment ils sont déclenchés : manuellement, sur un planning ou par des événements.
+  Les automatisations sont les conteneurs de niveau supérieur qui orchestrent vos flux. Chaque automatisation peut contenir plusieurs flux et définir comment ils sont déclenchés : manuellement, sur un planning ou par des événements.
 
   Les automatisations fournissent l'historique d'exécution (traces) pour que vous puissiez inspecter chaque exécution, voir quelles données ont été traitées et déboguer tous les problèmes.
 
 onboarding.dashboard.flows.title: 'Flux'
 onboarding.dashboard.flows.body: |
-  Les flux définissent la séquence d'exécution au sein d'une automation. Chaque flux contient une série d'étapes, où chaque étape déclenche une Routine.
+  Les flux définissent la séquence d'exécution au sein d'une automatisation. Chaque flux contient une série d'étapes, où chaque étape déclenche une Routine.
 
-  Les données circulent d'une routine à l'autre, chaque routine effectuant une fonction spécifique, comme récupérer des données, les transformer et les envoyer à un autre système. Les flux s'exécutent en séquence par défaut.
+  Les données circulent d'une Routine à l'autre, chaque Routine effectuant une fonction spécifique, comme récupérer des données, les transformer et les envoyer à un autre système. Les flux s'exécutent en séquence par défaut.
 
 onboarding.dashboard.routines.title: 'Routines'
 onboarding.dashboard.routines.body: |
-  Les routines sont des séquences réutilisables d'actions (Tâches) qui effectuent une fonction spécifique.
+  Les Routines sont des séquences réutilisables d'actions (Tâches) qui effectuent une fonction spécifique.
 
-  Chaque routine est réutilisable, modulaire et peut être appelée par un ou plusieurs Flux, vous offrant une flexibilité et une efficacité incroyables.
+  Chaque Routine est réutilisable, modulaire et peut être appelée par un ou plusieurs Flux, vous offrant une flexibilité et une efficacité incroyables.
 
 onboarding.dashboard.storages.title: 'Stockages'
 onboarding.dashboard.storages.body: |
   Les stockages dans SyncEngine sont des conteneurs sécurisés et persistants utilisés pour conserver des données structurées qui peuvent être accédées à travers vos automatisations.
-  Ils agissent comme votre mémoire à long terme, permettant aux flux et routines de sauvegarder et récupérer des informations entre les exécutions.
+  Ils agissent comme votre mémoire à long terme, permettant aux flux et Routines de sauvegarder et récupérer des informations entre les exécutions.
 
   Les stockages sont idéaux pour sauvegarder des données réutilisables ou partagées, des valeurs de configuration et des résultats auxquels vous voulez accéder plus tard, sans dépendre de bases de données ou d'API externes.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Le tableau de bord système vous donne un accès rapide à :
 
   • Configurer les paramètres SyncEngine
-  • Gérer les secrets et valeurs sensibles dans le Vault
+  • Gérer les Secrets et valeurs sensibles dans le coffre
   • Surveiller les travailleurs en arrière-plan
   • Voir les informations système
   • etc.
@@ -70,9 +70,9 @@ onboarding.dashboard.summary.body: |
   Vous connaissez maintenant les concepts principaux de SyncEngine :
 
   • Les connexions unissent vos systèmes
-  • Les automatisations orchestrent les workflows
+  • Les automatisations orchestrent les flux
   • Les flux définissent les séquences d'exécution
-  • Les routines sont des séquences réutilisables d'actions
+  • Les Routines sont des séquences réutilisables d'actions
   • Les tâches sont les actions individuelles
   • Les stockages conservent les données persistantes
   • Les modules ajoutent de nouvelles fonctionnalités

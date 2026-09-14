@@ -188,11 +188,11 @@ Connections: Połączenia
 'New connection': 'Nowe połączenie'
 'Successfully edited connection!': 'Połączenie edytowane!'
 'Edit connection': 'Edytuj połączenie'
-Flows: Workflows
-'Successfully created flow!': 'Workflow utworzony!'
-'New flow': 'Nowy workflow'
-'Successfully edited flow!': 'Workflow edytowany!'
-'Edit flow': 'Edytuj workflow'
+Flows: Przepływy
+'Successfully created flow!': 'Przepływ utworzony!'
+'New flow': 'Nowy przepływ'
+'Successfully edited flow!': 'Przepływ edytowany!'
+'Edit flow': 'Edytuj przepływ'
 'Connection required': 'Wymagane połączenie'
 'Connection not found': 'Połączenie nie znalezione'
 'Webservice not found': 'Webservice nie znaleziony'
@@ -236,11 +236,11 @@ System: System
 Save: Zapisz
 'Invalid Manager': 'Nieprawidłowy Manager'
 'Configuration saved': 'Konfiguracja zapisana'
-Routines: Routiny
-'Successfully created routine!': 'Rutyna utworzona!'
-'New routine': 'Nowa rutyna'
-'Successfully edited routine!': 'Rutyna edytowana!'
-'Edit routine': 'Edytuj rutynę'
+Routines: Procedury
+'Successfully created routine!': 'Procedura utworzona!'
+'New routine': 'Nowa procedura'
+'Successfully edited routine!': 'Procedura edytowana!'
+'Edit routine': 'Edytuj procedurę'
 Storages: Przechowywania
 'Successfully created storage!': 'Przechowanie utworzone!'
 'New storage': 'Nowe przechowanie'
@@ -250,7 +250,7 @@ Storages: Przechowywania
 Environment: Środowisko
 'Configure environment setup': 'Skonfiguruj ustawienia środowiska'
 Vault: Vault
-'Configure vault secrets': 'Skonfiguruj tajne klucze vault'
+'Configure vault secrets': 'Skonfiguruj vault Secrets'
 'Manage system processes': 'Zarządzaj procesami systemu'
 Import: Importuj
 'Import JSON configs': 'Importuj konfiguracje JSON'
@@ -316,8 +316,8 @@ Error: Błąd
 'Optionally trigger error when there is no data available from the source.': 'Opcjonalnie uruchom błąd gdy nie ma danych dostępnych z źródła.'
 Actions: Akcje
 'The actions that need to be done with the source data.': 'Akcje które muszą być wykonane z danymi źródłowymi.'
-Flow: Workflow
-Routine: Rutyna
+Flow: Przepływ
+Routine: Procedura
 Tasks: Zadania
 Events: Wydarzenia
 'Select the behavior on various events in this automation.': 'Wybierz zachowanie na różnych wydarzeniach w tej automatyzacji.'
@@ -346,9 +346,9 @@ Queued: W kolejce
 'Stale run timeout': 'Timeout starego uruchomienia'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekundy bez aktywności przed uruchomieniem jest uważane za stare i automatycznie resetowane.'
 'Defaults to {default}.': 'Domyślnie {default}.'
-'History traces retention limit': 'Limit retencji ścieżek historii'
+'History traces retention limit': 'Limit retencji przebiegów historii'
 'Configure execution history of this automation.': 'Skonfiguruj historię wykonania tej automatyzacji.'
-'Maximum number of stored traces for this automation.': 'Maksymalna liczba przechowywanych ścieżek dla tej automatyzacji.'
+'Maximum number of stored traces for this automation.': 'Maksymalna liczba przechowywanych przebiegów dla tej automatyzacji.'
 'Leave empty to use the global default of {param}.': 'Pozostaw puste aby użyć globalnego domyślnego {param}.'
 Status: Status
 Default: Domyślne
@@ -637,17 +637,17 @@ Template: Szablon
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Wartość `data` jest używana dla wyjścia zadania. Dostępne zmienne: `data`, `config`, `cache`, `variables` i `context`.'
 'Add your code here': 'Dodaj swój kod tutaj'
 'No template set': 'Brak ustawionego szablonu'
-Trace: Ślad
+Trace: Przebieg
 'Trace current status with a log or error.': 'Śledź bieżący status z logiem lub błędem.'
-'Trace type': 'Typ śladu'
-'Creating an error will result in the trace reporting as failed.': 'Stworzenie błędu spowoduje że ślad zostanie zgłoszony jako nieudany.'
+'Trace type': 'Typ przebiegu'
+'Creating an error will result in the trace reporting as failed.': 'Stworzenie błędu spowoduje, że przebieg zostanie zgłoszony jako nieudany.'
 'Log message': 'Wiadomość log'
 'Error message': 'Wiadomość błędu'
 Message: Wiadomość
 'Extra info': 'Dodatkowe informacje'
 'Include data?': 'Dołączyć dane?'
 'Message not configured': 'Wiadomość nie skonfigurowana'
-'Trigger something independently from the current flow': 'Uruchom coś niezależnie od bieżącego workflow'
+'Trigger something independently from the current flow': 'Uruchom coś niezależnie od bieżącego przepływu'
 'Run async?': 'Uruchomić async?'
 Experimental: Eksperymentalny
 'If the automation is using batches then this trigger will always run async.': 'Jeśli automatyzacja używa partii to ten trigger będzie zawsze uruchamiał async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Połącz z podstawową autoryzacją'
 'Username / key': 'Nazwa użytkownika / klucz'
-'Password / Secret': 'Hasło / Tajemnica'
+'Password / Secret': 'Hasło / Secret'
 'HTTP Bearer token': 'Token Bearer HTTP'
 'Connect with Bearer Token authorization': 'Połącz z autoryzacją Bearer Token'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Zweryfikuj
 'Choose how you want to receive verification codes': 'Wybierz jak chcesz otrzymywać kody weryfikacyjne'
 'Authenticator App (Recommended)': 'Aplikacja Authenticator (zalecana)'
 'Scan the QR code with your TOTP app': 'Zeskanuj kod QR swoją aplikacją TOTP'
-'Or enter this secret manually:': 'Lub wpisz ten sekret ręcznie:'
+'Or enter this secret manually:': 'Lub wpisz ten Secret ręcznie:'
 'Email Verification': 'Weryfikacja e-mail'
 'We will send a 6-digit code to your email address': 'Wyślemy 6-cyfrowy kod na Twój adres e-mail'
 'Send Code to Email': 'Wyślij kod na e-mail'
@@ -891,7 +891,7 @@ Manage: Zarządzaj
 Reinstall: Zainstaluj ponownie
 Config: Config
 Task: Zadanie
-Traces: Ślady
+Traces: Przebiegi
 'You are about to kill this process, are you sure?': 'Zamieniasz zabić ten proces, czy na pewno?'
 Kill: Zabij
 'New user': 'Nowy użytkownik'
@@ -991,8 +991,8 @@ Restrictions: Ograniczenia
 'Repeat Password': 'Powtórz hasło'
 'The password fields must match.': 'Pola haseł muszą się zgadzać.'
 Debug: Debugowanie
-'Change your app secret. Will autogenerate if empty.': 'Zmień swój secret aplikacji. Zostanie wygenerowany automatycznie, jeśli puste.'
-Secret: Sekret
+'Change your app secret. Will autogenerate if empty.': 'Zmień swój Secret aplikacji. Zostanie wygenerowany automatycznie, jeśli puste.'
+Secret: Secret
 Mailer: Wysyłacz
 'Email sender': 'Nadawca e-maila'
 'Send email logs to': 'Wyślij logi e-mail do'

@@ -18,26 +18,26 @@ onboarding.dashboard.connections.body: |
 
 onboarding.dashboard.automations.title: 'Automações'
 onboarding.dashboard.automations.body: |
-  As automações são os contêineres de nível superior que orquestram seus workflows. Cada automação pode conter múltiplos fluxos e definir como são acionados: manualmente, em um cronograma ou por eventos.
+  As automações são os contêineres de nível superior que orquestram seus fluxos. Cada automação pode conter múltiplos fluxos e definir como são acionados: manualmente, em um cronograma ou por eventos.
 
-  As automações fornecem histórico de execução (traces) para que você possa inspecionar cada execução, ver quais dados foram processados e depurar quaisquer problemas.
+  As automações fornecem histórico de execução (percursos) para que você possa inspecionar cada execução, ver quais dados foram processados e depurar quaisquer problemas.
 
 onboarding.dashboard.flows.title: 'Fluxos'
 onboarding.dashboard.flows.body: |
   Os fluxos definem a sequência de execução dentro de uma automação. Cada fluxo contém uma série de etapas, onde cada etapa aciona uma Rotina.
 
-  Os dados fluem de uma rotina para a próxima, com cada rotina realizando uma função específica, como recuperar dados, transformá-los e enviá-los para outro sistema. Os fluxos executam em sequência por padrão.
+  Os dados fluem de uma Rotina para a próxima, com cada Rotina realizando uma função específica, como recuperar dados, transformá-los e enviá-los para outro sistema. Os fluxos executam em sequência por padrão.
 
 onboarding.dashboard.routines.title: 'Rotinas'
 onboarding.dashboard.routines.body: |
-  As rotinas são sequências reutilizáveis de ações (Tarefas) que realizam uma função específica.
+  As Rotinas são sequências reutilizáveis de ações (Tarefas) que realizam uma função específica.
 
-  Cada rotina é reutilizável, modular e pode ser chamada por um ou mais Fluxos, proporcionando incrível flexibilidade e eficiência.
+  Cada Rotina é reutilizável, modular e pode ser chamada por um ou mais Fluxos, proporcionando incrível flexibilidade e eficiência.
 
 onboarding.dashboard.storages.title: 'Armazenamentos'
 onboarding.dashboard.storages.body: |
   Os armazenamentos no SyncEngine são contêineres seguros e persistentes usados para manter dados estruturados que podem ser acessados entre suas automações.
-  Eles atuam como sua memória de longo prazo, permitindo que fluxos e rotinas salvem e recuperem informações entre execuções.
+  Eles atuam como sua memória de longo prazo, permitindo que fluxos e Rotinas salvem e recuperem informações entre execuções.
 
   Os armazenamentos são ideais para salvar dados reutilizáveis ou compartilhados, valores de configuração e resultados aos quais deseja acessar mais tarde, sem depender de bancos de dados ou APIs externas.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   O painel do sistema lhe dá acesso rápido a:
 
   • Configurar configurações do SyncEngine
-  • Gerenciar segredos e valores sensíveis no Vault
+  • Gerenciar Secrets e valores sensíveis no Vault
   • Monitorar trabalhadores em segundo plano
   • Ver informações do sistema
   • etc.
@@ -72,7 +72,7 @@ onboarding.dashboard.summary.body: |
   • As conexões unem seus sistemas
   • As automações orquestram fluxos de trabalho
   • Os fluxos definem sequências de execução
-  • As rotinas são sequências reutilizáveis de ações
+  • As Rotinas são sequências reutilizáveis de ações
   • As tarefas são as ações individuais
   • Os armazenamentos mantêm dados persistentes
   • Os módulos adicionam nova funcionalidade

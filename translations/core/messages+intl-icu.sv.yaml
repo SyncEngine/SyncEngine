@@ -188,11 +188,11 @@ Connections: Anslutningar
 'New connection': 'Ny anslutning'
 'Successfully edited connection!': 'Anslutning redigerad!'
 'Edit connection': 'Redigera anslutning'
-Flows: Workflows
-'Successfully created flow!': 'Workflow skapad!'
-'New flow': 'Ny workflow'
-'Successfully edited flow!': 'Workflow redigerad!'
-'Edit flow': 'Redigera workflow'
+Flows: Flöden
+'Successfully created flow!': 'Flöde skapat!'
+'New flow': 'Nytt flöde'
+'Successfully edited flow!': 'Flöde redigerat!'
+'Edit flow': 'Redigera flöde'
 'Connection required': 'Anslutning krävs'
 'Connection not found': 'Anslutning hittades inte'
 'Webservice not found': 'Webservice hittades inte'
@@ -250,7 +250,7 @@ Storages: Lagringar
 Environment: Miljö
 'Configure environment setup': 'Konfigurera miljöinställningar'
 Vault: Vault
-'Configure vault secrets': 'Konfigurera vaulthemligheter'
+'Configure vault secrets': 'Konfigurera vault Secrets'
 'Manage system processes': 'Hantera systemprocesser'
 Import: Importera
 'Import JSON configs': 'Importera JSON-konfigurationer'
@@ -316,7 +316,7 @@ Error: Fel
 'Optionally trigger error when there is no data available from the source.': 'Välj ut att trigga fel när ingen data finns tillgänglig från källan.'
 Actions: Åtgärder
 'The actions that need to be done with the source data.': 'Åtgärderna som behöver utföras med källdata.'
-Flow: Workflow
+Flow: Flöde
 Routine: Rutin
 Tasks: Uppgifter
 Events: Händelser
@@ -346,9 +346,9 @@ Queued: I kö
 'Stale run timeout': 'Stale run timeout'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder utan aktivitet innan en körning anses stale och automatiskt återställs.'
 'Defaults to {default}.': 'Standardinställning är {default}.'
-'History traces retention limit': 'Historikspårningsbehållningsgräns'
+'History traces retention limit': 'Retentionsgräns för historiska förlopp'
 'Configure execution history of this automation.': 'Konfigurera exekveringshistorik för denna automatisering.'
-'Maximum number of stored traces for this automation.': 'Maximalt antal lagrade spårningar för denna automatisering.'
+'Maximum number of stored traces for this automation.': 'Maximalt antal lagrade förlopp för denna automatisering.'
 'Leave empty to use the global default of {param}.': 'Lämna tomt för att använda global standard på {param}.'
 Status: Status
 Default: Standard
@@ -637,17 +637,17 @@ Template: Mall
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Värdet av `data` används för uppgiftsutmatning. Tillgängliga variabler: `data`, `config`, `cache`, `variables` och `context`.'
 'Add your code here': 'Lägg till din kod här'
 'No template set': 'Ingen mall inställd'
-Trace: Spårning
-'Trace current status with a log or error.': 'Spåra nuvarande status med en logg eller fel.'
-'Trace type': 'Spårningstyp'
-'Creating an error will result in the trace reporting as failed.': 'Skapa ett fel vilket resulterar i att spårningen rapporteras som misslyckad.'
+Trace: Förlopp
+'Trace current status with a log or error.': 'Registrera nuvarande status med en logg eller fel.'
+'Trace type': 'Förloppstyp'
+'Creating an error will result in the trace reporting as failed.': 'Skapa ett fel vilket resulterar i att förloppet rapporteras som misslyckat.'
 'Log message': 'Loggmeddelande'
 'Error message': 'Felmeddelande'
 Message: Meddelande
 'Extra info': 'Extra information'
 'Include data?': 'Inkludera data?'
 'Message not configured': 'Meddelande inte konfigurerat'
-'Trigger something independently from the current flow': 'Trigga något oberoende av nuvarande workflow'
+'Trigger something independently from the current flow': 'Trigga något oberoende av nuvarande flöde'
 'Run async?': 'Köra async?'
 Experimental: Experimentell
 'If the automation is using batches then this trigger will always run async.': 'Om automatiseringen använder batches kommer denna trigger alltid att köra async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Anslut med basic auktorisation'
 'Username / key': 'Användarnamn / nyckel'
-'Password / Secret': 'Lösenord / Hemlighet'
+'Password / Secret': 'Lösenord / Secret'
 'HTTP Bearer token': 'HTTP Bearer-token'
 'Connect with Bearer Token authorization': 'Anslut med Bearer Token-auktorisation'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Verifiera
 'Choose how you want to receive verification codes': 'Välj hur du vill ta emot verifieringskoder'
 'Authenticator App (Recommended)': 'Authenticator App (rekommenderad)'
 'Scan the QR code with your TOTP app': 'Skanna QR-koden med din TOTP-app'
-'Or enter this secret manually:': 'Eller ange denna hemlighet manuellt:'
+'Or enter this secret manually:': 'Eller ange denna Secret manuellt:'
 'Email Verification': 'E-postverifiering'
 'We will send a 6-digit code to your email address': 'Vi skickar en 6-siffrig kod till din e-postadress'
 'Send Code to Email': 'Skicka kod till e-post'
@@ -891,7 +891,7 @@ Manage: Hantera
 Reinstall: Installera om
 Config: Config
 Task: Uppgift
-Traces: Spårningar
+Traces: Förlopp
 'You are about to kill this process, are you sure?': 'Du är på väg att döda denna process, är du säker?'
 Kill: Döda
 'New user': 'Ny användare'
@@ -991,8 +991,8 @@ Restrictions: Begränsningar
 'Repeat Password': 'Upprepa lösenord'
 'The password fields must match.': 'Lösenordsfälten måste matcha.'
 Debug: Felsökning
-'Change your app secret. Will autogenerate if empty.': 'Ändra din app-hemlighet. Kommer att automatiskt genereras om tom.'
-Secret: Hemlighet
+'Change your app secret. Will autogenerate if empty.': 'Ändra din app-Secret. Kommer att automatiskt genereras om tom.'
+Secret: Secret
 Mailer: Mailer
 'Email sender': 'E-post avsändare'
 'Send email logs to': 'Skicka e-post-loggar till'

@@ -188,11 +188,11 @@ Connections: "З'єднання"
 'New connection': "Нове з'єднання"
 'Successfully edited connection!': "З'єднання відредаговано!"
 'Edit connection': "Редагувати з'єднання"
-Flows: Workflows
-'Successfully created flow!': 'Workflow створено!'
-'New flow': 'Новий workflow'
-'Successfully edited flow!': 'Workflow відредаговано!'
-'Edit flow': 'Редагувати workflow'
+Flows: Потоки
+'Successfully created flow!': 'Потік створено!'
+'New flow': 'Новий потік'
+'Successfully edited flow!': 'Потік відредаговано!'
+'Edit flow': 'Редагувати потік'
 'Connection required': "Потрібне з'єднання"
 'Connection not found': "З'єднання не знайдено"
 'Webservice not found': 'Webservice не знайдено'
@@ -236,11 +236,11 @@ System: Система
 Save: Зберегти
 'Invalid Manager': 'Недійсний Manager'
 'Configuration saved': 'Конфігурацію збережено'
-Routines: Рутини
-'Successfully created routine!': 'Рутину створено!'
-'New routine': 'Нова рутина'
-'Successfully edited routine!': 'Рутину відредаговано!'
-'Edit routine': 'Редагувати рутину'
+Routines: Процедури
+'Successfully created routine!': 'Процедуру створено!'
+'New routine': 'Нова процедура'
+'Successfully edited routine!': 'Процедуру відредаговано!'
+'Edit routine': 'Редагувати процедуру'
 Storages: Зберігання
 'Successfully created storage!': 'Зберігання створено!'
 'New storage': 'Нове зберігання'
@@ -250,7 +250,7 @@ Storages: Зберігання
 Environment: Середовище
 'Configure environment setup': 'Налаштувати налаштування середовища'
 Vault: Vault
-'Configure vault secrets': 'Налаштувати секрети vault'
+'Configure vault secrets': 'Налаштувати vault Secrets'
 'Manage system processes': 'Керувати процесами системи'
 Import: Імпорт
 'Import JSON configs': 'Імпортувати конфігурації JSON'
@@ -316,8 +316,8 @@ Error: Помилка
 'Optionally trigger error when there is no data available from the source.': 'За бажанням викликати помилку, коли немає доступних даних з джерела.'
 Actions: Дії
 'The actions that need to be done with the source data.': 'Дії, які потрібно виконати з даними джерела.'
-Flow: Workflow
-Routine: Рутина
+Flow: Потік
+Routine: Процедура
 Tasks: Завдання
 Events: Події
 'Select the behavior on various events in this automation.': 'Виберіть поведінку на різних подіях в цій автоматизації.'
@@ -346,9 +346,9 @@ Queued: В черзі
 'Stale run timeout': 'Тайм-аут застарілого запуску'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Секунди без активності перед тим, як запуск вважається застарілим і автоматично скидається.'
 'Defaults to {default}.': 'За замовчуванням {default}.'
-'History traces retention limit': 'Ліміт зберігання слідів історії'
+'History traces retention limit': 'Ліміт зберігання перебігів історії'
 'Configure execution history of this automation.': 'Налаштувати історію виконання цієї автоматизації.'
-'Maximum number of stored traces for this automation.': 'Максимальна кількість збережених слідів для цієї автоматизації.'
+'Maximum number of stored traces for this automation.': 'Максимальна кількість збережених перебігів для цієї автоматизації.'
 'Leave empty to use the global default of {param}.': 'Залиште порожнім, щоб використовувати глобальне замовчування {param}.'
 Status: Статус
 Default: За замовчуванням
@@ -637,17 +637,17 @@ Template: Шаблон
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Значення `data` використовується для виведення завдання. Доступні змінні: `data`, `config`, `cache`, `variables` та `context`.'
 'Add your code here': 'Додайте свій код тут'
 'No template set': 'Шаблон не встановлено'
-Trace: Слід
+Trace: Перебіг
 'Trace current status with a log or error.': 'Відстежувати поточний статус з log або помилкою.'
-'Trace type': 'Тип сліду'
-'Creating an error will result in the trace reporting as failed.': 'Створення помилки призведе до того, що слід буде повідомлено про невдачу.'
+'Trace type': 'Тип перебігу'
+'Creating an error will result in the trace reporting as failed.': 'Створення помилки призведе до того, що перебіг буде позначено як невдалий.'
 'Log message': 'Повідомлення log'
 'Error message': 'Повідомлення про помилку'
 Message: Повідомлення
 'Extra info': 'Додаткова інформація'
 'Include data?': 'Включити дані?'
 'Message not configured': 'Повідомлення не налаштовано'
-'Trigger something independently from the current flow': 'Тригер щось незалежно від поточного workflow'
+'Trigger something independently from the current flow': 'Запустити щось незалежно від поточного потоку'
 'Run async?': 'Запустити async?'
 Experimental: Експериментальний
 'If the automation is using batches then this trigger will always run async.': 'Якщо автоматизація використовує партії, цей тригер завжди запускатиметься async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Підключитися з базовою авторизацією'
 'Username / key': "Ім'я користувача / ключ"
-'Password / Secret': 'Пароль / Секрет'
+'Password / Secret': 'Пароль / Secret'
 'HTTP Bearer token': 'Токен Bearer HTTP'
 'Connect with Bearer Token authorization': 'Підключитися з авторизацією Bearer Token'
 Token: Токен
@@ -843,7 +843,7 @@ Verify: Верифікувати
 'Choose how you want to receive verification codes': 'Виберіть, як ви хочете отримувати коди верифікації'
 'Authenticator App (Recommended)': 'Додаток Authenticator (рекомендовано)'
 'Scan the QR code with your TOTP app': 'Скануйте QR-код за допомогою вашого TOTP-додатку'
-'Or enter this secret manually:': 'Або введіть цей секрет вручну:'
+'Or enter this secret manually:': 'Або введіть цей Secret вручну:'
 'Email Verification': 'Верифікація email'
 'We will send a 6-digit code to your email address': 'Ми надішлемо 6-значний код на вашу електронну адресу'
 'Send Code to Email': 'Надіслати код на email'
@@ -891,7 +891,7 @@ Manage: Керувати
 Reinstall: Перевстановити
 Config: Config
 Task: Завдання
-Traces: Сліди
+Traces: Перебіги
 'You are about to kill this process, are you sure?': 'Ви збираєтеся завершити цей процес, ви впевнені?'
 Kill: Завершити
 'New user': 'Новий користувач'
@@ -991,8 +991,8 @@ Restrictions: Обмеження
 'Repeat Password': 'Повторити пароль'
 'The password fields must match.': 'Поля пароля повинні співпадати.'
 Debug: Відладка
-'Change your app secret. Will autogenerate if empty.': 'Змініть свій секрет програми. Буде автоматично згенеровано, якщо порожньо.'
-Secret: Секрет
+'Change your app secret. Will autogenerate if empty.': 'Змініть свій Secret програми. Буде автоматично згенеровано, якщо порожньо.'
+Secret: Secret
 Mailer: Поштовий сервер
 'Email sender': 'Відправник електронної пошти'
 'Send email logs to': 'Надіслати логи електронної пошти до'

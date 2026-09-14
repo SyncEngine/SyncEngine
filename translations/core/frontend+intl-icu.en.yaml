@@ -145,7 +145,7 @@ Variables: Variables
 'View full log': 'View full log'
 'Webservice has no fields': 'Webservice has no fields'
 'Webservice not found': 'Webservice not found'
-'You will loose your current configuration': 'You will loose your current configuration'
+'You will lose your current configuration': 'You will lose your current configuration'
 contains: contains
 'contains (strict)': 'contains (strict)'
 'ends with': 'ends with'

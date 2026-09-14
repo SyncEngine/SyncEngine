@@ -20,24 +20,24 @@ onboarding.dashboard.automations.title: 'Automatizace'
 onboarding.dashboard.automations.body: |
   Automatizace jsou nadřazené kontejnery, které orchestrují vaše pracovní postupy. Každá automatizace může obsahovat více toků a definovat, jak jsou spouštěny: ručně, podle harmonogramu nebo pomocí událostí.
 
-  Automatizace poskytují historii provedení (traces), abyste mohli zkontrolovat každý běh, vidět, jaká data byla zpracována a ladit jakékoliv problémy.
+  Automatizace poskytují historii provedení (průběhy), abyste mohli zkontrolovat každý běh, vidět, jaká data byla zpracována a ladit jakékoliv problémy.
 
 onboarding.dashboard.flows.title: 'Toky'
 onboarding.dashboard.flows.body: |
-  Toky definují posloupnost provedení v rámci automatizace. Každý tok obsahuje řadu kroků, kde každý krok spouští Rutinu.
+  Toky definují posloupnost provedení v rámci automatizace. Každý tok obsahuje řadu kroků, kde každý krok spouští Postup.
 
-  Data proudí z jedné rutiny do další, přičemž každá rutina provádí konkrétní funkci, jako je načítání dat, jejich transformace a odesílání do jiného systému. Toky se ve výchozím nastavení spouštějí v posloupnosti.
+  Data proudí z jednoho Postupu do dalšího, přičemž každý Postup provádí konkrétní funkci, jako je načítání dat, jejich transformace a odesílání do jiného systému. Toky se ve výchozím nastavení spouštějí v posloupnosti.
 
-onboarding.dashboard.routines.title: 'Rutiny'
+onboarding.dashboard.routines.title: 'Postupy'
 onboarding.dashboard.routines.body: |
-  Rutiny jsou znovu použitelné posloupnosti akcí (Úloh), které provádějí konkrétní funkci.
+  Postupy jsou znovu použitelné posloupnosti akcí (Úloh), které provádějí konkrétní funkci.
 
-  Každá rutina je znovu použitelná, modulární a může být volána jednou nebo více Toky, což vám dává neuvěřitelnou flexibilitu a účinnost.
+  Každý Postup je znovu použitelný, modulární a může být volán jednou nebo více Toky, což vám dává neuvěřitelnou flexibilitu a účinnost.
 
 onboarding.dashboard.storages.title: 'Úložiště'
 onboarding.dashboard.storages.body: |
   Úložiště v SyncEngine jsou bezpečné, perzistentní kontejnery používané k uchovávání strukturovaných dat, která lze přistupovat napříč vašimi automatizacemi.
-  Působí jako vaše dlouhodobá paměť, umožňují tokům a rutinám ukládat a načítat informace mezi běhy.
+  Působí jako vaše dlouhodobá paměť, umožňují tokům a Postupům ukládat a načítat informace mezi běhy.
 
   Úložiště jsou ideální pro uložení znovu použitelných nebo sdílených dat, hodnot konfigurace a výsledků, ke kterým chcete později přistupovat, aniž byste se spoléhali na externí databáze nebo API.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Systémový dashboard vám poskytuje rychlý přístup k:
 
   • Konfiguraci nastavení SyncEngine
-  • Správě tajných klíčů a citlivých hodnot ve Vaultu
+  • Správě Secrets a citlivých hodnot ve Vaultu
   • Sledování pracovníků na pozadí
   • Zobrazení informací o systému
   • atd.
@@ -72,12 +72,12 @@ onboarding.dashboard.summary.body: |
   • Připojení propojují vaše systémy
   • Automatizace orchestrují pracovní postupy
   • Toky definují posloupnosti provedení
-  • Rutiny jsou znovu použitelné posloupnosti akcí
+  • Postupy jsou znovu použitelné posloupnosti akcí
   • Úlohy jsou jednotlivé akce
   • Úložiště uchovávají perzistentní data
   • Moduly přidávají novou funkčnost
 
-  Začněte vytvořením Připojení, poté postavte svůj první Tok s Rutinami a Úlohami.
+  Začněte vytvořením Připojení, poté postavte svůj první Tok s Postupem a Úlohami.
 
 onboarding.dashboard.help.title: 'Potřebujete znovu pomoc?'
 onboarding.dashboard.help.body: |

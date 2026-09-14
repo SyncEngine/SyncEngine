@@ -18,9 +18,9 @@ onboarding.dashboard.connections.body: |
 
 onboarding.dashboard.automations.title: 'Automatisierungen'
 onboarding.dashboard.automations.body: |
-  Automatisierungen sind Container auf oberster Ebene, die Ihre Workflows orchestrieren. Jede Automatisierung kann mehrere Flows enthalten und definieren, wie diese ausgelöst werden: manuell, nach Zeitplan oder durch Ereignisse.
+  Automatisierungen sind Container auf oberster Ebene, die Ihre Flows orchestrieren. Jede Automatisierung kann mehrere Flows enthalten und definieren, wie diese ausgelöst werden: manuell, nach Zeitplan oder durch Ereignisse.
 
-  Automatisierungen bieten Ausführungsverlauf (Traces), sodass Sie jeden Lauf inspizieren, sehen können, welche Daten verarbeitet wurden, und Probleme debuggen können.
+  Automatisierungen bieten Ausführungsverlauf (Verläufe), sodass Sie jeden Lauf inspizieren, sehen können, welche Daten verarbeitet wurden, und Probleme debuggen können.
 
 onboarding.dashboard.flows.title: 'Flows'
 onboarding.dashboard.flows.body: |
@@ -28,16 +28,16 @@ onboarding.dashboard.flows.body: |
 
   Daten fließen von einer Routine zur nächsten, wobei jede Routine eine spezifische Funktion ausführt, wie das Abrufen von Daten, Transformieren und Senden an ein anderes System. Flows führen standardmäßig sequentiell aus.
 
-onboarding.dashboard.routines.title: 'Routinen'
+onboarding.dashboard.routines.title: 'Routines'
 onboarding.dashboard.routines.body: |
-  Routinen sind wiederverwendbare Abfolgen von Aktionen (Tasks), die eine spezifische Funktion ausführen.
+  Routines sind wiederverwendbare Abfolgen von Aktionen (Tasks), die eine spezifische Funktion ausführen.
 
   Jede Routine ist wiederverwendbar, modular und kann von einem oder mehreren Flows aufgerufen werden, was Ihnen unglaubliche Flexibilität und Effizienz bietet.
 
 onboarding.dashboard.storages.title: 'Speicher'
 onboarding.dashboard.storages.body: |
   Speicher in SyncEngine sind sichere, persistente Container, die verwendet werden, um strukturierte Daten zu halten, die über Ihre Automatisierungen hinweg zugegriffen werden können.
-  Sie fungieren als Ihr langfristiger Speicher, ermöglichen es Flows und Routinen, Informationen zwischen Läufen zu speichern und abzurufen.
+  Sie fungieren als Ihr langfristiger Speicher, ermöglichen es Flows und Routines, Informationen zwischen Läufen zu speichern und abzurufen.
 
   Speicher sind ideal zum Speichern von wiederverwendbaren oder geteilten Daten, Konfigurationswerten und Ergebnissen, auf die Sie später zugreifen möchten, ohne sich auf externe Datenbanken oder APIs verlassen zu müssen.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Das System-Dashboard gibt Ihnen schnellen Zugriff auf:
 
   • Konfigurieren von SyncEngine-Einstellungen
-  • Verwalten von Secrets und sensiblen Werten im Vault
+  • Verwalten von Secrets und sensiblen Werten im Tresor
   • Überwachen von Hintergrundarbeitern
   • Anzeigen von Systeminformationen
   • usw.
@@ -70,14 +70,14 @@ onboarding.dashboard.summary.body: |
   Sie kennen nun die Kernkonzepte von SyncEngine:
 
   • Verbindungen brücken Ihre Systeme
-  • Automatisierungen orchestrieren Workflows
+  • Automatisierungen orchestrieren Flows
   • Flows definieren Ausführungsabfolgen
-  • Routinen sind wiederverwendbare Abfolgen von Aktionen
+  • Routines sind wiederverwendbare Abfolgen von Aktionen
   • Tasks sind die einzelnen Aktionen
   • Speicher halten persistente Daten
   • Module fügen neue Funktionalität hinzu
 
-  Beginnen Sie damit, eine Verbindung zu erstellen, und bauen Sie dann Ihren ersten Flow mit Routinen und Tasks auf.
+  Beginnen Sie damit, eine Verbindung zu erstellen, und bauen Sie dann Ihren ersten Flow mit Routines und Tasks auf.
 
 onboarding.dashboard.help.title: 'Brauchen Sie wieder Hilfe?'
 onboarding.dashboard.help.body: |

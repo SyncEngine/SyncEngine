@@ -188,11 +188,11 @@ Connections: Tilkoblinger
 'New connection': 'Ny tilkobling'
 'Successfully edited connection!': 'Tilkobling redigert!'
 'Edit connection': 'Rediger tilkobling'
-Flows: Workflows
-'Successfully created flow!': 'Workflow opprettet!'
-'New flow': 'Ny workflow'
-'Successfully edited flow!': 'Workflow redigert!'
-'Edit flow': 'Rediger workflow'
+Flows: Flyt
+'Successfully created flow!': 'Flyt opprettet!'
+'New flow': 'Ny flyt'
+'Successfully edited flow!': 'Flyt redigert!'
+'Edit flow': 'Rediger flyt'
 'Connection required': 'Tilkobling kreves'
 'Connection not found': 'Tilkobling ikke funnet'
 'Webservice not found': 'Webservice ikke funnet'
@@ -250,7 +250,7 @@ Storages: Lagringer
 Environment: Miljø
 'Configure environment setup': 'Konfigurer miljøoppsett'
 Vault: Vault
-'Configure vault secrets': 'Konfigurer vaulthemmeligheter'
+'Configure vault secrets': 'Konfigurer vault Secrets'
 'Manage system processes': 'Administrer systemprosesser'
 Import: Importer
 'Import JSON configs': 'Importer JSON-konfigurasjoner'
@@ -316,7 +316,7 @@ Error: Feil
 'Optionally trigger error when there is no data available from the source.': 'Valgfritt utløse feil når det ikke finnes data fra kilden.'
 Actions: Handlinger
 'The actions that need to be done with the source data.': 'Handlingene som må gjøres med kildedataen.'
-Flow: Workflow
+Flow: Flyt
 Routine: Rutine
 Tasks: Oppgaver
 Events: Hendelser
@@ -346,9 +346,9 @@ Queued: I kø
 'Stale run timeout': 'Stale run timeout'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder uten aktivitet før en kjøring anses stale og automatisk nullstilles.'
 'Defaults to {default}.': 'Standardinnstilling er {default}.'
-'History traces retention limit': 'Historikksporing beholdningsgrense'
+'History traces retention limit': 'Retensjonsgrense for historiske forløp'
 'Configure execution history of this automation.': 'Konfigurer eksekveringshistorikk for denne automatiseringen.'
-'Maximum number of stored traces for this automation.': 'Maksimalt antall lagrede sporinger for denne automatiseringen.'
+'Maximum number of stored traces for this automation.': 'Maksimalt antall lagrede forløp for denne automatiseringen.'
 'Leave empty to use the global default of {param}.': 'La stå tom for å bruke global standard på {param}.'
 Status: Status
 Default: Standard
@@ -637,17 +637,17 @@ Template: Mal
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Verdien av `data` brukes for oppgaveutdata. Tilgjengelige variable: `data`, `config`, `cache`, `variables` og `context`.'
 'Add your code here': 'Legg til din kode her'
 'No template set': 'Ingen mal satt'
-Trace: Spor
-'Trace current status with a log or error.': 'Spor nåværende status med en logg eller feil.'
-'Trace type': 'Spor-type'
-'Creating an error will result in the trace reporting as failed.': 'Opprette en feil som resulterer i at sporet rapporteres som mislykket.'
+Trace: Forløp
+'Trace current status with a log or error.': 'Følg nåværende status med en logg eller feil.'
+'Trace type': 'Forløp-type'
+'Creating an error will result in the trace reporting as failed.': 'Opprett en feil som resulterer i at forløpet rapporteres som mislykket.'
 'Log message': 'Logg melding'
 'Error message': 'Feilmelding'
 Message: Melding
 'Extra info': 'Ekstra informasjon'
 'Include data?': 'Inkludere data?'
 'Message not configured': 'Melding ikke konfigurert'
-'Trigger something independently from the current flow': 'Trigger noe uavhengig av nåværende workflow'
+'Trigger something independently from the current flow': 'Trigger noe uavhengig av nåværende flyt'
 'Run async?': 'Kjøre async?'
 Experimental: Eksperimentell
 'If the automation is using batches then this trigger will always run async.': 'Hvis automatiseringen bruker batches vil denne triggeren alltid kjøre async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Koble med basic autorisasjon'
 'Username / key': 'Brukernavn / nøkkel'
-'Password / Secret': 'Passord / Hemmelighet'
+'Password / Secret': 'Passord / Secret'
 'HTTP Bearer token': 'HTTP Bearer-token'
 'Connect with Bearer Token authorization': 'Koble med Bearer Token-autorisaasjon'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Verifiser
 'Choose how you want to receive verification codes': 'Velg hvordan du vil motta verifiseringskoder'
 'Authenticator App (Recommended)': 'Authenticator App (anbefalt)'
 'Scan the QR code with your TOTP app': 'Skann QR-koden med din TOTP-app'
-'Or enter this secret manually:': 'Eller skriv inn denne hemmeligheten manuelt:'
+'Or enter this secret manually:': 'Eller skriv inn denne Secret manuelt:'
 'Email Verification': 'E-postverifisering'
 'We will send a 6-digit code to your email address': 'Vi sender en 6-sifret kode til din e-postadresse'
 'Send Code to Email': 'Send kode til e-post'
@@ -891,7 +891,7 @@ Manage: Administrer
 Reinstall: Installer om
 Config: Config
 Task: Oppgave
-Traces: Spor
+Traces: Forløp
 'You are about to kill this process, are you sure?': 'Du er i ferd med å drepe denne prosessen, er du sikker?'
 Kill: Drepe
 'New user': 'Ny bruker'
@@ -991,8 +991,8 @@ Restrictions: Begrensninger
 'Repeat Password': 'Gjenta passord'
 'The password fields must match.': 'Passordfeltene må matche.'
 Debug: Feilsøking
-'Change your app secret. Will autogenerate if empty.': 'Endre din app-hemmelighet. Vil automatisk generere hvis tom.'
-Secret: Hemmelighet
+'Change your app secret. Will autogenerate if empty.': 'Endre din app-Secret. Vil automatisk generere hvis tom.'
+Secret: Secret
 Mailer: Mailer
 'Email sender': 'E-post avsender'
 'Send email logs to': 'Send e-post-logger til'

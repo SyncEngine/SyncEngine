@@ -188,11 +188,11 @@ Connections: Verbindungen
 'New connection': 'Neue Verbindung'
 'Successfully edited connection!': 'Verbindung erfolgreich bearbeitet!'
 'Edit connection': 'Verbindung bearbeiten'
-Flows: Workflows
-'Successfully created flow!': 'Workflow erfolgreich erstellt!'
-'New flow': 'Neuer Workflow'
-'Successfully edited flow!': 'Workflow erfolgreich bearbeitet!'
-'Edit flow': 'Workflow bearbeiten'
+Flows: Flows
+'Successfully created flow!': 'Flow erfolgreich erstellt!'
+'New flow': 'Neuer Flow'
+'Successfully edited flow!': 'Flow erfolgreich bearbeitet!'
+'Edit flow': 'Flow bearbeiten'
 'Connection required': 'Verbindung erforderlich'
 'Connection not found': 'Verbindung nicht gefunden'
 'Webservice not found': 'Webservice nicht gefunden'
@@ -236,7 +236,7 @@ System: System
 Save: Speichern
 'Invalid Manager': 'Ungültiger Manager'
 'Configuration saved': 'Konfiguration gespeichert'
-Routines: Routinen
+Routines: Routines
 'Successfully created routine!': 'Routine erfolgreich erstellt!'
 'New routine': 'Neue Routine'
 'Successfully edited routine!': 'Routine erfolgreich bearbeitet!'
@@ -250,7 +250,7 @@ Storages: Speicher
 Environment: Umgebung
 'Configure environment setup': 'Umgebung einrichten'
 Vault: Tresor
-'Configure vault secrets': 'Tresor-Geheimnisse konfigurieren'
+'Configure vault secrets': 'Tresor-Secrets konfigurieren'
 'Manage system processes': 'Systemprozesse verwalten'
 Import: Importieren
 'Import JSON configs': 'JSON-Konfigurationen importieren'
@@ -316,7 +316,7 @@ Error: Fehler
 'Optionally trigger error when there is no data available from the source.': 'Optional Fehler auslösen, wenn keine Daten von der Quelle verfügbar sind.'
 Actions: Aktionen
 'The actions that need to be done with the source data.': 'Die Aktionen, die mit den Quelldaten durchgeführt werden müssen.'
-Flow: Workflow
+Flow: Flow
 Routine: Routine
 Tasks: Aufgaben
 Events: Ereignisse
@@ -346,9 +346,9 @@ Queued: In Warteschlange
 'Stale run timeout': 'Timeout für inaktiven Lauf'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunden ohne Aktivität, bevor ein Lauf als inaktiv gilt und automatisch zurückgesetzt wird.'
 'Defaults to {default}.': 'Standardmäßig {default}.'
-'History traces retention limit': 'Aufbewahrungsfrist für Verlaufstraces'
+'History traces retention limit': 'Grenze für die Aufbewahrung historischer Verläufe'
 'Configure execution history of this automation.': 'Ausführungsverlauf dieser Automatisierung konfigurieren.'
-'Maximum number of stored traces for this automation.': 'Maximale Anzahl gespeicherter Traces für diese Automatisierung.'
+'Maximum number of stored traces for this automation.': 'Maximale Anzahl gespeicherter Verläufe für diese Automatisierung.'
 'Leave empty to use the global default of {param}.': 'Leer lassen, um den globalen Standard von {param} zu verwenden.'
 Status: Status
 Default: Standard
@@ -637,17 +637,17 @@ Template: Vorlage
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Der Wert von `data` wird für die Aufgaben-Ausgabe verwendet. Verfügbare Variablen: `data`, `config`, `cache`, `variables` und `context`.'
 'Add your code here': 'Fügen Sie hier Ihren Code ein'
 'No template set': 'Keine Vorlage festgelegt'
-Trace: Trace
+Trace: Verlauf
 'Trace current status with a log or error.': 'Aktuellen Status mit einem Log oder Fehler protokollieren.'
-'Trace type': 'Trace-Typ'
-'Creating an error will result in the trace reporting as failed.': 'Das Erstellen eines Fehlers führt dazu, dass der Trace als fehlgeschlagen gemeldet wird.'
+'Trace type': 'Verlaufstyp'
+'Creating an error will result in the trace reporting as failed.': 'Das Erstellen eines Fehlers führt dazu, dass der Verlauf als fehlgeschlagen gemeldet wird.'
 'Log message': 'Log-Nachricht'
 'Error message': 'Fehlermeldung'
 Message: Nachricht
 'Extra info': 'Zusätzliche Informationen'
 'Include data?': 'Daten einschließen?'
 'Message not configured': 'Nachricht nicht konfiguriert'
-'Trigger something independently from the current flow': 'Etwas unabhängig vom aktuellen Workflow auslösen'
+'Trigger something independently from the current flow': 'Etwas unabhängig vom aktuellen Flow auslösen'
 'Run async?': 'Async ausführen?'
 Experimental: Experimentell
 'If the automation is using batches then this trigger will always run async.': 'Bei Verwendung von Batches wird dieser Auslöser immer async ausgeführt.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Mit Basisauthentifizierung verbinden'
 'Username / key': 'Benutzername / Schlüssel'
-'Password / Secret': 'Passwort / Geheimnis'
+'Password / Secret': 'Passwort / Secret'
 'HTTP Bearer token': 'HTTP Bearer Token'
 'Connect with Bearer Token authorization': 'Mit Bearer-Token-Autorisierung verbinden'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Überprüfen
 'Choose how you want to receive verification codes': 'Auswählen, wie Sie Verifizierungscodes erhalten möchten'
 'Authenticator App (Recommended)': 'Authenticator-App (Empfohlen)'
 'Scan the QR code with your TOTP app': 'QR-Code mit Ihrer TOTP-App scannen'
-'Or enter this secret manually:': 'Oder geben Sie dieses Geheimnis manuell ein:'
+'Or enter this secret manually:': 'Oder geben Sie dieses Secret manuell ein:'
 'Email Verification': 'E-Mail-Verifizierung'
 'We will send a 6-digit code to your email address': 'Wir senden einen 6-stelligen Code an Ihre E-Mail-Adresse'
 'Send Code to Email': 'Code an E-Mail senden'
@@ -891,7 +891,7 @@ Manage: Verwalten
 Reinstall: Neu installieren
 Config: Konfiguration
 Task: Aufgabe
-Traces: Traces
+Traces: Verläufe
 'You are about to kill this process, are you sure?': 'Sie sind dabei, diesen Prozess zu beenden. Sind Sie sicher?'
 Kill: Beenden
 'New user': 'Neuer Benutzer'
@@ -992,7 +992,7 @@ Restrictions: Einschränkungen
 'The password fields must match.': 'Die Passwortfelder müssen übereinstimmen.'
 Debug: Debuggen
 'Change your app secret. Will autogenerate if empty.': 'Ändern Sie Ihr App-Secret. Wird automatisch generiert, wenn leer.'
-Secret: Geheimnis
+Secret: Secret
 Mailer: Mailer
 'Email sender': 'E-Mail-Absender'
 'Send email logs to': 'E-Mail-Logs senden an'

@@ -20,24 +20,24 @@ onboarding.dashboard.automations.title: 'Automatiseringar'
 onboarding.dashboard.automations.body: |
   Automatiseringar är containrar på högsta nivå som orchestrerar dina arbetsflöden. Varje automatisering kan innehålla flera flöden och definiera hur de utlöses: manuellt, enligt schema eller genom händelser.
 
-  Automatiseringar ger körningshistorik (traces) så att du kan inspektera varje körning, se vilken data som bearbetades och felsöka eventuella problem.
+  Automatiseringar ger körningshistorik (förlopp) så att du kan inspektera varje körning, se vilken data som bearbetades och felsöka eventuella problem.
 
 onboarding.dashboard.flows.title: 'Flöden'
 onboarding.dashboard.flows.body: |
   Flöden definierar sekvensen av utförande inom en automatisering. Varje flöde innehåller en serie steg, där varje steg utlöser en Rutin.
 
-  Data strömmar från en rutin till nästa, med varje rutin som utför en specifik funktion, som att hämta data, transformera dem och skicka dem till ett annat system. Flöden utförs i sekvens som standard.
+  Data strömmar från en Rutin till nästa, med varje Rutin som utför en specifik funktion, som att hämta data, transformera dem och skicka dem till ett annat system. Flöden utförs i sekvens som standard.
 
 onboarding.dashboard.routines.title: 'Rutiner'
 onboarding.dashboard.routines.body: |
   Rutiner är återanvändbara sekvenser av åtgärder (Uppgifter) som utför en specifik funktion.
 
-  Varje rutin är återanvändbar, modulär och kan anropas av en eller flera Flöden, vilket ger dig otrolig flexibilitet och effektivitet.
+  Varje Rutin är återanvändbar, modulär och kan anropas av en eller flera Flöden, vilket ger dig otrolig flexibilitet och effektivitet.
 
 onboarding.dashboard.storages.title: 'Lagringar'
 onboarding.dashboard.storages.body: |
   Lagringar i SyncEngine är säkra, beständiga containrar som används för att hålla strukturerad data som kan nås över dina automatiseringar.
-  De fungerar som ditt långtidsminne, låter flöden och rutiner spara och hämta information mellan körningar.
+  De fungerar som ditt långtidsminne, låter flöden och Rutiner spara och hämta information mellan körningar.
 
   Lagringar är idealiska för att spara återanvändbar eller delad data, konfigurationsvärden och resultat som du vill komma åt senare, utan att lita på externa databaser eller API:er.
 
@@ -54,7 +54,7 @@ onboarding.dashboard.system.body: |
   Systemdashboardet ger dig snabb åtkomst till:
 
   • Konfigurera SyncEngine-inställningar
-  • Hantera secrets och känsliga värden i Vault
+  • Hantera Secrets och känsliga värden i Vault
   • Övervaka bakgrundsarbetare
   • Visa systeminformation
   • etc.

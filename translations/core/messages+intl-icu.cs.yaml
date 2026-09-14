@@ -120,8 +120,8 @@ Schema: Schema
 'Schema definitions column': 'Sloupec definic schema'
 'Schema source': 'Zdroj schema'
 Manual: Ruční
-Storage: Uložení
-'Schema storage': 'Uložení schema'
+Storage: Úložiště
+'Schema storage': 'Úložiště schémat'
 'Configure column types for each field.': 'Konfigurovat typy sloupců pro každé pole.'
 Slug: Slug
 'Format as a slug': 'Formátovat jako slug'
@@ -188,11 +188,11 @@ Connections: Připojení
 'New connection': 'Nové připojení'
 'Successfully edited connection!': 'Připojení upraveno!'
 'Edit connection': 'Upravit připojení'
-Flows: Workflows
-'Successfully created flow!': 'Workflow vytvořen!'
-'New flow': 'Nový workflow'
-'Successfully edited flow!': 'Workflow upraven!'
-'Edit flow': 'Upravit workflow'
+Flows: Toky
+'Successfully created flow!': 'Tok vytvořen!'
+'New flow': 'Nový tok'
+'Successfully edited flow!': 'Tok upraven!'
+'Edit flow': 'Upravit tok'
 'Connection required': 'Vyžadováno připojení'
 'Connection not found': 'Připojení nenalezeno'
 'Webservice not found': 'Webservice nenalezen'
@@ -236,12 +236,12 @@ System: Systém
 Save: Uložit
 'Invalid Manager': 'Neplatný Manager'
 'Configuration saved': 'Konfigurace uložena'
-Routines: Routiny
-'Successfully created routine!': 'Rutina vytvořena!'
-'New routine': 'Nová rutina'
-'Successfully edited routine!': 'Rutina upravena!'
-'Edit routine': 'Upravit rutinu'
-Storages: Uložení
+Routines: Postupy
+'Successfully created routine!': 'Postup vytvořen!'
+'New routine': 'Nový postup'
+'Successfully edited routine!': 'Postup upraven!'
+'Edit routine': 'Upravit postup'
+Storages: Úložiště
 'Successfully created storage!': 'Úložiště vytvořeno!'
 'New storage': 'Nové úložiště'
 'Successfully edited storage!': 'Úložiště upraveno!'
@@ -250,7 +250,7 @@ Storages: Uložení
 Environment: Prostředí
 'Configure environment setup': 'Konfigurovat nastavení prostředí'
 Vault: Vault
-'Configure vault secrets': 'Konfigurovat tajné hodnoty vault'
+'Configure vault secrets': 'Konfigurovat vault Secrets'
 'Manage system processes': 'Spravovat systémové procesy'
 Import: Importovat
 'Import JSON configs': 'Importovat JSON konfigurace'
@@ -316,8 +316,8 @@ Error: Chyba
 'Optionally trigger error when there is no data available from the source.': 'Volitelně vyvolat chybu když nejsou k dispozici žádná data ze zdroje.'
 Actions: Akce
 'The actions that need to be done with the source data.': 'Akce které musí být provedeny se zdrojovými daty.'
-Flow: Workflow
-Routine: Rutina
+Flow: Tok
+Routine: Postup
 Tasks: Úkoly
 Events: Události
 'Select the behavior on various events in this automation.': 'Vybrat chování pro různé události v této automatizaci.'
@@ -346,9 +346,9 @@ Queued: Ve frontě
 'Stale run timeout': 'Timeout zastaralého běhu'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekundy bez aktivity před tím než je běh považován za zastaralý a automaticky resetován.'
 'Defaults to {default}.': 'Výchozí hodnota je {default}.'
-'History traces retention limit': 'Limit retence stop historie'
+'History traces retention limit': 'Limit retence průběhů historie'
 'Configure execution history of this automation.': 'Konfigurovat historii provádění této automatizace.'
-'Maximum number of stored traces for this automation.': 'Maximální počet uložených stop pro tuto automatizaci.'
+'Maximum number of stored traces for this automation.': 'Maximální počet uložených průběhů pro tuto automatizaci.'
 'Leave empty to use the global default of {param}.': 'Ponechat prázdné pro použití globální výchozí hodnoty {param}.'
 Status: Stav
 Default: Výchozí
@@ -386,7 +386,7 @@ Name: Název
 'By default it will fetch the index key unless the value is an array containing field information.': 'Výchoze získá klíč indexu pokud hodnota není pole obsahující informace o poli.'
 'Field label key': 'Klíč popisku pole'
 'Used in case the value is an array containing field information.': 'Použito pokud hodnota je pole obsahující informace o poli.'
-'Schema storages': 'Uložení schema'
+'Schema storages': 'Úložiště schémat'
 'From source schema': 'Ze schema zdroje'
 'To target schema': 'Do cílového schema'
 'Format options': 'Možnosti formátu'
@@ -637,17 +637,17 @@ Template: Šablona
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Hodnota `data` je použita pro výstup úkolu. Dostupné proměnné: `data`, `config`, `cache`, `variables` a `context`.'
 'Add your code here': 'Přidejte svůj kód zde'
 'No template set': 'Nenastavena šablona'
-Trace: Stopa
+Trace: Průběh
 'Trace current status with a log or error.': 'Sledovat aktuální status s logem nebo chybou.'
-'Trace type': 'Typ stopy'
-'Creating an error will result in the trace reporting as failed.': 'Vytvoření chyby bude mít za následek že stopa bude hlášena jako selhaná.'
+'Trace type': 'Typ průběhu'
+'Creating an error will result in the trace reporting as failed.': 'Vytvoření chyby bude mít za následek, že průběh bude hlášen jako selhaný.'
 'Log message': 'Zpráva logu'
 'Error message': 'Chybová zpráva'
 Message: Zpráva
 'Extra info': 'Dodatkové informace'
 'Include data?': 'Zahrnout data?'
 'Message not configured': 'Zpráva nekonfigurována'
-'Trigger something independently from the current flow': 'Spustit něco nezávisle na aktuálním workflow'
+'Trigger something independently from the current flow': 'Spustit něco nezávisle na aktuálním toku'
 'Run async?': 'Spustit async?'
 Experimental: Experimentální
 'If the automation is using batches then this trigger will always run async.': 'Pokud automatizace používá dávky tento spouštěč bude vždy spouštět async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Připojit s základní autorizací'
 'Username / key': 'Uživatelské jméno / klíč'
-'Password / Secret': 'Heslo / Tajemství'
+'Password / Secret': 'Heslo / Secret'
 'HTTP Bearer token': 'Token Bearer HTTP'
 'Connect with Bearer Token authorization': 'Připojit s autorizací Bearer Token'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Ověřit
 'Choose how you want to receive verification codes': 'Vyberte jak chcete přijímat ověřovací kódy'
 'Authenticator App (Recommended)': 'Aplikace Authenticator (doporučeno)'
 'Scan the QR code with your TOTP app': 'Naskenujte QR kód vaší TOTP aplikací'
-'Or enter this secret manually:': 'Nebo zadejte toto tajemství ručně:'
+'Or enter this secret manually:': 'Nebo zadejte toto Secret ručně:'
 'Email Verification': 'Ověření e-mailu'
 'We will send a 6-digit code to your email address': 'Pošleme 6místný kód na vaši e-mailovou adresu'
 'Send Code to Email': 'Odeslat kód na e-mail'
@@ -891,7 +891,7 @@ Manage: Spravovat
 Reinstall: Znovu nainstalovat
 Config: Config
 Task: Úkol
-Traces: Stopy
+Traces: Průběhy
 'You are about to kill this process, are you sure?': 'Chystáte se zabít tento proces, jste si jisti?'
 Kill: Zabít
 'New user': 'Nový uživatel'
@@ -991,8 +991,8 @@ Restrictions: Omezení
 'Repeat Password': 'Opakovat heslo'
 'The password fields must match.': 'Pole hesel se musí shodovat.'
 Debug: Ladění
-'Change your app secret. Will autogenerate if empty.': 'Změňte své app secret. Bude automaticky vygenerováno, pokud je prázdné.'
-Secret: Tajemství
+'Change your app secret. Will autogenerate if empty.': 'Změňte své app Secret. Bude automaticky vygenerováno, pokud je prázdné.'
+Secret: Secret
 Mailer: Odesílatel
 'Email sender': 'Odesílatel e-mailu'
 'Send email logs to': 'Posílat logy e-mailů na'

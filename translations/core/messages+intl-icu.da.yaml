@@ -188,11 +188,11 @@ Connections: Forbindelser
 'New connection': 'Ny forbindelse'
 'Successfully edited connection!': 'Forbindelse redigeret succesfuldt!'
 'Edit connection': 'Rediger forbindelse'
-Flows: Workflows
-'Successfully created flow!': 'Workflow oprettet succesfuldt!'
-'New flow': 'Nyt workflow'
-'Successfully edited flow!': 'Workflow redigeret succesfuldt!'
-'Edit flow': 'Rediger workflow'
+Flows: Flyt
+'Successfully created flow!': 'Flyt oprettet succesfuldt!'
+'New flow': 'Ny flyt'
+'Successfully edited flow!': 'Flyt redigeret succesfuldt!'
+'Edit flow': 'Rediger flyt'
 'Connection required': 'Forbindelse kræves'
 'Connection not found': 'Forbindelse ikke fundet'
 'Webservice not found': 'Webservice ikke fundet'
@@ -237,9 +237,9 @@ Save: Gem
 'Invalid Manager': 'Ugyldig Manager'
 'Configuration saved': 'Konfiguration gemt'
 Routines: Rutiner
-'Successfully created routine!': 'Routine oprettet succesfuldt!'
+'Successfully created routine!': 'Rutine oprettet succesfuldt!'
 'New routine': 'Ny rutine'
-'Successfully edited routine!': 'Routine redigeret succesfuldt!'
+'Successfully edited routine!': 'Rutine redigeret succesfuldt!'
 'Edit routine': 'Rediger rutine'
 Storages: Lagre
 'Successfully created storage!': 'Lager oprettet succesfuldt!'
@@ -250,7 +250,7 @@ Storages: Lagre
 Environment: Miljø
 'Configure environment setup': 'Konfigurér miljøopsætning'
 Vault: Vault
-'Configure vault secrets': 'Konfigurér vault-hemmeligheder'
+'Configure vault secrets': 'Konfigurér vault-Secrets'
 'Manage system processes': 'Administrer systemprocesser'
 Import: Importér
 'Import JSON configs': 'Importér JSON-konfigurationer'
@@ -316,7 +316,7 @@ Error: Fejl
 'Optionally trigger error when there is no data available from the source.': 'Udløs valgfrit fejl når der ikke er data tilgængelig fra kilden.'
 Actions: Handlinger
 'The actions that need to be done with the source data.': 'Handlingerne der skal udføres med kildedataene.'
-Flow: Workflow
+Flow: Flyt
 Routine: Rutine
 Tasks: Opgaver
 Events: Begivenheder
@@ -346,9 +346,9 @@ Queued: I kø
 'Stale run timeout': 'Stale run timeout'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder uden aktivitet før en kørsel betragtes som stale og nulstilles automatisk.'
 'Defaults to {default}.': 'Standardindstilling er {default}.'
-'History traces retention limit': 'Historik traces beholdningsgrænse'
+'History traces retention limit': 'Retentionsgrænse for historiske forløb'
 'Configure execution history of this automation.': 'Konfigurér eksekveringshistorik for denne automatisering.'
-'Maximum number of stored traces for this automation.': 'Maksimalt antal lagrede traces for denne automatisering.'
+'Maximum number of stored traces for this automation.': 'Maksimalt antal lagrede forløb for denne automatisering.'
 'Leave empty to use the global default of {param}.': 'Lad være tomt for at bruge global standard på {param}.'
 Status: Status
 Default: Standard
@@ -637,17 +637,17 @@ Template: Skabelon
 'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Værdien af `data` bruges til opgave-output. Tilgængelige variable: `data`, `config`, `cache`, `variables` og `context`.'
 'Add your code here': 'Tilføj din kode her'
 'No template set': 'Ingen skabelon indstillet'
-Trace: Trace
-'Trace current status with a log or error.': 'Trace nuværende status med en log eller fejl.'
-'Trace type': 'Trace-type'
-'Creating an error will result in the trace reporting as failed.': 'Oprettelse af en fejl vil resultere i at trace rapporteres som mislykket.'
+Trace: Forløb
+'Trace current status with a log or error.': 'Følg nuværende status med en log eller fejl.'
+'Trace type': 'Forløb-type'
+'Creating an error will result in the trace reporting as failed.': 'Oprettelse af en fejl vil resultere i, at forløbet rapporteres som mislykket.'
 'Log message': 'Logbesked'
 'Error message': 'Fejlmelding'
 Message: Besked
 'Extra info': 'Ekstra info'
 'Include data?': 'Inkludere data?'
 'Message not configured': 'Besked ikke konfigureret'
-'Trigger something independently from the current flow': 'Trigger noget uafhængigt af nuværende workflow'
+'Trigger something independently from the current flow': 'Trigger noget uafhængigt af nuværende flyt'
 'Run async?': 'Køre async?'
 Experimental: Eksperimentel
 'If the automation is using batches then this trigger will always run async.': 'Hvis automatiseringen bruger batches vil denne trigger altid køre async.'
@@ -684,7 +684,7 @@ Endpoint: Endpoint
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Forbind med basic autorisation'
 'Username / key': 'Brugernavn / nøgle'
-'Password / Secret': 'Adgangskode / Hemmelighed'
+'Password / Secret': 'Adgangskode / Secret'
 'HTTP Bearer token': 'HTTP Bearer token'
 'Connect with Bearer Token authorization': 'Forbind med Bearer Token autorisation'
 Token: Token
@@ -843,7 +843,7 @@ Verify: Bekræft
 'Choose how you want to receive verification codes': 'Vælg hvordan du vil modtage bekræftelseskoder'
 'Authenticator App (Recommended)': 'Authenticator App (anbefalet)'
 'Scan the QR code with your TOTP app': 'Scan QR-koden med din TOTP-app'
-'Or enter this secret manually:': 'Eller indtast dette hemmelighed manuelt:'
+'Or enter this secret manually:': 'Eller indtast dette Secret manuelt:'
 'Email Verification': 'E-mail bekræftelse'
 'We will send a 6-digit code to your email address': 'Vi sender en 6-cifret kode til din e-mailadresse'
 'Send Code to Email': 'Send kode til e-mail'
@@ -887,11 +887,11 @@ Uninstall: Afinstalér
 'Upload a newer module version to replace an incompatible module.': 'Upload en nyere modulversion for at erstatte en inkompatibel modul.'
 Version: Version
 Author: Forfatter
-Beheret: Administrér
+Manage: Administrér
 Reinstall: Geninstaller
 Config: Config
 Task: Opgave
-Traces: Traces
+Traces: Forløb
 'You are about to kill this process, are you sure?': 'Du er ved at dræbe denne proces, er du sikker?'
 Kill: Drab
 'New user': 'Ny bruger'
@@ -991,8 +991,8 @@ Restrictions: Begrænsninger
 'Repeat Password': 'Gentag adgangskode'
 'The password fields must match.': 'Adgangskodefelterne skal matches.'
 Debug: Fejlsøgning
-'Change your app secret. Will autogenerate if empty.': 'Skift din app-hemmelighed. Vil automatisk generere hvis tom.'
-Secret: Hemmelighed
+'Change your app secret. Will autogenerate if empty.': 'Skift din app-Secret. Vil automatisk generere hvis tom.'
+Secret: Secret
 Mailer: Mailer
 'Email sender': 'E-mail afsender'
 'Send email logs to': 'Send e-mail-logs til'
