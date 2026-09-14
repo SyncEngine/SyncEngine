@@ -50,7 +50,8 @@ class PreferencesFormType extends AbstractType
 			// Fix this if statement to check if the locale is in the core translations.
 			// File format is messages.{locale}.{ext} or messages+intl-icu.{locale}.{ext}.
 			if ( isset( $availableLocales[ $locale ] ) ) {
-				$label = $name . ' (' . $locale . ')';
+				$localName = Locales::getName( $locale, $locale );
+				$label = $locale . ': ' . $localName . ' (' . $name . ')';
 				$localeChoices[ $label ] = $locale;
 			}
 		}
