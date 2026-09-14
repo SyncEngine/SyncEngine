@@ -76,11 +76,11 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	{
 		return new FieldCollection( [
 			'request'  => [
-				'label'  => 'Request',
+				'label'  => $this->trans( 'Request' ),
 				'nested' => $this->getRequestFields( $defaults['request'] ?? [] ),
 			],
 			'response' => [
-				'label'  => 'Response',
+				'label'  => $this->trans( 'Response' ),
 				'nested' => $this->getResponseFields( $defaults['response'] ?? [] ),
 			],
 		] );

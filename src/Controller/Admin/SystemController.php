@@ -82,7 +82,7 @@ class SystemController extends AbstractAdminController
 						'list'   => [
 							[
 								'icon' => 'docs',
-								'text' => 'Documentation',
+								'text' => $this->trans( 'Documentation' ),
 								'link' => [
 									'url' => 'https://docs.syncengine.io/',
 									'target' => '_blank',

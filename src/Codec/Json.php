@@ -50,7 +50,7 @@ class Json extends CodecModel
 	{
 		return new FieldCollection( [
 			'associative' => [
-				'label'      => 'Associative',
+				'label'      => $this->trans( 'Associative' ),
 				'type'       => 'checkbox',
 				'default'    => $defaults['associative'] ?? true,
 				'_direction' => 'decode',

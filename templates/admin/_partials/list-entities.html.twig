@@ -2,7 +2,7 @@
 {% set firstColumns = firstColumns ?? {
 	ref: '#',
 	info: {
-		label: 'Info',
+		label: 'Info'|trans,
 		badge: '{{ type }}',
 	},
 	date: {
@@ -36,7 +36,7 @@
 	'restore': { label: 'Restore'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
 	'delete': { label: 'Delete Permanently'|trans, dropdown: true, conditions: { status: { operator: '==', compare: 'trashed' } } },
 } %}
-{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'grouped', actions: defaultActions } } %}
+{% set lastColumns = lastColumns ?? { actions: { label: 'Actions'|trans, view: 'grouped', actions: defaultActions } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
 {% set columns = columns|merge( lastColumns ) %}
@@ -50,14 +50,14 @@
 				{
 					compare: 'disabled',
 					value: '{{ status }}',
-					label: 'Disabled',
+					label: 'Disabled'|trans,
 					type: 'secondary',
 					icon: 'disable',
 				},
 				{
 					compare: 'trashed',
 					value: '{{ status }}',
-					label: 'Trashed',
+					label: 'Trashed'|trans,
 					type: 'secondary',
 					icon: 'delete',
 				}
@@ -69,7 +69,7 @@
 				{
 					compare: 'hidden',
 					value: '{{ visibility }}',
-					label: 'Hidden',
+					label: 'Hidden'|trans,
 					type: 'secondary',
 					icon: 'hide',
 				},

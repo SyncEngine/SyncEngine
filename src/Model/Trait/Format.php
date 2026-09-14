@@ -82,7 +82,7 @@ trait Format
 		}
 
 		return [
-			'label'     => 'Format',
+			'label'     => $this->trans( 'Format' ),
 			'type'      => 'codec',
 			'name'      => 'format',
 			'default'   => $defaults['format'] ?? null,

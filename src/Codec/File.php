@@ -12,8 +12,8 @@ class File extends CodecModel
 	public function __construct()
 	{
 		$this->type        = 'binary';
-		$this->name        = 'File';
-		$this->description = 'Handle binary file data (raw bytes)';
+		$this->name        = $this->trans( 'File' );
+		$this->description = $this->trans( 'Handle binary file data (raw bytes)' );
 
 		parent::__construct();
 	}
@@ -60,21 +60,21 @@ class File extends CodecModel
 	{
 		return new FieldCollection( [
 			'filename'  => [
-				'label'       => 'Filename',
+				'label'       => $this->trans( 'Filename' ),
 				'type'        => 'text',
 				'default'     => $defaults['filename'] ?? '',
 				'placeholder' => 'e.g. my-file.txt',
 				'_direction'  => 'decode',
 			],
 			'extension' => [
-				'label'       => 'Extension',
+				'label'       => $this->trans( 'Extension' ),
 				'type'        => 'text',
 				'default'     => $defaults['extension'] ?? '',
 				'placeholder' => 'e.g. txt, pdf, jpg, etc.',
 				'_direction'  => 'decode',
 			],
 			'mimeType'  => [
-				'label'       => 'Mime type',
+				'label'       => $this->trans( 'Mime type' ),
 				'type'        => 'text',
 				'default'     => $defaults['mimeType'] ?? '',
 				'placeholder' => 'e.g. text/plain, application/pdf, image/jpeg, etc.',

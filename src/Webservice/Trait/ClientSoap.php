@@ -346,9 +346,9 @@ trait ClientSoap
 				'label'     => $this->trans( 'SOAP headers' ),
 				'type'      => 'grid',
 				'columns'   => [
-					'url'   => [ 'label' => "URL", 'help' => "Not required" ],
-					'key'   => [ 'label' => "Key" ],
-					'value' => [ 'label' => "Value" ],
+					'url'   => [ 'label' => $this->trans( 'URL' ), 'help' => $this->trans( 'Not required' ) ],
+					'key'   => [ 'label' => $this->trans( 'Key' ) ],
+					'value' => [ 'label' => $this->trans( 'Value' ) ],
 				],
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,

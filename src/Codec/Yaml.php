@@ -55,14 +55,14 @@ class Yaml extends CodecModel
 	{
 		return new FieldCollection( [
 			'inline' => [
-				'label'      => 'Inline dump',
+				'label'      => $this->trans( 'Inline dump' ),
 				'type'       => 'checkbox',
 				'default'    => $defaults['inline'] ?? null,
 				'_direction' => 'encode',
 			],
 			'indent' => [
-				'label'       => 'Indentation',
-				'placeholder' => 'Number of spaces',
+				'label'       => $this->trans( 'Indentation' ),
+				'placeholder' => $this->trans( 'Number of spaces' ),
 				'type'        => 'number',
 				'default'     => $defaults['indent'] ?? null,
 				'_direction'  => 'encode',
