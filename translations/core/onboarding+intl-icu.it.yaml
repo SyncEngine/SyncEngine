@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Benvenuto in SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine è un motore modulare di automazione e sincronizzazione dati. Ti consente di costruire integrazioni affidabili e trasparenti tra sistemi.
+
+  Questo tour rapido ti guiderà attraverso le parti chiave dell'interfaccia.
+
+onboarding.dashboard.menu.title: 'Menu di Navigazione'
+onboarding.dashboard.menu.body: |
+  La barra laterale è la tua navigazione principale.
+
+  Puoi comprimere il menu per concentrarti sul tuo contenuto.
+
+onboarding.dashboard.connections.title: 'Connessioni'
+onboarding.dashboard.connections.body: |
+  Le connessioni sono i ponti tra SyncEngine e i tuoi sistemi esterni. Gestiscono l'autenticazione, le credenziali e il trasferimento sicuro dei dati.
+
+  I tipi supportati includono HTTP (con vari metodi di autenticazione), SFTP/FTP, database SQL, servizi SOAP e il file system locale. Ogni connessione può essere riutilizzata tra più automazioni.
+
+onboarding.dashboard.automations.title: 'Automazioni'
+onboarding.dashboard.automations.body: |
+  Le automazioni sono i contenitori di livello superiore che orchestrano i tuoi flussi di lavoro. Ogni automazione può contenere più flussi e definire come vengono attivati: manualmente, su un programma o da eventi.
+
+  Le automazioni forniscono la cronologia di esecuzione (traces) così puoi ispezionare ogni esecuzione, vedere quali dati sono stati elaborati e risolvere eventuali problemi.
+
+onboarding.dashboard.flows.title: 'Flussi'
+onboarding.dashboard.flows.body: |
+  I flussi definiscono la sequenza di esecuzione all'interno di un'automazione. Ogni flusso contiene una serie di passaggi, dove ogni passaggio attiva una Routine.
+
+  I dati scorrono da una routine all'altra, con ogni routine che svolge una funzione specifica, come recuperare dati, trasformarli e inviarli a un altro sistema. I flussi vengono eseguiti in sequenza per impostazione predefinita.
+
+onboarding.dashboard.routines.title: 'Routine'
+onboarding.dashboard.routines.body: |
+  Le routine sono sequenze riutilizzabili di azioni (Task) che svolgono una funzione specifica.
+
+  Ogni routine è riutilizzabile, modulare e può essere chiamata da uno o più Flussi, offrendoti incredibile flessibilità ed efficienza.
+
+onboarding.dashboard.storages.title: 'Archiviazioni'
+onboarding.dashboard.storages.body: |
+  Le archiviazioni in SyncEngine sono contenitori sicuri e persistenti utilizzati per contenere dati strutturati che possono essere accessibili tra le tue automazioni.
+  Agiscono come la tua memoria a lungo termine, consentendo ai flussi e alle routine di salvare e recuperare informazioni tra le esecuzioni.
+
+  Le archiviazioni sono ideali per salvare dati riutilizzabili o condivisi, valori di configurazione e risultati a cui vuoi accedere in seguito, senza affidarti a database o API esterni.
+
+onboarding.dashboard.account.title: 'Account'
+onboarding.dashboard.account.body: |
+  La sezione Account fornisce l'accesso al tuo profilo utente, alle impostazioni e ai token di accesso.
+
+onboarding.dashboard.modules.title: 'Moduli'
+onboarding.dashboard.modules.body: |
+  I moduli sono estensioni personalizzabili che aggiungono nuova funzionalità a SyncEngine. Possono essere utilizzati per integrare servizi di terze parti, estendere la funzionalità principale o creare integrazioni personalizzate.
+
+onboarding.dashboard.system.title: 'Dashboard di Sistema'
+onboarding.dashboard.system.body: |
+  La dashboard di sistema ti dà accesso rapido a:
+
+  • Configurare le impostazioni SyncEngine
+  • Gestire i segreti e i valori sensibili nel Vault
+  • Monitorare i worker in background
+  • Visualizzare le informazioni di sistema
+  • ecc.
+
+  Usa questi strumenti per gestire la tua installazione SyncEngine.
+
+onboarding.dashboard.runtime_history.title: 'Cronologia di Esecuzione'
+onboarding.dashboard.runtime_history.body: |
+  La cronologia di esecuzione fornisce un registro dettagliato di tutte le esecuzioni di automazione, consentendoti di tracciare le prestazioni, risolvere i problemi e analizzare i flussi di dati.
+
+onboarding.dashboard.summary.title: 'Sei pronto!'
+onboarding.dashboard.summary.body: |
+  Ora conosci i concetti principali di SyncEngine:
+
+  • Le connessioni collegano i tuoi sistemi
+  • Le automazioni orchestrano i flussi di lavoro
+  • I flussi definiscono le sequenze di esecuzione
+  • Le routine sono sequenze riutilizzabili di azioni
+  • I task sono le azioni individuali
+  • Le archiviazioni conservano i dati persistenti
+  • I moduli aggiungono nuova funzionalità
+
+  Inizia creando una Connessione, poi costruisci il tuo primo Flusso con Routine e Task.
+
+onboarding.dashboard.help.title: 'Hai di nuovo bisogno di aiuto?'
+onboarding.dashboard.help.body: |
+  Puoi attivare il tour in qualsiasi momento facendo clic sull'icona del punto interrogativo nella barra degli strumenti (se disponibile). Usalo come riferimento rapido ogni volta che vuoi saperne di più sull'interfaccia o rivisitare un concetto.
+
+  Hai bisogno di supporto? Visita docs.syncengine.io o crea un ticket su syncengine.io/support.

@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Willkommen bei SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine ist eine modulare Automatisierungs- und Datensynchronisations-Engine. Sie ermöglicht Ihnen, zuverlässige, transparente Integrationen zwischen Systemen aufzubauen.
+
+  Diese Schnellführung führt Sie durch die wichtigsten Teile der Benutzeroberfläche.
+
+onboarding.dashboard.menu.title: 'Navigationsmenü'
+onboarding.dashboard.menu.body: |
+  Die Seitenleiste ist Ihre Hauptnavigation.
+
+  Sie können das Menü einklappen, um sich auf Ihren Inhalt zu konzentrieren.
+
+onboarding.dashboard.connections.title: 'Verbindungen'
+onboarding.dashboard.connections.body: |
+  Verbindungen sind die Brücken zwischen SyncEngine und Ihren externen Systemen. Sie behandeln Authentifizierung, Anmeldeinformationen und sichere Datenübertragung.
+
+  Unterstützte Typen umfassen HTTP (mit verschiedenen Authentifizierungsmethoden), SFTP/FTP, SQL-Datenbanken, SOAP-Dienste und das lokale Dateisystem. Jede Verbindung kann über mehrere Automatisierungen hinweg wiederverwendet werden.
+
+onboarding.dashboard.automations.title: 'Automatisierungen'
+onboarding.dashboard.automations.body: |
+  Automatisierungen sind Container auf oberster Ebene, die Ihre Workflows orchestrieren. Jede Automatisierung kann mehrere Flows enthalten und definieren, wie diese ausgelöst werden: manuell, nach Zeitplan oder durch Ereignisse.
+
+  Automatisierungen bieten Ausführungsverlauf (Traces), sodass Sie jeden Lauf inspizieren, sehen können, welche Daten verarbeitet wurden, und Probleme debuggen können.
+
+onboarding.dashboard.flows.title: 'Flows'
+onboarding.dashboard.flows.body: |
+  Flows definieren die Abfolge der Ausführung innerhalb einer Automatisierung. Jeder Flow enthält eine Reihe von Schritten, wobei jeder Schritt eine Routine auslöst.
+
+  Daten fließen von einer Routine zur nächsten, wobei jede Routine eine spezifische Funktion ausführt, wie das Abrufen von Daten, Transformieren und Senden an ein anderes System. Flows führen standardmäßig sequentiell aus.
+
+onboarding.dashboard.routines.title: 'Routinen'
+onboarding.dashboard.routines.body: |
+  Routinen sind wiederverwendbare Abfolgen von Aktionen (Tasks), die eine spezifische Funktion ausführen.
+
+  Jede Routine ist wiederverwendbar, modular und kann von einem oder mehreren Flows aufgerufen werden, was Ihnen unglaubliche Flexibilität und Effizienz bietet.
+
+onboarding.dashboard.storages.title: 'Speicher'
+onboarding.dashboard.storages.body: |
+  Speicher in SyncEngine sind sichere, persistente Container, die verwendet werden, um strukturierte Daten zu halten, die über Ihre Automatisierungen hinweg zugegriffen werden können.
+  Sie fungieren als Ihr langfristiger Speicher, ermöglichen es Flows und Routinen, Informationen zwischen Läufen zu speichern und abzurufen.
+
+  Speicher sind ideal zum Speichern von wiederverwendbaren oder geteilten Daten, Konfigurationswerten und Ergebnissen, auf die Sie später zugreifen möchten, ohne sich auf externe Datenbanken oder APIs verlassen zu müssen.
+
+onboarding.dashboard.account.title: 'Konto'
+onboarding.dashboard.account.body: |
+  Der Konto-Bereich bietet Zugriff auf Ihr Benutzerprofil, Einstellungen und Zugriffstoken.
+
+onboarding.dashboard.modules.title: 'Module'
+onboarding.dashboard.modules.body: |
+  Module sind anpassbare Erweiterungen, die neue Funktionalität zu SyncEngine hinzufügen. Sie können verwendet werden, um mit Drittanbieterdiensten zu integrieren, die Kernfunktionalität zu erweitern oder benutzerdefinierte Integrationen zu erstellen.
+
+onboarding.dashboard.system.title: 'System-Dashboard'
+onboarding.dashboard.system.body: |
+  Das System-Dashboard gibt Ihnen schnellen Zugriff auf:
+
+  • Konfigurieren von SyncEngine-Einstellungen
+  • Verwalten von Secrets und sensiblen Werten im Vault
+  • Überwachen von Hintergrundarbeitern
+  • Anzeigen von Systeminformationen
+  • usw.
+
+  Verwenden Sie diese Tools, um Ihre SyncEngine-Installation zu verwalten.
+
+onboarding.dashboard.runtime_history.title: 'Laufzeitverlauf'
+onboarding.dashboard.runtime_history.body: |
+  Der Laufzeitverlauf bietet ein detailliertes Protokoll aller Automatisierungsausführungen, sodass Sie die Leistung verfolgen, Probleme debuggen und Datenflüsse analysieren können.
+
+onboarding.dashboard.summary.title: 'Sie sind bereit!'
+onboarding.dashboard.summary.body: |
+  Sie kennen nun die Kernkonzepte von SyncEngine:
+
+  • Verbindungen brücken Ihre Systeme
+  • Automatisierungen orchestrieren Workflows
+  • Flows definieren Ausführungsabfolgen
+  • Routinen sind wiederverwendbare Abfolgen von Aktionen
+  • Tasks sind die einzelnen Aktionen
+  • Speicher halten persistente Daten
+  • Module fügen neue Funktionalität hinzu
+
+  Beginnen Sie damit, eine Verbindung zu erstellen, und bauen Sie dann Ihren ersten Flow mit Routinen und Tasks auf.
+
+onboarding.dashboard.help.title: 'Brauchen Sie wieder Hilfe?'
+onboarding.dashboard.help.body: |
+  Sie können die Tour jederzeit auslösen, indem Sie auf das Fragezeichen-Symbol in der Symbolleiste klicken (falls verfügbar). Verwenden Sie es als schnelle Referenz, wenn Sie mehr über die Benutzeroberfläche erfahren oder ein Konzept wiederholen möchten.
+
+  Brauchen Sie Unterstützung? Besuchen Sie docs.syncengine.io oder erstellen Sie ein Ticket unter syncengine.io/support.

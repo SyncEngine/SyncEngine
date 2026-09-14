@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Välkommen till SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine är en modulär automatiserings- och datasynkroniseringsmotor. Den låter dig bygga pålitliga, transparenta integrationer mellan system.
+
+  Denna snabbguide kommer att leda dig genom de viktigaste delarna av gränssnittet.
+
+onboarding.dashboard.menu.title: 'Navigeringsmeny'
+onboarding.dashboard.menu.body: |
+  Sidofältet är din huvudnavigering.
+
+  Du kan fälla ihop menyn för att fokusera på ditt innehåll.
+
+onboarding.dashboard.connections.title: 'Anslutningar'
+onboarding.dashboard.connections.body: |
+  Anslutningar är broarna mellan SyncEngine och dina externa system. De hanterar autentisering, inloggningsuppgifter och säker överföring av data.
+
+  Stödda typer inkluderar HTTP (med olika autentiseringsmetoder), SFTP/FTP, SQL-databaser, SOAP-tjänster och lokala filsystemet. Varje anslutning kan återanvändas över flera automatiseringar.
+
+onboarding.dashboard.automations.title: 'Automatiseringar'
+onboarding.dashboard.automations.body: |
+  Automatiseringar är containrar på högsta nivå som orchestrerar dina arbetsflöden. Varje automatisering kan innehålla flera flöden och definiera hur de utlöses: manuellt, enligt schema eller genom händelser.
+
+  Automatiseringar ger körningshistorik (traces) så att du kan inspektera varje körning, se vilken data som bearbetades och felsöka eventuella problem.
+
+onboarding.dashboard.flows.title: 'Flöden'
+onboarding.dashboard.flows.body: |
+  Flöden definierar sekvensen av utförande inom en automatisering. Varje flöde innehåller en serie steg, där varje steg utlöser en Rutin.
+
+  Data strömmar från en rutin till nästa, med varje rutin som utför en specifik funktion, som att hämta data, transformera dem och skicka dem till ett annat system. Flöden utförs i sekvens som standard.
+
+onboarding.dashboard.routines.title: 'Rutiner'
+onboarding.dashboard.routines.body: |
+  Rutiner är återanvändbara sekvenser av åtgärder (Uppgifter) som utför en specifik funktion.
+
+  Varje rutin är återanvändbar, modulär och kan anropas av en eller flera Flöden, vilket ger dig otrolig flexibilitet och effektivitet.
+
+onboarding.dashboard.storages.title: 'Lagringar'
+onboarding.dashboard.storages.body: |
+  Lagringar i SyncEngine är säkra, beständiga containrar som används för att hålla strukturerad data som kan nås över dina automatiseringar.
+  De fungerar som ditt långtidsminne, låter flöden och rutiner spara och hämta information mellan körningar.
+
+  Lagringar är idealiska för att spara återanvändbar eller delad data, konfigurationsvärden och resultat som du vill komma åt senare, utan att lita på externa databaser eller API:er.
+
+onboarding.dashboard.account.title: 'Konto'
+onboarding.dashboard.account.body: |
+  Kontosektionen ger tillgång till din användarprofil, inställningar och åtkomsttoken.
+
+onboarding.dashboard.modules.title: 'Moduler'
+onboarding.dashboard.modules.body: |
+  Moduler är anpassningsbara utökningar som lägger till ny funktionalitet till SyncEngine. De kan användas för att integrera med tredjepartstjänster, utöka kärnfunktionaliteten eller skapa anpassade integrationer.
+
+onboarding.dashboard.system.title: 'Systemdashboard'
+onboarding.dashboard.system.body: |
+  Systemdashboardet ger dig snabb åtkomst till:
+
+  • Konfigurera SyncEngine-inställningar
+  • Hantera secrets och känsliga värden i Vault
+  • Övervaka bakgrundsarbetare
+  • Visa systeminformation
+  • etc.
+
+  Använd dessa verktyg för att hantera din SyncEngine-installation.
+
+onboarding.dashboard.runtime_history.title: 'Körningshistorik'
+onboarding.dashboard.runtime_history.body: |
+  Körningshistorik ger en detaljerad logg över alla automatiseringskörningar, vilket låter dig spåra prestanda, felsöka problem och analysera dataflöden.
+
+onboarding.dashboard.summary.title: 'Du är klar!'
+onboarding.dashboard.summary.body: |
+  Du känner nu till kärnkoncepten i SyncEngine:
+
+  • Anslutningar broar mellan dina system
+  • Automatiseringar orchestrerar arbetsflöden
+  • Flöden definierar utförandesekvenser
+  • Rutiner är återanvändbara sekvenser av åtgärder
+  • Uppgifter är de individuella åtgärderna
+  • Lagringar håller beständig data
+  • Moduler lägger till ny funktionalitet
+
+  Börja med att skapa en Anslutning, bygg sedan ditt första Flöde med Rutiner och Uppgifter.
+
+onboarding.dashboard.help.title: 'Behöver du hjälp igen?'
+onboarding.dashboard.help.body: |
+  Du kan starta guiden när som helst genom att klicka på frågetecken-ikonen i verktygsfältet (om tillgänglig). Använd den som snabb referens när du vill lära dig mer om gränssnittet eller gå igenom ett koncept.
+
+  Behöver du support? Besök docs.syncengine.io eller skapa en ticket på syncengine.io/support.

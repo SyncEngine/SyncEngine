@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Welkom bij SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine is een modulaire automatiserings- en datasynchronisatie-engine. Hiermee kun je betrouwbare, transparante integraties tussen systemen bouwen.
+
+  Deze snelle tour neemt je mee door de belangrijkste delen van de interface.
+
+onboarding.dashboard.menu.title: 'Navigatiemenu'
+onboarding.dashboard.menu.body: |
+  De zijbalk is je hoofdnavogatie.
+
+  Je kunt het menu inklappen om je te concentreren op je inhoud.
+
+onboarding.dashboard.connections.title: 'Verbindingen'
+onboarding.dashboard.connections.body: |
+  Verbindingen zijn de bruggen tussen SyncEngine en je externe systemen. Ze behandelen authenticatie, inloggegevens en veilige gegevensoverdracht.
+
+  Ondersteunde typen omvatten HTTP (met verschillende authenticatiemethoden), SFTP/FTP, SQL-databases, SOAP-services en het lokale bestandssysteem. Elke verbinding kan worden hergebruikt over meerdere automatiseringen.
+
+onboarding.dashboard.automations.title: 'Automatiseringen'
+onboarding.dashboard.automations.body: |
+  Automatiseringen zijn containers op hoogste niveau die je workflows orchestreren. Elke automatisering kan meerdere flows bevatten en definiëren hoe ze worden geactiveerd: handmatig, op een planning of door gebeurtenissen.
+
+  Automatiseringen bieden uitvoeringsgeschiedenis (traces) zodat je elke run kunt inspecteren, kunt zien welke gegevens zijn verwerkt en eventuele problemen kunt opsporen.
+
+onboarding.dashboard.flows.title: 'Flows'
+onboarding.dashboard.flows.body: |
+  Flows definiëren de volgorde van uitvoering binnen een automatisering. Elke flow bevat een serie stappen, waarbij elke stap een Routine activeert.
+
+  Gegevens stromen van de ene routine naar de volgende, met elke routine die een specifieke functie uitvoert, zoals het ophalen van gegevens, transformeren en verzenden naar een ander systeem. Flows voeren standaard sequentieel uit.
+
+onboarding.dashboard.routines.title: 'Routines'
+onboarding.dashboard.routines.body: |
+  Routines zijn herbruikbare sequenties van acties (Taken) die een specifieke functie uitvoeren.
+
+  Elke routine is herbruikbaar, modulair en kan worden aangeroepen door één of meerdere Flows, wat je ongelooflijke flexibiliteit en efficiëntie geeft.
+
+onboarding.dashboard.storages.title: 'Opslag'
+onboarding.dashboard.storages.body: |
+  Opslagen in SyncEngine zijn veilige, persistente containers gebruikt om gestructureerde gegevens vast te houden die over je automatiseringen heen kunnen worden benaderd.
+  Ze fungeren als je langetermijngeheugen, waardoor flows en routines informatie tussen runs kunnen opslaan en ophalen.
+
+  Opslagen zijn ideaal voor het opslaan van herbruikbare of gedeelde gegevens, configuratiewaarden en resultaten waar je later toegang toe wilt hebben, zonder te vertrouwen op externe databases of API's.
+
+onboarding.dashboard.account.title: 'Account'
+onboarding.dashboard.account.body: |
+  Het Account-gedeelte biedt toegang tot je gebruikersprofiel, instellingen en toegangstokens.
+
+onboarding.dashboard.modules.title: 'Modules'
+onboarding.dashboard.modules.body: |
+  Modules zijn aanpasbare extensies die nieuwe functionaliteit toevoegen aan SyncEngine. Ze kunnen worden gebruikt om te integreren met third-party services, de kernfunctionaliteit uit te breiden of aangepaste integraties te maken.
+
+onboarding.dashboard.system.title: 'Systeemdashboard'
+onboarding.dashboard.system.body: |
+  Het systeemdashboard geeft je snelle toegang tot:
+
+  • SyncEngine-instellingen configureren
+  • Secrets en gevoelige waarden beheren in de Vault
+  • Achtergrondwerkers monitoren
+  • Systeemgegevens bekijken
+  • etc.
+
+  Gebruik deze tools om je SyncEngine-installatie te beheren.
+
+onboarding.dashboard.runtime_history.title: 'Uitvoeringgeschiedenis'
+onboarding.dashboard.runtime_history.body: |
+  Uitvoeringgeschiedenis biedt een gedetailleerd logboek van alle automatiseringsuitvoeringen, waardoor je de prestaties kunt volgen, problemen kunt opsporen en gegevensstromen kunt analyseren.
+
+onboarding.dashboard.summary.title: 'Je bent klaar!'
+onboarding.dashboard.summary.body: |
+  Je kent nu de kernconcepten van SyncEngine:
+
+  • Verbindingen bruggen tussen je systemen
+  • Automatiseringen orchestreren workflows
+  • Flows definiëren uitvoeringsvolgorde
+  • Routines zijn herbruikbare sequenties van acties
+  • Taken zijn de individuele acties
+  • Opslagen houden persistente gegevens vast
+  • Modules voegen nieuwe functionaliteit toe
+
+  Begin met het maken van een Verbinding, bouw dan je eerste Flow met Routines en Taken.
+
+onboarding.dashboard.help.title: 'Weer hulp nodig?'
+onboarding.dashboard.help.body: |
+  Je kunt de tour op elk moment activeren door op het vraagteken-icoon in de werkbalk te klikken (indien beschikbaar). Gebruik het als snelle referentie wanneer je meer wilt weten over de interface of een concept wilt herhalen.
+
+  Ondersteuning nodig? Bezoek docs.syncengine.io of maak een ticket aan op syncengine.io/support.

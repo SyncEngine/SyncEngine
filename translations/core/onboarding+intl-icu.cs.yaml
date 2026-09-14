@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Vítejte v SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine je modulární engine pro automatizaci a synchronizaci dat. Umožňuje vám budovat spolehlivé a transparentní integrace mezi systémy.
+
+  Tento rychlý průvodce vás provede hlavními částmi rozhraní.
+
+onboarding.dashboard.menu.title: 'Navigační menu'
+onboarding.dashboard.menu.body: |
+  Postranní panel je vaše hlavní navigace.
+
+  Menu můžete sbalit, abyste se soustředili na svůj obsah.
+
+onboarding.dashboard.connections.title: 'Připojení'
+onboarding.dashboard.connections.body: |
+  Připojení jsou mosty mezi SyncEngine a vašimi externími systémy. Řídí autentizaci, přihlašovací údaje a bezpečný přenos dat.
+
+  Mezi podporované typy patří HTTP (s různými metodami autentizace), SFTP/FTP, SQL databáze, SOAP služby a místní souborový systém. Každé připojení lze znovu použít napříč více automatizacemi.
+
+onboarding.dashboard.automations.title: 'Automatizace'
+onboarding.dashboard.automations.body: |
+  Automatizace jsou nadřazené kontejnery, které orchestrují vaše pracovní postupy. Každá automatizace může obsahovat více toků a definovat, jak jsou spouštěny: ručně, podle harmonogramu nebo pomocí událostí.
+
+  Automatizace poskytují historii provedení (traces), abyste mohli zkontrolovat každý běh, vidět, jaká data byla zpracována a ladit jakékoliv problémy.
+
+onboarding.dashboard.flows.title: 'Toky'
+onboarding.dashboard.flows.body: |
+  Toky definují posloupnost provedení v rámci automatizace. Každý tok obsahuje řadu kroků, kde každý krok spouští Rutinu.
+
+  Data proudí z jedné rutiny do další, přičemž každá rutina provádí konkrétní funkci, jako je načítání dat, jejich transformace a odesílání do jiného systému. Toky se ve výchozím nastavení spouštějí v posloupnosti.
+
+onboarding.dashboard.routines.title: 'Rutiny'
+onboarding.dashboard.routines.body: |
+  Rutiny jsou znovu použitelné posloupnosti akcí (Úloh), které provádějí konkrétní funkci.
+
+  Každá rutina je znovu použitelná, modulární a může být volána jednou nebo více Toky, což vám dává neuvěřitelnou flexibilitu a účinnost.
+
+onboarding.dashboard.storages.title: 'Úložiště'
+onboarding.dashboard.storages.body: |
+  Úložiště v SyncEngine jsou bezpečné, perzistentní kontejnery používané k uchovávání strukturovaných dat, která lze přistupovat napříč vašimi automatizacemi.
+  Působí jako vaše dlouhodobá paměť, umožňují tokům a rutinám ukládat a načítat informace mezi běhy.
+
+  Úložiště jsou ideální pro uložení znovu použitelných nebo sdílených dat, hodnot konfigurace a výsledků, ke kterým chcete později přistupovat, aniž byste se spoléhali na externí databáze nebo API.
+
+onboarding.dashboard.account.title: 'Účet'
+onboarding.dashboard.account.body: |
+  Sekce Účet poskytuje přístup k vašemu uživatelskému profilu, nastavení a přístupovým tokenům.
+
+onboarding.dashboard.modules.title: 'Moduly'
+onboarding.dashboard.modules.body: |
+  Moduly jsou přizpůsobitelné rozšíření, která přidávají novou funkčnost do SyncEngine. Lze je použít k integraci se službami třetích stran, rozšíření základní funkčnosti nebo vytvoření vlastních integrací.
+
+onboarding.dashboard.system.title: 'Systémový dashboard'
+onboarding.dashboard.system.body: |
+  Systémový dashboard vám poskytuje rychlý přístup k:
+
+  • Konfiguraci nastavení SyncEngine
+  • Správě tajných klíčů a citlivých hodnot ve Vaultu
+  • Sledování pracovníků na pozadí
+  • Zobrazení informací o systému
+  • atd.
+
+  Tyto nástroje použijte ke správě vaší instalace SyncEngine.
+
+onboarding.dashboard.runtime_history.title: 'Historie runtime'
+onboarding.dashboard.runtime_history.body: |
+  Historie runtime poskytuje podrobný protokol všech provedení automatizací, což vám umožňuje sledovat výkon, ladit problémy a analyzovat proudy dat.
+
+onboarding.dashboard.summary.title: 'Jste připraveni!'
+onboarding.dashboard.summary.body: |
+  Nyní znáte základní koncepty SyncEngine:
+
+  • Připojení propojují vaše systémy
+  • Automatizace orchestrují pracovní postupy
+  • Toky definují posloupnosti provedení
+  • Rutiny jsou znovu použitelné posloupnosti akcí
+  • Úlohy jsou jednotlivé akce
+  • Úložiště uchovávají perzistentní data
+  • Moduly přidávají novou funkčnost
+
+  Začněte vytvořením Připojení, poté postavte svůj první Tok s Rutinami a Úlohami.
+
+onboarding.dashboard.help.title: 'Potřebujete znovu pomoc?'
+onboarding.dashboard.help.body: |
+  Průvodce můžete kdykoliv spustit kliknutím na ikonu otazníku v panelu (pokud je k dispozici). Používejte jej jako rychlou referenci, když se chcete něco naučit nebo zopakovat jakýkoliv koncept.
+
+  Potřebujete podporu? Navštivte docs.syncengine.io nebo vytvořte ticket na syncengine.io/support.

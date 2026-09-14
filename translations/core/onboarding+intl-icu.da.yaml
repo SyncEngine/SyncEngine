@@ -1,0 +1,86 @@
+onboarding.dashboard.welcome.title: 'Velkommen til SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine er en modulær automatiserings- og datasynkroniseringsmotor. Den lar deg bygge pålitelige, transparente integrasjoner mellom systemer.
+
+  Denne hurtige turen vil guide deg gjennom de viktigste delene av grensesnittet.
+
+onboarding.dashboard.menu.title: 'Navigasjonsmeny'
+onboarding.dashboard.menu.body: |
+  Sidefeltet er din hovednavigasjon.
+
+  Du kan skjemme menyen for å fokusere på innholdet ditt.
+
+onboarding.dashboard.connections.title: 'Tilkoblinger'
+onboarding.dashboard.connections.body: |
+  Tilkoblinger er broene mellom SyncEngine og eksterne systemer. De håndterer autentisering, legitimasjon og sikker overføring av data.
+
+  Støttede typer inkluderer HTTP (med ulike autentiseringsmetoder), SFTP/FTP, SQL-databaser, SOAP-tjenester og det lokale filsystemet. Hver tilkobling kan gjenbrukes på tvers av flere automatiseringer.
+
+onboarding.dashboard.automations.title: 'Automatiseringer'
+onboarding.dashboard.automations.body: |
+  Automatiseringer er øverste nivå-konteinere som orchestrerer arbeidsflytene dine. Hver automatisering kan inneholde flere flyter og definere hvordan de utløses: manuelt, etter et tidsskjema eller ved hendelser.
+
+  Automatiseringer gir kjøringshistorikk (traces) slik at du kan inspisere hver kjøring, se hvilke data som ble behandlet og feilsøke eventuelle problemer.
+
+onboarding.dashboard.flows.title: 'Flyter'
+onboarding.dashboard.flows.body: |
+  Flyter definerer sekvensen av utførelse innenfor en automatisering. Hver flyt inneholder en serie med steg, der hvert steg utløser en Rutine.
+
+  Data flyter fra én rutine til neste, der hver rutine utfører en spesifikk funksjon, som å hente data, transformere dem og sende dem til et annet system. Flyter utføres i sekvens som standard.
+
+onboarding.dashboard.routines.title: 'Rutiner'
+onboarding.dashboard.routines.body: |
+  Rutiner er gjenbrukbare sekvenser av handlinger (Oppgaver) som utfører en spesifikk funksjon.
+
+  Hver rutine er gjenbrukbar, modulær og kan kalles av én eller flere Flyter, noe som gir deg utrolig fleksibilitet og effektivitet.
+
+onboarding.dashboard.storages.title: 'Lagring'
+onboarding.dashboard.storages.body: |
+  Lagringer i SyncEngine er sikre, vedvarende containere brukt til å holde strukturerte data som kan akseseres på tvers av automatiseringene dine.
+  De fungerer som ditt langtidshukommelse, lar flyter og rutiner lagre og hente informasjon mellom kjøringene.
+
+  Lagringer er ideelle for å lagre gjenbrukbare eller delte data, konfigurasjonsverdier og resultater du vil aksesere senere, uten å stole på eksterne databaser eller API-er.
+
+onboarding.dashboard.account.title: 'Konto'
+onboarding.dashboard.account.body: |
+  Konto-seksjonen gir tilgang til din brukerprofil, innstillinger og tilgangstokener.
+
+onboarding.dashboard.modules.title: 'Moduler'
+onboarding.dashboard.modules.body: |
+  Moduler er tilpassbare utvidelser som legger til ny funksjonalitet i SyncEngine. De kan brukes til å integrere med tredjepartstjenester, utvide grunnleggende funksjonalitet eller lage tilpassede integrasjoner.
+
+onboarding.dashboard.system.title: 'Systemdashboard'
+onboarding.dashboard.system.body: |
+  Systemdashboardet gir deg rask tilgang til:
+
+  • Konfigurere SyncEngine-innstillinger
+  • Administrere hemmeligheter og sensitive verdier i Vault
+  • Overvåke bakgrunnsarbeidere
+  • Se systeminformasjon
+  • osv.
+
+  Bruk disse verktøyene til å administrere SyncEngine-installasjonen din.
+
+onboarding.dashboard.runtime_history.title: 'Kjøringshistorikk'
+onboarding.dashboard.runtime_history.body: |
+  Kjøringshistorikk gir en detaljert logg over alle automatiseringskjøringer, noe som lar deg spore ytelse, feilsøke problemer og analysere dataflyter.
+
+onboarding.dashboard.summary.title: 'Du er klar!'
+onboarding.dashboard.summary.body: |
+  Du kjenner nå til kjernekonseptene i SyncEngine:
+
+  • Tilkoblinger broer mellom systemene dine
+  • Automatiseringer orchestrerer arbeidsflyter
+  • Flyter definerer utførelsessekvenser
+  • Rutiner er gjenbrukbare sekvenser av handlinger
+  • Oppgaver er de enkelte handlingene
+  • Lagringer holder vedvarende data
+  • Moduler legger til ny funksjonalitet
+
+  Begynn med å opprette en Tilkobling, bygg deretter din første Flyt med Rutiner og Oppgaver.
+
+onboarding.dashboard.help.title: 'Trenger du igjen hjelp?'
+onboarding.dashboard.help.body: |
+  Du kan starte turen når som helst ved å klikke på spørsmålstegn-ikonet i verktøylinjen (hvis tilgjengelig). Bruk det som en rask referanse når du vil lære mer om grensesnittet eller gjenta et konsept.
+
+  Trenger du støtte? Besøk docs.syncengine.io eller opprett en sak på syncengine.io/support.
