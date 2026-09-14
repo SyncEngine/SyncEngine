@@ -7,17 +7,21 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Messenger\MessengerManager;
 
 class ProcessManagerFormType extends AbstractType
 {
-	public function __construct( private readonly MessengerManager $manager ) {}
+	public function __construct(
+		private readonly MessengerManager $manager,
+		private readonly TranslatorInterface $translator,
+	) {}
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
 			->add('SYNCENGINE_MESSENGER_MANAGER', ChoiceType::class, [
-				'label' => 'Manager',
+				'label' => $this->translator->trans( 'Manager' ),
 				'required' => true,
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
@@ -25,7 +29,7 @@ class ProcessManagerFormType extends AbstractType
 				'choices' => [
 					'SyncEngine' => MessengerManager::MANAGER_INTERNAL,
 					'Cron' => MessengerManager::MANAGER_CRON,
-					'External' => MessengerManager::MANAGER_EXTERNAL,
+					$this->translator->trans( 'External' ) => MessengerManager::MANAGER_EXTERNAL,
 				],
 			]);
 
@@ -35,40 +39,40 @@ class ProcessManagerFormType extends AbstractType
 
 		$builder
 			->add('SYNCENGINE_MESSENGER_WORKER_LIMIT', NumberType::class, [
-				'label' => 'Worker limit',
+				'label' => $this->translator->trans( 'Worker limit' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Max workers allowed running at the same time.',
+					'placeholder' => $this->translator->trans( 'Max workers allowed running at the same time.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('SYNCENGINE_MESSENGER_WORKER_QUEUE_LIMIT', NumberType::class, [
-				'label' => 'Worker Queue limit',
+				'label' => $this->translator->trans( 'Worker Queue limit' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Max queued items a single worker will handle.',
+					'placeholder' => $this->translator->trans( 'Max queued items a single worker will handle.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('SYNCENGINE_MESSENGER_WORKER_TIME_LIMIT', NumberType::class, [
-				'label' => 'Worker Time limit',
+				'label' => $this->translator->trans( 'Worker Time limit' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Max seconds a single worker will run.',
+					'placeholder' => $this->translator->trans( 'Max seconds a single worker will run.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('SYNCENGINE_MESSENGER_WORKER_MEMORY_LIMIT', NumberType::class, [
-				'label' => 'Worker Memory limit',
+				'label' => $this->translator->trans( 'Worker Memory limit' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Max memory (MB) a single worker is allowed to use.',
+					'placeholder' => $this->translator->trans( 'Max memory (MB) a single worker is allowed to use.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',

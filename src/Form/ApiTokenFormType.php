@@ -7,12 +7,15 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\Type\JsonType;
 
 class ApiTokenFormType extends AbstractType
 {
+	public function __construct( private readonly TranslatorInterface $translator ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$user = $options['user'] ?? null;
@@ -48,9 +51,9 @@ class ApiTokenFormType extends AbstractType
 					'data-args'       => json_encode( [
 						'fields' => [
 							'_scopes' => [
-								'label'       => 'Scopes',
+								'label'       => $this->translator->trans( 'Scopes' ),
 								'icon'        => 'scope',
-								'description' => 'Scopes define what this API token can access. Each scope grants a specific permission.',
+								'description' => $this->translator->trans( 'Scopes define what this API token can access. Each scope grants a specific permission.' ),
 								'fields' => [
 									'scopes' => [
 										'type'        => 'checkbox',
@@ -61,18 +64,18 @@ class ApiTokenFormType extends AbstractType
 								]
 							],
 							'restrictions' => [
-								'label'       => 'Restrictions',
+								'label'       => $this->translator->trans( 'Restrictions' ),
 								'icon'        => 'restrict',
-								'description' => 'Restrictions limit an API key\'s usage and improves security',
+								'description' => $this->translator->trans( 'Restrictions limit an API key\'s usage and improves security' ),
 								'nested'      => [
 									'ip' => [
-										'label'       => 'Restrict by IP addresses',
+										'label'       => $this->translator->trans( 'Restrict by IP addresses' ),
 										'type'        => 'text',
 										'placeholder' => '0.0.0.0, 0.0.0.0',
 									],
 									'host' => [
-										'label'       => 'Restrict by host domains',
-										'description' => 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.',
+										'label'       => $this->translator->trans( 'Restrict by host domains' ),
+										'description' => $this->translator->trans( 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.' ),
 										'type'        => 'text',
 										'placeholder' => 'domain.com, sub.domain.ext, *.wildcard.com',
 									],

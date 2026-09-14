@@ -9,11 +9,15 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Service\System;
 
 class EnvironmentFormType extends AbstractType
 {
-	public function __construct( private readonly System $system ) {}
+	public function __construct(
+		private readonly System $system,
+		private readonly TranslatorInterface $translator,
+	) {}
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
@@ -30,7 +34,7 @@ class EnvironmentFormType extends AbstractType
 
 		$builder
 			->add('APP_ENV', ChoiceType::class, [
-				'label' => 'Environment',
+				'label' => $this->translator->trans( 'Environment' ),
 				'required' => true,
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
@@ -41,7 +45,7 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add( 'APP_DEBUG', ChoiceType::class, [
-				'label' => 'Debug',
+				'label' => $this->translator->trans( 'Debug' ),
 				'disabled' => 'dev' === $mode,
 				'required' => false,
 				'choices' => [
@@ -49,24 +53,24 @@ class EnvironmentFormType extends AbstractType
 					'Enabled' => '1',
 				],
 				'attr' => [
-					'placeholder' => 'Change your app secret. Will autogenerate if empty.',
+					'placeholder' => $this->translator->trans( 'Change your app secret. Will autogenerate if empty.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			] )
 			->add('APP_SECRET', PasswordType::class, [
-				'label' => 'Secret',
+				'label' => $this->translator->trans( 'Secret' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Change your app secret. Will autogenerate if empty.',
+					'placeholder' => $this->translator->trans( 'Change your app secret. Will autogenerate if empty.' ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('DATABASE_URL', TextType::class, [
-				'label' => 'Database',
+				'label' => $this->translator->trans( 'Database' ),
 				'required' => true,
 				'attr' => [
 					'placeholder'     => 'sql://user:pass@host:port/database',
@@ -81,7 +85,7 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add('MAILER_DSN', TextType::class, [
-				'label' => 'Mailer',
+				'label' => $this->translator->trans( 'Mailer' ),
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'smtp://user:pass@smtp.example.com:port',
@@ -96,7 +100,7 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add('SYNCENGINE_MAILER_SENDER', EmailType::class, [
-				'label' => 'Email sender',
+				'label' => $this->translator->trans( 'Email sender' ),
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'webmaster@yourdomain.com'
@@ -106,7 +110,7 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add('SYNCENGINE_MAILER_EMAIL_ADMIN', EmailType::class, [
-				'label' => 'Send email logs to',
+				'label' => $this->translator->trans( 'Send email logs to' ),
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'webmaster@yourdomain.com'
@@ -116,8 +120,8 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add('SYNCENGINE_TRUSTED_IPS', TextType::class, [
-				'label' => 'Restrict everything by IP',
-				'help'  => 'Separate multiple IP addresses by comma, admin IP addresses are included.',
+				'label' => $this->translator->trans( 'Restrict everything by IP' ),
+				'help'  => $this->translator->trans( 'Separate multiple IP addresses by comma, admin IP addresses are included.' ),
 				'required' => false,
 				'attr' => [
 					'placeholder' => '0.0.0.0, 0.0.0.0'

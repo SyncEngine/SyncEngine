@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Entity\User;
 
 /**
@@ -17,6 +17,8 @@ use SyncEngine\Entity\User;
  */
 class UserFormType extends AbstractType
 {
+	public function __construct( private readonly TranslatorInterface $translator ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
@@ -31,6 +33,7 @@ class UserFormType extends AbstractType
 				],
 			])
 			->add('plainPassword', PasswordType::class, [
+				'label' => $this->translator->trans( 'New password' ),
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
@@ -40,12 +43,7 @@ class UserFormType extends AbstractType
 				'required' => false,
 				'attr' => ['autocomplete' => 'new-password'],
 				'constraints' => [
-					new Length([
-						'min' => 6,
-						'minMessage' => 'Your password should be at least { limit } characters',
-						// max length allowed by Symfony for security reasons
-						'max' => 4096,
-					]),
+					new Length( min: 6, max: 4096, minMessage: 'Your password should be at least { limit } characters' ),
 				],
 			])
 			->add( 'roles', ChoiceType::class, [

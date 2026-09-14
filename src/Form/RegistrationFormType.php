@@ -11,10 +11,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Entity\User;
 
 class RegistrationFormType extends AbstractType
 {
+	public function __construct( private readonly TranslatorInterface $translator ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
@@ -29,6 +32,7 @@ class RegistrationFormType extends AbstractType
 				],
 			])
 			->add('plainPassword', PasswordType::class, [
+				'label' => $this->translator->trans( 'Password' ),
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
@@ -37,28 +41,21 @@ class RegistrationFormType extends AbstractType
 				'mapped' => false,
 				'attr' => ['autocomplete' => 'new-password'],
 				'constraints' => [
-					new NotBlank([
-						'message' => 'Please enter a password',
-					]),
-					new Length([
-						'min' => 6,
-						'minMessage' => 'Your password should be at least { limit } characters',
-						// max length allowed by Symfony for security reasons
-						'max' => 4096,
-					]),
+					new NotBlank( message: 'Please enter a password' ),
+					new Length(
+						min: 6, max: 4096, minMessage: 'Your password should be at least { limit } characters'
+					),
 				],
 			])
 			->add('agreeTerms', CheckboxType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'label' => '<a href="https://syncengine.io/license" target="_blank">I accept the license terms and conditions</a>',
+				'label' => '<a href="https://syncengine.io/license" target="_blank">' . $this->translator->trans( 'I accept the license terms and conditions' ) . '</a>',
 				'label_html' => true,
 				'mapped' => false,
 				'constraints' => [
-					new IsTrue([
-						'message' => 'You should agree to our license terms.',
-					]),
+					new IsTrue( message: $this->translator->trans( 'You should agree to our license terms.' ) ),
 				],
 			]);
 	}

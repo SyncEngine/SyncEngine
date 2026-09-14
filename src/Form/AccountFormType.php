@@ -8,10 +8,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Entity\User;
 
 class AccountFormType extends AbstractType
 {
+	public function __construct( private readonly TranslatorInterface $translator ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
@@ -26,23 +29,20 @@ class AccountFormType extends AbstractType
 				],
 			])
 			->add('plainPassword', PasswordType::class, [
-				'row_attr' => [
+				'row_attr'    => [
 					'class' => 'form-floating mb-3',
 				],
-				'help' => 'Leave empty to keep current password.',
-				'label' => 'New Password',
+				'help'        => $this->translator->trans( 'Leave empty to keep current password.' ),
+				'label'       => $this->translator->trans( 'New Password' ),
 				// instead of being set onto the object directly,
 				// this is read and encoded in the controller
-				'mapped' => false,
-				'required' => false,
-				'attr' => ['autocomplete' => 'new-password'],
+				'mapped'      => false,
+				'required'    => false,
+				'attr'        => ['autocomplete' => 'new-password'],
 				'constraints' => [
-					new Length([
-						'min' => 6,
-						'minMessage' => 'Your password should be at least { limit } characters',
-						// max length allowed by Symfony for security reasons
-						'max' => 4096,
-					]),
+					new Length(
+						min: 6, max: 4096, minMessage: 'Your password should be at least { limit } characters'
+					),
 				],
 			]);
 	}
