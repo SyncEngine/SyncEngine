@@ -1010,3 +1010,30 @@ Mailer: Mailer
 'Not required': 'Not required'
 Inactive: Inactive
 Active: Active
+Support: Support
+'e.g. {examples}': 'e.g. {examples}'
+'e.g. {examples}, etc.': 'e.g. {examples}, etc.'
+'Full Access (*)': 'Full Access (*)'
+Production: Production
+Development: Development
+Admin: Admin
+Editor: Editor
+Viewer: Viewer
+'Generic / Other': 'Generic / Other'
+Entities: Entities
+Raw: Raw
+'QR Code': 'QR Code'
+More...: More...
+'Log out': 'Log out'
+'To reset your password, please visit the following link': 'To reset your password, please visit the following link'
+'This link will expire in {expiration}.': 'This link will expire in {expiration}.'
+Cheers!: Cheers!
+'Send password reset email': 'Send password reset email'
+Home: Home
+"The requested page couldn't be located.": "The requested page couldn't be located."
+'Checkout for any URL misspelling or return to the homepage': 'Checkout for any URL misspelling or return to the homepage'
+Return: Return
+'The server returned a "{status_code} {status_text}".': 'The server returned a "{status_code} {status_text}".'
+'Something is broken. Please let us know what you were doing when this error occurred.': 'Something is broken. Please let us know what you were doing when this error occurred.'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': 'We will fix it as soon as possible. Sorry for any inconvenience caused.'
+'You have unsaved changes! If you leave this page, your changes will be lost.': 'You have unsaved changes! If you leave this page, your changes will be lost.'

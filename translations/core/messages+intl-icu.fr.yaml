@@ -1010,3 +1010,30 @@ Mailer: Expéditeur
 'Not required': 'Non requis'
 Inactive: Inactif
 Active: Actif
+Support: Support
+'e.g. {examples}': 'par ex. {examples}'
+'e.g. {examples}, etc.': 'par ex. {examples} et cetera'
+'Full Access (*)': 'Accès complet (*)'
+'Production': 'Production'
+'Development': 'Développement'
+'Admin': 'Administrateur'
+'Editor': 'Éditeur'
+'Viewer': 'Lecteur'
+'Generic / Other': 'Générique / Autre'
+'Entities': 'Entités'
+'Raw': 'Brut'
+'QR Code': 'Code QR'
+'More...': 'Plus...'
+'Log out': 'Déconnexion'
+'To reset your password, please visit the following link': 'Pour réinitialiser votre mot de passe, veuillez visiter le lien suivant'
+'This link will expire in {expiration}.': 'Ce lien expirera dans {expiration}.'
+'Cheers!': 'Cordialement !'
+"Send password reset email": "Envoyer l'e-mail de réinitialisation"
+'Home': 'Accueil'
+"The requested page couldn't be located.": 'La page demandée est introuvable.'
+"Checkout for any URL misspelling or return to the homepage": "Vérifiez l'orthographe de l'URL ou retournez à la page d'accueil"
+'Return': 'Retour'
+'The server returned a "{status_code} {status_text}".': 'Le serveur a retourné "{status_code} {status_text}".'
+'Something is broken. Please let us know what you were doing when this error occurred.': 'Quelque chose ne fonctionne pas. Veuillez nous indiquer ce que vous faisiez lorsque cette erreur est survenue.'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': 'Nous le corrigerons dès que possible. Désolé pour la gêne occasionnée.'
+'You have unsaved changes! If you leave this page, your changes will be lost.': 'Vous avez des modifications non enregistrées ! Si vous quittez cette page, vos modifications seront perdues.'

@@ -1010,3 +1010,30 @@ Mailer: Mittente
 'Not required': 'Non richiesto'
 Inactive: Inattivo
 Active: Attivo
+Support: Supporto
+'e.g. {examples}': 'ad es. {examples}'
+'e.g. {examples}, etc.': 'ad es. {examples} ecc.'
+'Full Access (*)': 'Accesso completo (*)'
+'Production': 'Produzione'
+'Development': 'Sviluppo'
+'Admin': 'Amministratore'
+'Editor': 'Editor'
+'Viewer': 'Visualizzatore'
+'Generic / Other': 'Generico / Altro'
+'Entities': 'Entità'
+'Raw': 'Grezzo'
+'QR Code': 'Codice QR'
+'More...': 'Altro...'
+'Log out': 'Disconnetti'
+'To reset your password, please visit the following link': 'Per reimpostare la password, visita il seguente link'
+'This link will expire in {expiration}.': 'Questo link scadrà in {expiration}.'
+'Cheers!': 'Saluti!'
+'Send password reset email': 'Invia email di ripristino password'
+'Home': 'Home'
+"The requested page couldn't be located.": 'La pagina richiesta non è stata trovata.'
+"Checkout for any URL misspelling or return to the homepage": "Controlla eventuali errori di battitura dell'URL o torna alla home"
+'Return': 'Ritorna'
+'The server returned a "{status_code} {status_text}".': 'Il server ha restituito "{status_code} {status_text}".'
+'Something is broken. Please let us know what you were doing when this error occurred.': 'Qualcosa non funziona. Ci fai sapere cosa stavi facendo quando si è verificato questo errore?'
+"We will fix it as soon as possible. Sorry for any inconvenience caused.": "Lo risolveremo il prima possibile. Ci scusiamo per l'inconveniente."
+'You have unsaved changes! If you leave this page, your changes will be lost.': 'Hai modifiche non salvate! Se lasci questa pagina, le tue modifiche andranno perse.'
