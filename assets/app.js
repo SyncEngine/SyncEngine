@@ -11,9 +11,6 @@ import './styles/app.scss';
 // Bootstrap JS
 import * as bootstrap from 'bootstrap';
 
-// Load internationalization.
-import './i18n';
-
 // start the Stimulus application.
 import './bootstrap';
 
