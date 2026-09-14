@@ -1,4 +1,4 @@
-import { trans } from '../var/translations/index.js';
+import { trans } from '../../translator';
 
 /**
  * useTranslator hook.
