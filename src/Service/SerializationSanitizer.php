@@ -47,7 +47,7 @@ class SerializationSanitizer
 			$data = $this->encodeUtf8( $data );
 		}
 
-		if ( is_string( $data ) && ! empty( $options[ self::SANITIZE_HTML ] ) ) {
+		if ( is_string( $data ) && str_contains( $data, '<' ) && ! empty( $options[ self::SANITIZE_HTML ] ) ) {
 			$data = $this->sanitizeHtml( $data );
 		}
 
