@@ -1,14 +1,17 @@
 import { beforeAll, afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
+//import '../../translator';
 
-// Mock i18next — all components use useTranslation()
-vi.mock('react-i18next', () => ({
-	useTranslation: () => ({
-		t: (key) => (typeof key === 'string' ? key : JSON.stringify(key)),
-		i18n: { language: 'en', changeLanguage: vi.fn() },
+// Mock useTranslator to avoid issues since global translator is not set.
+// @todo make the translator compatible and test translations.
+vi.mock('@syncengine/hooks/useTranslator', () => ({
+	useTranslator: () => ({
+		t: (key, params = {}) => {
+			if (typeof key === 'string') return key;
+			return JSON.stringify(key);
+		},
 	}),
-	Trans: ({ children }) => children,
 }));
 
 // Mock react-bootstrap to avoid portal/DOM issues in tests
