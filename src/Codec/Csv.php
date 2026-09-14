@@ -114,7 +114,15 @@ class Csv extends CodecModel
 			],
 			'headers'         => [
 				'label'      => $this->trans( 'Headers columns' ),
-				'help'       => $this->trans( 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["headers" => ["a", "b", "c"]]` then `serialize($data, "csv", $options)` returns `a,b,c\n1,2,3`' ),
+				'help'       => $this->trans(
+					'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}',
+					[
+						'val1' => '`$data = ["c" => 3, "a" => 1, "b" => 2]`',
+						'val2' => '`$options = ["headers" => ["a", "b", "c"]]`',
+						'func' => '`serialize($data, "csv", $options)`',
+						'result' => '`a,b,c\n1,2,3`'
+					]
+				),
 				'type'       => 'text',
 				'multiple'   => true,
 				'default'    => $defaults['headers'] ?? null,
