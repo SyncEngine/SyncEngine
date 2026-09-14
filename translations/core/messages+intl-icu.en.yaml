@@ -937,5 +937,76 @@ trusted: trusted
 'Not configured': 'Not configured'
 'No tasks configured': 'No tasks configured'
 Authorization: Authorization
+Delimiter: Delimiter
+'Sets the field delimiter separating values (one character only)': 'Sets the field delimiter separating values (one character only)'
+Enclosure: Enclosure
+'Sets the field enclosure (one character only)': 'Sets the field enclosure (one character only)'
+'Escape character': 'Escape character'
+'Sets the escape character (at most one character)': 'Sets the escape character (at most one character)'
+'End of line': 'End of line'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Sets the character(s) used to mark the end of each line in the CSV file'
+'Headers columns': 'Headers columns'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}'
+'Key separator': 'Key separator'
+"Sets the separator for array's keys during its flattening": "Sets the separator for array's keys during its flattening"
+'Escape formula': 'Escape formula'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Escapes fields containing formulas by prepending them with a `\t` character'
+'No headers': 'No headers'
+'Disables header in the encoded CSV': 'Disables header in the encoded CSV'
+'As collection': 'As collection'
+'Always returns results as a collection, even if only one line is decoded.': 'Always returns results as a collection, even if only one line is decoded.'
+'Output UTF8 Bom key': 'Output UTF8 Bom key'
+File: File
+'Handle binary file data (raw bytes)': 'Handle binary file data (raw bytes)'
+Extension: Extension
+'Mime type': 'Mime type'
+'Sets the XML version attribute': 'Sets the XML version attribute'
+Encoding: Encoding
+'Sets the XML encoding attribute': 'Sets the XML encoding attribute'
+'Root node': 'Root node'
+'Sets the root node name': 'Sets the root node name'
+'Format output': 'Format output'
+'If set to true, formats the generated XML with line breaks and indentation': 'If set to true, formats the generated XML with line breaks and indentation'
+Standalone: Standalone
+'Adds standalone attribute in the generated XML': 'Adds standalone attribute in the generated XML'
+'Always returns results as a collection, even if only one line is decoded': 'Always returns results as a collection, even if only one line is decoded'
+'Remove empty tags': 'Remove empty tags'
+'Remove all empty tags in the generated XML': 'Remove all empty tags in the generated XML'
+'Type-cast attributes': 'Type-cast attributes'
+'This provides the ability to forget the attribute type casting': 'This provides the ability to forget the attribute type casting'
+'Inline dump': 'Inline dump'
+Indentation: Indentation
+'Number of spaces': 'Number of spaces'
+Documentation: Documentation
+'Leave empty to keep current password.': 'Leave empty to keep current password.'
+'New Password': 'New Password'
+Scopes: Scopes
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Scopes define what this API token can access. Each scope grants a specific permission.'
+Restrictions: Restrictions
+"Restrictions limit an API key's usage and improves security": "Restrictions limit an API key's usage and improves security"
+'Restrict by IP addresses': 'Restrict by IP addresses'
+'Restrict by host domains': 'Restrict by host domains'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.'
+'New password': 'New password'
+'Repeat Password': 'Repeat Password'
+'The password fields must match.': 'The password fields must match.'
+Debug: Debug
+'Change your app secret. Will autogenerate if empty.': 'Change your app secret. Will autogenerate if empty.'
+Secret: Secret
+Mailer: Mailer
+'Email sender': 'Email sender'
+'Send email logs to': 'Send email logs to'
+'Restrict everything by IP': 'Restrict everything by IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Separate multiple IP addresses by comma, admin IP addresses are included.'
+'Worker limit': 'Worker limit'
+'Max workers allowed running at the same time.': 'Max workers allowed running at the same time.'
+'Worker Queue limit': 'Worker Queue limit'
+'Max queued items a single worker will handle.': 'Max queued items a single worker will handle.'
+'Worker Time limit': 'Worker Time limit'
+'Max seconds a single worker will run.': 'Max seconds a single worker will run.'
+'Worker Memory limit': 'Worker Memory limit'
+'Max memory (MB) a single worker is allowed to use.': 'Max memory (MB) a single worker is allowed to use.'
+'I accept the license terms and conditions': 'I accept the license terms and conditions'
+'Not required': 'Not required'
 Inactive: Inactive
 Active: Active
