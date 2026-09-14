@@ -12,6 +12,7 @@ import { messages, localeFallbacks } from '../var/translations/index.js';
 
 const translator = createTranslator({
     messages,
+	locale: window.SyncEngine.preferences.language || 'en',
     localeFallbacks,
 });
 
