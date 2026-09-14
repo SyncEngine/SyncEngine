@@ -33,10 +33,9 @@ class SerializationSanitizer
 		], $options );
 
 		if ( is_iterable( $data ) ) {
-			foreach ( $data as &$value ) {
-				$value = $this->sanitize( $value, $options );
+			foreach ( $data as $key => $value ) {
+				$data[ $key ] = $this->sanitize( $value, $options );
 			}
-			unset( $value ); // Remove reference to avoid accidental modifications.
 		}
 
 		if ( is_resource( $data ) && ! empty( $options[ self::SANITIZE_RESOURCE ] ) ) {
