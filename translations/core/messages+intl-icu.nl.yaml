@@ -961,7 +961,7 @@ File: Bestand
 Extension: Extensie
 'Mime type': 'MIME-type'
 'Sets the XML version attribute': 'Stelt het XML-versie-attribuut in'
-Encoding:codering
+Encoding: Codering
 'Sets the XML encoding attribute': 'Stelt het XML-coderingsattribuut in'
 'Root node': 'Hoedknop'
 'Sets the root node name': 'Stelt de naam van de hoofdknop in'
