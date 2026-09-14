@@ -13,15 +13,19 @@ use SyncEngine\Service\Preferences;
 
 class PreferencesFormType extends AbstractType
 {
+	private array $availableLocales;
+
 	public function __construct(
 		private readonly Preferences $preferences,
 		#[Autowire( '%syncengine.dir.translations%' )]
 		private string $transDir = __DIR__ . '/../../translations',
 	) {}
 
-	public function buildForm( FormBuilderInterface $builder, array $options ): void
+	public function getAvailableLanguages()
 	{
-		$localeChoices = [];
+		if ( isset ( $this->availableLocales ) ) {
+			return $this->availableLocales;
+		}
 
 		$finder = new Finder();
 		$coreTranslations = $finder->in($this->transDir)->files()->name( 'messages*');
@@ -32,6 +36,15 @@ class PreferencesFormType extends AbstractType
 				$availableLocales[ $matches[1] ] = true;
 			}
 		}
+
+		$this->availableLocales = $availableLocales;
+		return $availableLocales;
+	}
+
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
+	{
+		$localeChoices = [];
+		$availableLocales = $this->getAvailableLanguages();
 
 		foreach ( Locales::getNames() as $locale => $name ) {
 			// Fix this if statement to check if the locale is in the core translations.
@@ -53,9 +66,15 @@ class PreferencesFormType extends AbstractType
 
 	public function configureOptions( OptionsResolver $resolver ): void
 	{
+		$availableLocales = $this->getAvailableLanguages();
+		$userLocale       = $this->preferences->get('locale');
+		if ( ! isset( $availableLocales[ $userLocale ] ) ) {
+			$userLocale = 'en';
+		}
+
 		$resolver->setDefaults( [
 			'data' => [
-				'locale' => $this->preferences->get('locale'),
+				'locale' => $userLocale,
 			],
 		] );
 	}
