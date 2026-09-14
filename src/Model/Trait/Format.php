@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\DataFormatter;
 
@@ -82,7 +83,7 @@ trait Format
 		}
 
 		return [
-			'label'     => $this->trans( 'Format' ),
+			'label'     => DefaultController::getContainer()->get( 'translator' )->trans( 'Format' ),
 			'type'      => 'codec',
 			'name'      => 'format',
 			'default'   => $defaults['format'] ?? null,
