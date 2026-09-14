@@ -709,9 +709,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'label'   => $this->trans( 'Type' ),
 						'type'    => 'select',
 						'choices' => [
-							''        => $this->trans( 'Success and data' ),
+							''        => $this->trans( 'Success status and data' ),
 							'data'    => $this->trans( 'Data only' ),
-							'success' => $this->trans( 'Success only' ),
+							'success' => $this->trans( 'Success status only' ),
 							'file'    => $this->trans( 'File Download' ),
 						],
 					],
