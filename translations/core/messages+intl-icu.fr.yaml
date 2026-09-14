@@ -946,7 +946,7 @@ Enclosure: Encadrement
 'End of line': 'Fin de ligne'
 'Sets the character(s) used to mark the end of each line in the CSV file': 'Définit le(s) caractère(s) utilisé(s) pour marquer la fin de chaque ligne dans le fichier CSV'
 "Headers columns": "Colonnes d'en-tête"
-'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': "Définit l'ordre des colonnes d\'en-tête et de données. Ex. : si {val1} et {val2} alors {func} retourne {result}"
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': "Définit l'ordre des colonnes d'en-tête et de données. Ex. : si {val1} et {val2} alors {func} retourne {result}"
 'Key separator': 'Séparateur de clé'
 "Sets the separator for array's keys during its flattening": "Définit le séparateur pour les clés du tableau lors de son aplatissement"
 "Escape formula": "Formule d'échappement"
