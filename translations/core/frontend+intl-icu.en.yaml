@@ -1,0 +1,167 @@
+'Add conditions group': 'Add conditions group'
+'Add field': 'Add field'
+'All categories': 'All categories'
+Append: Append
+'Are you sure?': 'Are you sure?'
+Authorization: Authorization
+Auto: Auto
+'Available blueprints': 'Available blueprints'
+'Avg. memory per iteration': 'Avg. memory per iteration'
+'Avg. time per iteration': 'Avg. time per iteration'
+Cancel: Cancel
+'Cannot parse JSON': 'Cannot parse JSON'
+'Cannot parse value': 'Cannot parse value'
+Close: Close
+'Close editor': 'Close editor'
+'Column key/name': 'Column key/name'
+'Column type': 'Column type'
+Combine: Combine
+Compact: Compact
+Compare: Compare
+Config: Config
+'Configure all fields manually': 'Configure all fields manually'
+Confirm: Confirm
+Connect: Connect
+Context: Context
+Copy: Copy
+'Copy as tag': 'Copy as tag'
+'Copy conditions': 'Copy conditions'
+Core: Core
+Create: Create
+'Create and continue': 'Create and continue'
+'Create new': 'Create new'
+Custom: Custom
+Dark: Dark
+Data: Data
+Default: Default
+'Define request params to be used within preview.': 'Define request params to be used within preview.'
+'Define request query to be used within preview.': 'Define request query to be used within preview.'
+'Define static variables to be used within preview.': 'Define static variables to be used within preview.'
+Delete: Delete
+Description: Description
+Disable: Disable
+Disabled: Disabled
+Display: Display
+'Dry Fetch and Run (safe)': 'Dry Fetch and Run (safe)'
+'Dry Run (safe)': 'Dry Run (safe)'
+Edit: Edit
+'Edit Routine': 'Edit Routine'
+Enable: Enable
+End: End
+Error: Error
+Errors: Errors
+Export: Export
+'Fetch and Run': 'Fetch and Run'
+Field: Field
+'Field Key': 'Field Key'
+'Field Label': 'Field Label'
+'Field params': 'Field params'
+Finish: Finish
+Flow: Flow
+Format: Format
+From: From
+'Grouped diagnostics': 'Grouped diagnostics'
+Key: Key
+Label: Label
+Light: Light
+'Load more': 'Load more'
+Loading: Loading
+'Loading ...': 'Loading ...'
+Logs: Logs
+Manual: Manual
+'Memory usage before > after': 'Memory usage before > after'
+Merge: Merge
+Modules: Modules
+'Move down': 'Move down'
+'Move up': 'Move up'
+'Multiline content detected, please select paste method.': 'Multiline content detected, please select paste method.'
+Name: Name
+New: New
+'No blueprints available': 'No blueprints available'
+'No fields found': 'No fields found'
+'No items found': 'No items found'
+'No results found.': 'No results found.'
+'No tasks configured': 'No tasks configured'
+'No {entityType} selected': 'No {entityType} selected'
+'Not configured': 'Not configured'
+Operator: Operator
+Other: Other
+Override: Override
+'Peak memory increase': 'Peak memory increase'
+'Peak memory usage': 'Peak memory usage'
+'Peak memory usage by trace': 'Peak memory usage by trace'
+'Per page': 'Per page'
+'Please provide a webservice mode': 'Please provide a webservice mode'
+Preview: Preview
+Raw: Raw
+'Read only': 'Read only'
+Remove: Remove
+'Remove group': 'Remove group'
+Request: Request
+'Request Params': 'Request Params'
+'Request Query': 'Request Query'
+Required: Required
+Result: Result
+Routine: Routine
+Run: Run
+Save: Save
+'Save and close': 'Save and close'
+'Save and continue': 'Save and continue'
+'Search {entity}...': 'Search {entity}...'
+'Secret already exists, are you sure you want to override it?': 'Secret already exists, are you sure you want to override it?'
+Select: Select
+'Select Blueprint': 'Select Blueprint'
+'Select Codec': 'Select Codec'
+'Select Column': 'Select Column'
+'Select Task': 'Select Task'
+'Select Webservice': 'Select Webservice'
+'Select a blueprint or configure manually': 'Select a blueprint or configure manually'
+'Select field': 'Select field'
+'Select tag': 'Select tag'
+'Select {entity}': 'Select {entity}'
+Send: Send
+'Send data with context': 'Send data with context'
+'Send request?': 'Send request?'
+Set: Set
+'Set and close': 'Set and close'
+Showing: Showing
+Skipped: Skipped
+Source: Source
+Start: Start
+'Step #{number}': 'Step #{number}'
+Storage: Storage
+Success: Success
+'Switch to custom input': 'Switch to custom input'
+'Switch to predefined options': 'Switch to predefined options'
+'Switch to secret': 'Switch to secret'
+Update: Update
+'Update and close': 'Update and close'
+'Update full scope and close': 'Update full scope and close'
+'Use current context': 'Use current context'
+'User defined blueprints': 'User defined blueprints'
+Value: Value
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': 'Value contains leading/trailing spaces which can potentially cause unexpected behavior.'
+Variables: Variables
+'View full log': 'View full log'
+'Webservice has no fields': 'Webservice has no fields'
+'Webservice not found': 'Webservice not found'
+'You will loose your current configuration': 'You will loose your current configuration'
+contains: contains
+'contains (strict)': 'contains (strict)'
+'ends with': 'ends with'
+'has key': 'has key'
+'in (strict)': 'in (strict)'
+'is empty': 'is empty'
+'is set': 'is set'
+'not contains': 'not contains'
+'not contains (strict)': 'not contains (strict)'
+'not empty': 'not empty'
+'not ends with': 'not ends with'
+'not has key': 'not has key'
+'not in': 'not in'
+'not in (strict)': 'not in (strict)'
+'not set': 'not set'
+'not starts with': 'not starts with'
+regex: regex
+'starts with': 'starts with'
+'{name} Types': '{name} Types'
