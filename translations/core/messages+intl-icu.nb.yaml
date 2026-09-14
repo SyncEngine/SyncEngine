@@ -933,3 +933,78 @@ Back: Tilbake
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: betrodd
+'Has conditions': 'Har betingelser'
+'Not configured': 'Ikke konfigurert'
+'No tasks configured': 'Ingen oppgaver konfigurert'
+Authorization: 'Autentisering'
+Delimiter: Avgrenser
+'Sets the field delimiter separating values (one character only)': 'Angir feltavgrensningen som skiller verdier (kun ett tegn)'
+Enclosure: Innkapsling
+'Sets the field enclosure (one character only)': 'Angir feltinnkapslingen (kun ett tegn)'
+'Escape character': 'Flukt tegn'
+'Sets the escape character (at most one character)': 'Angir flukttegnet (høyst ett tegn)'
+'End of line': 'Linjeslutt'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Angir tegnet/tegnene som brukes til å markere slutten av hver linje i CSV-filen'
+'Headers columns': 'Overskriftskolonner'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Angir rekkefølgen av overskrifts- og datakolonner. F.eks.: hvis {val1} og {val2} så returnerer {func} {result}'
+'Key separator': 'Nøkkelskilletegn'
+"Sets the separator for array's keys during its flattening": "Angir skilletegnet for arrayets nøkler under flatlegging"
+'Escape formula': 'Flukt formel'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Flukter felt som inneholder formler ved å prefikse dem med et `\t` tegn'
+'No headers': 'Ingen overskrifter'
+'Disables header in the encoded CSV': 'Deaktiverer overskrift i det kodede CSV-et'
+'As collection': 'Som samling'
+'Always returns results as a collection, even if only one line is decoded.': 'Returnerer alltid resultater som en samling, selv om bare én linje er dekodet.'
+'Output UTF8 Bom key': 'Utf8 BOM-utgangsnøkkel'
+File: Fil
+'Handle binary file data (raw bytes)': 'Håndter binære fildata (rå bytes)'
+Extension: Utvidelse
+'Mime type': 'MIME-type'
+'Sets the XML version attribute': 'Angir XML-versjonattributtet'
+Encoding: Kodning
+'Sets the XML encoding attribute': 'Angir XML-kodingsattributtet'
+'Root node': 'Rotnode'
+'Sets the root node name': 'Angir rot-node-navn'
+'Format output': 'Formater utdata'
+'If set to true, formats the generated XML with line breaks and indentation': 'Hvis satt til true, formaterer det genererte XML-et med linjeskift og innrykk'
+Standalone: Selvstendig
+'Adds standalone attribute in the generated XML': 'Legger til standalone-attributt i det genererte XML-et'
+'Always returns results as a collection, even if only one line is decoded': 'Returnerer alltid resultater som en samling, selv om bare én linje er dekodet'
+'Remove empty tags': 'Fjern tomme tagger'
+'Remove all empty tags in the generated XML': 'Fjern alle tomme tagger i det genererte XML-et'
+'Type-cast attributes': 'Typekaster attributter'
+'This provides the ability to forget the attribute type casting': 'Dette gir muligheten til å glemme attributttype-kasting'
+'Inline dump': 'Inline dump'
+Indentation: Innrykk
+'Number of spaces': 'Antall mellomrom'
+Documentation: Dokumentasjon
+'Leave empty to keep current password.': 'La stå tom for å beholde gjeldende passord.'
+'New Password': 'Nytt passord'
+Scopes: Omfang
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Omfang definerer hva denne API-token kan få tilgang til. Hvert omfang gir en spesifikk tillatelse.'
+Restrictions: Begrensninger
+"Restrictions limit an API key's usage and improves security": "Begrensninger begrenser bruken av en API-nøkkel og forbedrer sikkerheten"
+'Restrict by IP addresses': 'Begrens etter IP-adresser'
+'Restrict by host domains': 'Begrens etter vertsdomener'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin"-headeren kan bli spoofet, så dette er mer en bekvemmelighetstjekk enn et sikkerhetstiltak.'
+'New password': 'Nytt passord'
+'Repeat Password': 'Gjenta passord'
+'The password fields must match.': 'Passordfeltene må matche.'
+Debug: Feilsøking
+'Change your app secret. Will autogenerate if empty.': 'Endre din app-hemmelighet. Vil automatisk generere hvis tom.'
+Secret: Hemmelighet
+Mailer: Mailer
+'Email sender': 'E-post avsender'
+'Send email logs to': 'Send e-post-logger til'
+'Restrict everything by IP': 'Begrens alt etter IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Separer flere IP-adresser med komma, admin IP-adresser er inkludert.'
+'Worker limit': 'Arbeidergrense'
+'Max workers allowed running at the same time.': 'Maks. arbeidere tillatt til å kjøre samtidig.'
+'Worker Queue limit': 'Arbeiderkøgrense'
+'Max queued items a single worker will handle.': 'Maks. køede elementer en enkelt arbeider vil håndtere.'
+'Worker Time limit': 'Arbeider-tidsgrense'
+'Max seconds a single worker will run.': 'Maks. sekunder en enkelt arbeider vil kjøre.'
+'Worker Memory limit': 'Arbeider-minnegrense'
+'Max memory (MB) a single worker is allowed to use.': 'Maks. minne (MB) en enkelt arbeider er tillatt å bruke.'
+'I accept the license terms and conditions': 'Jeg aksepterer lisensvilkårene'
+'Not required': 'Ikke påkrevd'

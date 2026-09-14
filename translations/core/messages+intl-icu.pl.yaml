@@ -933,3 +933,78 @@ Back: Wróć
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: zaufany
+'Has conditions': 'Ma warunki'
+'Not configured': 'Nie skonfigurowane'
+'No tasks configured': 'Nie skonfigurowano zadań'
+Authorization: 'Autoryzacja'
+Delimiter: Separator pól
+'Sets the field delimiter separating values (one character only)': 'Ustawia separator pól oddzielający wartości (tylko jeden znak)'
+Enclosure: Otoczenie pól
+'Sets the field enclosure (one character only)': 'Ustawia otoczenie pola (tylko jeden znak)'
+'Escape character': 'Znak escape'
+'Sets the escape character (at most one character)': 'Ustawia znak escape (najwyżej jeden znak)'
+'End of line': 'Koniec linii'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Ustawia znak(y) używane do oznaczenia końca każdej linii w pliku CSV'
+'Headers columns': 'Kolumny nagłówków'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Ustawia kolejność kolumn nagłówka i danych. Np.: jeśli {val1} i {val2} to {func} zwraca {result}'
+'Key separator': 'Separator kluczy'
+"Sets the separator for array's keys during its flattening": "Ustawia separator dla kluczy tablicy podczas jej spłaszczania"
+'Escape formula': 'Formuła escape'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Eskapuje pola zawierające formuły, dodając im na początku znak `\t`'
+'No headers': 'Bez nagłówków'
+'Disables header in the encoded CSV': 'Wyłącza nagłówek w zakodowanym CSV'
+'As collection': 'Jako kolekcja'
+'Always returns results as a collection, even if only one line is decoded.': 'Zawsze zwraca wyniki jako kolekcję, nawet jeśli tylko jedna linia jest dekodowana.'
+'Output UTF8 Bom key': 'Klucz wyjścia UTF8 BOM'
+File: Plik
+'Handle binary file data (raw bytes)': 'Obsługa danych pliku binarnego (surowe bajty)'
+Extension: Rozszerzenie
+'Mime type': 'Typ MIME'
+'Sets the XML version attribute': 'Ustawia atrybut wersji XML'
+Encoding: Kodowanie
+'Sets the XML encoding attribute': 'Ustawia atrybut kodowania XML'
+'Root node': 'Korzeń węzła'
+'Sets the root node name': 'Ustawia nazwę korzenia węzła'
+'Format output': 'Formatuj wyjście'
+'If set to true, formats the generated XML with line breaks and indentation': 'Jeśli ustawione na true, formatuje wygenerowany XML z łamaniami linii i wcięciami'
+Standalone: Samodzielny
+'Adds standalone attribute in the generated XML': 'Dodaje atrybut standalone w wygenerowanym XML'
+'Always returns results as a collection, even if only one line is decoded': 'Zawsze zwraca wyniki jako kolekcję, nawet jeśli tylko jedna linia jest dekodowana'
+'Remove empty tags': 'Usuń puste tagi'
+'Remove all empty tags in the generated XML': 'Usuń wszystkie puste tagi w wygenerowanym XML'
+'Type-cast attributes': 'Typuj atrybuty'
+'This provides the ability to forget the attribute type casting': 'To daje możliwość zapamiętania typowania atrybutów'
+'Inline dump': 'Dump inline'
+Indentation: Wcięcie
+'Number of spaces': 'Liczba spacji'
+Documentation: Dokumentacja
+'Leave empty to keep current password.': 'Pozostaw puste, aby zachować bieżące hasło.'
+'New Password': 'Nowe hasło'
+Scopes: Zakresy
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Zakresy definiują, co ten token API może uzyskać dostęp. Każdy zakres przyznaje konkretną uprawnienie.'
+Restrictions: Ograniczenia
+"Restrictions limit an API key's usage and improves security": "Ograniczenia ograniczają użycie klucza API i poprawiają bezpieczeństwo"
+'Restrict by IP addresses': 'Ogranicz według adresów IP'
+'Restrict by host domains': 'Ogranicz według domen hosta'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'Nagłówek "origin" może być sfabrykowany, więc to jest bardziej kontrolą wygody niż środkiem bezpieczeństwa.'
+'New password': 'Nowe hasło'
+'Repeat Password': 'Powtórz hasło'
+'The password fields must match.': 'Pola haseł muszą się zgadzać.'
+Debug: Debugowanie
+'Change your app secret. Will autogenerate if empty.': 'Zmień swój secret aplikacji. Zostanie wygenerowany automatycznie, jeśli puste.'
+Secret: Sekret
+Mailer: Wysyłacz
+'Email sender': 'Nadawca e-maila'
+'Send email logs to': 'Wyślij logi e-mail do'
+'Restrict everything by IP': 'Ogranicz wszystko według IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Oddziel wiele adresów IP przecinkiem, adresy IP administratora są uwzględnione.'
+'Worker limit': 'Limit pracownika'
+'Max workers allowed running at the same time.': 'Maksymalna liczba pracowników dozwolonych do działania jednocześnie.'
+'Worker Queue limit': 'Limit kolejki pracownika'
+'Max queued items a single worker will handle.': 'Maksymalna liczba elementów w kolejce, które jeden pracownik obsłuży.'
+'Worker Time limit': 'Limit czasu pracownika'
+'Max seconds a single worker will run.': 'Maksymalna liczba sekund, przez które jeden pracownik będzie działał.'
+'Worker Memory limit': 'Limit pamięci pracownika'
+'Max memory (MB) a single worker is allowed to use.': 'Maksymalna pamięć (MB), którą jeden pracownik może użyć.'
+'I accept the license terms and conditions': 'Akceptuję warunki licencji'
+'Not required': 'Nie wymagane'

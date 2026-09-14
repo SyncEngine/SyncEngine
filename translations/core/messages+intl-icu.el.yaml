@@ -933,3 +933,78 @@ Back: Επιστροφή
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: αξιόπιστος
+'Has conditions': 'Έχει προϋποθέσεις'
+'Not configured': 'Δεν έχει διαμορφωθεί'
+'No tasks configured': 'Δεν έχουν οριστεί εργασίες'
+Authorization: 'Εξουσιαοδότηση'
+Delimiter: Διαχωριστικό
+'Sets the field delimiter separating values (one character only)': 'Ορίζει το διαχωριστικό πεδίου που διαχωρίζει τιμές (μόνο ένας χαρακτήρας)'
+Enclosure: Περίφραξη
+'Sets the field enclosure (one character only)': 'Ορίζει την περίφραξη πεδίου (μόνο ένας χαρακτήρας)'
+'Escape character': 'Χαρακτήρας διαφυγής'
+'Sets the escape character (at most one character)': 'Ορίζει τον χαρακτήρα διαφυγής (το πολύ ένας χαρακτήρας)'
+'End of line': 'Τέλος γραμμής'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Ορίζει τον/τους χαρακτήρα/ες που χρησιμοποιούνται για να σημάνουν το τέλος κάθε γραμμής στο αρχείο CSV'
+'Headers columns': 'Στήλες κεφαλίδων'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Ορίζει τη σειρά των στηλών κεφαλίδας και δεδομένων. Π.χ.: αν {val1} και {val2} τότε το {func} επιστρέφει {result}'
+'Key separator': 'Διαχωριστής κλειδιού'
+"Sets the separator for array's keys during its flattening": "Ορίζει τον διαχωριστή για τα κλειδιά του πίνακα κατά την εξομάλυνσή του"
+'Escape formula': 'Τύπος διαφυγής'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Κάνει escape των πεδίων που περιέχουν τύπους προσαρτώντας έναν χαρακτήρα `\t`'
+'No headers': 'Χωρίς κεφαλίδες'
+'Disables header in the encoded CSV': 'Απενεργοποιεί την κεφαλίδα στο κωδικοποιημένο CSV'
+'As collection': 'Ως συλλογή'
+'Always returns results as a collection, even if only one line is decoded.': 'Επιστρέφει πάντα τα αποτελέσματα ως συλλογή, ακόμα κι αν αποκωδικοποιηθεί μόνο μία γραμμή.'
+'Output UTF8 Bom key': 'Κλειδί εξόδου UTF8 BOM'
+File: Αρχείο
+'Handle binary file data (raw bytes)': 'Χειρισμός δυαδικών δεδομένων αρχείου (ωμά bytes)'
+Extension: Επέκταση
+'Mime type': 'Τύπος MIME'
+'Sets the XML version attribute': 'Ορίζει το χαρακτηριστικό έκδοσης XML'
+Encoding: Κωδικοποίηση
+'Sets the XML encoding attribute': 'Ορίζει το χαρακτηριστικό κωδικοποίησης XML'
+'Root node': 'Κομβείο ρίζας'
+'Sets the root node name': 'Ορίζει το όνομα του κομβείου ρίζας'
+'Format output': 'Μορφοποίηση εξόδου'
+'If set to true, formats the generated XML with line breaks and indentation': 'Αν οριστεί σε true, μορφοποιεί το δημιουργημένο XML με γραμμοδιασπάσεις και εσοχές'
+Standalone: Ανεξάρτητο
+'Adds standalone attribute in the generated XML': 'Προσθέτει το χαρακτηριστικό standalone στο δημιουργημένο XML'
+'Always returns results as a collection, even if only one line is decoded': 'Επιστρέφει πάντα τα αποτελέσματα ως συλλογή, ακόμα κι αν αποκωδικοποιηθεί μόνο μία γραμμή'
+'Remove empty tags': 'Αφαίρεση κενών ετικετών'
+'Remove all empty tags in the generated XML': 'Αφαιρεί όλες τις κενές ετικέτες στο δημιουργημένο XML'
+'Type-cast attributes': 'Μετατροπή τύπου χαρακτηριστικών'
+'This provides the ability to forget the attribute type casting': 'Αυτό παρέχει τη δυνατότητα να ξεχάσετε τον τύπο μετατροπής χαρακτηριστικών'
+'Inline dump': 'Ενσωματωμένη εκφόρτωση'
+Indentation: Εσοχή
+'Number of spaces': 'Αριθμός κενών'
+Documentation: Τεκμηρίωση
+'Leave empty to keep current password.': 'Αφήστε κενό για να διατηρήσετε τον τρέχοντα κωδικό.'
+'New Password': 'Νέος κωδικός'
+Scopes: Εμβέλεια
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Οι εμβέλειες ορίζουν τι μπορεί να προσπελάσει αυτό το token API. Κάθε εμβέλεια παρέχει μια συγκεκριμένη άδεια.'
+Restrictions: Περιορισμοί
+"Restrictions limit an API key's usage and improves security": "Οι περιορισμοίlimit την χρήση ενός κλειδιού API και βελτιώνουν την ασφάλεια"
+'Restrict by IP addresses': 'Περιορισμός κατά διευθύνσεις IP'
+'Restrict by host domains': 'Περιορισμός κατά domains φιλοξενίας'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'Η κεφαλίδα "origin" μπορεί να spoofed, οπότε αυτό είναι περισσότερο ένας έλεγχος ευκολίας παρά ένα μέτρο ασφαλείας.'
+'New password': 'Νέος κωδικός'
+'Repeat Password': 'Επαναλάβετε τον κωδικό'
+'The password fields must match.': 'Τα πεδία κωδικού πρέπει να ταιριάζουν.'
+Debug: Επισκευή
+'Change your app secret. Will autogenerate if empty.': 'Αλλάξτε το μυστικό της εφαρμογής σας. Θα αυτοδημιουργηθεί αν είναι κενό.'
+Secret: Μυστικό
+Mailer: Αποστολέας
+'Email sender': 'Αποστολέας email'
+'Send email logs to': 'Αποστολή log email σε'
+'Restrict everything by IP': 'Περιορισμός όλων κατά IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Διαχωρίστε πολλαπλές διευθύνσεις IP με κόμμα, οι διευθύνσεις IP διαχειριστή περιλαμβάνονται.'
+'Worker limit': 'Όριο εργαζομένου'
+'Max workers allowed running at the same time.': 'Μέγιστος αριθμός εργαζομένων που επιτρέπεται να τρέχουν ταυτόχρονα.'
+'Worker Queue limit': 'Όριο ουράς εργαζομένου'
+'Max queued items a single worker will handle.': 'Μέγιστος αριθμός στοιχείων ουράς που θα χειριστεί ένας μεμονωμένος εργαζόμενος.'
+'Worker Time limit': 'Χρονικό όριο εργαζομένου'
+'Max seconds a single worker will run.': 'Μέγιστος αριθμός δευτερολέπτων που θα τρέξει ένας μεμονωμένος εργαζόμενος.'
+'Worker Memory limit': 'Όριο μνήμης εργαζομένου'
+'Max memory (MB) a single worker is allowed to use.': 'Μέγιστη μνήμη (MB) που επιτρέπεται να χρησιμοποιήσει ένας μεμονωμένος εργαζόμενος.'
+'I accept the license terms and conditions': 'Δέχομαι τους όρους και προϋποθέσεις της άδειας'
+'Not required': 'Δεν απαιτείται'

@@ -933,3 +933,78 @@ Back: Zpět
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: důvěryhodný
+'Has conditions': 'Má podmínky'
+'Not configured': 'Není nakonfigurováno'
+'No tasks configured': 'Žádné úlohy nakonfigurovány'
+Authorization: 'Autorizace'
+Delimiter: Oddělovač
+'Sets the field delimiter separating values (one character only)': 'Nastaví oddělovač polí oddělující hodnoty (pouze jeden znak)'
+Enclosure: Uzavření
+'Sets the field enclosure (one character only)': 'Nastaví uzavření pole (pouze jeden znak)'
+'Escape character': 'Znak pro escapování'
+'Sets the escape character (at most one character)': 'Nastaví znak pro escapování (nejvýše jeden znak)'
+'End of line': 'Konec řádku'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Nastaví znak(y) používané k označení konce každého řádku v souboru CSV'
+'Headers columns': 'Sloupce záhlaví'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Nastaví pořadí sloupců záhlaví a dat. Např.: pokud {val1} a {val2}, pak {func} vrátí {result}'
+'Key separator': 'Oddělovač klíčů'
+"Sets the separator for array's keys during its flattening": "Nastaví oddělovač pro klíče pole při jeho zplošťování"
+'Escape formula': 'Escapovat vzorec'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Eskapuje pole obsahující vzorce jejich předchozím doplněním o znak `\t`'
+'No headers': 'Bez záhlaví'
+'Disables header in the encoded CSV': 'Zakáže záhlaví v zakódovaném CSV'
+'As collection': 'Jak kolekce'
+'Always returns results as a collection, even if only one line is decoded.': 'Vždy vrátí výsledky jako kolekci, i když je dekódován pouze jeden řádek.'
+'Output UTF8 Bom key': 'Klíč výstupu UTF8 BOM'
+File: Soubor
+'Handle binary file data (raw bytes)': 'Zpracování binárních dat souboru (сырые bajty)'
+Extension: Přípona
+'Mime type': 'Typ MIME'
+'Sets the XML version attribute': 'Nastaví atribut verze XML'
+Encoding: Kódování
+'Sets the XML encoding attribute': 'Nastaví atribut kódování XML'
+'Root node': 'Kořenový uzel'
+'Sets the root node name': 'Nastaví název kořenového uzlu'
+'Format output': 'Formátovat výstup'
+'If set to true, formats the generated XML with line breaks and indentation': 'Pokud je nastaveno na true, formátuje vygenerované XML s zalomením řádků a odsazením'
+Standalone: Samostatný
+'Adds standalone attribute in the generated XML': 'Přidá atribut standalone ve vygenerovaném XML'
+'Always returns results as a collection, even if only one line is decoded': 'Vždy vrátí výsledky jako kolekci, i když je dekódován pouze jeden řádek'
+'Remove empty tags': 'Odebrat prázdné tagy'
+'Remove all empty tags in the generated XML': 'Odebrat všechny prázdné tagy ve vygenerovaném XML'
+'Type-cast attributes': 'Přetypovat atributy'
+'This provides the ability to forget the attribute type casting': 'Toto poskytuje možnost zapomenout na přetypování atributů'
+'Inline dump': 'Vložený výpis'
+Indentation: Odsazení
+'Number of spaces': 'Počet mezer'
+Documentation: Dokumentace
+'Leave empty to keep current password.': 'Ponechte prázdné pro zachování aktuálního hesla.'
+'New Password': 'Nové heslo'
+Scopes: Rozsahy
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Rozsahy definují, co tento API token může přístupovat. Každý rozsah uděluje konkrétní oprávnění.'
+Restrictions: Omezení
+"Restrictions limit an API key's usage and improves security": "Omezení omezují použití API klíče a zlepšují zabezpečení"
+'Restrict by IP addresses': 'Omezit podle IP adres'
+'Restrict by host domains': 'Omezit podle domén hostitele'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'Hlavička "origin" může být padělána, takže toto je spíše pohodlná kontrola než bezpečnostní opatření.'
+'New password': 'Nové heslo'
+'Repeat Password': 'Opakovat heslo'
+'The password fields must match.': 'Pole hesel se musí shodovat.'
+Debug: Ladění
+'Change your app secret. Will autogenerate if empty.': 'Změňte své app secret. Bude automaticky vygenerováno, pokud je prázdné.'
+Secret: Tajemství
+Mailer: Odesílatel
+'Email sender': 'Odesílatel e-mailu'
+'Send email logs to': 'Posílat logy e-mailů na'
+'Restrict everything by IP': 'Omezit vše podle IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Oddělte více IP adres čárkou, admin IP adresy jsou zahrnuty.'
+'Worker limit': 'Limit pracovníka'
+'Max workers allowed running at the same time.': 'Maximální počet pracovníků povolených ke spuštění najednou.'
+'Worker Queue limit': 'Limit fronty pracovníka'
+'Max queued items a single worker will handle.': 'Maximální počet položek ve frontě, které jeden pracovník zpracuje.'
+'Worker Time limit': 'Časový limit pracovníka'
+'Max seconds a single worker will run.': 'Maximální počet sekund, po které jeden pracovník běží.'
+'Worker Memory limit': 'Paměťový limit pracovníka'
+'Max memory (MB) a single worker is allowed to use.': 'Maximální paměť (MB), kterou může jeden pracovník použít.'
+'I accept the license terms and conditions': 'Souhlasím s licenčními podmínkami'
+'Not required': 'Není vyžadováno'

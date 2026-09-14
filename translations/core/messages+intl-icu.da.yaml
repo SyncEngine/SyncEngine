@@ -933,3 +933,78 @@ Back: Tilbage
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: betroet
+'Has conditions': 'Har betingelser'
+'Not configured': 'Ikke konfigureret'
+'No tasks configured': 'Ingen opgaver konfigureret'
+Authorization: 'Autorisering'
+Delimiter: Afgrænser
+'Sets the field delimiter separating values (one character only)': 'Indstiller feltafgrænsningen der adskiller værdier (kun ét tegn)'
+Enclosure: Indkapsling
+'Sets the field enclosure (one character only)': 'Indstiller feltindkapslingen (kun ét tegn)'
+'Escape character': 'Flukt tegn'
+'Sets the escape character (at most one character)': 'Indstiller flukttegnet (højst ét tegn)'
+'End of line': 'Linjeafslutning'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Indstiller tegnet/tegnene der markerer slutningen af hver linje i CSV-filen'
+'Headers columns': 'Overskriftssøjler'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Indstiller rækkefølgen af overskrifts- og datasøjler. F.eks.: hvis {val1} og {val2} så returnerer {func} {result}'
+'Key separator': 'Nøgleafgrænser'
+"Sets the separator for array's keys during its flattening": "Indstiller afgrænsningen for arrayets nøgler under fladning"
+'Escape formula': 'Flukt formel'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Flukter felter der indeholder formler ved at præfixe dem med et `\t` tegn'
+'No headers': 'Ingen overskrifter'
+'Disables header in the encoded CSV': 'Deaktiverer overskrift i det kodede CSV'
+'As collection': 'Som samling'
+'Always returns results as a collection, even if only one line is decoded.': 'Returnerer altid resultater som en samling, selv hvis kun én linje er afkodet.'
+'Output UTF8 Bom key': 'Output UTF8 BOM-nøgle'
+File: Fil
+'Handle binary file data (raw bytes)': 'Håndter binære fildata (rå bytes)'
+Extension: Udvidelse
+'Mime type': 'MIME-type'
+'Sets the XML version attribute': 'Indstiller XML-version-attributten'
+Encoding: Kodning
+'Sets the XML encoding attribute': 'Indstiller XML-kodningsattributten'
+'Root node': 'Rodnode'
+'Sets the root node name': 'Indstiller rodnodenavn'
+'Format output': 'Formatér output'
+'If set to true, formats the generated XML with line breaks and indentation': 'Hvis sat til true, formaterer det genererede XML med linjeskift og indrykning'
+Standalone: Selvstændig
+'Adds standalone attribute in the generated XML': 'Tilføjer standalone-attribut i det genererede XML'
+'Always returns results as a collection, even if only one line is decoded': 'Returnerer altid resultater som en samling, selv hvis kun én linje er afkodet'
+'Remove empty tags': 'Fjern tomme tags'
+'Remove all empty tags in the generated XML': 'Fjern alle tomme tags i det genererede XML'
+'Type-cast attributes': 'Typekaster attributter'
+'This provides the ability to forget the attribute type casting': 'Dette giver mulighed for at glemme attributtype-kastning'
+'Inline dump': 'Inline dump'
+Indentation: Indrykning
+'Number of spaces': 'Antal mellemrum'
+Documentation: Dokumentation
+'Leave empty to keep current password.': 'Efterlad tomt for at beholde nuværende adgangskode.'
+'New Password': 'Ny adgangskode'
+Scopes: Omfange
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Omfange definerer hvad denne API-token kan tilgå. Hvert omfang giver en specifik tilladelse.'
+Restrictions: Begrænsninger
+"Restrictions limit an API key's usage and improves security": "Begrænsninger begrænser en API-nøgles brug og forbedrer sikkerheden"
+'Restrict by IP addresses': 'Begræns efter IP-adresser'
+'Restrict by host domains': 'Begræns efter vært-domæner'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin"-headeren kan blive spoofet, så dette er mere en bekvemmelighedstjek end et sikkerhedsforanstaltning.'
+'New password': 'Ny adgangskode'
+'Repeat Password': 'Gentag adgangskode'
+'The password fields must match.': 'Adgangskodefelterne skal matches.'
+Debug: Fejlsøgning
+'Change your app secret. Will autogenerate if empty.': 'Skift din app-hemmelighed. Vil automatisk generere hvis tom.'
+Secret: Hemmelighed
+Mailer: Mailer
+'Email sender': 'E-mail afsender'
+'Send email logs to': 'Send e-mail-logs til'
+'Restrict everything by IP': 'Begræns alt efter IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Adskil flere IP-adresser med komma, admin IP-adresser er inkluderet.'
+'Worker limit': 'Arbejdergrænse'
+'Max workers allowed running at the same time.': 'Maks. arbejdere tilladt til at køre samtidig.'
+'Worker Queue limit': 'Arbejderkøgrænse'
+'Max queued items a single worker will handle.': 'Maks. køede elementer en enkelt arbejder vil håndtere.'
+'Worker Time limit': 'Arbejders tidsgrænse'
+'Max seconds a single worker will run.': 'Maks. sekunder en enkelt arbejder vil køre.'
+'Worker Memory limit': 'Arbejder hukommelsesgrænse'
+'Max memory (MB) a single worker is allowed to use.': 'Maks. hukommelse (MB) en enkelt arbejder er tilladt at bruge.'
+'I accept the license terms and conditions': 'Jeg accepterer licensbetingelserne'
+'Not required': 'Ikke påkrævet'

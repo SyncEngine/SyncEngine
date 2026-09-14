@@ -933,3 +933,78 @@ Back: Retour
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: approuvé
+'Has conditions': 'A des conditions'
+'Not configured': 'Non configuré'
+'No tasks configured': 'Aucune tâche configurée'
+Authorization: 'Autorisation'
+Delimiter: Délimiteur
+'Sets the field delimiter separating values (one character only)': 'Définit le délimiteur de champ séparant les valeurs (un seul caractère)'
+Enclosure: Encadrement
+"Sets the field enclosure (one character only)": "Définit l'encadrement de champ (un seul caractère)"
+"Escape character": "Caractère d'échappement"
+"Sets the escape character (at most one character)": "Définit le caractère d'échappement (au plus un caractère)"
+'End of line': 'Fin de ligne'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Définit le(s) caractère(s) utilisé(s) pour marquer la fin de chaque ligne dans le fichier CSV'
+"Headers columns": "Colonnes d'en-tête"
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': "Définit l'ordre des colonnes d\'en-tête et de données. Ex. : si {val1} et {val2} alors {func} retourne {result}"
+'Key separator': 'Séparateur de clé'
+"Sets the separator for array's keys during its flattening": "Définit le séparateur pour les clés du tableau lors de son aplatissement"
+"Escape formula": "Formule d'échappement"
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Échappe les champs contenant des formules en les préfixant avec un caractère `\t`'
+"No headers": "Pas d'en-tête"
+"Disables header in the encoded CSV": "Désactive l'en-tête dans le CSV encodé"
+'As collection': 'Comme collection'
+'Always returns results as a collection, even if only one line is decoded.': 'Retourne toujours les résultats comme une collection, même si une seule ligne est décodée.'
+'Output UTF8 Bom key': 'Clé de sortie UTF8 BOM'
+File: Fichier
+'Handle binary file data (raw bytes)': 'Gérer les données de fichier binaire (octets bruts)'
+Extension: Extension
+'Mime type': 'Type MIME'
+"Sets the XML version attribute": "Définit l'attribut de version XML"
+Encoding: Encodage
+"Sets the XML encoding attribute": "Définit l'attribut d'encodage XML"
+'Root node': 'Nœud racine'
+'Sets the root node name': 'Définit le nom du nœud racine'
+'Format output': 'Formater la sortie'
+'If set to true, formats the generated XML with line breaks and indentation': 'Si défini à true, formate le XML généré avec des sauts de ligne et une indentation'
+Standalone: Autonome
+"Adds standalone attribute in the generated XML": "Ajoute l'attribut standalone dans le XML généré"
+'Always returns results as a collection, even if only one line is decoded': 'Retourne toujours les résultats comme une collection, même si une seule ligne est décodée'
+'Remove empty tags': 'Supprimer les balises vides'
+'Remove all empty tags in the generated XML': 'Supprimer toutes les balises vides dans le XML généré'
+'Type-cast attributes': 'Typage des attributs'
+"This provides the ability to forget the attribute type casting": "Cela permet d'oublier le typage des attributs"
+'Inline dump': 'Dépot en ligne'
+Indentation: Indentation
+"Number of spaces": "Nombre d'espaces"
+Documentation: Documentation
+'Leave empty to keep current password.': 'Laisser vide pour conserver le mot de passe actuel.'
+'New Password': 'Nouveau mot de passe'
+Scopes: Périmètres
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Les périmètres définissent ce que ce token API peut accéder. Chaque périmètre accorde une autorisation spécifique.'
+Restrictions: Restrictions
+"Restrictions limit an API key's usage and improves security": "Les restrictions limitent l'utilisation d'une clé API et améliorent la sécurité"
+'Restrict by IP addresses': 'Restreindre par adresses IP'
+"Restrict by host domains": "Restreindre par domaines d'hôtes"
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': "L'en-tête \"origin\" peut être falsifié, donc c'est plus une vérification de commodité qu'une mesure de sécurité."
+'New password': 'Nouveau mot de passe'
+'Repeat Password': 'Répéter le mot de passe'
+'The password fields must match.': 'Les champs de mot de passe doivent correspondre.'
+Debug: Débogage
+"Change your app secret. Will autogenerate if empty.": "Modifiez votre secret d'application. Sera auto-généré s'il est vide."
+Secret: Secret
+Mailer: Expéditeur
+"Email sender": "Expéditeur d'email"
+"Send email logs to": "Envoyer les logs d'email à"
+'Restrict everything by IP': 'Restreindre tout par IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Séparez plusieurs adresses IP par virgule, les adresses IP administrateur sont incluses.'
+'Worker limit': 'Limite de worker'
+"Max workers allowed running at the same time.": "Nombre maximum de workers autorisés à s'exécuter simultanément."
+"Worker Queue limit": "Limite de file d'attente de worker"
+"Max queued items a single worker will handle.": "Nombre maximum d'éléments en file qu'un seul worker traitera."
+'Worker Time limit': 'Limite de temps de worker'
+"Max seconds a single worker will run.": "Nombre maximum de secondes qu'un seul worker exécutera."
+'Worker Memory limit': 'Limite de mémoire de worker'
+"Max memory (MB) a single worker is allowed to use.": "Mémoire maximale (Mo) qu'un seul worker est autorisé à utiliser."
+"I accept the license terms and conditions": "J'accepte les termes et conditions de la licence"
+'Not required': 'Non requis'

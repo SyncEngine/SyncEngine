@@ -933,3 +933,78 @@ Back: Terug
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: vertrouwd
+'Has conditions': 'Heeft voorwaarden'
+'Not configured': 'Niet geconfigureerd'
+'No tasks configured': 'Geen taken geconfigureerd'
+Authorization: 'Autorisatie'
+Delimiter: Scheidingsteken
+'Sets the field delimiter separating values (one character only)': 'Stelt het veldscheidingsteken in dat waarden scheidt (slechts één teken)'
+Enclosure: Omkadering
+'Sets the field enclosure (one character only)': 'Stelt de veldomkadering in (slechts één teken)'
+'Escape character': 'Ontsnappingsteken'
+'Sets the escape character (at most one character)': 'Stelt het ontsnappingsteken in (maximaal één teken)'
+'End of line': 'Einde van regel'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Stelt het/them teken(s) in dat/die gebruikt wordt om het einde van elke regel in het CSV-bestand te markeren'
+'Headers columns': 'Koptekstkolommen'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Stelt de volgorde van de koptekst- en datakolommen in. Bijv.: als {val1} en {val2} dan retourneert {func} {result}'
+'Key separator': 'Sleutelscheidingsteken'
+"Sets the separator for array's keys during its flattening": "Stelt het scheidingsteken in voor de sleutels van de array tijdens het platdrukken"
+'Escape formula': 'Ontsnappingsformule'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Ontsnappt velden die formules bevatten door ze vooraf te laten gaan met een `\t`-teken'
+'No headers': 'Geen kopteksten'
+'Disables header in the encoded CSV': 'Schakelt de koptekst uit in het gecodeerde CSV-bestand'
+'As collection': 'Als collectie'
+'Always returns results as a collection, even if only one line is decoded.': 'Retourneert altijd resultaten als een collectie, zelfs als slechts één regel is gedecodeerd.'
+'Output UTF8 Bom key': 'UTF8 BOM-uitvoersleutel'
+File: Bestand
+'Handle binary file data (raw bytes)': 'Behandel binaire bestandgegevens (ruwe bytes)'
+Extension: Extensie
+'Mime type': 'MIME-type'
+'Sets the XML version attribute': 'Stelt het XML-versie-attribuut in'
+Encoding:codering
+'Sets the XML encoding attribute': 'Stelt het XML-coderingsattribuut in'
+'Root node': 'Hoedknop'
+'Sets the root node name': 'Stelt de naam van de hoofdknop in'
+'Format output': 'Uitvoer formatteren'
+'If set to true, formats the generated XML with line breaks and indentation': 'Als dit op true is ingesteld, wordt de gegenereerde XML opgemaakt met regelafbreking en inspringing'
+Standalone: Zelfstandig
+'Adds standalone attribute in the generated XML': 'Voegt het standalone-attribuut toe in de gegenereerde XML'
+'Always returns results as a collection, even if only one line is decoded': 'Retourneert altijd resultaten als een collectie, zelfs als slechts één regel is gedecodeerd'
+'Remove empty tags': 'Verwijder lege tags'
+'Remove all empty tags in the generated XML': 'Verwijder alle lege tags in de gegenereerde XML'
+'Type-cast attributes': 'Attributen typen'
+'This provides the ability to forget the attribute type casting': 'Dit biedt de mogelijkheid om het attributtype te vergeten'
+'Inline dump': 'Inline dump'
+Indentation: Inspringing
+'Number of spaces': 'Aantal spaties'
+Documentation: Documentatie
+'Leave empty to keep current password.': 'Laat leeg om het huidige wachtwoord te behouden.'
+'New Password': 'Nieuw wachtwoord'
+Scopes: Bereiken
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Bereiken definiëren waartoe dit API-token kan toegang krijgen. Elk bereik verleent een specifieke toestemming.'
+Restrictions: Beperkingen
+"Restrictions limit an API key's usage and improves security": "Beperkingen beperken het gebruik van een API-sleutel en verbeteren de veiligheid"
+'Restrict by IP addresses': 'Beperken op IP-adressen'
+'Restrict by host domains': 'Beperken op hostdomeinen'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'De "origin"-header kan worden gespoofd, dus dit is meer een gemakkelijke controle dan een veiligheidsmaatregel.'
+'New password': 'Nieuw wachtwoord'
+'Repeat Password': 'Wachtwoord herhalen'
+'The password fields must match.': 'De wachtwoordvelden moeten overeenkomen.'
+Debug: Debuggen
+'Change your app secret. Will autogenerate if empty.': 'Verander je app-secret. Wordt automatisch gegenereerd als het leeg is.'
+Secret: Geheim
+Mailer: Mailer
+'Email sender': 'E-mail afzender'
+'Send email logs to': 'Stuur e-maillogs naar'
+'Restrict everything by IP': 'Alles beperken op IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Scheid meerdere IP-adressen met een komma, beheerders-IP-adressen zijn inbegrepen.'
+'Worker limit': 'Werklimiet'
+'Max workers allowed running at the same time.': 'Maximale werklieden toegestaan om tegelijk te draaien.'
+'Worker Queue limit': 'Werkwachtrij limiet'
+'Max queued items a single worker will handle.': 'Maximale aantal items in de wachtrij dat een enkele werklied zal verwerken.'
+'Worker Time limit': 'Werklied tijdlimiet'
+'Max seconds a single worker will run.': 'Maximale seconden dat een enkele werklied zal draaien.'
+'Worker Memory limit': 'Werklied geheugenlimiet'
+'Max memory (MB) a single worker is allowed to use.': 'Maximale geheugen (MB) dat een enkele werklied mag gebruiken.'
+'I accept the license terms and conditions': 'Ik accepteer de licentievoorwaarden'
+'Not required': 'Niet vereist'

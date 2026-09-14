@@ -933,3 +933,78 @@ Back: Tillbaka
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: betrodd
+'Has conditions': 'Har villkor'
+'Not configured': 'Inte konfigurerad'
+'No tasks configured': 'Inga uppgifter konfigurerade'
+Authorization: 'Auktorisering'
+Delimiter: Avgränsare
+'Sets the field delimiter separating values (one character only)': 'Anger fältavgränsaren som separerar värden (endast ett tecken)'
+Enclosure: Inneslutning
+'Sets the field enclosure (one character only)': 'Anger fältinneslutningen (endast ett tecken)'
+'Escape character': 'Escape-tecken'
+'Sets the escape character (at most one character)': 'Anger escape-tecknet (högst ett tecken)'
+'End of line': 'Radslut'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Anger tecknet/tecknen som används för att markera slutet av varje rad i CSV-filen'
+'Headers columns': 'Rubrikkolumner'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Anger ordningen på rubrik- och datakolumner. T.ex.: om {val1} och {val2} så returnerar {func} {result}'
+'Key separator': 'Nyckelseparator'
+"Sets the separator for array's keys during its flattening": "Anger separationssteget för arrayens nycklar under dess utjämnning"
+'Escape formula': 'Escape-formel'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Escape-fält som innehåller formler genom att prefixa dem med ett `\t`-tecken'
+'No headers': 'Inga rubriker'
+'Disables header in the encoded CSV': 'Avaktiverar rubrik i det koderade CSV-et'
+'As collection': 'Som samling'
+'Always returns results as a collection, even if only one line is decoded.': 'Returnerar alltid resultat som en samling, även om endast en rad är avkodad.'
+'Output UTF8 Bom key': 'UTF8 BOM-utmatningsnyckel'
+File: Fil
+'Handle binary file data (raw bytes)': 'Hantera binär fildata (rå bytes)'
+Extension: Tillägg
+'Mime type': 'MIME-typ'
+'Sets the XML version attribute': 'Anger XML-versionattributet'
+Encoding: Kodning
+'Sets the XML encoding attribute': 'Anger XML-kodningsattributet'
+'Root node': 'Rotnod'
+'Sets the root node name': 'Anger rot-nodnamn'
+'Format output': 'Formatera utdata'
+'If set to true, formats the generated XML with line breaks and indentation': 'Om satt till true, formaterar den genererade XML:en med radbrytningar och indragning'
+Standalone: Självständig
+'Adds standalone attribute in the generated XML': 'Lägger till standalone-attribut i den genererade XML:en'
+'Always returns results as a collection, even if only one line is decoded': 'Returnerar alltid resultat som en samling, även om endast en rad är avkodad'
+'Remove empty tags': 'Ta bort tomma taggar'
+'Remove all empty tags in the generated XML': 'Ta bort alla tomma taggar i den genererade XML:en'
+'Type-cast attributes': 'Typa attribut'
+'This provides the ability to forget the attribute type casting': 'Detta ger möjligheten att glömma attributtypning'
+'Inline dump': 'Inline dump'
+Indentation: Indragning
+'Number of spaces': 'Antal mellanslag'
+Documentation: Dokumentation
+'Leave empty to keep current password.': 'Lämna tomt för att behålla nuvarande lösenord.'
+'New Password': 'Nytt lösenord'
+Scopes: Omfattningar
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Omfattningar definierar vad denna API-token kan komma åt. Varje omfattning ger en specifik behörighet.'
+Restrictions: Begränsningar
+"Restrictions limit an API key's usage and improves security": "Begränsningar begränsar användningen av en API-nyckel och förbättrar säkerheten"
+'Restrict by IP addresses': 'Begränsa efter IP-adresser'
+'Restrict by host domains': 'Begränsa efter värdedomäner'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin"-headern kan bli spoofad, så detta är mer en bekvämlighetskontroll än en säkerhetsåtgärd.'
+'New password': 'Nytt lösenord'
+'Repeat Password': 'Upprepa lösenord'
+'The password fields must match.': 'Lösenordsfälten måste matcha.'
+Debug: Felsökning
+'Change your app secret. Will autogenerate if empty.': 'Ändra din app-hemlighet. Kommer att automatiskt genereras om tom.'
+Secret: Hemlighet
+Mailer: Mailer
+'Email sender': 'E-post avsändare'
+'Send email logs to': 'Skicka e-post-loggar till'
+'Restrict everything by IP': 'Begränsa allt efter IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Separera flera IP-adresser med komma, administratörs-IP-adresser är inkluderade.'
+'Worker limit': 'Arbetsgräns'
+'Max workers allowed running at the same time.': 'Maximalt antal arbetare tillåtna att köra samtidigt.'
+'Worker Queue limit': 'Arbetarkögräns'
+'Max queued items a single worker will handle.': 'Maximalt antal köade objekt som en enskild arbetare kommer att hantera.'
+'Worker Time limit': 'Arbetares tidsgräns'
+'Max seconds a single worker will run.': 'Maximalt antal sekunder som en enskild arbetare kommer att köra.'
+'Worker Memory limit': 'Arbetares minnesgräns'
+'Max memory (MB) a single worker is allowed to use.': 'Maximalt minne (MB) som en enskild arbetare är tillåten att använda.'
+'I accept the license terms and conditions': 'Jag accepterar licensvillkoren'
+'Not required': 'Ej krävd'

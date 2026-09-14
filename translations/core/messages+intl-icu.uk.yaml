@@ -933,3 +933,78 @@ Back: Назад
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: довірених
+'Has conditions': 'Має умови'
+'Not configured': 'Не налаштовано'
+'No tasks configured': 'Задачі не налаштовані'
+Authorization: 'Авторизація'
+Delimiter: Роздільник
+'Sets the field delimiter separating values (one character only)': 'Встановлює роздільник полів, що відокремлює значення (лише один символ)'
+Enclosure: Обмеження
+'Sets the field enclosure (one character only)': 'Встановлює обмеження поля (лише один символ)'
+'Escape character': 'Символ екранування'
+'Sets the escape character (at most one character)': 'Встановлює символ екранування (не більше одного символу)'
+'End of line': 'Кінець рядка'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Встановлює символ(и), що використовується для позначення кінця кожного рядка у файлі CSV'
+'Headers columns': 'Стовпці заголовків'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Встановлює порядок стовпців заголовка та даних. Напр.: якщо {val1} та {val2}, то {func} повертає {result}'
+'Key separator': 'Роздільник ключів'
+"Sets the separator for array's keys during its flattening": "Встановлює роздільник для ключів масиву під час його вирівнювання"
+'Escape formula': 'Формула екранування'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Екранує поля, що містять формули, додаючи їм префікс з символу `\t`'
+'No headers': 'Без заголовків'
+'Disables header in the encoded CSV': 'Вимикає заголовок у закодованому CSV'
+'As collection': 'Як колекція'
+'Always returns results as a collection, even if only one line is decoded.': 'Завжди повертає результати як колекцію, навіть якщо декодується лише один рядок.'
+'Output UTF8 Bom key': 'Ключ виводу UTF8 BOM'
+File: Файл
+'Handle binary file data (raw bytes)': 'Обробка бінарних даних файлу (сирих байтів)'
+Extension: Розширення
+'Mime type': 'Тип MIME'
+'Sets the XML version attribute': 'Встановлює атрибут версії XML'
+Encoding: Кодування
+'Sets the XML encoding attribute': 'Встановлює атрибут кодування XML'
+'Root node': 'Кореневий вузол'
+'Sets the root node name': 'Встановлює назву кореневого вузла'
+'Format output': 'Форматувати вивід'
+'If set to true, formats the generated XML with line breaks and indentation': 'Якщо встановлено на true, форматує згенерований XML з розривами рядків та відступами'
+Standalone: Самостійний
+'Adds standalone attribute in the generated XML': 'Додає атрибут standalone у згенерований XML'
+'Always returns results as a collection, even if only one line is decoded': 'Завжди повертає результати як колекцію, навіть якщо декодується лише один рядок'
+'Remove empty tags': 'Видалити порожні теги'
+'Remove all empty tags in the generated XML': 'Видалити всі порожні теги у згенерованому XML'
+'Type-cast attributes': 'Типізувати атрибути'
+'This provides the ability to forget the attribute type casting': 'Це надає можливість забути типізацію атрибутів'
+'Inline dump': 'Вбудований дамп'
+Indentation: Відступ
+'Number of spaces': 'Кількість пробілів'
+Documentation: Документація
+'Leave empty to keep current password.': 'Залишити порожнім, щоб зберегти поточний пароль.'
+'New Password': 'Новий пароль'
+Scopes: Обсяги
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Обсяги визначають, що цей токен API може отримати доступ. Кожен обсяг надає конкретний дозвіл.'
+Restrictions: Обмеження
+"Restrictions limit an API key's usage and improves security": "Обмеження обмежують використання ключа API та покращують безпеку"
+'Restrict by IP addresses': 'Обмежити за IP-адресами'
+'Restrict by host domains': 'Обмежити за доменами хоста'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': 'Заголовок "origin" може бути підроблений, тому це скоріше зручність, ніж міра безпеки.'
+'New password': 'Новий пароль'
+'Repeat Password': 'Повторити пароль'
+'The password fields must match.': 'Поля пароля повинні співпадати.'
+Debug: Відладка
+'Change your app secret. Will autogenerate if empty.': 'Змініть свій секрет програми. Буде автоматично згенеровано, якщо порожньо.'
+Secret: Секрет
+Mailer: Поштовий сервер
+'Email sender': 'Відправник електронної пошти'
+'Send email logs to': 'Надіслати логи електронної пошти до'
+'Restrict everything by IP': 'Обмежити все за IP'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Розділіть кілька IP-адрес комою, IP-адреси адміністратора включені.'
+'Worker limit': 'Ліміт робітника'
+'Max workers allowed running at the same time.': 'Максимальна кількість робітників, дозволених запускати одночасно.'
+'Worker Queue limit': 'Ліміт черги робітника'
+'Max queued items a single worker will handle.': 'Максимальна кількість елементів у черзі, які обробить один робітник.'
+'Worker Time limit': 'Часовий ліміт робітника'
+'Max seconds a single worker will run.': 'Максимальна кількість секунд, яку запустить один робітник.'
+'Worker Memory limit': "Пам'ятний ліміт робітника"
+'Max memory (MB) a single worker is allowed to use.': "Максимальна пам'ять (МБ), яку дозволено використовувати одному робітнику."
+'I accept the license terms and conditions': 'Я приймаю умови ліцензії'
+'Not required': "Не обов'язково"

@@ -933,3 +933,7 @@ Back: Back
 choose_provider: choose_provider
 auth_code: auth_code
 trusted: trusted
+'Has conditions': 'Has conditions'
+'Not configured': 'Not configured'
+'No tasks configured': 'No tasks configured'
+Authorization: Authorization
