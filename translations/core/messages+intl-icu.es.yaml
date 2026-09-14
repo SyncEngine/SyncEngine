@@ -1008,3 +1008,5 @@ Mailer: Remitente
 'Max memory (MB) a single worker is allowed to use.': 'Máxima memoria (MB) que un solo trabajador está permitido usar.'
 'I accept the license terms and conditions': 'Acepto los términos y condiciones de la licencia'
 'Not required': 'No requerido'
+Inactive: Inactivo
+Active: Activo

@@ -1008,3 +1008,5 @@ Mailer: Поштовий сервер
 'Max memory (MB) a single worker is allowed to use.': "Максимальна пам'ять (МБ), яку дозволено використовувати одному робітнику."
 'I accept the license terms and conditions': 'Я приймаю умови ліцензії'
 'Not required': "Не обов'язково"
+Inactive: Неактивний
+Active: Активний

@@ -937,3 +937,5 @@ trusted: trusted
 'Not configured': 'Not configured'
 'No tasks configured': 'No tasks configured'
 Authorization: Authorization
+Inactive: Inactive
+Active: Active

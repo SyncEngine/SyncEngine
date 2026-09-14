@@ -67,10 +67,10 @@ class AccountController extends AbstractAdminController
 							? $this->trans( 'Disable' )
 							: $this->trans( 'Enable' ),
 						'badge'     => $user->isTwoFactorEnabled() ? [
-							'text'    => 'Active',
+							'text'    => $this->trans( 'Active' ),
 							'variant' => 'success',
 						] : [
-							'text' => 'Inactive',
+							'text' => $this->trans( 'Inactive' ),
 							'variant' => 'secondary'
 						],
 					],

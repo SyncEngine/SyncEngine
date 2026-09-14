@@ -1008,3 +1008,5 @@ Mailer: Mailer
 'Max memory (MB) a single worker is allowed to use.': 'Maximalt minne (MB) som en enskild arbetare är tillåten att använda.'
 'I accept the license terms and conditions': 'Jag accepterar licensvillkoren'
 'Not required': 'Ej krävd'
+Inactive: Inaktiv
+Active: Aktiv

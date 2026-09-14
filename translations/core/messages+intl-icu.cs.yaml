@@ -1008,3 +1008,5 @@ Mailer: Odesílatel
 'Max memory (MB) a single worker is allowed to use.': 'Maximální paměť (MB), kterou může jeden pracovník použít.'
 'I accept the license terms and conditions': 'Souhlasím s licenčními podmínkami'
 'Not required': 'Není vyžadováno'
+Inactive: Neaktivní
+Active: Aktivní
