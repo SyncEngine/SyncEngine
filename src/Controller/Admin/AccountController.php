@@ -180,11 +180,12 @@ class AccountController extends AbstractAdminController
 		return $this->render(
 			'admin/index.html.twig',
 			[
-				'backlink'    => true,
-				'header'      => $this->trans( 'Preferences' ),
-				'icon'        => 'account-preferences',
-				'form'        => $form,
-				'breadcrumbs' => [
+				'force_reload' => $request->getSession()->get( '_locale_changed', false ),
+				'backlink'     => true,
+				'header'       => $this->trans( 'Preferences' ),
+				'icon'         => 'account-preferences',
+				'form'         => $form,
+				'breadcrumbs'  => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_account_index' ),
 						'title' => $this->trans( 'Account' ),

@@ -7,6 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="turbo-cache-control" content="no-cache">
 	<meta name="turbo-prefetch" content="false">
+	{% if force_reload is defined and force_reload %}
+		{{ turbo_page_requires_reload() }}
+	{% endif %}
+
 	<title>{% block title %}Home{% endblock %}{% if meta.title is not empty %} • {{ meta.title }}{% endif %} • SyncEngine</title>
 	<link rel="icon" href="{{ asset( 'assets/icon-fill.svg' ) }}">
 
