@@ -108,7 +108,7 @@
 		},
 		preferences: {
 			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
-			language: navigator && navigator.language || 'en',
+			locale: '{{ app.request.locale }}' || navigator && navigator.language || 'en',
 		},
 		onboarding: {},
 		theme: {
