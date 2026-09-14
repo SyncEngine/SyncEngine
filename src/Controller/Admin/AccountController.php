@@ -213,6 +213,12 @@ class AccountController extends AbstractAdminController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$data = $form->getData();
 
+			if ( ! empty( $data['locale'] ) && $data['locale'] !== $preferences->get( 'locale' ) ) {
+				$request->getSession()->set( '_locale', $data['locale'] );
+				$request->getSession()->set( '_locale_changed', true );
+				$request->setLocale( $data['locale'] );
+			}
+
 			foreach ( $data as $name => $value ) {
 				$preferences->set( $name, $value );
 			}
