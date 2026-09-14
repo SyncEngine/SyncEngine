@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { FormCheck, Stack } from 'react-bootstrap';
 
 import useBreakpoint from '../../../hooks/useBreakpoint';
@@ -15,7 +15,7 @@ export default function Actions( props ) {
 		return;
 	}
 
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const isMediumDisplay = useBreakpoint( 'md' );
 
 	let actions = [];

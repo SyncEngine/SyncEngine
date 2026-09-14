@@ -2,13 +2,13 @@ import React from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import SelectSimple from './Simple';
 import SelectAdvanced from './Advanced';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import useFieldChoices from '../../../hooks/useFieldChoices';
 import Placeholder from '../../partials/Loading/Placeholder';
 
 
 export default function Select( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ choices, setChoices, loading ] = useFieldChoices( props );
 
 	if ( loading ) {

@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
 import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import FieldsItem from '../Fields/Item';
 import { isEmpty } from '../../../utils/conditions';
 import { objectToMappable } from '../../../utils/data';
 import Label from '../Label';
 import Icon from '../../partials/Icon';
-import FieldContainer from '../Field/Container';
 
 export default function Wizard( props ) {
-	const { t } = useTranslation();
 
 	const {
 		wizard,

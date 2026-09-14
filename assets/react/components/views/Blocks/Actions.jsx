@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ButtonGroup, DropdownButton, DropdownItem, FormCheck } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
@@ -72,7 +72,7 @@ function createTrigger( action, variants, elemProps = {}, dropdown = false ) {
 
 export default function Actions( props ) {
 	const routes = useGlobal( 'routes' );
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		actions = {},

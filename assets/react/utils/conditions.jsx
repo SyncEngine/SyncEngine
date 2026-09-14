@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../hooks/useTranslator.js';
 import { parseTag } from './tags';
 import { deepEqual } from './data';
 
@@ -33,7 +33,7 @@ export const OPERATOR_REGEX               = 'regex';
 const OPERATORS = {};
 
 function getOperators() {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	if ( ! isEmpty( OPERATORS ) ) {
 		return OPERATORS;

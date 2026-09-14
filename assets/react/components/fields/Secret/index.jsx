@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { InputGroup } from 'react-bootstrap';
 
 import useSecrets from '../../../hooks/useSecrets';
@@ -29,7 +29,7 @@ function parseSecret( tag ) {
 }
 
 export default function Secret( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ secrets, callbacks ] = useSecrets();
 	const editable = isFieldEditable( props );
 

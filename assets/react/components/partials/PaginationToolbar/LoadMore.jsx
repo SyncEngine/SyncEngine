@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '../Button';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import Icon from '../Icon';
 
 export default function LoadMore( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		callback,

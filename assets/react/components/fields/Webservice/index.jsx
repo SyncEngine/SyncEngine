@@ -1,6 +1,6 @@
 import React from 'react';
 import { any, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import { Alert, Stack } from 'react-bootstrap';
 import Fields from '../../form/Fields';
@@ -8,7 +8,7 @@ import useWebservices from '../../../hooks/useWebservices';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Webservice( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const [ webservices ] = useWebservices( null, {} );
 	const webservice = ( webservices && props.webservice ) ? ( webservices[ props.webservice._class ?? props.webservice ] ?? null ) : null;

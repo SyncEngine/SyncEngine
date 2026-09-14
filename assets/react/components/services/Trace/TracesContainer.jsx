@@ -1,10 +1,9 @@
 import React, { createContext } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Stack } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
 import { sleep } from '../../../utils/globals';
-import useDateFormatter from '../../../hooks/useDateFormatter';
 import OverlayToggle from '../OverlayToggle';
 import Badge from '../../partials/Badge';
 import Icon from '../../partials/Icon';
@@ -17,8 +16,7 @@ import useSettings from '../../../hooks/useSettings';
 export const TraceIterationContext = createContext( {} );
 
 export default function TracesContainer( props ) {
-	const { t } = useTranslation();
-	const dateFormatter = useDateFormatter();
+	const { t } = useTranslator();
 	const [ groupDiagnostigsPreference, setGroupDiagnosticsPreference ] = useSettings( 'local', 'trace', 'groupDiagnostics', true, true );
 	const [ groupDiagnostics, toggleGroupDiagnostics ] = useToggle( groupDiagnostigsPreference, setGroupDiagnosticsPreference, setGroupDiagnosticsPreference );
 

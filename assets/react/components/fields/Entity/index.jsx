@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
 
@@ -32,7 +32,7 @@ function parseValue( val ) {
 }
 
 export default function Entity( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	const {
 		selectable = true,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Form, ListGroup } from 'react-bootstrap';
 import useEntities from '../../../hooks/useEntities';
 import Modal from '../Modal';
@@ -11,7 +11,7 @@ import { objectToMappable } from '../../../utils/data';
 import Info from '../../views/Blocks/Info';
 
 export default function EntitySelectorModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const {
 		onSelect,
 		onClose,

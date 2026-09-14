@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ListGroup } from 'react-bootstrap';
 
 import ListRow from './Row';
@@ -8,7 +8,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
 export default function ListView( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		callbacks = {},

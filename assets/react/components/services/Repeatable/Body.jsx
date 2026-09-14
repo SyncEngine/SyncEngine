@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Alert, Stack } from 'react-bootstrap';
 import Fields from '../../form/Fields';
 import { FieldsContext } from '../../../context/FieldsContext';
 import { isItemDisabled } from '../../../utils/conditions';
 
 export default function Body( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		value = {},

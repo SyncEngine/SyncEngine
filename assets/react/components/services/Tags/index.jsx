@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import { TagsContext } from '../../../context/TagsContext';
 
@@ -14,7 +14,7 @@ import TagsTabs from './Tabs';
 import Icon from '../../partials/Icon';
 
 export default function Tags( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const modalToggleRef = useRef( props.toggleRef ?? {} );
 	const {
 		startChar = TAG_START_CHAR + ' ',

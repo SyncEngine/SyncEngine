@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Table } from 'react-bootstrap';
 
 import TableRow from './Row';
@@ -10,7 +10,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
 export default function TableView( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		callbacks = {},

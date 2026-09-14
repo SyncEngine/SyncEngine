@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Badge, Breadcrumb, ListGroup } from 'react-bootstrap';
 
 import useBlueprints from '../../../hooks/useBlueprints';
@@ -15,7 +15,7 @@ import { suppress } from '../../../utils/events';
 import { HStack, VStack } from '../../partials/Stack';
 
 export default function BlueprintControl( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const CUSTOM_MODULE_KEY = '__custom__';
 
 	const {

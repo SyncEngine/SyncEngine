@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import Button from '../../partials/Button';
 import { DateValue } from '../../views/Blocks/Value';
 import Icon from '../../partials/Icon';
-import useDateFormatter from '../../../hooks/useDateFormatter';
 import useToggle from '../../../hooks/useToggle';
 import TraceLog from './TraceLog';
 import Traces from './Traces';
@@ -14,8 +13,7 @@ import ProgressBar from '../../partials/Progress';
 import { HStack, VStack } from '../../partials/Stack';
 
 export default function TraceNode( props ) {
-	const { t } = useTranslation();
-	const dateFormatter = useDateFormatter();
+	const { t } = useTranslator();
 
 	const {
 		item = {},

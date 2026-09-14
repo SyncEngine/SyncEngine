@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { Table } from 'react-bootstrap';
 
@@ -59,7 +59,7 @@ function parseColumns( columns, values ) {
 }
 
 export default function Grid( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	const [ clipboard, updateClipboard, clipboardAccessible ] = useClipboard( '', '', false );
 	const containerContext = useContext( FieldContainerContext );

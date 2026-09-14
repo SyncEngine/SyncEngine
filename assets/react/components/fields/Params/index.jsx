@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Alert, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, InputGroup, Stack } from 'react-bootstrap';
 
 import Grid from '../Grid';
@@ -45,7 +45,7 @@ function parseCodecQuery( query, choices ) {
 }
 
 export default function Params( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	const fieldsContext = useContext( FieldsContext );
 

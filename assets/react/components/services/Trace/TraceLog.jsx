@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import Code from '../../fields/Code';
@@ -9,7 +9,7 @@ import { EntityContext } from '../../../context/EntityContext';
 import { TraceIterationContext } from './TracesContainer';
 
 export default function TraceLog( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const entity = useContext( EntityContext );
 	const iteration = useContext( TraceIterationContext ) ?? {};

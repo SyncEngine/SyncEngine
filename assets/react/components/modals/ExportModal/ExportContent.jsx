@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Code from '../../fields/Code';
 import useClipboard from '../../../hooks/useClipboard';
@@ -9,7 +9,7 @@ import Icon from '../../partials/Icon';
 import Button from '../../partials/Button';
 
 export default function ExportModalContent( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ formatted, toggleFormatted ] = useToggle( false );
 	const [ copied, setCopied ] = useState( false );
 	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );

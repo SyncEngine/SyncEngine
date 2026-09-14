@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import ConditionsGroups from './ConditionsGroups';
 import { isFieldEditable } from '../../../utils/conditions';
@@ -58,7 +58,7 @@ export function transformConditionsOutput( data ) {
 }
 
 export default function Conditions( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const {

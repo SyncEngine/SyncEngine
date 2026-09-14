@@ -1,6 +1,6 @@
 import React, { cloneElement, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Spinner } from 'react-bootstrap';
 
 import useEntity from '../../../hooks/useEntity';
@@ -19,7 +19,7 @@ import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 
 export default function EntityModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 
 	const {

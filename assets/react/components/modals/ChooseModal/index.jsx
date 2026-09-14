@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import Modal from '../Modal';
 import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
@@ -32,7 +32,7 @@ export function getTriggerProps( trigger, callback ) {
 }
 
 export default function ChooseModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ open, setOpen ] = useState( isEmpty( props.children ) );
 	const [ error, setError ] = useState( null );
 

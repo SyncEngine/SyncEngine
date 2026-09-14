@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { any, array, bool, func, number, object, oneOfType } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
@@ -88,7 +88,7 @@ const TaskDescription = ( props ) => {
 }
 
 export default function Tasks( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
 	const editable = isFieldEditable( props );
 

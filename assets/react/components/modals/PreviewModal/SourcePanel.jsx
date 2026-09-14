@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 import Button from '../../partials/Button';
 
@@ -14,7 +14,7 @@ import Toggle from '../../fields/Toggle';
 import { isEmpty } from '../../../utils/conditions';
 
 export default function SourcePanel( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const previewModalContext = useContext( PreviewModalContext );
 
 	const {

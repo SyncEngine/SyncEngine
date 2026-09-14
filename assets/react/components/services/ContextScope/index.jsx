@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ListGroup } from 'react-bootstrap';
 import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
@@ -12,7 +12,7 @@ function parseContextScope( scope ) {
 }
 
 export default function ContextScope( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	//const app = useGlobal();
 	const {
 		context = {},

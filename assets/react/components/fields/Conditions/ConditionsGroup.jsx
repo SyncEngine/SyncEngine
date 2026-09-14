@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { string, array, bool, func, number, object, oneOfType } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import Grid from '../Grid';
 import { getOperators, isFieldEditable } from '../../../utils/conditions';
@@ -12,7 +12,7 @@ import { HStack } from '../../partials/Stack';
 
 
 export default function ConditionsGroup( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	const [ clipboard, updateClipboard, clipboardAccessible ] = useClipboard( '', '', false );
 	const operators = getOperators();

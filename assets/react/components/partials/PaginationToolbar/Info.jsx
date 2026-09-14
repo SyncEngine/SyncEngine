@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import Icon from '../Icon';
 
 export default function PaginationInfo( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		callbackSetLimit,

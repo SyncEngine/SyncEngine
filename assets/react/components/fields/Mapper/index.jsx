@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
@@ -80,7 +80,7 @@ function parseChoices( data ) {
 }
 
 export default function Mapper( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ values ] = useFieldValues( props.values );
 	const editable = isFieldEditable( props );
 

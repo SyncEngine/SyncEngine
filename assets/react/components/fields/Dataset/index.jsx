@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Alert, ButtonGroup } from 'react-bootstrap';
 
 import Grid from '../Grid';
@@ -13,7 +13,7 @@ import { isFieldEditable } from '../../../utils/conditions';
 import Button from '../../partials/Button';
 
 export default function Dataset( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const {

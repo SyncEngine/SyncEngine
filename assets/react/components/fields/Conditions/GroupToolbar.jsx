@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, number, bool, func } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ButtonGroup } from 'react-bootstrap';
 
 import Icon from '../../partials/Icon';
@@ -33,7 +33,7 @@ export function ConditionsOperatorToggle( props ) {
 }
 
 export default function GroupToolbar( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		index,

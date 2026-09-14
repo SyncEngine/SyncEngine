@@ -1,9 +1,9 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import Select from '../../fields/Select/Advanced';
 
 export default function SelectBlueprint( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	return (
 		<Select

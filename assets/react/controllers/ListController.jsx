@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../hooks/useTranslator.js';
 import { Card, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
@@ -38,7 +38,7 @@ function getQuery( query ) {
 }
 
 export default function ListController( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 
 	const {

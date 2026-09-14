@@ -9,16 +9,12 @@ import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
 import { isEmpty, isEvent, isFieldEditable, isFunction, isMultiline, isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
-import { useTranslation } from 'react-i18next';
 import OverlayToggle from '../../services/OverlayToggle';
 import { mergeClassNames } from '../../../utils/props';
 import TaggableInput from '../../form/Input/TaggableInput';
-import useGlobal from '../../../hooks/useGlobal';
 import Button from '../../partials/Button';
 
 const Control = ( props ) => {
-	const { t } = useTranslation();
-	const app = useGlobal();
 	const inputProps = { ...props };
 
 	delete inputProps.taggable;

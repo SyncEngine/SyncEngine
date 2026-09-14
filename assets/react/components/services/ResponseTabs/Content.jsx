@@ -5,14 +5,14 @@ import { deepClone } from '../../../utils/data';
 import TraceControl from '../Trace';
 import useToggle from '../../../hooks/useToggle';
 import { ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import useClipboard from '../../../hooks/useClipboard';
 import Icon from '../../partials/Icon';
 import Button from '../../partials/Button';
 
 
 export default function ResponseTabContent( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ raw, toggleRaw ] = useToggle( false );
 	const [ copied, setCopied ] = useState( false );
 	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );

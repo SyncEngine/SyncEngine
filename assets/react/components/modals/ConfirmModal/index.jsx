@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import ChooseModal from '../ChooseModal';
 
 export default function ConfirmModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		confirm = t('Confirm'),

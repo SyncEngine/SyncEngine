@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Col, Row } from 'react-bootstrap';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
@@ -7,7 +7,7 @@ import Icon from '../../partials/Icon';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 
 export default forwardRef( function GridRow( props, ref ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ valid, validate ] = useConditions();
 
 	const {

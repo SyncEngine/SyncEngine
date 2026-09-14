@@ -5,12 +5,12 @@ import { objectToMappable } from '../../../utils/data';
 import TagsItem from './Item';
 import TagsItemStorage from './Storage';
 import Icon from '../../partials/Icon';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { ucfirst } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
 
 export default function TagsTabs( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		tags,

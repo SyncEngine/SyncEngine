@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
 
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -12,7 +12,7 @@ import ModalToggle from '../../services/ModalToggle';
 import { isConfigured, isFieldEditable } from '../../../utils/conditions';
 
 export default function Column( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const {

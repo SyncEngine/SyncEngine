@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Stack } from 'react-bootstrap';
 
 import useWebservices from '../../../hooks/useWebservices';
@@ -20,7 +20,7 @@ import { deepClone } from '../../../utils/data';
 import { FieldContext } from '../../../context/FieldsContext';
 
 export default function Authentication( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const {
@@ -134,7 +134,7 @@ Authentication.propTypes = {
 }
 
 const Connect = ( props ) => {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		name = '_connect',

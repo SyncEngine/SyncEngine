@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import { DataContext } from '../../../context/DataContext';
 import Grid from '../Grid';
@@ -34,7 +34,7 @@ function parseDataChoices( source, data ) {
 }
 
 export default function Schema( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	let {
 		value,

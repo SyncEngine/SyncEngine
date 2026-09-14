@@ -6,10 +6,10 @@ import Help from '../../form/Help';
 import { CheckMulti } from '../../form/Check';
 import { isFieldEditable } from '../../../utils/conditions';
 import useFieldChoices from '../../../hooks/useFieldChoices';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 export default function ToggleMulti( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 	const [ choices, setChoices, loading ] = useFieldChoices( props );
 

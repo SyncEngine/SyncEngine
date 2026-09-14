@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import ConfirmModal from '../ConfirmModal';
 import Icon from '../../partials/Icon';
 
 export default function DeleteModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		text = t('Are you sure?'),

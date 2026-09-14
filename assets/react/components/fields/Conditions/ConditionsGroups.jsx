@@ -1,6 +1,6 @@
 import React from 'react';
 import { string, array, bool, func, object, oneOfType } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import { createRefId } from '../../../utils/globals';
 import ConditionsGroup from './ConditionsGroup';
@@ -11,7 +11,7 @@ import Icon from '../../partials/Icon';
 import { ConditionsOperatorToggle } from './GroupToolbar';
 
 export default function ConditionsGroups( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const {
 		groups,

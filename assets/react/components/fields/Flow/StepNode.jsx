@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Position, useReactFlow } from '@xyflow/react';
 import { InputGroup } from 'react-bootstrap';
 
@@ -22,7 +22,7 @@ import { isConfigured, isEqual } from '../../../utils/conditions';
 
 
 export default function StepNode( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const _FlowContext = useContext( FlowContext );
 
 	const {

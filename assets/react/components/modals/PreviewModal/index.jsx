@@ -1,6 +1,6 @@
 import React, { cloneElement, createContext, useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Card, Col, Spinner, Stack } from 'react-bootstrap';
 
 import Fields from '../../form/Fields';
@@ -34,7 +34,7 @@ function getConfig( item ) {
 }
 
 export default function PreviewModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 
 	const {

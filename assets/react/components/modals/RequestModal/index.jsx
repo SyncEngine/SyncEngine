@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Spinner, Stack } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
@@ -18,7 +18,7 @@ import { EntityContext } from '../../../context/EntityContext';
 import { suppress } from '../../../utils/events';
 
 export default function RequestModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 
 	const {

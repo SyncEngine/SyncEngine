@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../hooks/useTranslator.js';
 import { Dropdown } from 'react-bootstrap';
 import { publish } from '../utils/events';
 import useGlobal from '../hooks/useGlobal';
 import Icon from '../components/partials/Icon';
 
 export default function ThemeController( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 	const [ theme, setTheme ] = useState( app.theme.getStoredTheme() );
 

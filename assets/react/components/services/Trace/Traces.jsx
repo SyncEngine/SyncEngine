@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { HStack, Stack } from '../../partials/Stack';
 import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
 import Badge from '../../partials/Badge';
@@ -79,7 +79,7 @@ function TradeItem( props ) {
 }
 
 function TraceNodeHeader( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const {
 		item,
 	} = props;

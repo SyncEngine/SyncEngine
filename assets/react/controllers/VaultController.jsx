@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../hooks/useTranslator.js';
 import { InputGroup, Stack } from 'react-bootstrap';
 
 import useToggle from '../hooks/useToggle';
@@ -17,7 +17,7 @@ import Button from '../components/partials/Button';
 import Icon from '../components/partials/Icon';
 
 const VaultController = ( props ) => {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ secrets, callbacks, loading ] = useSecrets();
 
 	if ( ! secrets && loading ) {
@@ -67,7 +67,7 @@ const VaultController = ( props ) => {
 }
 
 const CreateAction = ( props ) => {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const [ enabled, toggleEnabled, enable, disable ] = useToggle( false );
 	const [ name, setKey ] = useState( '' );
 	const [ value, setValue ] = useState( '' );

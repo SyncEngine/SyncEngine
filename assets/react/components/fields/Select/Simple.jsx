@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
 import Help from '../../form/Help';
@@ -15,7 +15,7 @@ import Icon from '../../partials/Icon';
 import Input from '../Input';
 
 export default function SelectSimple( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const {

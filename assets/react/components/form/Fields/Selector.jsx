@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import Select from '../../fields/Select/Advanced';
 
@@ -9,7 +9,7 @@ export default function Selector( {
 	onAdd,
 	className = 'position-sticky top-0 z-1 bg-body border border-input rounded p-2',
 } ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 
 	const choices = useMemo( () => {
 		return ( fields ?? [] ).map( ( field ) => {

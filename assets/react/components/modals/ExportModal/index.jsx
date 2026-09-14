@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 import { Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
@@ -13,7 +13,7 @@ import useGlobal from '../../../hooks/useGlobal';
 import { suppress } from '../../../utils/events';
 
 export default function ExportModal( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const app = useGlobal();
 
 	const {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslator } from '../../../hooks/useTranslator.js';
 
 import Entities from '../Entities';
 import Button from '../../partials/Button';
@@ -14,7 +14,7 @@ import { isArray, isFieldEditable, isScalar } from '../../../utils/conditions';
 import EntityModal from '../../modals/EntityModal';
 
 export default function Sequence( props ) {
-	const { t } = useTranslation();
+	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
 
 	const [ sidebar, setSidebar ] = useState( null );
