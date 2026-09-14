@@ -465,9 +465,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
 								'icon' => 'source-request',
-								'help' => $this->trans(
-									'Extract data from the current request body. Cannot be used with scheduled automations.'
-								),
+								'help' => [
+									$this->trans( 'Extract data from the current request body.' ),
+									$this->trans( 'Cannot be used with scheduled automations.' ),
+								],
 							],
 							'retrieve' => [
 								'text' => $this->trans( 'Retrieve' ),
