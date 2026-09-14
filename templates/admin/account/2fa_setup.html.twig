@@ -13,7 +13,7 @@
 					<p class="text-muted mb-3">{{ 'Scan the QR code with your TOTP app'|trans }}</p>
 
 					{% if qr_code %}
-						<img src="{{ qr_code }}" alt="QR Code" class="img-fluid border rounded mb-3" style="max-width: 200px;" />
+						<img src="{{ qr_code }}" alt="{{ 'QR Code'|trans }}" class="img-fluid border rounded mb-3" style="max-width: 200px;" />
 					{% endif %}
 
 					<p class="mb-1 small">{{ 'Or enter this secret manually:'|trans }}</p>

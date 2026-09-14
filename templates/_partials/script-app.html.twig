@@ -187,7 +187,7 @@
 
 	window.onbeforeunload = function () {
 		if ( window.SyncEngine.forms.changed.length ) {
-			return 'You have unsaved changes! If you leave this page, your changes will be lost.';
+			return '{{ 'You have unsaved changes! If you leave this page, your changes will be lost.'|trans }}';
 		}
 	};
 </script>

@@ -6,10 +6,10 @@
 {% block content %}
 	{{ parent() }}
 
-	<h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+	<h2>{{ 'The server returned a "{status_code} {status_text}".'|trans({'status_code': status_code, 'status_text': status_text}) }}</h2>
 
 	<p>
-		Something is broken. Please let us know what you were doing when this error occurred.
-		We will fix it as soon as possible. Sorry for any inconvenience caused.
+		{{ 'Something is broken. Please let us know what you were doing when this error occurred.'|trans }}
+		{{ 'We will fix it as soon as possible. Sorry for any inconvenience caused.'|trans }}
 	</p>
 {% endblock %}

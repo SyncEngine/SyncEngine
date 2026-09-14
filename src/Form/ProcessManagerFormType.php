@@ -27,8 +27,8 @@ class ProcessManagerFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 				'choices' => [
-					'SyncEngine' => MessengerManager::MANAGER_INTERNAL,
-					'Cron' => MessengerManager::MANAGER_CRON,
+					'SyncEngine' => MessengerManager::MANAGER_INTERNAL, // Do not translate, this is the project brand.
+					'Cron' => MessengerManager::MANAGER_CRON, // Do not translate, this is a system name.
 					$this->translator->trans( 'External' ) => MessengerManager::MANAGER_EXTERNAL,
 				],
 			]);

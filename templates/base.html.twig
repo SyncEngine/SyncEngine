@@ -11,7 +11,7 @@
 		{{ turbo_page_requires_reload() }}
 	{% endif %}
 
-	<title>{% block title %}Home{% endblock %}{% if meta.title is not empty %} • {{ meta.title }}{% endif %} • SyncEngine</title>
+	<title>{% block title %}{{ 'Home'|trans }}{% endblock %}{% if meta.title is not empty %} • {{ meta.title }}{% endif %} • SyncEngine</title>
 	<link rel="icon" href="{{ asset( 'assets/icon-fill.svg' ) }}">
 
 	{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}

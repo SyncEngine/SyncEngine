@@ -47,14 +47,14 @@ class UserFormType extends AbstractType
 				],
 			])
 			->add( 'roles', ChoiceType::class, [
+				'label'    => $this->translator->trans( 'Roles' ),
 				'choices'  => [
-					'Admin' => 'ROLE_ADMIN',
-					'Editor' => 'ROLE_EDITOR',
-					'Viewer' => 'ROLE_VIEWER',
+					$this->translator->trans( 'Admin' ) => 'ROLE_ADMIN',
+					$this->translator->trans( 'Editor' ) => 'ROLE_EDITOR',
+					$this->translator->trans( 'Viewer' ) => 'ROLE_VIEWER',
 				],
 				'multiple' => true,
 				'expanded' => true,
-				'label'  => 'Roles',
 			] );
 	}
 

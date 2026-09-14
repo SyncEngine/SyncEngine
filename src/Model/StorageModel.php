@@ -32,22 +32,21 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	use Tags;
 	use Supervisor;
 
-	protected static array $_TYPES = [
-		''         => 'Generic / Other',
-		'entities' => 'Entities',
-		'schema'   => 'Schema',
-		'mapper'   => 'Mapper',
-		'raw'      => 'Raw',
-	];
+	protected static array $_TYPES = [];
 
 	public function __construct( ?Storage $storage = null )
 	{
 		parent::__construct( $storage );
-	}
 
-	public function handleRequest( Request $request ): Response
-	{
-		return new Response();
+		if ( empty( self::$_TYPES ) ) {
+			self::$_TYPES = [
+				''         => $this->trans( 'Generic / Other' ),
+				'entities' => $this->trans( 'Entities' ),
+				'schema'   => $this->trans( 'Schema' ),
+				'mapper'   => $this->trans( 'Mapper' ),
+				'raw'      => $this->trans( 'Raw' ),
+			];
+		}
 	}
 
 	public function parseConfig(): void

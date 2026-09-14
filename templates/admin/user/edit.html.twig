@@ -4,7 +4,7 @@
 
 {% block content %}
 	{% include 'admin/_partials/backlink.twig' %}
-	{% include 'admin/_partials/header.twig' with { header: 'Edit user', icon: 'user' } %}
+	{% include 'admin/_partials/header.twig' with { header: 'Edit user'|trans, icon: 'user' } %}
 	<hr>
 	{% include '_partials/form.html.twig' with { form: form } %}
 {% endblock %}

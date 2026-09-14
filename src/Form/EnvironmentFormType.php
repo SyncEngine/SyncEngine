@@ -40,8 +40,8 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 				'choices' => [
-					'Production' => 'prod',
-					'Development' => 'dev',
+					$this->translator->trans( 'Production' ) => 'prod',
+					$this->translator->trans( 'Development' ) => 'dev',
 				],
 			])
 			->add( 'APP_DEBUG', ChoiceType::class, [
@@ -49,8 +49,8 @@ class EnvironmentFormType extends AbstractType
 				'disabled' => 'dev' === $mode,
 				'required' => false,
 				'choices' => [
-					'Disabled' => '0',
-					'Enabled' => '1',
+					$this->translator->trans( 'Disabled' ) => '0',
+					$this->translator->trans( 'Enabled' ) => '1',
 				],
 				'attr' => [
 					'placeholder' => $this->translator->trans( 'Change your app secret. Will autogenerate if empty.' ),

@@ -7,7 +7,10 @@
 	{{ parent() }}
 
 	<p>
-		The requested page couldn't be located. Checkout for any URL
-		misspelling or <a href="{{ path('index') }}">return to the homepage</a>.
+		{{ 'The requested page couldn\'t be located.'|trans }}<br>
+		{{ 'Checkout for any URL misspelling or return to the homepage'|trans }}
+	</p>
+	<p>
+		<a class="btn btn-primary" href="{{ path('index') }}">{{ 'Return'|trans }}</a>
 	</p>
 {% endblock %}

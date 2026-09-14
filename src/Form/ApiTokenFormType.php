@@ -106,7 +106,7 @@ class ApiTokenFormType extends AbstractType
 
 		foreach ( $grantedScopes as $scope ) {
 			if ( $scope === '*' ) {
-				$choices[] = [ 'value' => '*', 'label' => 'Full Access (*)' ];
+				$choices[] = [ 'value' => '*', 'label' => $this->translator->trans( 'Full Access (*)' ) ];
 				continue;
 			}
 
