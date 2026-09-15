@@ -1,0 +1,1039 @@
+'Column definitions': 'Sarakemääritykset'
+'Extend column definitions': 'Laajenna sarakemäärityksiä'
+'Configure custom column types for each field.': 'Määritä mukautetut saraketyypit jokaiselle kentälle.'
+'Comma Separated Values': 'Pilkulla erotetut arvot'
+'FormData encoded string': 'FormData-koodattu merkkijono'
+'JavaScript Object Notation': 'JavaScript Object Notation'
+'URL encoded string': 'URL-koodattu merkkijono'
+'Extensible Markup Language': 'Extensible Markup Language'
+"YAML Ain't Markup Language": 'YAML ei ole merkintäkieli'
+Address: Osoite
+'Address column': 'Osoitesarake'
+Strict: Tiukka
+'Address columns': 'Osoitesarakkeet'
+'Country (Code)': 'Maa (koodi)'
+'Column name for: {field}': 'Sarakkeen nimi kohteelle: {field}'
+'Administrative Area / Province / State': 'Hallintoalue / Maakunta / Osavaltio'
+'Locality / City': 'Paikkakunta / Kaupunki'
+'Dependent Locality': 'Paikkakunnan osa'
+'Postal / ZIP Code': 'Postinumero / ZIP-koodi'
+'Sorting Code': 'Lajittelukoodi'
+'Address Line 1': 'Osoiterivi 1'
+'Address Line 2': 'Osoiterivi 2'
+'Address Line 3': 'Osoiterivi 3'
+Locale: Locale
+Organization: Organisaatio
+'Given Name': 'Etunimi'
+'Additional Name': 'Lisänimi'
+'Family Name': 'Sukunimi'
+Boolean: Boolean
+'Format as true or false': 'Muotoile todeksi tai epätodeksi'
+Format: Muoto
+Integer: Kokonaisluku
+'Custom text': 'Mukautettu teksti'
+'Custom number': 'Mukautettu numero'
+'True value': 'Tosi-arvo'
+'False value': 'Epätosi-arvo'
+'Fallback value': 'Varautumisarvo'
+'Null / Empty': 'Null / Tyhjä'
+Custom: Mukautettu
+'Fallback custom value': 'Mukautettu varautumisarvo'
+'Yes': 'Kyllä'
+'No': 'Ei'
+Collection: Kokoelma
+'A collection of a column type': 'Saraketyypin kokoelma'
+Associative: Assosiatiivinen
+'Column Type': 'Saraketyyppi'
+Key/Name: 'Avain/Nimi'
+Currency: Valuutta
+'Currency column for money/price based values': 'Valuuttasarake rahaan/hintaan perustuville arvoille'
+'Currency sign': 'Valuuttamerkki'
+'Add space between currency sign and value?': 'Lisää välilyönti valuuttamerkin ja arvon väliin?'
+'Put currency sign after value?': 'Aseta valuuttamerkki arvon jälkeen?'
+Date: Päivämäärä
+'General date and time column': 'Yleinen päivämäärä- ja aikasarake'
+Unchanged: Muuttumaton
+'Null': 'Null'
+'False': 'Epätosi'
+'Empty string': 'Tyhjä merkkijono'
+'Current timestamp as format': 'Nykyinen aikaleima muodossa'
+'Please check PHP date documentation': 'Katso PHP:n päivämäärädokumentaatio'
+Timezone: Aikavyöhyke
+'Please check PHP DateTimeZone documentation': 'Katso PHP:n DateTimeZone-dokumentaatio'
+'Empty value': 'Tyhjä arvo'
+Duration: Kesto
+'General duration column': 'Yleinen kestosarake'
+'Please check PHP DateInterval documentation': 'Katso PHP:n DateInterval-dokumentaatio'
+Email: Sähköposti
+'Email column': 'Sähköpostisarake'
+'Validation mode': 'Validointitila'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: Varmistaa, että sähköpostiosoite noudattaa RFC-standardeja erittäin tarkasti. Se ei esimerkiksi salli IP-osoitteita verkkotunnuksen osassa.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Noudattaa HTML5-syöttösääntöjä, jotka ovat hieman sallivampia kuin tiukat RFC-standardit.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: Kuten HTML5, mutta sallii myös sähköpostiosoitteet ilman ylätason verkkotunnusta (esim. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Varautuminen
+'Fallback value if it is an invalid email address.': 'Varautumisarvo, jos sähköpostiosoite on virheellinen.'
+Enumeration: Luettelointi
+'Predefined select options': 'Ennalta määritetyt valintavaihtoehdot'
+Options: Vaihtoehdot
+Value: Arvo
+Label: Tunniste
+'Numeric options': 'Numeeriset vaihtoehdot'
+None: 'Ei mitään'
+'Use column for type hinting': 'Käytä saraketta tyyppivihjeenä'
+Soft: Pehmeä
+'Use fallback for invalid values': 'Käytä varautumisarvoa virheellisille arvoille'
+'Throw error on invalid values': 'Heitä virhe virheellisille arvoille'
+'Set the fallback value in case it is empty.': 'Aseta varautumisarvo, jos arvo on tyhjä.'
+'Will also be used as fallback in soft mode.': 'Käytetään myös varautumisarvona pehmeässä tilassa.'
+'Parse before validation': 'Jäsennä ennen validointia'
+'Trim text': 'Poista reunavälilyönnit'
+'Convert case': 'Muunna kirjainkoko'
+'Capitalize first': 'Aloita isolla kirjaimella'
+'Capitalize Words': 'Sanat isolla alkukirjaimella'
+lowercase: 'pienet kirjaimet'
+UPPERCASE: 'isot kirjaimet'
+'Invalid enum config': 'Virheellinen enum-määritys'
+'Invalid value for enum: {formatted}': 'Virheellinen arvo enumille: {formatted}'
+Number: Numero
+'Numeric column': 'Numeerinen sarake'
+Type: Tyyppi
+'A raw number can be used for calculations and number storage.': 'Raakaa numeroa voidaan käyttää laskutoimituksiin ja numeroiden tallentamiseen.'
+'A formatted number can be used for display.': 'Muotoiltua numeroa voidaan käyttää näyttämiseen.'
+'Raw number': 'Raaka numero'
+'Format to a number type.': 'Muotoile numerotyypiksi.'
+Formatted: Muotoiltu
+'Format to a numeric string.': 'Muotoile numeeriseksi merkkijonoksi.'
+Rounding: Pyöristys
+'Round halves up': 'Pyöristä puolikkaat ylöspäin'
+'Round halves down': 'Pyöristä puolikkaat alaspäin'
+'Round halves to even numbers': 'Pyöristä puolikkaat parillisiin lukuihin'
+'Round halves to odd numbers': 'Pyöristä puolikkaat parittomiin lukuihin'
+Decimals: Desimaalit
+'Trim trailing zeros (0)': 'Poista perässä olevat nollat (0)'
+'Decimal separator': 'Desimaalierotin'
+'Thousands separator': 'Tuhaterotin'
+none: 'ei mitään'
+space: välilyönti
+Schema: Skeema
+'Schema definitions column': 'Skeemamääritysten sarake'
+'Schema source': 'Skeeman lähde'
+Manual: Manuaalinen
+Storage: Varasto
+'Schema storage': 'Skeemavarasto'
+'Configure column types for each field.': 'Määritä saraketyypit jokaiselle kentälle.'
+Slug: Slug
+'Format as a slug': 'Muotoile slugiksi'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: UPPERCASE_UNDERSCORE
+Case: Kirjainkoko
+'camel Style': 'camel-tyyli'
+'Word separator': 'Sananerotin'
+dash: dash
+underscore: underscore
+Text: Teksti
+'General text column': 'Yleinen tekstisarake'
+'Limit length?': 'Rajoita pituus?'
+Max: Maksimi
+Unit: Yksikkö
+Characters: Merkit
+Words: Sanat
+'Access denied.': 'Pääsy evätty.'
+'Invalid request method.': 'Virheellinen pyyntömenetelmä.'
+'Entity not found': 'Entiteettiä ei löydy'
+'Action not supported: {action}': 'Toimintoa ei tueta: {action}'
+Update: Päivitä
+Create: Luo
+Account: Tili
+'Edit account': 'Muokkaa tiliä'
+'Edit user account': 'Muokkaa käyttäjätiliä'
+Preferences: Asetukset
+'Edit preferences': 'Muokkaa asetuksia'
+'API tokens': 'API-tunnukset'
+'Manage API tokens': 'Hallinnoi API-tunnuksia'
+'Two-factor authentication': 'Kaksivaiheinen todennus'
+'2FA is active for your account': '2FA on käytössä tililläsi'
+'Protect your account with a verification code': 'Suojaa tilisi vahvistuskoodilla'
+Disable: 'Poista käytöstä'
+Enable: 'Ota käyttöön'
+'Account updated successfully.': 'Tili päivitetty onnistuneesti.'
+Edit: Muokkaa
+'Preferences updated successfully.': 'Asetukset päivitetty onnistuneesti.'
+'Access tokens': 'Pääsytunnukset'
+'API Tokens': 'API-tunnukset'
+'Create API token': 'Luo API-tunnus'
+'Edit API token': 'Muokkaa API-tunnusta'
+'Enable two-factor authentication': 'Ota kaksivaiheinen todennus käyttöön'
+'Enable 2FA': 'Ota 2FA käyttöön'
+'Invalid form submission. Please try again.': 'Virheellinen lomakkeen lähetys. Yritä uudelleen.'
+'The verification code you entered is invalid.': 'Antamasi vahvistuskoodi on virheellinen.'
+'Two-factor authentication has been enabled.': 'Kaksivaiheinen todennus on otettu käyttöön.'
+'Could not send verification email. Please try again.': 'Vahvistussähköpostia ei voitu lähettää. Yritä uudelleen.'
+'Verify your email': 'Vahvista sähköpostiosoitteesi'
+'Verify Email': 'Vahvista sähköposti'
+'Disable two-factor authentication': 'Poista kaksivaiheinen todennus käytöstä'
+'Disable 2FA': 'Poista 2FA käytöstä'
+'Invalid password.': 'Virheellinen salasana.'
+'Two-factor authentication has been disabled.': 'Kaksivaiheinen todennus on poistettu käytöstä.'
+Automations: Automaatiot
+'Successfully created automation!': 'Automaatio luotu onnistuneesti!'
+'New automation': 'Uusi automaatio'
+'Successfully edited automation!': 'Automaatio muokattu onnistuneesti!'
+'Edit automation': 'Muokkaa automaatiota'
+Connections: Yhteydet
+'Successfully created connection!': 'Yhteys luotu onnistuneesti!'
+'New connection': 'Uusi yhteys'
+'Successfully edited connection!': 'Yhteys muokattu onnistuneesti!'
+'Edit connection': 'Muokkaa yhteyttä'
+Flows: Virtaukset
+'Successfully created flow!': 'Virtaus luotu onnistuneesti!'
+'New flow': 'Uusi virtaus'
+'Successfully edited flow!': 'Virtaus muokattu onnistuneesti!'
+'Edit flow': 'Muokkaa virtausta'
+'Connection required': 'Yhteys vaaditaan'
+'Connection not found': 'Yhteyttä ei löydy'
+'Webservice not found': 'Webserviceä ei löydy'
+Modules: Moduulit
+'Please upload a valid ZIP file': 'Lataa kelvollinen ZIP-tiedosto'
+Upload: Lataa
+'Unable to refresh system cache after module upload.': 'Järjestelmän välimuistia ei voitu päivittää moduulin latauksen jälkeen.'
+'Install unsuccessful': 'Asennus epäonnistui'
+'Unable to uninstall {moduleName}. It is still used in your system': 'Moduulia {moduleName} ei voitu poistaa. Sitä käytetään edelleen järjestelmässäsi'
+'Uninstall unsuccessful': 'Asennuksen poisto epäonnistui'
+'Unable to refresh system cache after module uninstall.': 'Järjestelmän välimuistia ei voitu päivittää moduulin poiston jälkeen.'
+'{moduleName} successfully uninstalled': '{moduleName} poistettu onnistuneesti'
+'Invalid module package: {moduleName}': 'Virheellinen moduulipaketti: {moduleName}'
+'Disabled manually': 'Poistettu käytöstä manuaalisesti'
+'Unable to refresh system cache after module disable.': 'Järjestelmän välimuistia ei voitu päivittää moduulin käytöstä poiston jälkeen.'
+'{moduleName} disabled': '{moduleName} poistettu käytöstä'
+'Unable to disable {moduleName}.': 'Moduulia {moduleName} ei voitu poistaa käytöstä.'
+'Unable to refresh system cache after module enable.': 'Järjestelmän välimuistia ei voitu päivittää moduulin käyttöönoton jälkeen.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': 'Moduulia {moduleName} ei voitu ottaa käyttöön. Se poistettiin käytöstä uudelleen välimuistin uudelleenrakennuksen aikana.'
+'{moduleName} enabled': '{moduleName} otettu käyttöön'
+'Cannot move file': 'Tiedostoa ei voi siirtää'
+'Could not find module in zip file': 'Moduulia ei löytynyt ZIP-tiedostosta'
+'Could not parse module namespace': 'Moduulin nimitilaa ei voitu jäsentää'
+'Cannot unzip file!': 'Tiedostoa ei voi purkaa!'
+'Cant delete temp folder': 'Väliaikaista kansiota ei voi poistaa'
+Configuration: Määritys
+'Configure manager to optimize SyncEngine for your server.': 'Määritä hallinta optimoimaan SyncEngine palvelimellesi.'
+Manager: Hallinta
+'Auto-starts background async workers to handle automations.': 'Käynnistää tausta-asynkroniset työntekijät automaattisesti käsittelemään automaatioita.'
+Enabled: Käytössä
+'Cannot enable manager': 'Hallintaa ei voi ottaa käyttöön'
+Disabled: 'Poissa käytöstä'
+'The manager is controlled by a cronjob.': 'Hallintaa ohjataan cron-ajolla.'
+External: Ulkoinen
+'The manager is controlled externally.': 'Hallintaa ohjataan ulkoisesti.'
+'Queue size:': 'Jonon koko:'
+'Active workers:': 'Aktiiviset työntekijät:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Työntekijän ID #{pid} | Luotu: {timestamp} | Ping: {ping}'
+Processes: Prosessit
+System: Järjestelmä
+Save: Tallenna
+'Invalid Manager': 'Virheellinen hallinta'
+'Configuration saved': 'Määritys tallennettu'
+Routines: Rutiinit
+'Successfully created routine!': 'Rutiini luotu onnistuneesti!'
+'New routine': 'Uusi rutiini'
+'Successfully edited routine!': 'Rutiini muokattu onnistuneesti!'
+'Edit routine': 'Muokkaa rutiinia'
+Storages: Varastot
+'Successfully created storage!': 'Varasto luotu onnistuneesti!'
+'New storage': 'Uusi varasto'
+'Successfully edited storage!': 'Varasto muokattu onnistuneesti!'
+'Edit storage': 'Muokkaa varastoa'
+'Clear cache': 'Tyhjennä välimuisti'
+Environment: Ympäristö
+'Configure environment setup': 'Määritä ympäristön asetukset'
+Vault: Vault
+'Configure vault secrets': 'Määritä Vaultin Secretit'
+'Manage system processes': 'Hallinnoi järjestelmän prosesseja'
+Import: Tuo
+'Import JSON configs': 'Tuo JSON-määritykset'
+Info: Tiedot
+'System information': 'Järjestelmän tiedot'
+Help: Ohje
+'JSON data': 'JSON-data'
+'Format must be JSON.': 'Muodon on oltava JSON.'
+'Import successful': 'Tuonti onnistui'
+Users: Käyttäjät
+'Successfully created user!': 'Käyttäjä luotu onnistuneesti!'
+'Successfully edited user!': 'Käyttäjä muokattu onnistuneesti!'
+'You cannot reset your own password.': 'Et voi nollata omaa salasanaasi.'
+'Password reset email sent successfully!': 'Salasanan nollaussähköposti lähetetty onnistuneesti!'
+'An error occurred while resetting the password.': 'Salasanan nollauksessa tapahtui virhe.'
+'You cannot delete your own account.': 'Et voi poistaa omaa tiliäsi.'
+'Successfully deleted user!': 'Käyttäjä poistettu onnistuneesti!'
+'Endpoint not found: {value}': 'Endpointia ei löydy: {value}'
+'Automation is not enabled': 'Automaatio ei ole käytössä'
+'Automation is already running': 'Automaatio on jo käynnissä'
+'File not found': 'Tiedostoa ei löydy'
+'Scheduled processes are disabled.': 'Ajoitetut prosessit ovat poissa käytöstä.'
+'Automation cannot accept a new request right now.': 'Automaatio ei voi vastaanottaa uutta pyyntöä juuri nyt.'
+'Entity type not found': 'Entiteettityyppiä ei löydy'
+'Entity deleted': 'Entiteetti poistettu'
+'An error occurred while sending the password reset email.': 'Salasanan nollaussähköpostin lähettämisessä tapahtui virhe.'
+'Your password reset request': 'Salasanan nollauspyyntösi'
+'No reset password token found in the URL or in the session.': 'Salasanan nollaustunnusta ei löytynyt URL-osoitteesta eikä istunnosta.'
+Install: Asenna
+'Unknown database error': 'Tuntematon tietokantavirhe'
+'Could not repair database': 'Tietokantaa ei voitu korjata'
+'Unable to access this page!': 'Tälle sivulle ei päästä!'
+Register: Rekisteröidy
+Variables: Muuttujat
+'Define static variables to be used within the automation.': 'Määritä staattiset muuttujat, joita käytetään automaation sisällä.'
+Source: Lähde
+'Select the data source for this automation': 'Valitse tämän automaation tietolähde'
+Request: Pyyntö
+'Extract data from the current request body.': 'Poimi data nykyisen pyynnön rungosta.'
+'Cannot be used with scheduled automations.': 'Ei voida käyttää ajoitettujen automaatioiden kanssa.'
+Retrieve: Nouda
+'Retrieve data from a webservice or other custom source.': 'Nouda data Webservicestä tai muusta mukautetusta lähteestä.'
+'Run automation in batches': 'Suorita automaatio erissä'
+'Batch method': 'Erämenetelmä'
+'Batches are made remotely using retrieve parameters': 'Erät muodostetaan etänä noutoparametreilla'
+'Batches are created locally': 'Erät luodaan paikallisesti'
+'Limit batch size': 'Rajoita erän kokoa'
+'Limit the number of records to fetch/run at once.': 'Rajoita kerralla noudettavien/suoritettavien tietueiden määrää.'
+Interval: Väli
+'Set an interval time between each batch.': 'Aseta aikaväli erien välille.'
+Seconds: Sekuntia
+'Configure where to extract request data from.': 'Määritä, mistä pyynnön data poimitaan.'
+'Request param': 'Pyynnön parametri'
+'Define the param name to use as the data source.': 'Määritä parametrin nimi, jota käytetään tietolähteenä.'
+'Leave empty to use the full request data.': 'Jätä tyhjäksi käyttääksesi koko pyynnön dataa.'
+'Configure tasks to retrieve the data': 'Määritä tehtävät datan noutamiseen'
+'Define source schema structure.': 'Määritä lähteen skeeman rakenne.'
+'Predefined schema storage': 'Ennalta määritetty skeemavarasto'
+'Manual definitions': 'Manuaaliset määritykset'
+'Event handler on empty source': 'Tapahtumakäsittelijä tyhjälle lähteelle'
+Cancel: Peruuta
+Error: Virhe
+'Optionally trigger error when there is no data available from the source.': 'Valinnaisesti aiheuta virhe, kun lähteestä ei ole dataa saatavilla.'
+Actions: Toiminnot
+'The actions that need to be done with the source data.': 'Toiminnot, jotka lähdedatalle on tehtävä.'
+Flow: Virtaus
+Routine: Rutiini
+Tasks: Tehtävät
+Events: Tapahtumat
+'Select the behavior on various events in this automation.': 'Valitse toiminta eri tapahtumille tässä automaatiossa.'
+'On Cancel': 'Peruutuksessa'
+'Actions to execute when the automation is cancelled.': 'Toiminnot, jotka suoritetaan, kun automaatio peruutetaan.'
+'On Error': 'Virheessä'
+'Actions to execute when the automation fails.': 'Toiminnot, jotka suoritetaan, kun automaatio epäonnistuu.'
+'On Success': 'Onnistuessa'
+'Actions to execute when the automation completed successfully.': 'Toiminnot, jotka suoritetaan, kun automaatio on suoritettu onnistuneesti.'
+Response: Vastaus
+'What this automation should respond in case of a HTTP request.': 'Mitä tämän automaation tulee vastata HTTP-pyynnön tapauksessa.'
+'Success status and data': 'Onnistumisen tila ja data'
+'Data only': 'Vain data'
+'Success status only': 'Vain onnistumisen tila'
+'File Download': 'Tiedoston lataus'
+'Download file selector': 'Ladattavan tiedoston valitsin'
+Execution: Suoritus
+'Control how this automation is executed.': 'Hallitse, miten tämä automaatio suoritetaan.'
+'Execution mode': 'Suoritustila'
+Single: Yksittäinen
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Vain yksi suoritus kerrallaan ja estää uudet pyynnöt, kun suoritus on käynnissä tai ajoitettu.'
+Parallel: Rinnakkainen
+'Multiple simultaneous execution runs allowed': 'Useat samanaikaiset suoritukset sallittu'
+Queued: Jonotettu
+'Accepts new requests but executes only one run at a time.': 'Hyväksyy uudet pyynnöt, mutta suorittaa vain yhden suorituksen kerrallaan.'
+'Stale run timeout': 'Vanhentuneen suorituksen aikakatkaisu'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekuntia ilman toimintaa, ennen kuin suoritus katsotaan vanhentuneeksi ja nollataan automaattisesti.'
+'Defaults to {default}.': 'Oletusarvo on {default}.'
+'History traces retention limit': 'Suoritushistorian säilytysraja'
+'Configure execution history of this automation.': 'Määritä tämän automaation suoritushistoria.'
+'Maximum number of stored traces for this automation.': 'Tämän automaation tallennettujen suoritushistorioiden enimmäismäärä.'
+'Leave empty to use the global default of {param}.': 'Jätä tyhjäksi käyttääksesi globaalia oletusarvoa {param}.'
+Status: Tila
+Default: Oletus
+Fixed: Kiinteä
+Days: Päivää
+Webservice: Webservice
+Trigger: Käynnistäjä
+Start: Käynnistä
+Stop: Pysäytä
+Continue: Jatka
+Success: Onnistui
+Unknown: Tuntematon
+Trashed: Roskakorissa
+Visible: Näkyvä
+Hidden: Piilotettu
+Registered: Rekisteröity
+Scheduled: Ajoitettu
+Running: Käynnissä
+Stopped: Pysäytetty
+Failed: Epäonnistui
+Cancelled: Peruutettu
+Dynamic: Dynaaminen
+Sequence: Sarja
+'Add steps': 'Lisää vaiheita'
+'Input data': 'Syöttödata'
+'Input variables': 'Syöttömuuttujat'
+Conditions: Ehdot
+'Input schema': 'Syöttöskeema'
+'Output schema': 'Tulosskeema'
+'Data type': 'Datatyyppi'
+Columns: Sarakkeet
+Key: Avain
+Name: Nimi
+'Field name key': 'Kentän nimen avain'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Oletuksena se noutaa indeksiavaimen, ellei arvo ole kenttätietoja sisältävä taulukko.'
+'Field label key': 'Kentän tunnisteen avain'
+'Used in case the value is an array containing field information.': 'Käytetään, kun arvo on kenttätietoja sisältävä taulukko.'
+'Schema storages': 'Skeemavarastot'
+'From source schema': 'Lähteen skeemasta'
+'To target schema': 'Kohdeskeemaan'
+'Format options': 'Muotovaihtoehdot'
+'Response format': 'Vastauksen muoto'
+'This webservice does not validate authorization.': 'Tämä Webservice ei validoi valtuutusta.'
+'Added to queue!': 'Lisätty jonoon!'
+'Finished executing endpoint.': 'Endpointin suoritus valmis.'
+'There were errors while executing this endpoint.': 'Tämän endpointin suorituksessa oli virheitä.'
+'Dots (.) in refs are forbidden: {ref}': 'Pisteet (.) viittauksissa ovat kiellettyjä: {ref}'
+'Entity not found for: {ref}': 'Entiteettiä ei löydy kohteelle: {ref}'
+'Model not found for: {ref} ({class})': 'Mallia ei löydy kohteelle: {ref} ({class})'
+'Response param name': 'Vastauksen parametrin nimi'
+'The param name where the results are located': 'Parametrin nimi, jossa tulokset sijaitsevat'
+'Nested keys are supported: key.nested_key': 'Sisäkkäiset avaimet ovat tuettuja: key.nested_key'
+'Key / Column name override to store results': 'Avaimen / sarakkeen nimen korvaus tulosten tallentamiseen'
+'Start with dot (.) for root': 'Aloita pisteellä (.) juurta varten'
+Action: Toiminto
+'Replace current data with results': 'Korvaa nykyinen data tuloksilla'
+'Merge results with current data': 'Yhdistä tulokset nykyiseen dataan'
+'Insert results into current data without replacing existing values': 'Lisää tulokset nykyiseen dataan korvaamatta olemassa olevia arvoja'
+'Combine recursively?': 'Yhdistä rekursiivisesti?'
+'Catch errors': 'Sieppaa virheet'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Määritä, miten virheet käsitellään. Kun virhe täsmää ehtoon, se estää virheen ja suorittaa määritetyt toiminnot sen sijaan. Virhe kirjataan silti lokiin.'
+'Leave empty to catch all errors.': 'Jätä tyhjäksi siepataksesi kaikki virheet.'
+'No actions defined': 'Toimintoja ei ole määritetty'
+'Run catch {name}': 'Suorita sieppaus {name}'
+Cache: Välimuisti
+'Get or set a value in the context cache': 'Hae tai aseta arvo kontekstin välimuistiin'
+'Set cache': 'Aseta välimuisti'
+'Get cache': 'Hae välimuisti'
+'Set from data': 'Aseta datasta'
+'Manual value': 'Manuaalinen arvo'
+'Key / Column name': 'Avain / sarakkeen nimi'
+'Leave empty for root': 'Jätä tyhjäksi juurta varten'
+'Cache value': 'Välimuistin arvo'
+'Cache tag reference/path': 'Välimuistin Tag-viittaus/polku'
+'Can be used like: {tag}': 'Voidaan käyttää kuten: {tag}'
+Method: Menetelmä
+Replace: Korvaa
+Merge: Yhdistä
+Append: 'Lisää loppuun'
+'Not found action': 'Ei löytynyt -toiminto'
+'Action if the tag is not found': 'Toiminto, jos Tagia ei löydy'
+'Override with empty value': 'Korvaa tyhjällä arvolla'
+'Skip task': 'Ohita tehtävä'
+'Cache tag reference missing': 'Välimuistin Tag-viittaus puuttuu'
+Choose: Valitse
+'Choose between different options based on conditions': 'Valitse eri vaihtoehtojen välillä ehtojen perusteella'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Määritä vaihtoehdot ja niiden ehdot. Kun ehto täyttyy, vain kyseinen vaihtoehto suoritetaan.'
+'Default tasks': 'Oletustehtävät'
+'These tasks will run if none of the option conditions are met.': 'Nämä tehtävät suoritetaan, jos mikään vaihtoehdon ehdoista ei täyty.'
+'Run option {name}': 'Suorita vaihtoehto {name}'
+'Run default': 'Suorita oletus'
+Extract: Poimi
+'Extract a column from each item in your data': 'Poimi sarake jokaisesta datasi kohteesta'
+'The data column name to extract items from': 'Datasarakkeen nimi, josta kohteet poimitaan'
+'The column to extract': 'Poimittava sarake'
+'The target column to put results': 'Kohdesarake, johon tulokset asetetaan'
+'Leave empty to use the Key / Column name set above': 'Jätä tyhjäksi käyttääksesi yllä asetettua avainta / sarakkeen nimeä'
+'No column key configured': 'Sarakkeen avainta ei ole määritetty'
+'Data not iterable': 'Data ei ole iteroitavissa'
+'Could not extract': 'Poiminta epäonnistui'
+Filter: Suodata
+'Filter data based on conditions': 'Suodata data ehtojen perusteella'
+'Leave empty for root iteration': 'Jätä tyhjäksi juuri-iterointia varten'
+'Filter method': 'Suodatusmenetelmä'
+'Keep valid rows': 'Säilytä kelvolliset rivit'
+'Keep invalid rows': 'Säilytä virheelliset rivit'
+'No conditions configured': 'Ehtoja ei ole määritetty'
+'Data key not found': 'Data-avainta ei löydy'
+Group: Ryhmitä
+'Group your data': 'Ryhmitä datasi'
+'The data column name to group items for': 'Datasarakkeen nimi, jonka mukaan kohteet ryhmitellään'
+'Group by': 'Ryhmittele'
+'Set column name/key to group by value': 'Aseta sarakkeen nimi/avain, jonka mukaan ryhmitellään'
+'Default group key': 'Oletusryhmäavain'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Käytetään, kun rivi ei sisällä määritettyä ryhmäsaraketta tai sen arvo on tyhjä. Jos ei ole asetettu, rivi poistetaan.'
+'No group column configured': 'Ryhmäsaraketta ei ole määritetty'
+'Invalid group column: {value}': 'Virheellinen ryhmäsarake: {value}'
+Index: Indeksoi
+'Index your data': 'Indeksoi datasi'
+'The data column name to index items for': 'Datasarakkeen nimi, jonka mukaan kohteet indeksoidaan'
+'Numeric list': 'Numeerinen lista'
+'Associative indexes': 'Assosiatiiviset indeksit'
+'New index key': 'Uusi indeksiavain'
+'The template for the indexed keys': 'Malli indeksoiduille avaimille'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Käytä sarakeavaimia Tageina: {tag} | Jokerimerkit: {wildcards}'
+'No index method configured': 'Indeksointimenetelmää ei ole määritetty'
+'No index key template configured': 'Indeksiavaimen mallia ei ole määritetty'
+Loop: Silmukka
+'Iterate over a set of rows': 'Iteroi rivijoukon yli'
+'Loop method': 'Silmukkamenetelmä'
+Row: Rivi
+Batches: Erät
+'Batch size': 'Erän koko'
+'Set the number of records to fetch/run at once.': 'Aseta kerralla noudettavien/suoritettavien tietueiden määrä.'
+'Data column not found: {key}': 'Datasaraketta ei löydy: {key}'
+'Data column not iterable: {key}': 'Datasarake ei ole iteroitavissa: {key}'
+'Invalid action': 'Virheellinen toiminto'
+'No batch size configured': 'Erän kokoa ei ole määritetty'
+Map: Kartoita
+'Map key value pairs': 'Kartoita avain-arvo-parit'
+'The data column name for the value that needs to be mapped': 'Datasarakkeen nimi arvolle, joka on kartoitettava'
+'Nested keys are supported: {example}': 'Sisäkkäiset avaimet ovat tuettuja: {example}'
+'Map columns': 'Kartoita sarakkeet'
+'Convert key names and definition schema.': 'Muunna avainten nimet ja määritysskeema.'
+'Map values': 'Kartoita arvot'
+'Convert values for a column': 'Muunna sarakkeen arvot'
+'Only return mapped items?': 'Palauta vain kartoitettuja kohteita?'
+'This will also reorder your data in the order of your map.': 'Tämä myös järjestää datasi uudelleen kartan mukaiseen järjestykseen.'
+'Remove old keys?': 'Poista vanhat avaimet?'
+'Map source': 'Kartoituksen lähde'
+Mapper: Kartoittaja
+'Convert column types to schema where available?': 'Muunna saraketyypit skeemaan, kun mahdollista?'
+'No manual map configured.': 'Manuaalista kartoitusta ei ole määritetty.'
+'Cannot map empty data': 'Tyhjää dataa ei voi kartoittaa'
+'Cannot map scalar data': 'Skalaaridataa ei voi kartoittaa'
+'Merge columns and/or values': 'Yhdistä sarakkeita ja/tai arvoja'
+'The data column name to merge': 'Yhdistettävän datasarakkeen nimi'
+'Merge values of a column into a single value': 'Yhdistä sarakkeen arvot yhdeksi arvoksi'
+'Merge columns': 'Yhdistä sarakkeet'
+'Merge both': 'Yhdistä molemmat'
+'Key merge method': 'Avainten yhdistämismenetelmä'
+'Merge column key names': 'Yhdistä sarakeavainten nimet'
+'Merge column keys using an indexed name': 'Yhdistä sarakeavaimet indeksoidulla nimellä'
+'Merge column keys using a regular expression': 'Yhdistä sarakeavaimet säännöllisellä lausekkeella'
+'Column keys that need to be merged': 'Sarakeavaimet, jotka on yhdistettävä'
+'Column key name': 'Sarakeavaimen nimi'
+'Regex to match keys with and merge': 'Säännöllinen lauseke, jolla avaimet täsmätään ja yhdistetään'
+'Indexed key to search for and merge': 'Indeksoitu avain, jota haetaan ja yhdistetään'
+'Nested keys are not supported': 'Sisäkkäiset avaimet eivät ole tuettuja'
+'Wildcards: {wildcards}': 'Jokerimerkit: {wildcards}'
+'Index starts with': 'Indeksi alkaa'
+'Method to merge values from multiple columns': 'Menetelmä useiden sarakkeiden arvojen yhdistämiseen'
+'Each column value will be appended': 'Jokainen sarakkeen arvo lisätään loppuun'
+'Latter column values merge into the former': 'Jälkimmäisen sarakkeen arvot yhdistetään edelliseen'
+'Latter column values replaces the former': 'Jälkimmäisen sarakkeen arvot korvaavat edellisen'
+'Latter column values insert into the former': 'Jälkimmäisen sarakkeen arvot lisätään edelliseen'
+Separator: Erotin
+Comma: Pilkku
+Semicolon: Puolipiste
+Space: Välilyönti
+Tab: Sarkain
+'New line': 'Uusi rivi'
+'Value template': 'Arvon malli'
+'The template for each separate value to be merged': 'Malli jokaiselle yhdistettävälle erilliselle arvolle'
+'Remove original column key(s)?': 'Poista alkuperäiset sarakeavaimet?'
+'Only keep unique values?': 'Säilytä vain yksilölliset arvot?'
+'By default all values are kept.': 'Oletuksena kaikki arvot säilytetään.'
+'Preserve column keys?': 'Säilytä sarakeavaimet?'
+'Keep empty values?': 'Säilytä tyhjät arvot?'
+'By default all empty column values will not be merged.': 'Oletuksena tyhjiä sarakearvoja ei yhdistetä.'
+'No key configured': 'Avainta ei ole määritetty'
+'No columns defined': 'Sarakkeita ei ole määritetty'
+'No key method selected': 'Avainmenetelmää ei ole valittu'
+'Cannot merge scalar value.': 'Skalaariarvoa ei voi yhdistää.'
+'Find and replace': 'Etsi ja korvaa'
+'The data column name for the values that need to be replaced': 'Datasarakkeen nimi arvoille, jotka on korvattava'
+'In case the value is a list of values this task will iterate the replacements for all': 'Jos arvo on arvolista, tämä tehtävä käy korvaukset läpi kaikille'
+'Replace values': 'Korvaa arvot'
+'Replace keys': 'Korvaa avaimet'
+'Replace keys and values': 'Korvaa avaimet ja arvot'
+'Replace recursively?': 'Korvaa rekursiivisesti?'
+Find: Etsi
+'Find value not set': 'Etsittävää arvoa ei ole asetettu'
+'Cannot replace scalar data': 'Skalaaridataa ei voi korvata'
+'Retrieve your data from your specific connection': 'Nouda datasi tietyltä yhteydeltäsi'
+'The data column name to pass to the webservice': 'Datasarakkeen nimi, joka välitetään Webservicelle'
+Connection: Yhteys
+'Response data': 'Vastausdata'
+'No connection configured': 'Yhteyttä ei ole määritetty'
+'Data not found: {key}': 'Dataa ei löydy: {key}'
+Send: Lähetä
+'Send your data to your specific connection': 'Lähetä datasi tietylle yhteydellesi'
+'Retrieve response data': 'Nouda vastausdata'
+Set: Aseta
+'Set your own values': 'Aseta omat arvosi'
+'The data column key name for the values that needs to be set': 'Datasarakkeen avaimen nimi arvoille, jotka on asetettava'
+'Reorder data?': 'Järjestä data uudelleen?'
+'This will append all configured columns at the end of the current data.': 'Tämä lisää kaikki määritetyt sarakkeet nykyisen datan loppuun.'
+'Force if invalid?': 'Pakota, jos virheellinen?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Kun olemassa oleva data on skalaari, luo uusi datakokoelma tässä tehtävässä asetetuista arvoista.'
+'You can still reference the original value through the {placeholder} tag.': 'Voit edelleen viitata alkuperäiseen arvoon {placeholder}-Tagin kautta.'
+'Set method': 'Asetusmenetelmä'
+'Set column values': 'Aseta sarakearvot'
+'Set schema': 'Aseta skeema'
+'Set both': 'Aseta molemmat'
+'Remove columns not defined in schema?': 'Poista sarakkeet, joita ei ole määritetty skeemassa?'
+'Column key/name': 'Sarakeavain/nimi'
+'-- Unchanged --': '-- Muuttumaton --'
+'Use {wildcard} to insert the current value.': 'Käytä {wildcard} lisätäksesi nykyisen arvon.'
+Unset: 'Poista asetus'
+'Data is not iterable': 'Data ei ole iteroitavissa'
+'No set params configured': 'Asetusparametreja ei ole määritetty'
+Sort: Lajittele
+'Sort your data': 'Lajittele datasi'
+'The data column key name for the values that needs to be sorted': 'Datasarakkeen avaimen nimi arvoille, jotka on lajiteltava'
+'Sort by key / column name': 'Lajittele avaimen / sarakkeen nimen mukaan'
+'Sort by value': 'Lajittele arvon mukaan'
+'Sort by column value': 'Lajittele sarakkeen arvon mukaan'
+'Sort by': 'Lajittele'
+'Set column name/key to sort by value': 'Aseta sarakkeen nimi/avain, jonka mukaan lajitellaan'
+Ascending: Nouseva
+Descending: Laskeva
+'Ascending natural order': 'Nouseva luonnollinen järjestys'
+'Descending natural order': 'Laskeva luonnollinen järjestys'
+'No sort method configured': 'Lajittelumenetelmää ei ole määritetty'
+'Invalid sort order: {order}': 'Virheellinen lajittelujärjestys: {order}'
+'No sort column configured': 'Lajittelusaraketta ei ole määritetty'
+Split: Jaa
+'Split value and/or split column key into multiple': 'Jaa arvo ja/tai sarakeavain useampaan osaan'
+'The data column name to split': 'Jaettavan datasarakkeen nimi'
+'Split value': 'Jaa arvo'
+'Split into column keys': 'Jaa sarakeavaimiksi'
+'Split value and split into column keys': 'Jaa arvo ja sarakeavaimiksi'
+'Column key split method': 'Sarakeavaimen jakomenetelmä'
+'Split into column keys by providing custom names': 'Jaa sarakeavaimiksi antamalla mukautetut nimet'
+'Split into column keys using an indexed name': 'Jaa sarakeavaimiksi indeksoidulla nimellä'
+'Column key names': 'Sarakeavainten nimet'
+'Current value index/key (optional)': 'Nykyisen arvon indeksi/avain (valinnainen)'
+'New column key name': 'Uuden sarakeavaimen nimi'
+'Indexed key': 'Indeksoitu avain'
+'The template for the new indexed keys.': 'Malli uusille indeksoiduille avaimille.'
+'Remove original key(s)?': 'Poista alkuperäiset avaimet?'
+'Regular expression (Regex)': 'Säännöllinen lauseke (Regex)'
+'Regular expression': 'Säännöllinen lauseke'
+'Regex must be made for splitting values, not matching.': 'Regex on tehtävä arvojen jakamiseen, ei täsmäämiseen.'
+'Split value column definition': 'Jaettavan arvon sarakemääritys'
+'No action configured': 'Toimintoa ei ole määritetty'
+'Loop key not supported': 'Silmukka-avainta ei tueta'
+'Value is not splittable into list': 'Arvoa ei voi jakaa listaksi'
+'Column `{type}` does not exist': 'Saraketta `{type}` ei ole olemassa'
+'Value is not splittable into keys': 'Arvoa ei voi jakaa avaimiksi'
+'No columns configured': 'Sarakkeita ei ole määritetty'
+Store: Varastoi
+'Get or set a storage': 'Hae tai aseta varasto'
+'Set storage': 'Aseta varasto'
+'Get storage': 'Hae varasto'
+'Storage column key/path': 'Varaston sarakeavain/polku'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Aseta polku, johon tämä arvo tallennetaan, tai jätä tyhjäksi. Käytä pisteitä (.) siirtyäksesi varaston sisällä.'
+'No storage selected': 'Varastoa ei ole valittu'
+'Storage not found': 'Varastoa ei löydy'
+'Raw storage cannot contain paths': 'Raaka varasto ei voi sisältää polkuja'
+'This is a raw storage, please select a different storage or change the storage type': 'Tämä on raaka varasto, valitse toinen varasto tai vaihda varaston tyyppi'
+Template: Malli
+'Create your own modifier template with Twig': 'Luo oma muokkausmalli Twigillä'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Tulostus-Tagit {example_var} jäsennetään ennen Twig-mallimoottoria Tageina. Vain suorituslauseet {example_func} jäsennetään Twigissä.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Arvoa `data` käytetään tehtävän tuloksena. Käytettävissä olevat muuttujat: `data`, `config`, `cache`, `variables` ja `context`.'
+'Add your code here': 'Lisää koodisi tähän'
+'No template set': 'Mallia ei ole asetettu'
+Trace: Suoritushistoria
+'Trace current status with a log or error.': 'Kirjaa nykyinen tila Suoritushistoriaan lokilla tai virheellä.'
+'Trace type': 'Suoritushistorian tyyppi'
+'Creating an error will result in the trace reporting as failed.': 'Virheen luominen johtaa siihen, että Suoritushistoria raportoidaan epäonnistuneeksi.'
+'Log message': 'Lokiviesti'
+'Error message': 'Virheviesti'
+Message: Viesti
+'Extra info': 'Lisätiedot'
+'Include data?': 'Sisällytä data?'
+'Message not configured': 'Viestiä ei ole määritetty'
+'Trigger something independently from the current flow': 'Käynnistä jotain riippumattomasti nykyisestä virtauksesta'
+'Run async?': 'Suorita asynkronisesti?'
+Experimental: Kokeellinen
+'If the automation is using batches then this trigger will always run async.': 'Jos automaatio käyttää eriä, tämä käynnistäjä suoritetaan aina asynkronisesti.'
+'Pass current data?': 'Välitä nykyinen data?'
+'Override current data?': 'Korvaa nykyinen data?'
+'Leave empty to pass root data': 'Jätä tyhjäksi välittääksesi juuridata'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Määritä staattiset muuttujat, joita käytetään tälle käynnistäjälle. Olemassa olevat muuttujat sisällytetään myös.'
+Automation: Automaatio
+Wait: Odota
+'Wait for time to pass': 'Odota ajan kulumista'
+'Seconds to wait': 'Odotettavat sekunnit'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Yhdistä FTP-palvelimeen lähettääksesi ja/tai ladataksesi tiedostoja'
+'{type} extension is not available': '{type}-laajennus ei ole käytettävissä'
+Host: Isäntä
+Port: Portti
+Username: Käyttäjänimi
+Password: Salasana
+'Passive mode': 'Passiivinen tila'
+'Connect using SSL': 'Yhdistä SSL:llä'
+'Process timeout in seconds': 'Prosessin aikakatkaisu sekunteina'
+'Cannot connect to {host}': 'Ei voida yhdistää kohteeseen {host}'
+'Cannot login to {host}': 'Ei voida kirjautua kohteeseen {host}'
+'Successfully connected to {host}': 'Yhdistetty onnistuneesti kohteeseen {host}'
+'Could not connect to {host}': 'Yhteyttä kohteeseen {host} ei voitu muodostaa'
+'HTTP No auth': 'HTTP ilman tunnistautumista'
+'Connect without authorization': 'Yhdistä ilman valtuutusta'
+'Allow HTTP': 'Salli HTTP'
+'Allow unsafe HTTP connection without SSL encryption': 'Salli turvaton HTTP-yhteys ilman SSL-salausta'
+Endpoint: Endpoint
+'Send current data': 'Lähetä nykyinen data'
+'Select data transport location': 'Valitse datan siirtopaikka'
+'Request {type}': 'Pyyntö {type}'
+'HTTP Basic Auth': 'HTTP Basic Auth'
+'Connect with basic authorization': 'Yhdistä perusvaltuutuksella'
+'Username / key': 'Käyttäjänimi / avain'
+'Password / Secret': 'Salasana / Secret'
+'HTTP Bearer token': 'HTTP Bearer-tunnus'
+'Connect with Bearer Token authorization': 'Yhdistä Bearer Token -valtuutuksella'
+Token: Tunnus
+'HTTP Authorization server': 'HTTP-valtuutuspalvelin'
+'Connect to a HTTP server using an authorization server': 'Yhdistä HTTP-palvelimeen valtuutuspalvelimen avulla'
+Body: Runko
+Header: Otsikko
+'Redirect url': 'Uudelleenohjauksen URL'
+'Local File system': 'Paikallinen tiedostojärjestelmä'
+'Use the local filesystem defined by your environment': 'Käytä ympäristösi määrittämää paikallista tiedostojärjestelmää'
+'Root path': 'Juuripolku'
+'Relative path?': 'Suhteellinen polku?'
+'Makes the root path relative to the SyncEngine installation': 'Tekee juuripolusta suhteellisen SyncEngine-asennukseen nähden'
+'Successfully accessed {root}': 'Käytetty onnistuneesti: {root}'
+'Could not access {root}': 'Ei voitu käyttää: {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Yhdistä SFTP-palvelimeen lähettääksesi ja/tai ladataksesi tiedostoja'
+'Authentication type': 'Tunnistautumistyyppi'
+'Private key': 'Yksityinen avain'
+'Username and password': 'Käyttäjänimi ja salasana'
+'Private key password': 'Yksityisen avaimen salasana'
+'If your private key is password protected, you can fill in that password here': 'Jos yksityinen avaimesi on salasanasuojattu, voit täyttää salasanan tähän'
+'Cannot login to {host}: {error}': 'Ei voida kirjautua kohteeseen {host}: {error}'
+'Could not rename': 'Nimeäminen epäonnistui'
+SOAP: SOAP
+'Connect using SOAP': 'Yhdistä SOAPilla'
+'HTTP Authentication': 'HTTP-tunnistautuminen'
+'Basic authentication': 'Perustunnistautuminen'
+'SOAP multistep server': 'SOAP-monivaihepalvelin'
+'Connect to a SOAP server using multistep setup': 'Yhdistä SOAP-palvelimeen monivaiheisella asetuksella'
+'SOAP extension is not available': 'SOAP-laajennus ei ole käytettävissä'
+Url: URL
+'The URL for this authentication step': 'Tämän tunnistautumisvaiheen URL'
+SQL: SQL
+'Connect to a SQL server': 'Yhdistä SQL-palvelimeen'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Tietokantalaajennuksia ei ole käytettävissä, asenna jokin seuraavista: {options}'
+'Select database driver': 'Valitse tietokanta-ajuri'
+Database: Tietokanta
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Kysely
+'Fetch method': 'Noutomenetelmä'
+'Associated array': 'Assosiatiivinen taulukko'
+'Key => Value pairs': 'Avain => arvo-parit'
+'Key column': 'Avainsarake'
+'Choose the key you want to use as the row key': 'Valitse avain, jota haluat käyttää rivin avaimena'
+Path: Polku
+'Select what you want to retrieve': 'Valitse, mitä haluat noutaa'
+'File contents': 'Tiedoston sisältö'
+'List directories and filenames': 'Listaa hakemistot ja tiedostonimet'
+'List filenames': 'Listaa tiedostonimet'
+'List directories': 'Listaa hakemistot'
+Filename: Tiedostonimi
+'Select what action you want to send': 'Valitse, minkä toiminnon haluat lähettää'
+'Upload file contents': 'Lähetä tiedoston sisältö'
+'Delete file': 'Poista tiedosto'
+'Create directory': 'Luo hakemisto'
+'Delete directory': 'Poista hakemisto'
+'Rename or move a file or directory': 'Nimeä tai siirrä tiedosto tai hakemisto'
+'Overwrite if file exists': 'Korvaa, jos tiedosto on olemassa'
+'Directory name': 'Hakemiston nimi'
+'Old name': 'Vanha nimi'
+'New name': 'Uusi nimi'
+'Overwrite if new name exists': 'Korvaa, jos uusi nimi on olemassa'
+'No Filename configured': 'Tiedostonimeä ei ole määritetty'
+'Cannot fetch file from {host}, please try passive mode': 'Tiedostoa ei voi noutaa kohteesta {host}, kokeile passiivista tilaa'
+'Cannot fetch file from {host}': 'Tiedostoa ei voi noutaa kohteesta {host}'
+'Successfully retrieved: {name}': 'Noudettu onnistuneesti: {name}'
+'File {oldName} existed, renamed it to {newName}': 'Tiedosto {oldName} oli olemassa, nimetty uudelleen: {newName}'
+'Could not be write file: {name}': 'Tiedostoa ei voitu kirjoittaa: {name}'
+'Successfully uploaded: {name}': 'Lähetetty onnistuneesti: {name}'
+'Could not delete file {name}': 'Tiedostoa {name} ei voitu poistaa'
+'Successfully deleted file: {name}': 'Tiedosto poistettu onnistuneesti: {name}'
+'Cannot read directory from {host}': 'Hakemistoa ei voi lukea kohteesta {host}'
+'No directory configured': 'Hakemistoa ei ole määritetty'
+'Could not create directory: {path}': 'Hakemistoa ei voitu luoda: {path}'
+'Successfully created directory: {path}': 'Hakemisto luotu onnistuneesti: {path}'
+'Could not delete directory: {path}': 'Hakemistoa ei voitu poistaa: {path}'
+'Successfully deleted: {path}': 'Poistettu onnistuneesti: {path}'
+'Invalid rename configuration': 'Virheellinen uudelleennimeämisen määritys'
+'Could not rename: {old} to {new}': 'Ei voitu nimetä uudelleen: {old} muotoon {new}'
+'Successfully renamed: {old} to {new}': 'Nimetty onnistuneesti uudelleen: {old} muotoon {new}'
+'Invalid resource': 'Virheellinen resurssi'
+'Request method': 'Pyyntömenetelmä'
+'Request timeout': 'Pyynnön aikakatkaisu'
+'Request query': 'Pyynnön kysely'
+'Request header': 'Pyynnön otsikko'
+'Request body': 'Pyynnön runko'
+'SOAP version': 'SOAP-versio'
+'Default (PHP default)': 'Oletus (PHP:n oletus)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protokollaversio. Jätä tyhjäksi PHP:n oletusta varten.'
+Compression: Pakkaus
+'Compress SOAP requests and accept compressed responses.': 'Pakkaa SOAP-pyynnöt ja hyväksy pakatut vastaukset.'
+'Connection timeout': 'Yhteyden aikakatkaisu'
+'Maximum time in seconds for the connection to be established.': 'Enimmäisaika sekunteina yhteyden muodostamiselle.'
+'WSDL mode': 'WSDL-tila'
+'Will this connection use WSDL file format?': 'Käyttääkö tämä yhteys WSDL-tiedostomuotoa?'
+'WSDL file url': 'WSDL-tiedoston URL'
+'Link to WSDL format that will be filled in for this soap connection': 'Linkki WSDL-muotoon, joka täytetään tälle SOAP-yhteydelle'
+'WSDL cache': 'WSDL-välimuisti'
+'No cache': 'Ei välimuistia'
+'Memory cache': 'Muistivälimuisti'
+'Disk/File cache': 'Levy-/tiedostovälimuisti'
+Both: Molemmat
+'WSDL cache warning': 'WSDL-välimuistin varoitus'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Tiedostopohjainen WSDL-välimuisti on käytössä. Tämä voi aiheuttaa ongelmia vanhentuneiden WSDL-tiedostojen ja tietoturvan kanssa palvelimen jaetun käytön vuoksi.'
+'SOAP service namespace': 'SOAP-palvelun nimitila'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'SOAP-palvelun kohdenimitila. Pakollinen, kun WSDL-tila on poissa käytöstä.'
+'SOAPAction header': 'SOAPAction-otsikko'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'Valinnainen SOAPAction HTTP -otsikon arvo. Jotkin SOAP-palvelimet edellyttävät sitä.'
+Advanced: Lisäasetukset
+'Override options for the SOAP connection.': 'Korvaa SOAP-yhteyden asetukset.'
+'SOAP headers': 'SOAP-otsikot'
+'SOAP operation name': 'SOAP-operaation nimi'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Kutsuttavan SOAP-operaation nimi. Tämä on pakollinen sekä WSDL- että ei-WSDL-tilassa.'
+'Use data transport as body?': 'Käytä datan siirtoa runkona?'
+'SOAP body': 'SOAP-runko'
+'Define static variables to be used within the authorization process.': 'Määritä staattiset muuttujat, joita käytetään valtuutusprosessin sisällä.'
+'Authorized request base config': 'Valtuutetun pyynnön perusmääritys'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Määritä pyynnön perusmääritys. Tätä käytetään oletusparametrien asettamiseen kaikille tätä yhteyttä käyttäville pyynnöille.'
+'Override host': 'Korvaa isäntä'
+'Authorization process steps': 'Valtuutusprosessin vaiheet'
+'Define each step for the authorization process.': 'Määritä jokainen valtuutusprosessin vaihe.'
+'The param name where the authentication parameters are located': 'Parametrin nimi, jossa tunnistautumisparametrit sijaitsevat'
+'Tag name': 'Tagin nimi'
+'Choose the tag name in which the response param value is stored': 'Valitse Tagin nimi, johon vastauksen parametrin arvo tallennetaan'
+'Example: token': 'Esimerkki: token'
+Expiration: Vanheneminen
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Aseta Tagin arvolle vanhenemisaika, jotta uudelleentunnistautuminen tehdään tämän vanhenemisajan kuluessa'
+'Supported formats:': 'Tuetut muodot:'
+'Timestamp or date': 'Aikaleima tai päivämäärä'
+'Time format: ({time_format})': 'Aikamuoto: ({time_format})'
+'Text format: ({time_string})': 'Tekstimuoto: ({time_string})'
+'Response type': 'Vastauksen tyyppi'
+'The type of response the URL will return': 'Vastauksen tyyppi, jonka URL palauttaa'
+'Tag storage': 'Tagin varastointi'
+'Define the tags you need to store for authentication': 'Määritä Tagit, jotka sinun on tallennettava tunnistautumista varten'
+'Run next step (default)': 'Suorita seuraava vaihe (oletus)'
+'Skip next step': 'Ohita seuraava vaihe'
+'Stop loop': 'Pysäytä silmukka'
+'Run previous step (default)': 'Suorita edellinen vaihe (oletus)'
+'Restart loop from beginning': 'Käynnistä silmukka alusta'
+'Cannot authenticate on step #{step} from connection #{connectionID}': 'Ei voida tunnistautua vaiheessa #{step} yhteydessä #{connectionID}'
+'Invalid tag name': 'Virheellinen Tagin nimi'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Virheellinen tai tyhjä palvelinvastaus Tagille:{tag} | Parametria ei löydy:{param}'
+'Invalid or empty server response for tag:{tag}': 'Virheellinen tai tyhjä palvelinvastaus Tagille:{tag}'
+'Are you sure you want to disable two-factor authentication?': 'Haluatko varmasti poistaa kaksivaiheisen todennuksen käytöstä?'
+'You will need to re-enable 2FA after verifying your password': 'Sinun on otettava 2FA uudelleen käyttöön salasanasi vahvistamisen jälkeen'
+'Enter your password to confirm': 'Anna salasanasi vahvistaaksesi'
+'Check your email': 'Tarkista sähköpostisi'
+'We sent a 6-digit verification code to your email address': 'Lähetimme 6-numeroisen vahvistuskoodin sähköpostiosoitteeseesi'
+'Enter the code from your email': 'Anna sähköpostistasi saamasi koodi'
+'Resend Code': 'Lähetä koodi uudelleen'
+Verify: Vahvista
+'Choose how you want to receive verification codes': 'Valitse, miten haluat vastaanottaa vahvistuskoodit'
+'Authenticator App (Recommended)': 'Todennussovellus (suositeltu)'
+'Scan the QR code with your TOTP app': 'Skannaa QR-koodi TOTP-sovelluksellasi'
+'Or enter this secret manually:': 'Tai syötä tämä Secret manuaalisesti:'
+'Email Verification': 'Sähköpostin vahvistus'
+'We will send a 6-digit code to your email address': 'Lähetämme 6-numeroisen koodin sähköpostiosoitteeseesi'
+'Send Code to Email': 'Lähetä koodi sähköpostiin'
+'Create new': 'Luo uusi'
+Description: Kuvaus
+Expires: Vanhenee
+'No API tokens created': 'API-tunnuksia ei ole luotu'
+URL: URL
+Uses: Käytöt
+'You are about to reset this process, are you sure?': 'Olet nollaamassa tämän prosessin, oletko varma?'
+Reset: Nollaa
+'Reset automation': 'Nollaa automaatio'
+'Quick Edit': 'Pikamuokkaus'
+Hide: Piilota
+Show: Näytä
+Export: Vie
+Trash: Roskakori
+Restore: Palauta
+'Delete Permanently': 'Poista pysyvästi'
+Issue: Ongelma
+Connected: Yhdistetty
+'Used in': 'Käytetty kohteessa'
+'Last runs': 'Viimeisimmät suoritukset'
+'Scheduled runs': 'Ajoitetut suoritukset'
+Steps: Vaiheet
+'Message Queue': 'Viestijono'
+'Scheduled At': 'Ajoitettu'
+'Created At': 'Luotu'
+View: Näytä
+'Scheduled run': 'Ajoitettu suoritus'
+Delete: Poista
+'Delete run': 'Poista suoritus'
+'Are you sure you want to delete this message?': 'Haluatko varmasti poistaa tämän viestin?'
+'Disabled modules.': 'Poissa käytöstä olevat moduulit.'
+Module: Moduuli
+Requires: Vaatii
+Reason: Syy
+Uninstall: 'Poista asennus'
+'Are you sure?': 'Oletko varma?'
+'This will uninstall module {moduleName} from {vendor}': 'Tämä poistaa moduulin {moduleName} asennuksen kohteesta {vendor}'
+'Upload a newer module version to replace an incompatible module.': 'Lataa uudempi moduuliversio korvataksesi yhteensopimattoman moduulin.'
+Version: Versio
+Author: Tekijä
+Manage: Hallinnoi
+Reinstall: 'Asenna uudelleen'
+Config: Määritys
+Task: Tehtävä
+Traces: Suoritushistoriat
+'You are about to kill this process, are you sure?': 'Olet tappamassa tämän prosessin, oletko varma?'
+Kill: Tapa
+'New user': 'Uusi käyttäjä'
+'Edit user': 'Muokkaa käyttäjää'
+Roles: Roolit
+'Reset password': 'Nollaa salasana'
+'Reset password?': 'Nollataanko salasana?'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'Salasanan nollaussähköposti lähetetään osoitteeseen {email}. Käyttäjä voi sitten asettaa oman salasanansa.'
+'This will delete user {email}': 'Tämä poistaa käyttäjän {email}'
+Visibility: Näkyvyys
+All: Kaikki
+Dashboard: Hallintapaneeli
+'Verify Login': 'Vahvista kirjautuminen'
+Login: Kirjaudu
+'Forgot password?': 'Unohditko salasanan?'
+'Password Reset Email Sent': 'Salasanan nollaussähköposti lähetetty'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'Jos sähköpostiosoitettasi vastaava tili on olemassa, sähköposti on juuri lähetetty. Se sisältää linkin, jolla voit nollata salasanasi.'
+'This link will expire in %expiration%': 'Tämä linkki vanhenee %expiration% kuluttua'
+"If you don't receive an email please check your spam folder": 'Jos et saa sähköpostia, tarkista roskapostikansio'
+'Back to login': 'Takaisin kirjautumiseen'
+'Try again': 'Yritä uudelleen'
+'Reset your password': 'Nollaa salasanasi'
+'Enter your email address and we will send you a link to reset your password.': 'Anna sähköpostiosoitteesi, niin lähetämme sinulle linkin salasanan nollaamiseen.'
+'Page not found': 'Sivua ei löydy'
+'Oops! An Error Occurred': 'Hups! Tapahtui virhe'
+Back: Takaisin
+'Authenticator App': 'Todennussovellus'
+'Fill in the code from your authenticator app': 'Anna koodi todennussovelluksestasi'
+'Fill in the code send to your email': 'Anna sähköpostiisi lähetetty koodi'
+'There was a problem validating your password reset request': 'Salasanan nollauspyyntösi validoinnissa oli ongelma'
+'There is already an automation with this ref, please enter a different ref': 'Tällä refillä on jo automaatio, anna eri ref'
+'There is already an automation with this name, please enter a different name': 'Tällä nimellä on jo automaatio, anna eri nimi'
+'There is already an automation with this endpoint, please enter a different name': 'Tällä endpointilla on jo automaatio, anna eri nimi'
+'There is already an account with this email': 'Tällä sähköpostiosoitteella on jo tili'
+'Your password should be at least { limit } characters': 'Salasanasi tulee olla vähintään { limit } merkkiä'
+'Please enter a password': 'Anna salasana'
+'You should agree to our license terms.': 'Sinun tulee hyväksyä lisenssiehdot.'
+'Please enter your email': 'Anna sähköpostiosoitteesi'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: trusted
+'Has conditions': 'Sisältää ehtoja'
+'Not configured': 'Ei määritetty'
+'No tasks configured': 'Tehtäviä ei ole määritetty'
+Authorization: Valtuutus
+Delimiter: Erotin
+'Sets the field delimiter separating values (one character only)': 'Asettaa kenttäerottimen, joka erottaa arvot (vain yksi merkki)'
+Enclosure: Sulkumerkki
+'Sets the field enclosure (one character only)': 'Asettaa kentän sulkumerkin (vain yksi merkki)'
+'Escape character': 'Escape-merkki'
+'Sets the escape character (at most one character)': 'Asettaa escape-merkin (enintään yksi merkki)'
+'End of line': 'Rivin loppu'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'Asettaa merkin/merkit, joilla merkitään jokaisen rivin loppu CSV-tiedostossa'
+'Headers columns': 'Otsikkosarakkeet'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Asettaa otsikko- ja datasarakkeiden järjestyksen. Esim.: jos {val1} ja {val2}, niin {func} palauttaa {result}'
+'Key separator': 'Avaimen erotin'
+"Sets the separator for array's keys during its flattening": 'Asettaa erottimen taulukon avaimille sen litistyksen aikana'
+'Escape formula': 'Escape-kaava'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Escapeaa kaavoja sisältävät kentät lisäämällä niiden alkuun `\t`-merkin'
+'No headers': 'Ei otsikoita'
+'Disables header in the encoded CSV': 'Poistaa otsikon käytöstä koodatussa CSV:ssä'
+'As collection': 'Kokoelmana'
+'Always returns results as a collection, even if only one line is decoded.': 'Palauttaa tulokset aina kokoelmana, vaikka vain yksi rivi puretaan.'
+'Output UTF8 Bom key': 'UTF8 BOM -avaimen tulostus'
+File: Tiedosto
+'Handle binary file data (raw bytes)': 'Käsittele binääritiedoston dataa (raa''at tavut)'
+Extension: Tiedostopääte
+'Mime type': 'MIME-tyyppi'
+'Sets the XML version attribute': 'Asettaa XML-version attribuutin'
+Encoding: Merkistökoodaus
+'Sets the XML encoding attribute': 'Asettaa XML:n merkistökoodauksen attribuutin'
+'Root node': 'Juurisolmu'
+'Sets the root node name': 'Asettaa juurisolmun nimen'
+'Format output': 'Muotoile tuloste'
+'If set to true, formats the generated XML with line breaks and indentation': 'Jos asetettu todeksi, muotoilee luodun XML:n rivinvaihdoilla ja sisennyksillä'
+Standalone: Standalone
+'Adds standalone attribute in the generated XML': 'Lisää standalone-attribuutin luotuun XML:ään'
+'Always returns results as a collection, even if only one line is decoded': 'Palauttaa tulokset aina kokoelmana, vaikka vain yksi rivi puretaan'
+'Remove empty tags': 'Poista tyhjät Tagit'
+'Remove all empty tags in the generated XML': 'Poista kaikki tyhjät Tagit luodusta XML:stä'
+'Type-cast attributes': 'Tyypitä attribuutit'
+'This provides the ability to forget the attribute type casting': 'Tämä mahdollistaa attribuuttien tyyppimuunnoksen pois jättämisen'
+'Inline dump': 'Sisäinen dump'
+Indentation: Sisennys
+'Number of spaces': 'Välilyöntien määrä'
+Documentation: Dokumentaatio
+'Leave empty to keep current password.': 'Jätä tyhjäksi säilyttääksesi nykyisen salasanan.'
+'New Password': 'Uusi salasana'
+Scopes: Laajuudet
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Laajuudet määrittävät, mihin tämä API-tunnus voi päästä. Jokainen laajuus myöntää tietyn oikeuden.'
+Restrictions: Rajoitukset
+"Restrictions limit an API key's usage and improves security": 'Rajoitukset rajoittavat API-avaimen käyttöä ja parantavat tietoturvaa'
+'Restrict by IP addresses': 'Rajoita IP-osoitteiden mukaan'
+'Restrict by host domains': 'Rajoita isäntäverkkotunnusten mukaan'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin"-otsikko voidaan väärentää, joten tämä on enemmänkin mukavuustarkistus kuin tietoturvatoimenpide.'
+'New password': 'Uusi salasana'
+'Repeat Password': 'Toista salasana'
+'The password fields must match.': 'Salasanakenttien on täsmättävä.'
+Debug: Virheenjäljitys
+'Change your app secret. Will autogenerate if empty.': 'Vaihda sovelluksesi Secret. Luodaan automaattisesti, jos tyhjä.'
+Secret: Secret
+Mailer: Sähköpostilähettäjä
+'Email sender': 'Sähköpostin lähettäjä'
+'Send email logs to': 'Lähetä sähköpostilokit osoitteeseen'
+'Restrict everything by IP': 'Rajoita kaikki IP:n mukaan'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Erota useat IP-osoitteet pilkulla, ylläpitäjän IP-osoitteet sisältyvät.'
+'Worker limit': 'Työntekijäraja'
+'Max workers allowed running at the same time.': 'Enimmäismäärä samanaikaisesti käynnissä olevia työntekijöitä.'
+'Worker Queue limit': 'Työntekijäjonon raja'
+'Max queued items a single worker will handle.': 'Enimmäismäärä jonossa olevia kohteita, joita yksittäinen työntekijä käsittelee.'
+'Worker Time limit': 'Työntekijän aikaraja'
+'Max seconds a single worker will run.': 'Enimmäissekuntimäärä, jonka yksittäinen työntekijä on käynnissä.'
+'Worker Memory limit': 'Työntekijän muistiraja'
+'Max memory (MB) a single worker is allowed to use.': 'Enimmäismuisti (Mt), jota yksittäinen työntekijä saa käyttää.'
+'I accept the license terms and conditions': 'Hyväksyn lisenssin ehdot ja käyttöehdot'
+'Not required': 'Ei vaadita'
+Inactive: Passiivinen
+Active: Aktiivinen
+Support: Tuki
+'e.g. {examples}': 'esim. {examples}'
+'e.g. {examples}, etc.': 'esim. {examples} jne.'
+'Full Access (*)': 'Täysi pääsy (*)'
+Production: Tuotanto
+Development: Kehitys
+Admin: Ylläpitäjä
+Editor: Muokkaaja
+Viewer: Katselija
+'Generic / Other': 'Yleinen / muu'
+Entities: Entiteetit
+Raw: Raaka
+'QR Code': 'QR-koodi'
+More...: 'Lisää...'
+'Log out': 'Kirjaudu ulos'
+'To reset your password, please visit the following link': 'Nollataksesi salasanasi, käy seuraavassa linkissä'
+'This link will expire in {expiration}.': 'Tämä linkki vanhenee {expiration} kuluttua.'
+Cheers!: 'Terveisin!'
+'Send password reset email': 'Lähetä salasanan nollaussähköposti'
+Home: Etusivu
+"The requested page couldn't be located.": 'Pyydettyä sivua ei löytynyt.'
+'Checkout for any URL misspelling or return to the homepage': 'Tarkista URL-osoitteen kirjoitusvirheet tai palaa etusivulle'
+Return: Palaa
+'The server returned a "{status_code} {status_text}".': 'Palvelin palautti "{status_code} {status_text}".'
+'Something is broken. Please let us know what you were doing when this error occurred.': 'Jokin on rikki. Kerro meille, mitä olit tekemässä, kun tämä virhe tapahtui.'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': 'Korjaamme sen mahdollisimman pian. Pahoittelemme aiheutunutta vaivaa.'
+'You have unsaved changes! If you leave this page, your changes will be lost.': 'Sinulla on tallentamattomia muutoksia! Jos poistut tältä sivulta, muutoksesi menetetään.'

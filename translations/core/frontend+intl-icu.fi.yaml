@@ -1,0 +1,167 @@
+'Add conditions group': 'Lisää ehtoryhmä'
+'Add field': 'Lisää kenttä'
+'All categories': 'Kaikki luokat'
+Append: 'Lisää loppuun'
+'Are you sure?': 'Oletko varma?'
+Authorization: Valtuutus
+Auto: Automaattinen
+'Available blueprints': 'Saatavilla olevat Blueprintit'
+'Avg. memory per iteration': 'Keskim. muisti iteraatiota kohti'
+'Avg. time per iteration': 'Keskim. aika iteraatiota kohti'
+Cancel: Peruuta
+'Cannot parse JSON': 'JSONia ei voi jäsentää'
+'Cannot parse value': 'Arvoa ei voi jäsentää'
+Close: Sulje
+'Close editor': 'Sulje editori'
+'Column key/name': 'Sarakeavain/nimi'
+'Column type': 'Saraketyyppi'
+Combine: Yhdistä
+Compact: Tiivis
+Compare: Vertaa
+Config: Määritys
+'Configure all fields manually': 'Määritä kaikki kentät manuaalisesti'
+Confirm: Vahvista
+Connect: Yhdistä
+Context: Konteksti
+Copy: Kopioi
+'Copy as tag': 'Kopioi Tagina'
+'Copy conditions': 'Kopioi ehdot'
+Core: Core
+Create: Luo
+'Create and continue': 'Luo ja jatka'
+'Create new': 'Luo uusi'
+Custom: Mukautettu
+Dark: Tumma
+Data: Data
+Default: Oletus
+'Define request params to be used within preview.': 'Määritä pyyntöparametrit, joita käytetään esikatselussa.'
+'Define request query to be used within preview.': 'Määritä pyynnön kysely, jota käytetään esikatselussa.'
+'Define static variables to be used within preview.': 'Määritä staattiset muuttujat, joita käytetään esikatselussa.'
+Delete: Poista
+Description: Kuvaus
+Disable: 'Poista käytöstä'
+Disabled: 'Poissa käytöstä'
+Display: Näyttö
+'Dry Fetch and Run (safe)': 'Kuiva nouto ja suoritus (turvallinen)'
+'Dry Run (safe)': 'Kuiva suoritus (turvallinen)'
+Edit: Muokkaa
+'Edit Routine': 'Muokkaa rutiinia'
+Enable: 'Ota käyttöön'
+End: Lopeta
+Error: Virhe
+Errors: Virheet
+Export: Vie
+'Fetch and Run': 'Nouda ja suorita'
+Field: Kenttä
+'Field Key': 'Kentän avain'
+'Field Label': 'Kentän tunniste'
+'Field params': 'Kentän parametrit'
+Finish: Valmis
+Flow: Virtaus
+Format: Muoto
+From: Mistä
+'Grouped diagnostics': 'Ryhmitellyt diagnostiikat'
+Key: Avain
+Label: Tunniste
+Light: Vaalea
+'Load more': 'Lataa lisää'
+Loading: Ladataan
+'Loading ...': 'Ladataan ...'
+Logs: Lokit
+Manual: Manuaalinen
+'Memory usage before > after': 'Muistin käyttö ennen > jälkeen'
+Merge: Yhdistä
+Modules: Moduulit
+'Move down': 'Siirrä alas'
+'Move up': 'Siirrä ylös'
+'Multiline content detected, please select paste method.': 'Monirivinen sisältö havaittu, valitse liittämistapa.'
+Name: Nimi
+New: Uusi
+'No blueprints available': 'Blueprintteja ei ole saatavilla'
+'No fields found': 'Kenttiä ei löytynyt'
+'No items found': 'Kohteita ei löytynyt'
+'No results found.': 'Tuloksia ei löytynyt.'
+'No tasks configured': 'Tehtäviä ei ole määritetty'
+'No {entityType} selected': 'Ei valittu {entityType}'
+'Not configured': 'Ei määritetty'
+Operator: Operaattori
+Other: Muu
+Override: Korvaa
+'Peak memory increase': 'Huippumuistin kasvu'
+'Peak memory usage': 'Huippumuistin käyttö'
+'Peak memory usage by trace': 'Huippumuistin käyttö Suoritushistorian mukaan'
+'Per page': 'Sivua kohti'
+'Please provide a webservice mode': 'Anna Webservice-tila'
+Preview: Esikatselu
+Raw: Raaka
+'Read only': 'Vain luku'
+Remove: Poista
+'Remove group': 'Poista ryhmä'
+Request: Pyyntö
+'Request Params': 'Pyyntöparametrit'
+'Request Query': 'Pyynnön kysely'
+Required: Pakollinen
+Result: Tulos
+Routine: Rutiini
+Run: Suorita
+Save: Tallenna
+'Save and close': 'Tallenna ja sulje'
+'Save and continue': 'Tallenna ja jatka'
+'Search {entity}...': 'Hae {entity}...'
+'Secret already exists, are you sure you want to override it?': 'Secret on jo olemassa, haluatko varmasti korvata sen?'
+Select: Valitse
+'Select Blueprint': 'Valitse Blueprint'
+'Select Codec': 'Valitse Koodekki'
+'Select Column': 'Valitse sarake'
+'Select Task': 'Valitse tehtävä'
+'Select Webservice': 'Valitse Webservice'
+'Select a blueprint or configure manually': 'Valitse Blueprint tai määritä manuaalisesti'
+'Select field': 'Valitse kenttä'
+'Select tag': 'Valitse Tag'
+'Select {entity}': 'Valitse {entity}'
+Send: Lähetä
+'Send data with context': 'Lähetä data kontekstin kanssa'
+'Send request?': 'Lähetetäänkö pyyntö?'
+Set: Aseta
+'Set and close': 'Aseta ja sulje'
+Showing: Näytetään
+Skipped: Ohitettu
+Source: Lähde
+Start: Käynnistä
+'Step #{number}': 'Vaihe #{number}'
+Storage: Varasto
+Success: Onnistui
+'Switch to custom input': 'Vaihda mukautettuun syöttöön'
+'Switch to predefined options': 'Vaihda ennalta määritettyihin vaihtoehtoihin'
+'Switch to secret': 'Vaihda Secretiin'
+Update: Päivitä
+'Update and close': 'Päivitä ja sulje'
+'Update full scope and close': 'Päivitä koko laajuus ja sulje'
+'Use current context': 'Käytä nykyistä kontekstia'
+'User defined blueprints': 'Käyttäjän määrittämät Blueprintit'
+Value: Arvo
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': 'Arvo sisältää alku- tai loppuvälilyöntejä, jotka voivat aiheuttaa odottamatonta toimintaa.'
+Variables: Muuttujat
+'View full log': 'Näytä koko loki'
+'Webservice has no fields': 'Webservicellä ei ole kenttiä'
+'Webservice not found': 'Webserviceä ei löydy'
+'You will lose your current configuration': 'Menetät nykyisen määrityksesi'
+contains: sisältää
+'contains (strict)': 'sisältää (tiukka)'
+'ends with': 'päättyy'
+'has key': 'sisältää avaimen'
+'in (strict)': 'joukossa (tiukka)'
+'is empty': 'on tyhjä'
+'is set': 'on asetettu'
+'not contains': 'ei sisällä'
+'not contains (strict)': 'ei sisällä (tiukka)'
+'not empty': 'ei ole tyhjä'
+'not ends with': 'ei pääty'
+'not has key': 'ei sisällä avainta'
+'not in': 'ei joukossa'
+'not in (strict)': 'ei joukossa (tiukka)'
+'not set': 'ei ole asetettu'
+'not starts with': 'ei ala'
+regex: regex
+'starts with': 'alkaa'
+'{name} Types': '{name}-tyypit'

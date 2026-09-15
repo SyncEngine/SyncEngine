@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: 'Tervetuloa SyncEngineen'
+onboarding.dashboard.welcome.body: |
+  SyncEngine on modulaarinen automaatio- ja datan synkronointimoottori. Sen avulla voit rakentaa luotettavia ja läpinäkyviä integraatioita järjestelmien välille.
+
+  Tämä pikakierros opastaa sinut käyttöliittymän keskeisiin osiin.
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: 'Navigointivalikko'
+onboarding.dashboard.menu.body: |
+  Sivupalkki on pääasiallinen navigointisi.
+
+  Voit tiivistää valikon keskittyäksesi sisältöösi.
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: 'Yhteydet'
+onboarding.dashboard.connections.body: |
+  Yhteydet ovat siltoja SyncEnginen ja ulkoisten järjestelmiesi välillä. Ne hoitavat tunnistautumisen, tunnistetiedot ja turvallisen datan siirron.
+
+  Tuettuja tyyppejä ovat HTTP (useilla tunnistautumistavoilla), SFTP/FTP, SQL-tietokannat, SOAP-palvelut ja paikallinen tiedostojärjestelmä. Jokaista yhteyttä voidaan käyttää uudelleen useissa automaatioissa.
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: 'Automaatiot'
+onboarding.dashboard.automations.body: |
+  Automaatiot ovat ylimmän tason säiliöitä, jotka orkestroivat työnkulkujasi. Jokainen automaatio voi sisältää useita virtauksia ja määrittää, miten ne käynnistetään: manuaalisesti, aikataulun mukaan tai tapahtumien perusteella.
+
+  Automaatiot tarjoavat suoritushistorian, joten voit tarkastella jokaista suoritusta, nähdä, mitä dataa käsiteltiin, ja korjata mahdolliset ongelmat.
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: 'Virtaukset'
+onboarding.dashboard.flows.body: |
+  Virtaukset määrittävät suorituksen järjestyksen automaation sisällä. Jokainen virtaus sisältää sarjan vaiheita, joissa jokainen vaihe käynnistää Rutiinin.
+
+  Data virtaa rutiinista toiseen, ja jokainen rutiini suorittaa tietyn toiminnon, kuten datan noutamisen, muuntamisen ja lähettämisen toiseen järjestelmään. Virtaukset suoritetaan oletuksena järjestyksessä.
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: 'Rutiinit'
+onboarding.dashboard.routines.body: |
+  Rutiinit ovat uudelleenkäytettäviä toimintosarjoja (Tehtäviä), jotka suorittavat tietyn toiminnon.
+
+  Jokainen rutiini on uudelleenkäytettävä ja modulaarinen, ja yksi tai useampi Virtaus voi kutsua sitä, mikä antaa sinulle uskomatonta joustavuutta ja tehokkuutta.
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: 'Varastot'
+onboarding.dashboard.storages.body: |
+  SyncEnginen varastot ovat turvallisia, pysyviä säiliöitä, joihin tallennetaan strukturoitua dataa, jota voidaan käyttää automaatioiden välillä.
+  Ne toimivat pitkäaikaismuistinasi, jolloin virtaukset ja rutiinit voivat tallentaa ja hakea tietoja suoritusten välillä.
+
+  Varastot sopivat erinomaisesti uudelleenkäytettävän tai jaetun datan, määritysarvojen ja tulosten tallentamiseen, joita haluat käyttää myöhemmin, ilman ulkoisia tietokantoja tai API-rajapintoja.
+
+# Account step (popover)
+onboarding.dashboard.account.title: 'Tili'
+onboarding.dashboard.account.body: |
+  Tili-osio tarjoaa pääsyn käyttäjäprofiiliisi, asetuksiisi ja pääsytunnuksiisi.
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: 'Moduulit'
+onboarding.dashboard.modules.body: |
+  Moduulit ovat mukautettavia laajennuksia, jotka lisäävät uusia toimintoja SyncEngineen. Niitä voidaan käyttää kolmannen osapuolen palveluihin integroimiseen, Core-toimintojen laajentamiseen tai mukautettujen integraatioiden luomiseen.
+
+onboarding.dashboard.system.title: 'Järjestelmän hallintapaneeli'
+onboarding.dashboard.system.body: |
+  Järjestelmän hallintapaneeli antaa sinulle nopean pääsyn:
+
+  • SyncEnginen asetusten määrittämiseen
+  • Secretien ja arkaluonteisten arvojen hallintaan Vaultissa
+  • Taustatyöntekijöiden seurantaan
+  • Järjestelmän tietojen tarkasteluun
+  • jne.
+
+  Käytä näitä työkaluja SyncEngine-asennuksesi hallintaan.
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: 'Suoritushistoria'
+onboarding.dashboard.runtime_history.body: |
+  Suoritushistoria tarjoaa yksityiskohtaisen lokin kaikista automaatioiden suorituksista, jolloin voit seurata suorituskykyä, korjata ongelmia ja analysoida datavirtoja.
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: 'Kaikki on valmista!'
+onboarding.dashboard.summary.body: |
+  Tunnet nyt SyncEnginen keskeiset käsitteet:
+
+  • Yhteydet siltaavat järjestelmäsi
+  • Automaatiot orkestroivat työnkulkuja
+  • Virtaukset määrittävät suoritusjärjestykset
+  • Rutiinit ovat uudelleenkäytettäviä toimintosarjoja
+  • Tehtävät ovat yksittäisiä toimintoja
+  • Varastot säilyttävät pysyvää dataa
+  • Moduulit lisäävät uusia toimintoja
+
+  Aloita luomalla Yhteys ja rakenna sitten ensimmäinen Virtauksesi Rutiineilla ja Tehtävillä.
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: 'Tarvitsetko apua uudelleen?'
+onboarding.dashboard.help.body: |
+  Voit käynnistää kierroksen milloin tahansa napsauttamalla kysymysmerkki-kuvaketta työkalupalkissa (jos saatavilla). Käytä sitä pika-apuna aina, kun haluat oppia lisää käyttöliittymästä tai palata johonkin käsitteeseen.
+
+  Tarvitsetko tukea? Käy osoitteessa docs.syncengine.io tai luo tukipyyntö osoitteessa syncengine.io/support.
