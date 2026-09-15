@@ -56,6 +56,8 @@ class PreferencesFormType extends AbstractType
 			}
 		}
 
+		asort( $localeChoices );
+
 		$builder
 			->add('locale', ChoiceType::class, [
 				'row_attr' => [
