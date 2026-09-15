@@ -1,0 +1,167 @@
+'Add conditions group': 'Adicionar grupo de condições'
+'Add field': 'Adicionar campo'
+'All categories': 'Todas as categorias'
+Append: Acrescentar
+'Are you sure?': 'Tem certeza?'
+Authorization: Autorização
+Auto: Automático
+'Available blueprints': 'Blueprints disponíveis'
+'Avg. memory per iteration': 'Média de memória por iteração'
+'Avg. time per iteration': 'Média de tempo por iteração'
+Cancel: Cancelar
+'Cannot parse JSON': 'Não é possível analisar o JSON'
+'Cannot parse value': 'Não é possível analisar o valor'
+Close: Fechar
+'Close editor': 'Fechar editor'
+'Column key/name': 'Chave/nome da coluna'
+'Column type': 'Tipo de coluna'
+Combine: Combinar
+Compact: Compacto
+Compare: Comparar
+Config: Configuração
+'Configure all fields manually': 'Configurar todos os campos manualmente'
+Confirm: Confirmar
+Connect: Conectar
+Context: Contexto
+Copy: Copiar
+'Copy as tag': 'Copiar como tag'
+'Copy conditions': 'Copiar condições'
+Core: Core
+Create: Criar
+'Create and continue': 'Criar e continuar'
+'Create new': 'Criar novo'
+Custom: Personalizado
+Dark: Escuro
+Data: Dados
+Default: Padrão
+'Define request params to be used within preview.': 'Defina os parâmetros de requisição a serem usados na pré-visualização.'
+'Define request query to be used within preview.': 'Defina a query da requisição a ser usada na pré-visualização.'
+'Define static variables to be used within preview.': 'Defina variáveis estáticas a serem usadas na pré-visualização.'
+Delete: Excluir
+Description: Descrição
+Disable: Desativar
+Disabled: Desativado
+Display: Exibição
+'Dry Fetch and Run (safe)': 'Busca e execução de teste (seguro)'
+'Dry Run (safe)': 'Execução de teste (seguro)'
+Edit: Editar
+'Edit Routine': 'Editar Rotina'
+Enable: Ativar
+End: Fim
+Error: Erro
+Errors: Erros
+Export: Exportar
+'Fetch and Run': 'Buscar e Executar'
+Field: Campo
+'Field Key': 'Chave do campo'
+'Field Label': 'Rótulo do campo'
+'Field params': 'Parâmetros do campo'
+Finish: Concluir
+Flow: Fluxo
+Format: Formato
+From: De
+'Grouped diagnostics': 'Diagnósticos agrupados'
+Key: Chave
+Label: Rótulo
+Light: Claro
+'Load more': 'Carregar mais'
+Loading: Carregando
+'Loading ...': 'Carregando ...'
+Logs: Logs
+Manual: Manual
+'Memory usage before > after': 'Uso de memória antes > depois'
+Merge: Mesclar
+Modules: Módulos
+'Move down': 'Mover para baixo'
+'Move up': 'Mover para cima'
+'Multiline content detected, please select paste method.': 'Conteúdo multilinha detectado, selecione o método de colagem.'
+Name: Nome
+New: Novo
+'No blueprints available': 'Nenhum blueprint disponível'
+'No fields found': 'Nenhum campo encontrado'
+'No items found': 'Nenhum item encontrado'
+'No results found.': 'Nenhum resultado encontrado.'
+'No tasks configured': 'Nenhuma tarefa configurada'
+'No {entityType} selected': 'Nenhum {entityType} selecionado'
+'Not configured': 'Não configurado'
+Operator: Operador
+Other: Outro
+Override: Substituir
+'Peak memory increase': 'Aumento de pico de memória'
+'Peak memory usage': 'Pico de uso de memória'
+'Peak memory usage by trace': 'Pico de uso de memória por percurso'
+'Per page': 'Por página'
+'Please provide a webservice mode': 'Forneça um modo de webservice'
+Preview: Pré-visualização
+Raw: Bruto
+'Read only': 'Somente leitura'
+Remove: Remover
+'Remove group': 'Remover grupo'
+Request: Requisição
+'Request Params': 'Parâmetros da Requisição'
+'Request Query': 'Query da Requisição'
+Required: Obrigatório
+Result: Resultado
+Routine: Rotina
+Run: Executar
+Save: Salvar
+'Save and close': 'Salvar e fechar'
+'Save and continue': 'Salvar e continuar'
+'Search {entity}...': 'Buscar {entity}...'
+'Secret already exists, are you sure you want to override it?': 'O Secret já existe, tem certeza de que deseja substituí-lo?'
+Select: Selecionar
+'Select Blueprint': 'Selecionar Blueprint'
+'Select Codec': 'Selecionar Codec'
+'Select Column': 'Selecionar Coluna'
+'Select Task': 'Selecionar Tarefa'
+'Select Webservice': 'Selecionar Webservice'
+'Select a blueprint or configure manually': 'Selecione um blueprint ou configure manualmente'
+'Select field': 'Selecionar campo'
+'Select tag': 'Selecionar tag'
+'Select {entity}': 'Selecionar {entity}'
+Send: Enviar
+'Send data with context': 'Enviar dados com contexto'
+'Send request?': 'Enviar requisição?'
+Set: Definir
+'Set and close': 'Definir e fechar'
+Showing: Exibindo
+Skipped: Ignorado
+Source: Origem
+Start: Iniciar
+'Step #{number}': 'Passo #{number}'
+Storage: Armazenamento
+Success: Sucesso
+'Switch to custom input': 'Alternar para entrada personalizada'
+'Switch to predefined options': 'Alternar para opções predefinidas'
+'Switch to secret': 'Alternar para secret'
+Update: Atualizar
+'Update and close': 'Atualizar e fechar'
+'Update full scope and close': 'Atualizar todo o escopo e fechar'
+'Use current context': 'Usar contexto atual'
+'User defined blueprints': 'Blueprints definidos pelo usuário'
+Value: Valor
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': 'O valor contém espaços no início/fim que podem causar comportamento inesperado.'
+Variables: Variáveis
+'View full log': 'Ver log completo'
+'Webservice has no fields': 'O Webservice não tem campos'
+'Webservice not found': 'Webservice não encontrado'
+'You will lose your current configuration': 'Você perderá sua configuração atual'
+contains: contém
+'contains (strict)': 'contém (estrito)'
+'ends with': 'termina com'
+'has key': 'tem a chave'
+'in (strict)': 'está em (estrito)'
+'is empty': 'está vazio'
+'is set': 'está definido'
+'not contains': 'não contém'
+'not contains (strict)': 'não contém (estrito)'
+'not empty': 'não está vazio'
+'not ends with': 'não termina com'
+'not has key': 'não tem a chave'
+'not in': 'não está em'
+'not in (strict)': 'não está em (estrito)'
+'not set': 'não está definido'
+'not starts with': 'não começa com'
+regex: regex
+'starts with': 'começa com'
+'{name} Types': 'Tipos de {name}'
