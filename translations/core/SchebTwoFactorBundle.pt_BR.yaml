@@ -1,0 +1,7 @@
+auth_code: 'Código de autenticação'
+choose_provider: 'Alterar método de autenticação'
+login: Entrar
+code_invalid: 'O código de verificação não é válido.'
+trusted: 'Estou em um dispositivo de confiança'
+cancel: Cancelar
+code_reused: 'Este código 2FA já foi utilizado.'

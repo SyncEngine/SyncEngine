@@ -1,0 +1,7 @@
+auth_code: 'Inloggningskod'
+choose_provider: 'Växla inloggningsmetod'
+login: 'Logga in'
+code_invalid: 'Inloggningskoden är felaktig.'
+trusted: 'Jag använder en pålitlig dator'
+cancel: 'Avbryt'
+code_reused: 'Denna 2FA-kod har redan använts.'

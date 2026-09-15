@@ -1,0 +1,7 @@
+auth_code: 'Todennuskoodi'
+choose_provider: 'Vaihda todennusmenetelmää'
+login: Kirjaudu
+code_invalid: 'Vahvistuskoodi ei ole kelvollinen.'
+trusted: 'Olen luotetulla laitteella'
+cancel: Peruuta
+code_reused: 'Tätä 2FA-koodia on jo käytetty.'

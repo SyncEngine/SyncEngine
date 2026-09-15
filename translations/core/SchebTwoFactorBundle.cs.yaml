@@ -1,0 +1,7 @@
+auth_code: 'Ověřovací kód'
+choose_provider: 'Přepnout metodu ověřování'
+login: 'Přihlásit'
+code_invalid: 'Ověřovací kód není správný.'
+trusted: 'Jsem na důvěryhodném počítači'
+cancel: 'Storno'
+code_reused: 'Tento 2FA kód již byl použit.'

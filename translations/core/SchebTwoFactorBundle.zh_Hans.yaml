@@ -1,0 +1,7 @@
+auth_code: '验证码'
+choose_provider: '切换身份验证方式'
+login: '登录'
+code_invalid: '验证码无效。'
+trusted: '我使用的是可信设备'
+cancel: '取消'
+code_reused: '此2FA代码已使用过。'

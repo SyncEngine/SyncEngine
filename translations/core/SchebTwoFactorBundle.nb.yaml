@@ -1,0 +1,7 @@
+auth_code: 'Godkjenningskode'
+choose_provider: 'Bytt autentiseringsmetode'
+login: 'Logg inn'
+code_invalid: 'Verifiseringskoden er ikke gyldig.'
+trusted: 'Jeg er på en pålitelig enhet'
+cancel: 'Avbryt'
+code_reused: 'Denne 2FA-koden er allerede brukt.'

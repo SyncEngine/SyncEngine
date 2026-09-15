@@ -1,0 +1,7 @@
+auth_code: 'Kimlik Doğrulama Kodu'
+choose_provider: 'Kimlik doğrulama yöntemini değiştir'
+login: 'Giriş yap'
+code_invalid: 'Doğrulama kodu geçerli değil.'
+trusted: 'Güvenilir bir cihaz kullanıyorum'
+cancel: 'Vazgeç'
+code_reused: 'Bu 2FA kodu zaten kullanıldı.'

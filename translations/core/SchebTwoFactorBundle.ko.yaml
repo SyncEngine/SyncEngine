@@ -1,0 +1,7 @@
+auth_code: '인증 코드'
+choose_provider: '인증 방법 전환'
+login: '로그인'
+code_invalid: '확인 코드가 올바르지 않습니다.'
+trusted: '신뢰할 수 있는 기기입니다'
+cancel: '취소'
+code_reused: '이 2FA 코드는 이미 사용되었습니다.'

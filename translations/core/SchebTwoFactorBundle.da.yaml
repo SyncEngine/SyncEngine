@@ -1,0 +1,7 @@
+auth_code: 'Godkendelseskode'
+choose_provider: 'Skift godkendelsesmetode'
+login: 'Log ind'
+code_invalid: 'Verifikationskoden er ikke gyldig.'
+trusted: 'Jeg er på en pålidelig enhed'
+cancel: 'Annullér'
+code_reused: 'Denne 2FA-kode er allerede blevet brugt.'

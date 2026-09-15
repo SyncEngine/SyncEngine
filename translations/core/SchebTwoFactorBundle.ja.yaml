@@ -1,0 +1,7 @@
+auth_code: '認証コード'
+choose_provider: '認証方法を切り替える'
+login: 'ログイン'
+code_invalid: '確認コードが無効です。'
+trusted: '信頼できるデバイスです'
+cancel: 'キャンセル'
+code_reused: 'この2FAコードは既に使用されています。'
