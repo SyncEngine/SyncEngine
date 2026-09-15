@@ -21,10 +21,10 @@ final class TranslationExtractCommand extends Command
 {
 	public function __construct(
 		#[Autowire( service: 'translation.extractor.php_ast' )]
-		private readonly ExtractorInterface         $phpExtractor,
+		private readonly ?ExtractorInterface         $phpExtractor,
 
 		#[Autowire( service: 'twig.translation.extractor' )]
-		private readonly ExtractorInterface         $twigExtractor,
+		private readonly ?ExtractorInterface         $twigExtractor,
 
 		private readonly TranslationReaderInterface $reader,
 
@@ -118,6 +118,12 @@ final class TranslationExtractCommand extends Command
 		$src = $root . '/src';
 
 		if ( is_dir( $src ) ) {
+			if ( null === $this->phpExtractor ) {
+				$output->writeln( '<error>The PHP AST extractor is not available. Install "nikic/php-parser" to extract PHP translations.</error>' );
+
+				return Command::FAILURE;
+			}
+
 			$this->phpExtractor->setPrefix( $prefix );
 			$this->phpExtractor->extract( $src, $catalogue );
 		}
@@ -125,6 +131,12 @@ final class TranslationExtractCommand extends Command
 		$templates = $root . '/templates';
 
 		if ( is_dir( $templates ) ) {
+			if ( null === $this->twigExtractor ) {
+				$output->writeln( '<error>The Twig translation extractor is not available.</error>' );
+
+				return Command::FAILURE;
+			}
+
 			$this->twigExtractor->setPrefix( $prefix );
 			$this->twigExtractor->extract( $templates, $catalogue );
 		}
