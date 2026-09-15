@@ -51,7 +51,7 @@ class PreferencesFormType extends AbstractType
 			// File format is messages.{locale}.{ext} or messages+intl-icu.{locale}.{ext}.
 			if ( isset( $availableLocales[ $locale ] ) ) {
 				$localName = Locales::getName( $locale, $locale );
-				$label = $locale . ': ' . $localName . ' (' . $name . ')';
+				$label = $locale . ': ' . $localName . ' | ' . $name;
 				$localeChoices[ $label ] = $locale;
 			}
 		}
