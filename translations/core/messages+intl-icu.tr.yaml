@@ -1,0 +1,1039 @@
+'Column definitions': 'Sütun tanımları'
+'Extend column definitions': 'Sütun tanımlarını genişlet'
+'Configure custom column types for each field.': 'Her alan için özel sütun türlerini yapılandırın.'
+'Comma Separated Values': 'Virgülle Ayrılmış Değerler'
+'FormData encoded string': 'FormData kodlanmış dize'
+'JavaScript Object Notation': 'JavaScript Nesne Gösterimi'
+'URL encoded string': 'URL kodlanmış dize'
+'Extensible Markup Language': 'Genişletilebilir İşaretleme Dili'
+"YAML Ain't Markup Language": "YAML Bir İşaretleme Dili Değildir"
+Address: Adres
+'Address column': 'Adres sütunu'
+Strict: Katı
+'Address columns': 'Adres sütunları'
+'Country (Code)': 'Ülke (Kodu)'
+'Column name for: {field}': '{field} için sütun adı'
+'Administrative Area / Province / State': 'İdari Bölge / İl / Eyalet'
+'Locality / City': 'Yerleşim / Şehir'
+'Dependent Locality': 'Bağımlı Yerleşim'
+'Postal / ZIP Code': 'Posta / ZIP Kodu'
+'Sorting Code': 'Sıralama Kodu'
+'Address Line 1': 'Adres Satırı 1'
+'Address Line 2': 'Adres Satırı 2'
+'Address Line 3': 'Adres Satırı 3'
+Locale: 'Yerel Ayar'
+Organization: Kuruluş
+'Given Name': 'Ad'
+'Additional Name': 'Ek Ad'
+'Family Name': 'Soyad'
+Boolean: Boolean
+'Format as true or false': 'true veya false olarak biçimlendir'
+Format: Biçim
+Integer: 'Tam Sayı'
+'Custom text': 'Özel metin'
+'Custom number': 'Özel sayı'
+'True value': 'True değeri'
+'False value': 'False değeri'
+'Fallback value': 'Yedek değer'
+'Null / Empty': 'Null / Boş'
+Custom: Özel
+'Fallback custom value': 'Yedek özel değer'
+'Yes': 'Evet'
+'No': 'Hayır'
+Collection: Koleksiyon
+'A collection of a column type': 'Bir sütun türünün koleksiyonu'
+Associative: İlişkisel
+'Column Type': 'Sütun Türü'
+Key/Name: 'Anahtar/Ad'
+Currency: 'Para Birimi'
+'Currency column for money/price based values': 'Para/fiyat tabanlı değerler için para birimi sütunu'
+'Currency sign': 'Para birimi işareti'
+'Add space between currency sign and value?': 'Para birimi işareti ile değer arasına boşluk eklensin mi?'
+'Put currency sign after value?': 'Para birimi işareti değerden sonra mı gelsin?'
+Date: Tarih
+'General date and time column': 'Genel tarih ve saat sütunu'
+Unchanged: Değişmedi
+'Null': 'Null'
+'False': 'False'
+'Empty string': 'Boş dize'
+'Current timestamp as format': 'Geçerli zaman damgası biçimi'
+'Please check PHP date documentation': 'Lütfen PHP tarih belgelerine bakın'
+Timezone: 'Saat Dilimi'
+'Please check PHP DateTimeZone documentation': 'Lütfen PHP DateTimeZone belgelerine bakın'
+'Empty value': 'Boş değer'
+Duration: Süre
+'General duration column': 'Genel süre sütunu'
+'Please check PHP DateInterval documentation': 'Lütfen PHP DateInterval belgelerine bakın'
+Email: E-posta
+'Email column': 'E-posta sütunu'
+'Validation mode': 'Doğrulama modu'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: E-posta adresinin RFC standartlarına çok yakın şekilde uymasını sağlar. Örneğin, alan adı bölümünde IP adreslerine izin vermez.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: Katı RFC standartlarından biraz daha esnek olan HTML5 giriş kurallarını izler.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: HTML5''e benzer, ancak TLD''siz e-posta adreslerine de izin verir (örn. user@localhost).'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: Yedek
+'Fallback value if it is an invalid email address.': 'Geçersiz bir e-posta adresi olması durumunda yedek değer.'
+Enumeration: Numaralandırma
+'Predefined select options': 'Ön tanımlı seçim seçenekleri'
+Options: Seçenekler
+Value: Değer
+Label: Etiket
+'Numeric options': 'Sayısal seçenekler'
+None: Yok
+'Use column for type hinting': 'Tür ipucu için sütunu kullan'
+Soft: Yumuşak
+'Use fallback for invalid values': 'Geçersiz değerler için yedeği kullan'
+'Throw error on invalid values': 'Geçersiz değerlerde hata fırlat'
+'Set the fallback value in case it is empty.': 'Boş olması durumunda yedek değeri ayarlayın.'
+'Will also be used as fallback in soft mode.': 'Yumuşak modda da yedek olarak kullanılacaktır.'
+'Parse before validation': 'Doğrulamadan önce ayrıştır'
+'Trim text': 'Metni kırp'
+'Convert case': 'Büyük/küçük harfe dönüştür'
+'Capitalize first': 'İlk harfi büyüt'
+'Capitalize Words': 'Kelimeleri Büyük Harfle Başlat'
+lowercase: 'küçük harf'
+UPPERCASE: 'BÜYÜK HARF'
+'Invalid enum config': 'Geçersiz enum yapılandırması'
+'Invalid value for enum: {formatted}': 'Enum için geçersiz değer: {formatted}'
+Number: Sayı
+'Numeric column': 'Sayısal sütun'
+Type: Tür
+'A raw number can be used for calculations and number storage.': 'Ham sayı, hesaplamalar ve sayı depolama için kullanılabilir.'
+'A formatted number can be used for display.': 'Biçimlendirilmiş sayı, görüntüleme için kullanılabilir.'
+'Raw number': 'Ham sayı'
+'Format to a number type.': 'Bir sayı türüne biçimlendir.'
+Formatted: Biçimlendirilmiş
+'Format to a numeric string.': 'Sayısal bir dizeye biçimlendir.'
+Rounding: Yuvarlama
+'Round halves up': 'Yarımları yukarı yuvarla'
+'Round halves down': 'Yarımları aşağı yuvarla'
+'Round halves to even numbers': 'Yarımları çift sayılara yuvarla'
+'Round halves to odd numbers': 'Yarımları tek sayılara yuvarla'
+Decimals: 'Ondalık Basamaklar'
+'Trim trailing zeros (0)': 'Sondaki sıfırları (0) kırp'
+'Decimal separator': 'Ondalık ayırıcı'
+'Thousands separator': 'Binler ayırıcı'
+none: yok
+space: boşluk
+Schema: Şema
+'Schema definitions column': 'Şema tanımları sütunu'
+'Schema source': 'Şema kaynağı'
+Manual: Elle
+Storage: 'Depolama alanı'
+'Schema storage': 'Şema depolama alanı'
+'Configure column types for each field.': 'Her alan için sütun türlerini yapılandırın.'
+Slug: Slug
+'Format as a slug': 'Slug olarak biçimlendir'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: UPPERCASE_UNDERSCORE
+Case: 'Büyük/Küçük Harf'
+'camel Style': 'camel Stili'
+'Word separator': 'Kelime ayırıcı'
+dash: tire
+underscore: 'alt çizgi'
+Text: Metin
+'General text column': 'Genel metin sütunu'
+'Limit length?': 'Uzunluk sınırlansın mı?'
+Max: Maks
+Unit: Birim
+Characters: Karakter
+Words: Kelime
+'Access denied.': 'Erişim reddedildi.'
+'Invalid request method.': 'Geçersiz istek yöntemi.'
+'Entity not found': 'Varlık bulunamadı'
+'Action not supported: {action}': 'Desteklenmeyen eylem: {action}'
+Update: Güncelle
+Create: Oluştur
+Account: Hesap
+'Edit account': 'Hesabı düzenle'
+'Edit user account': 'Kullanıcı hesabını düzenle'
+Preferences: Tercihler
+'Edit preferences': 'Tercihleri düzenle'
+'API tokens': 'API belirteçleri'
+'Manage API tokens': 'API belirteçlerini yönet'
+'Two-factor authentication': 'İki faktörlü kimlik doğrulama'
+'2FA is active for your account': 'Hesabınız için 2FA etkin'
+'Protect your account with a verification code': 'Hesabınızı bir doğrulama koduyla koruyun'
+Disable: 'Devre dışı bırak'
+Enable: Etkinleştir
+'Account updated successfully.': 'Hesap başarıyla güncellendi.'
+Edit: Düzenle
+'Preferences updated successfully.': 'Tercihler başarıyla güncellendi.'
+'Access tokens': 'Erişim belirteçleri'
+'API Tokens': 'API Belirteçleri'
+'Create API token': 'API belirteci oluştur'
+'Edit API token': 'API belirtecini düzenle'
+'Enable two-factor authentication': 'İki faktörlü kimlik doğrulamayı etkinleştir'
+'Enable 2FA': '2FA''yı etkinleştir'
+'Invalid form submission. Please try again.': 'Geçersiz form gönderimi. Lütfen tekrar deneyin.'
+'The verification code you entered is invalid.': 'Girdiğiniz doğrulama kodu geçersiz.'
+'Two-factor authentication has been enabled.': 'İki faktörlü kimlik doğrulama etkinleştirildi.'
+'Could not send verification email. Please try again.': 'Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin.'
+'Verify your email': 'E-postanızı doğrulayın'
+'Verify Email': 'E-postayı Doğrula'
+'Disable two-factor authentication': 'İki faktörlü kimlik doğrulamayı devre dışı bırak'
+'Disable 2FA': '2FA''yı devre dışı bırak'
+'Invalid password.': 'Geçersiz parola.'
+'Two-factor authentication has been disabled.': 'İki faktörlü kimlik doğrulama devre dışı bırakıldı.'
+Automations: Otomasyonlar
+'Successfully created automation!': 'Otomasyon başarıyla oluşturuldu!'
+'New automation': 'Yeni otomasyon'
+'Successfully edited automation!': 'Otomasyon başarıyla düzenlendi!'
+'Edit automation': 'Otomasyonu düzenle'
+Connections: Bağlantılar
+'Successfully created connection!': 'Bağlantı başarıyla oluşturuldu!'
+'New connection': 'Yeni bağlantı'
+'Successfully edited connection!': 'Bağlantı başarıyla düzenlendi!'
+'Edit connection': 'Bağlantıyı düzenle'
+Flows: Akışlar
+'Successfully created flow!': 'Akış başarıyla oluşturuldu!'
+'New flow': 'Yeni akış'
+'Successfully edited flow!': 'Akış başarıyla düzenlendi!'
+'Edit flow': 'Akışı düzenle'
+'Connection required': 'Bağlantı gerekli'
+'Connection not found': 'Bağlantı bulunamadı'
+'Webservice not found': 'Webservice bulunamadı'
+Modules: Modüller
+'Please upload a valid ZIP file': 'Lütfen geçerli bir ZIP dosyası yükleyin'
+Upload: Yükle
+'Unable to refresh system cache after module upload.': 'Modül yüklemesinden sonra sistem önbelleği yenilenemedi.'
+'Install unsuccessful': 'Kurulum başarısız'
+'Unable to uninstall {moduleName}. It is still used in your system': '{moduleName} kaldırılamıyor. Sisteminizde hâlâ kullanılıyor'
+'Uninstall unsuccessful': 'Kaldırma başarısız'
+'Unable to refresh system cache after module uninstall.': 'Modül kaldırma işleminden sonra sistem önbelleği yenilenemedi.'
+'{moduleName} successfully uninstalled': '{moduleName} başarıyla kaldırıldı'
+'Invalid module package: {moduleName}': 'Geçersiz modül paketi: {moduleName}'
+'Disabled manually': 'Elle devre dışı bırakıldı'
+'Unable to refresh system cache after module disable.': 'Modül devre dışı bırakma işleminden sonra sistem önbelleği yenilenemedi.'
+'{moduleName} disabled': '{moduleName} devre dışı bırakıldı'
+'Unable to disable {moduleName}.': '{moduleName} devre dışı bırakılamıyor.'
+'Unable to refresh system cache after module enable.': 'Modül etkinleştirme işleminden sonra sistem önbelleği yenilenemedi.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': '{moduleName} etkinleştirilemiyor. Önbellek yeniden oluşturma sırasında tekrar devre dışı bırakıldı.'
+'{moduleName} enabled': '{moduleName} etkinleştirildi'
+'Cannot move file': 'Dosya taşınamıyor'
+'Could not find module in zip file': 'ZIP dosyasında modül bulunamadı'
+'Could not parse module namespace': 'Modül ad alanı ayrıştırılamadı'
+'Cannot unzip file!': 'Dosya açılamıyor (unzip)!'
+'Cant delete temp folder': 'Geçici klasör silinemiyor'
+Configuration: Yapılandırma
+'Configure manager to optimize SyncEngine for your server.': 'SyncEngine''i sunucunuz için optimize etmek üzere yöneticiyi yapılandırın.'
+Manager: Yönetici
+'Auto-starts background async workers to handle automations.': 'Otomasyonları işlemek için arka plan eşzamansız çalışanlarını otomatik başlatır.'
+Enabled: Etkin
+'Cannot enable manager': 'Yönetici etkinleştirilemiyor'
+Disabled: 'Devre dışı'
+'The manager is controlled by a cronjob.': 'Yönetici bir cronjob tarafından kontrol edilir.'
+External: Harici
+'The manager is controlled externally.': 'Yönetici harici olarak kontrol edilir.'
+'Queue size:': 'Kuyruk boyutu:'
+'Active workers:': 'Etkin çalışanlar:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Çalışan Kimliği #{pid} | Oluşturulma: {timestamp} | Ping: {ping}'
+Processes: İşlemler
+System: Sistem
+Save: Kaydet
+'Invalid Manager': 'Geçersiz Yönetici'
+'Configuration saved': 'Yapılandırma kaydedildi'
+Routines: Prosedürler
+'Successfully created routine!': 'Prosedür başarıyla oluşturuldu!'
+'New routine': 'Yeni prosedür'
+'Successfully edited routine!': 'Prosedür başarıyla düzenlendi!'
+'Edit routine': 'Prosedürü düzenle'
+Storages: 'Depolama Alanları'
+'Successfully created storage!': 'Depolama alanı başarıyla oluşturuldu!'
+'New storage': 'Yeni depolama alanı'
+'Successfully edited storage!': 'Depolama alanı başarıyla düzenlendi!'
+'Edit storage': 'Depolama alanını düzenle'
+'Clear cache': 'Önbelleği temizle'
+Environment: Ortam
+'Configure environment setup': 'Ortam kurulumunu yapılandır'
+Vault: Kasa
+'Configure vault secrets': 'Kasa secret''larını yapılandır'
+'Manage system processes': 'Sistem işlemlerini yönet'
+Import: 'İçe aktar'
+'Import JSON configs': 'JSON yapılandırmalarını içe aktar'
+Info: Bilgi
+'System information': 'Sistem bilgisi'
+Help: Yardım
+'JSON data': 'JSON verisi'
+'Format must be JSON.': 'Biçim JSON olmalıdır.'
+'Import successful': 'İçe aktarma başarılı'
+Users: Kullanıcılar
+'Successfully created user!': 'Kullanıcı başarıyla oluşturuldu!'
+'Successfully edited user!': 'Kullanıcı başarıyla düzenlendi!'
+'You cannot reset your own password.': 'Kendi parolanızı sıfırlayamazsınız.'
+'Password reset email sent successfully!': 'Parola sıfırlama e-postası başarıyla gönderildi!'
+'An error occurred while resetting the password.': 'Parola sıfırlanırken bir hata oluştu.'
+'You cannot delete your own account.': 'Kendi hesabınızı silemezsiniz.'
+'Successfully deleted user!': 'Kullanıcı başarıyla silindi!'
+'Endpoint not found: {value}': 'Endpoint bulunamadı: {value}'
+'Automation is not enabled': 'Otomasyon etkin değil'
+'Automation is already running': 'Otomasyon zaten çalışıyor'
+'File not found': 'Dosya bulunamadı'
+'Scheduled processes are disabled.': 'Zamanlanmış işlemler devre dışı.'
+'Automation cannot accept a new request right now.': 'Otomasyon şu anda yeni bir istek kabul edemiyor.'
+'Entity type not found': 'Varlık türü bulunamadı'
+'Entity deleted': 'Varlık silindi'
+'An error occurred while sending the password reset email.': 'Parola sıfırlama e-postası gönderilirken bir hata oluştu.'
+'Your password reset request': 'Parola sıfırlama isteğiniz'
+'No reset password token found in the URL or in the session.': 'URL''de veya oturumda parola sıfırlama belirteci bulunamadı.'
+Install: Kur
+'Unknown database error': 'Bilinmeyen veritabanı hatası'
+'Could not repair database': 'Veritabanı onarılamadı'
+'Unable to access this page!': 'Bu sayfaya erişilemiyor!'
+Register: 'Kayıt Ol'
+Variables: Değişkenler
+'Define static variables to be used within the automation.': 'Otomasyon içinde kullanılacak statik değişkenleri tanımlayın.'
+Source: Kaynak
+'Select the data source for this automation': 'Bu otomasyon için veri kaynağını seçin'
+Request: İstek
+'Extract data from the current request body.': 'Geçerli istek gövdesinden veri çıkarın.'
+'Cannot be used with scheduled automations.': 'Zamanlanmış otomasyonlarla kullanılamaz.'
+Retrieve: Al
+'Retrieve data from a webservice or other custom source.': 'Bir webservice''ten veya başka bir özel kaynaktan veri alın.'
+'Run automation in batches': 'Otomasyonu gruplar hâlinde çalıştır'
+'Batch method': 'Grup yöntemi'
+'Batches are made remotely using retrieve parameters': 'Gruplar, alma parametreleri kullanılarak uzaktan oluşturulur'
+'Batches are created locally': 'Gruplar yerel olarak oluşturulur'
+'Limit batch size': 'Grup boyutunu sınırla'
+'Limit the number of records to fetch/run at once.': 'Aynı anda getirilecek/çalıştırılacak kayıt sayısını sınırlayın.'
+Interval: Aralık
+'Set an interval time between each batch.': 'Her grup arasında bir aralık süresi ayarlayın.'
+Seconds: Saniye
+'Configure where to extract request data from.': 'İstek verilerinin nereden çıkarılacağını yapılandırın.'
+'Request param': 'İstek parametresi'
+'Define the param name to use as the data source.': 'Veri kaynağı olarak kullanılacak parametre adını tanımlayın.'
+'Leave empty to use the full request data.': 'Tüm istek verilerini kullanmak için boş bırakın.'
+'Configure tasks to retrieve the data': 'Veriyi almak için görevleri yapılandırın'
+'Define source schema structure.': 'Kaynak şema yapısını tanımlayın.'
+'Predefined schema storage': 'Ön tanımlı şema depolama alanı'
+'Manual definitions': 'Elle tanımlar'
+'Event handler on empty source': 'Boş kaynakta olay işleyici'
+Cancel: İptal
+Error: Hata
+'Optionally trigger error when there is no data available from the source.': 'Kaynaktan veri bulunmadığında isteğe bağlı olarak hata tetikleyin.'
+Actions: Eylemler
+'The actions that need to be done with the source data.': 'Kaynak verilerle yapılması gereken eylemler.'
+Flow: Akış
+Routine: Prosedür
+Tasks: Görevler
+Events: Olaylar
+'Select the behavior on various events in this automation.': 'Bu otomasyondaki çeşitli olaylarda davranışı seçin.'
+'On Cancel': 'İptalde'
+'Actions to execute when the automation is cancelled.': 'Otomasyon iptal edildiğinde yürütülecek eylemler.'
+'On Error': 'Hatada'
+'Actions to execute when the automation fails.': 'Otomasyon başarısız olduğunda yürütülecek eylemler.'
+'On Success': 'Başarıda'
+'Actions to execute when the automation completed successfully.': 'Otomasyon başarıyla tamamlandığında yürütülecek eylemler.'
+Response: Yanıt
+'What this automation should respond in case of a HTTP request.': 'Bu otomasyonun bir HTTP isteği durumunda ne yanıtlaması gerektiği.'
+'Success status and data': 'Başarı durumu ve veri'
+'Data only': 'Yalnızca veri'
+'Success status only': 'Yalnızca başarı durumu'
+'File Download': 'Dosya İndirme'
+'Download file selector': 'İndirme dosyası seçici'
+Execution: Yürütme
+'Control how this automation is executed.': 'Bu otomasyonun nasıl yürütüleceğini kontrol edin.'
+'Execution mode': 'Yürütme modu'
+Single: Tek
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Aynı anda yalnızca bir çalıştırma yapar ve bir çalıştırma etkin veya zamanlanmışken yeni istekleri engeller.'
+Parallel: Paralel
+'Multiple simultaneous execution runs allowed': 'Birden fazla eşzamanlı yürütme çalıştırmasına izin verilir'
+Queued: Kuyruklu
+'Accepts new requests but executes only one run at a time.': 'Yeni istekleri kabul eder ancak aynı anda yalnızca bir çalıştırma yürütür.'
+'Stale run timeout': 'Bayat çalıştırma zaman aşımı'
+'Seconds without a activity before a run is considered stale and automatically reset.': 'Bir çalıştırmanın bayat sayılması ve otomatik olarak sıfırlanması için geçmesi gereken etkinliksiz saniye sayısı.'
+'Defaults to {default}.': 'Varsayılan: {default}.'
+'History traces retention limit': 'Geçmiş kayıt saklama sınırı'
+'Configure execution history of this automation.': 'Bu otomasyonun yürütme geçmişini yapılandırın.'
+'Maximum number of stored traces for this automation.': 'Bu otomasyon için saklanan maksimum kayıt sayısı.'
+'Leave empty to use the global default of {param}.': '{param} genel varsayılanını kullanmak için boş bırakın.'
+Status: Durum
+Default: Varsayılan
+Fixed: Sabit
+Days: Gün
+Webservice: Webservice
+Trigger: Tetikleyici
+Start: Başlat
+Stop: Durdur
+Continue: 'Devam Et'
+Success: Başarılı
+Unknown: Bilinmiyor
+Trashed: 'Çöp Kutusunda'
+Visible: Görünür
+Hidden: Gizli
+Registered: Kayıtlı
+Scheduled: Zamanlanmış
+Running: Çalışıyor
+Stopped: Durduruldu
+Failed: Başarısız
+Cancelled: 'İptal Edildi'
+Dynamic: Dinamik
+Sequence: Sıra
+'Add steps': 'Adım ekle'
+'Input data': 'Girdi verisi'
+'Input variables': 'Girdi değişkenleri'
+Conditions: Koşullar
+'Input schema': 'Girdi şeması'
+'Output schema': 'Çıktı şeması'
+'Data type': 'Veri türü'
+Columns: Sütunlar
+Key: Anahtar
+Name: Ad
+'Field name key': 'Alan adı anahtarı'
+'By default it will fetch the index key unless the value is an array containing field information.': 'Varsayılan olarak, değer alan bilgisi içeren bir dizi olmadığı sürece dizin anahtarını getirir.'
+'Field label key': 'Alan etiketi anahtarı'
+'Used in case the value is an array containing field information.': 'Değerin alan bilgisi içeren bir dizi olması durumunda kullanılır.'
+'Schema storages': 'Şema depolama alanları'
+'From source schema': 'Kaynak şemadan'
+'To target schema': 'Hedef şemaya'
+'Format options': 'Biçim seçenekleri'
+'Response format': 'Yanıt biçimi'
+'This webservice does not validate authorization.': 'Bu webservice yetkilendirmeyi doğrulamaz.'
+'Added to queue!': 'Kuyruğa eklendi!'
+'Finished executing endpoint.': 'Endpoint yürütmesi tamamlandı.'
+'There were errors while executing this endpoint.': 'Bu endpoint yürütülürken hatalar oluştu.'
+'Dots (.) in refs are forbidden: {ref}': 'Ref''lerde nokta (.) yasaktır: {ref}'
+'Entity not found for: {ref}': 'Şunun için varlık bulunamadı: {ref}'
+'Model not found for: {ref} ({class})': 'Şunun için model bulunamadı: {ref} ({class})'
+'Response param name': 'Yanıt parametre adı'
+'The param name where the results are located': 'Sonuçların bulunduğu parametre adı'
+'Nested keys are supported: key.nested_key': 'İç içe anahtarlar desteklenir: key.nested_key'
+'Key / Column name override to store results': 'Sonuçları saklamak için anahtar / sütun adı geçersiz kılma'
+'Start with dot (.) for root': 'Kök için nokta (.) ile başlayın'
+Action: Eylem
+'Replace current data with results': 'Geçerli verileri sonuçlarla değiştir'
+'Merge results with current data': 'Sonuçları geçerli verilerle birleştir'
+'Insert results into current data without replacing existing values': 'Mevcut değerleri değiştirmeden sonuçları geçerli verilere ekle'
+'Combine recursively?': 'Özyinelemeli birleştirilsin mi?'
+'Catch errors': 'Hataları yakala'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'Hataların nasıl ele alınacağını tanımlayın. Bir hata bir koşulla eşleştiğinde hata engellenir ve bunun yerine tanımlanan eylemler çalıştırılır. Hata yine de günlüğe kaydedilir.'
+'Leave empty to catch all errors.': 'Tüm hataları yakalamak için boş bırakın.'
+'No actions defined': 'Tanımlı eylem yok'
+'Run catch {name}': 'Yakalama {name} çalıştır'
+Cache: Önbellek
+'Get or set a value in the context cache': 'Bağlam önbelleğinde bir değer alın veya ayarlayın'
+'Set cache': 'Önbelleği ayarla'
+'Get cache': 'Önbelleği al'
+'Set from data': 'Veriden ayarla'
+'Manual value': 'Elle değer'
+'Key / Column name': 'Anahtar / Sütun adı'
+'Leave empty for root': 'Kök için boş bırakın'
+'Cache value': 'Önbellek değeri'
+'Cache tag reference/path': 'Önbellek tag referansı/yolu'
+'Can be used like: {tag}': 'Şu şekilde kullanılabilir: {tag}'
+Method: Yöntem
+Replace: Değiştir
+Merge: Birleştir
+Append: Ekle
+'Not found action': 'Bulunamadı eylemi'
+'Action if the tag is not found': 'Tag bulunamazsa eylem'
+'Override with empty value': 'Boş değerle geçersiz kıl'
+'Skip task': 'Görevi atla'
+'Cache tag reference missing': 'Önbellek tag referansı eksik'
+Choose: Seç
+'Choose between different options based on conditions': 'Koşullara göre farklı seçenekler arasından seçim yapın'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'Seçenekleri ve koşullarını tanımlayın. Bir koşul geçerli olduğunda yalnızca o seçenek çalıştırılır.'
+'Default tasks': 'Varsayılan görevler'
+'These tasks will run if none of the option conditions are met.': 'Seçenek koşullarından hiçbiri karşılanmazsa bu görevler çalıştırılır.'
+'Run option {name}': '{name} seçeneğini çalıştır'
+'Run default': 'Varsayılanı çalıştır'
+Extract: Çıkar
+'Extract a column from each item in your data': 'Verilerinizdeki her öğeden bir sütun çıkarın'
+'The data column name to extract items from': 'Öğelerin çıkarılacağı veri sütunu adı'
+'The column to extract': 'Çıkarılacak sütun'
+'The target column to put results': 'Sonuçların yerleştirileceği hedef sütun'
+'Leave empty to use the Key / Column name set above': 'Yukarıda ayarlanan Anahtar / Sütun adını kullanmak için boş bırakın'
+'No column key configured': 'Sütun anahtarı yapılandırılmamış'
+'Data not iterable': 'Veri yinelenebilir değil'
+'Could not extract': 'Çıkarılamadı'
+Filter: Filtrele
+'Filter data based on conditions': 'Verileri koşullara göre filtreleyin'
+'Leave empty for root iteration': 'Kök yineleme için boş bırakın'
+'Filter method': 'Filtre yöntemi'
+'Keep valid rows': 'Geçerli satırları tut'
+'Keep invalid rows': 'Geçersiz satırları tut'
+'No conditions configured': 'Koşul yapılandırılmamış'
+'Data key not found': 'Veri anahtarı bulunamadı'
+Group: Grupla
+'Group your data': 'Verilerinizi gruplayın'
+'The data column name to group items for': 'Öğelerin gruplanacağı veri sütunu adı'
+'Group by': 'Şuna göre grupla'
+'Set column name/key to group by value': 'Değere göre gruplamak için sütun adını/anahtarını ayarlayın'
+'Default group key': 'Varsayılan grup anahtarı'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': 'Satır tanımlanan grup sütununu içermediğinde veya değer boş olduğunda kullanılır. Ayarlanmazsa satır kaldırılır.'
+'No group column configured': 'Grup sütunu yapılandırılmamış'
+'Invalid group column: {value}': 'Geçersiz grup sütunu: {value}'
+Index: Dizinle
+'Index your data': 'Verilerinizi dizinleyin'
+'The data column name to index items for': 'Öğelerin dizinleneceği veri sütunu adı'
+'Numeric list': 'Sayısal liste'
+'Associative indexes': 'İlişkisel dizinler'
+'New index key': 'Yeni dizin anahtarı'
+'The template for the indexed keys': 'Dizinlenen anahtarlar için şablon'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': 'Sütun anahtarlarını tag olarak kullan: {tag} | Joker karakterler: {wildcards}'
+'No index method configured': 'Dizin yöntemi yapılandırılmamış'
+'No index key template configured': 'Dizin anahtarı şablonu yapılandırılmamış'
+Loop: Döngü
+'Iterate over a set of rows': 'Bir satır kümesi üzerinde yineleme yapın'
+'Loop method': 'Döngü yöntemi'
+Row: Satır
+Batches: Gruplar
+'Batch size': 'Grup boyutu'
+'Set the number of records to fetch/run at once.': 'Aynı anda getirilecek/çalıştırılacak kayıt sayısını ayarlayın.'
+'Data column not found: {key}': 'Veri sütunu bulunamadı: {key}'
+'Data column not iterable: {key}': 'Veri sütunu yinelenebilir değil: {key}'
+'Invalid action': 'Geçersiz eylem'
+'No batch size configured': 'Grup boyutu yapılandırılmamış'
+Map: Eşle
+'Map key value pairs': 'Anahtar değer çiftlerini eşle'
+'The data column name for the value that needs to be mapped': 'Eşlenmesi gereken değer için veri sütunu adı'
+'Nested keys are supported: {example}': 'İç içe anahtarlar desteklenir: {example}'
+'Map columns': 'Sütunları eşle'
+'Convert key names and definition schema.': 'Anahtar adlarını ve tanım şemasını dönüştürün.'
+'Map values': 'Değerleri eşle'
+'Convert values for a column': 'Bir sütun için değerleri dönüştürün'
+'Only return mapped items?': 'Yalnızca eşlenen öğeler mi döndürülsün?'
+'This will also reorder your data in the order of your map.': 'Bu ayrıca verilerinizi eşlemenizin sırasına göre yeniden sıralar.'
+'Remove old keys?': 'Eski anahtarlar kaldırılsın mı?'
+'Map source': 'Eşleme kaynağı'
+Mapper: Eşleyici
+'Convert column types to schema where available?': 'Mümkün olduğunda sütun türleri şemaya dönüştürülsün mü?'
+'No manual map configured.': 'Elle eşleme yapılandırılmamış.'
+'Cannot map empty data': 'Boş veri eşlenemiyor'
+'Cannot map scalar data': 'Skaler veri eşlenemiyor'
+'Merge columns and/or values': 'Sütunları ve/veya değerleri birleştir'
+'The data column name to merge': 'Birleştirilecek veri sütunu adı'
+'Merge values of a column into a single value': 'Bir sütunun değerlerini tek bir değerde birleştir'
+'Merge columns': 'Sütunları birleştir'
+'Merge both': 'Her ikisini birleştir'
+'Key merge method': 'Anahtar birleştirme yöntemi'
+'Merge column key names': 'Sütun anahtarı adlarını birleştir'
+'Merge column keys using an indexed name': 'Sütun anahtarlarını dizinlenmiş bir ad kullanarak birleştir'
+'Merge column keys using a regular expression': 'Sütun anahtarlarını normal ifade kullanarak birleştir'
+'Column keys that need to be merged': 'Birleştirilmesi gereken sütun anahtarları'
+'Column key name': 'Sütun anahtarı adı'
+'Regex to match keys with and merge': 'Anahtarları eşleştirip birleştirecek normal ifade'
+'Indexed key to search for and merge': 'Aranacak ve birleştirilecek dizinlenmiş anahtar'
+'Nested keys are not supported': 'İç içe anahtarlar desteklenmez'
+'Wildcards: {wildcards}': 'Joker karakterler: {wildcards}'
+'Index starts with': 'Dizin şununla başlar'
+'Method to merge values from multiple columns': 'Birden fazla sütundan değerleri birleştirme yöntemi'
+'Each column value will be appended': 'Her sütun değeri eklenir'
+'Latter column values merge into the former': 'Sonraki sütun değerleri öncekiyle birleştirilir'
+'Latter column values replaces the former': 'Sonraki sütun değerleri öncekinin yerini alır'
+'Latter column values insert into the former': 'Sonraki sütun değerleri öncekine eklenir'
+Separator: Ayırıcı
+Comma: Virgül
+Semicolon: 'Noktalı virgül'
+Space: Boşluk
+Tab: Sekme
+'New line': 'Yeni satır'
+'Value template': 'Değer şablonu'
+'The template for each separate value to be merged': 'Birleştirilecek her ayrı değer için şablon'
+'Remove original column key(s)?': 'Orijinal sütun anahtarı/anahtarları kaldırılsın mı?'
+'Only keep unique values?': 'Yalnızca benzersiz değerler mi tutulsun?'
+'By default all values are kept.': 'Varsayılan olarak tüm değerler tutulur.'
+'Preserve column keys?': 'Sütun anahtarları korunsun mu?'
+'Keep empty values?': 'Boş değerler tutulsun mu?'
+'By default all empty column values will not be merged.': 'Varsayılan olarak tüm boş sütun değerleri birleştirilmez.'
+'No key configured': 'Anahtar yapılandırılmamış'
+'No columns defined': 'Sütun tanımlanmamış'
+'No key method selected': 'Anahtar yöntemi seçilmemiş'
+'Cannot merge scalar value.': 'Skaler değer birleştirilemiyor.'
+'Find and replace': 'Bul ve değiştir'
+'The data column name for the values that need to be replaced': 'Değiştirilmesi gereken değerler için veri sütunu adı'
+'In case the value is a list of values this task will iterate the replacements for all': 'Değer bir değer listesiyse bu görev tüm değiştirmeleri yineler'
+'Replace values': 'Değerleri değiştir'
+'Replace keys': 'Anahtarları değiştir'
+'Replace keys and values': 'Anahtarları ve değerleri değiştir'
+'Replace recursively?': 'Özyinelemeli değiştirilsin mi?'
+Find: Bul
+'Find value not set': 'Bul değeri ayarlanmamış'
+'Cannot replace scalar data': 'Skaler veri değiştirilemiyor'
+'Retrieve your data from your specific connection': 'Verilerinizi belirli bağlantınızdan alın'
+'The data column name to pass to the webservice': 'Webservice''e iletilecek veri sütunu adı'
+Connection: Bağlantı
+'Response data': 'Yanıt verisi'
+'No connection configured': 'Bağlantı yapılandırılmamış'
+'Data not found: {key}': 'Veri bulunamadı: {key}'
+Send: Gönder
+'Send your data to your specific connection': 'Verilerinizi belirli bağlantınıza gönderin'
+'Retrieve response data': 'Yanıt verilerini al'
+Set: Ayarla
+'Set your own values': 'Kendi değerlerinizi ayarlayın'
+'The data column key name for the values that needs to be set': 'Ayarlanması gereken değerler için veri sütunu anahtar adı'
+'Reorder data?': 'Veriler yeniden sıralansın mı?'
+'This will append all configured columns at the end of the current data.': 'Bu, yapılandırılan tüm sütunları geçerli verilerin sonuna ekler.'
+'Force if invalid?': 'Geçersizse zorlansın mı?'
+'When existing data is scalar, create new data collection from values set in this task.': 'Mevcut veri skaler olduğunda, bu görevde ayarlanan değerlerden yeni bir veri koleksiyonu oluşturun.'
+'You can still reference the original value through the {placeholder} tag.': 'Orijinal değere yine de {placeholder} tag''i aracılığıyla başvurabilirsiniz.'
+'Set method': 'Ayarlama yöntemi'
+'Set column values': 'Sütun değerlerini ayarla'
+'Set schema': 'Şemayı ayarla'
+'Set both': 'Her ikisini ayarla'
+'Remove columns not defined in schema?': 'Şemada tanımlı olmayan sütunlar kaldırılsın mı?'
+'Column key/name': 'Sütun anahtarı/adı'
+'-- Unchanged --': '-- Değişmedi --'
+'Use {wildcard} to insert the current value.': 'Geçerli değeri eklemek için {wildcard} kullanın.'
+Unset: Kaldır
+'Data is not iterable': 'Veri yinelenebilir değil'
+'No set params configured': 'Ayarlama parametresi yapılandırılmamış'
+Sort: Sırala
+'Sort your data': 'Verilerinizi sıralayın'
+'The data column key name for the values that needs to be sorted': 'Sıralanması gereken değerler için veri sütunu anahtar adı'
+'Sort by key / column name': 'Anahtara / sütun adına göre sırala'
+'Sort by value': 'Değere göre sırala'
+'Sort by column value': 'Sütun değerine göre sırala'
+'Sort by': 'Şuna göre sırala'
+'Set column name/key to sort by value': 'Değere göre sıralamak için sütun adını/anahtarını ayarlayın'
+Ascending: Artan
+Descending: Azalan
+'Ascending natural order': 'Artan doğal sıra'
+'Descending natural order': 'Azalan doğal sıra'
+'No sort method configured': 'Sıralama yöntemi yapılandırılmamış'
+'Invalid sort order: {order}': 'Geçersiz sıralama düzeni: {order}'
+'No sort column configured': 'Sıralama sütunu yapılandırılmamış'
+Split: Böl
+'Split value and/or split column key into multiple': 'Değeri ve/veya sütun anahtarını birden fazla parçaya böl'
+'The data column name to split': 'Bölünecek veri sütunu adı'
+'Split value': 'Değeri böl'
+'Split into column keys': 'Sütun anahtarlarına böl'
+'Split value and split into column keys': 'Değeri böl ve sütun anahtarlarına ayır'
+'Column key split method': 'Sütun anahtarı bölme yöntemi'
+'Split into column keys by providing custom names': 'Özel adlar sağlayarak sütun anahtarlarına böl'
+'Split into column keys using an indexed name': 'Dizinlenmiş bir ad kullanarak sütun anahtarlarına böl'
+'Column key names': 'Sütun anahtarı adları'
+'Current value index/key (optional)': 'Geçerli değer dizini/anahtarı (isteğe bağlı)'
+'New column key name': 'Yeni sütun anahtarı adı'
+'Indexed key': 'Dizinlenmiş anahtar'
+'The template for the new indexed keys.': 'Yeni dizinlenmiş anahtarlar için şablon.'
+'Remove original key(s)?': 'Orijinal anahtar/anahtarlar kaldırılsın mı?'
+'Regular expression (Regex)': 'Normal ifade (Regex)'
+'Regular expression': 'Normal ifade'
+'Regex must be made for splitting values, not matching.': 'Regex, eşleştirme için değil, değerleri bölmek için yazılmalıdır.'
+'Split value column definition': 'Değer sütunu tanımını böl'
+'No action configured': 'Eylem yapılandırılmamış'
+'Loop key not supported': 'Döngü anahtarı desteklenmiyor'
+'Value is not splittable into list': 'Değer listeye bölünemiyor'
+'Column `{type}` does not exist': '`{type}` sütunu mevcut değil'
+'Value is not splittable into keys': 'Değer anahtarlara bölünemiyor'
+'No columns configured': 'Sütun yapılandırılmamış'
+Store: Sakla
+'Get or set a storage': 'Bir depolama alanı alın veya ayarlayın'
+'Set storage': 'Depolama alanını ayarla'
+'Get storage': 'Depolama alanını al'
+'Storage column key/path': 'Depolama sütun anahtarı/yolu'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'Bu değerin saklanacağı yolu ayarlayın veya boş bırakın. Depolama alanında gezinmek için nokta (.) kullanın.'
+'No storage selected': 'Depolama alanı seçilmemiş'
+'Storage not found': 'Depolama alanı bulunamadı'
+'Raw storage cannot contain paths': 'Ham depolama alanı yollar içeremez'
+'This is a raw storage, please select a different storage or change the storage type': 'Bu bir ham depolama alanıdır, lütfen farklı bir depolama alanı seçin veya depolama türünü değiştirin'
+Template: Şablon
+'Create your own modifier template with Twig': 'Twig ile kendi değiştirici şablonunuzu oluşturun'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': 'Çıktı tag''leri {example_var}, Twig şablon motorundan önce tag olarak ayrıştırılır. Yalnızca {example_func} yürütme ifadeleri Twig''de ayrıştırılır.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': 'Görev çıktısı için `data` değeri kullanılır. Kullanılabilir değişkenler: `data`, `config`, `cache`, `variables` ve `context`.'
+'Add your code here': 'Kodunuzu buraya ekleyin'
+'No template set': 'Şablon ayarlanmamış'
+Trace: Kayıt
+'Trace current status with a log or error.': 'Geçerli durumu bir günlük veya hata ile kaydedin.'
+'Trace type': 'Kayıt türü'
+'Creating an error will result in the trace reporting as failed.': 'Bir hata oluşturmak, kaydın başarısız olarak raporlanmasına neden olur.'
+'Log message': 'Günlük mesajı'
+'Error message': 'Hata mesajı'
+Message: Mesaj
+'Extra info': 'Ek bilgi'
+'Include data?': 'Veri dahil edilsin mi?'
+'Message not configured': 'Mesaj yapılandırılmamış'
+'Trigger something independently from the current flow': 'Geçerli akıştan bağımsız olarak bir şeyi tetikleyin'
+'Run async?': 'Eşzamansız çalıştırılsın mı?'
+Experimental: Deneysel
+'If the automation is using batches then this trigger will always run async.': 'Otomasyon gruplar kullanıyorsa bu tetikleyici her zaman eşzamansız çalışır.'
+'Pass current data?': 'Geçerli veriler iletilsin mi?'
+'Override current data?': 'Geçerli veriler geçersiz kılınsın mı?'
+'Leave empty to pass root data': 'Kök verileri iletmek için boş bırakın'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'Bu tetikleyici için kullanılacak statik değişkenleri tanımlayın. Mevcut değişkenler de dahil edilecektir.'
+Automation: Otomasyon
+Wait: Bekle
+'Wait for time to pass': 'Zamanın geçmesini bekleyin'
+'Seconds to wait': 'Beklenecek saniye'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'Dosya yüklemek ve/veya indirmek için bir FTP sunucusuna bağlanın'
+'{type} extension is not available': '{type} eklentisi kullanılamıyor'
+Host: Sunucu
+Port: Port
+Username: 'Kullanıcı Adı'
+Password: Parola
+'Passive mode': 'Pasif mod'
+'Connect using SSL': 'SSL kullanarak bağlan'
+'Process timeout in seconds': 'Saniye cinsinden işlem zaman aşımı'
+'Cannot connect to {host}': '{host} adresine bağlanılamıyor'
+'Cannot login to {host}': '{host} adresine giriş yapılamıyor'
+'Successfully connected to {host}': '{host} adresine başarıyla bağlanıldı'
+'Could not connect to {host}': '{host} adresine bağlanılamadı'
+'HTTP No auth': 'HTTP Kimlik Doğrulamasız'
+'Connect without authorization': 'Yetkilendirme olmadan bağlan'
+'Allow HTTP': 'HTTP''ye izin ver'
+'Allow unsafe HTTP connection without SSL encryption': 'SSL şifrelemesi olmadan güvenli olmayan HTTP bağlantısına izin ver'
+Endpoint: Endpoint
+'Send current data': 'Geçerli verileri gönder'
+'Select data transport location': 'Veri taşıma konumunu seçin'
+'Request {type}': '{type} isteği'
+'HTTP Basic Auth': 'HTTP Temel Kimlik Doğrulama'
+'Connect with basic authorization': 'Temel yetkilendirme ile bağlan'
+'Username / key': 'Kullanıcı adı / anahtar'
+'Password / Secret': 'Parola / Secret'
+'HTTP Bearer token': 'HTTP Bearer belirteci'
+'Connect with Bearer Token authorization': 'Bearer Token yetkilendirmesi ile bağlan'
+Token: Belirteç
+'HTTP Authorization server': 'HTTP Yetkilendirme sunucusu'
+'Connect to a HTTP server using an authorization server': 'Bir yetkilendirme sunucusu kullanarak bir HTTP sunucusuna bağlan'
+Body: Gövde
+Header: Başlık
+'Redirect url': 'Yönlendirme URL''si'
+'Local File system': 'Yerel Dosya Sistemi'
+'Use the local filesystem defined by your environment': 'Ortamınız tarafından tanımlanan yerel dosya sistemini kullanın'
+'Root path': 'Kök yol'
+'Relative path?': 'Göreli yol mu?'
+'Makes the root path relative to the SyncEngine installation': 'Kök yolu SyncEngine kurulumuna göreli yapar'
+'Successfully accessed {root}': '{root} konumuna başarıyla erişildi'
+'Could not access {root}': '{root} konumuna erişilemedi'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'Dosya yüklemek ve/veya indirmek için bir SFTP sunucusuna bağlanın'
+'Authentication type': 'Kimlik doğrulama türü'
+'Private key': 'Özel anahtar'
+'Username and password': 'Kullanıcı adı ve parola'
+'Private key password': 'Özel anahtar parolası'
+'If your private key is password protected, you can fill in that password here': 'Özel anahtarınız parola korumalıysa bu parolayı buraya girebilirsiniz'
+'Cannot login to {host}: {error}': '{host} adresine giriş yapılamıyor: {error}'
+'Could not rename': 'Yeniden adlandırılamadı'
+SOAP: SOAP
+'Connect using SOAP': 'SOAP kullanarak bağlan'
+'HTTP Authentication': 'HTTP Kimlik Doğrulama'
+'Basic authentication': 'Temel kimlik doğrulama'
+'SOAP multistep server': 'SOAP çok adımlı sunucu'
+'Connect to a SOAP server using multistep setup': 'Çok adımlı kurulum kullanarak bir SOAP sunucusuna bağlan'
+'SOAP extension is not available': 'SOAP eklentisi kullanılamıyor'
+Url: URL
+'The URL for this authentication step': 'Bu kimlik doğrulama adımı için URL'
+SQL: SQL
+'Connect to a SQL server': 'Bir SQL sunucusuna bağlan'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'Kullanılabilir veritabanı eklentisi yok, lütfen aşağıdakilerden birini kurun: {options}'
+'Select database driver': 'Veritabanı sürücüsü seçin'
+Database: Veritabanı
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: Sorgu
+'Fetch method': 'Getirme yöntemi'
+'Associated array': 'İlişkisel dizi'
+'Key => Value pairs': 'Anahtar => Değer çiftleri'
+'Key column': 'Anahtar sütunu'
+'Choose the key you want to use as the row key': 'Satır anahtarı olarak kullanmak istediğiniz anahtarı seçin'
+Path: Yol
+'Select what you want to retrieve': 'Almak istediğiniz şeyi seçin'
+'File contents': 'Dosya içeriği'
+'List directories and filenames': 'Dizinleri ve dosya adlarını listele'
+'List filenames': 'Dosya adlarını listele'
+'List directories': 'Dizinleri listele'
+Filename: 'Dosya Adı'
+'Select what action you want to send': 'Göndermek istediğiniz eylemi seçin'
+'Upload file contents': 'Dosya içeriğini yükle'
+'Delete file': 'Dosyayı sil'
+'Create directory': 'Dizin oluştur'
+'Delete directory': 'Dizini sil'
+'Rename or move a file or directory': 'Bir dosyayı veya dizini yeniden adlandırın veya taşıyın'
+'Overwrite if file exists': 'Dosya varsa üzerine yaz'
+'Directory name': 'Dizin adı'
+'Old name': 'Eski ad'
+'New name': 'Yeni ad'
+'Overwrite if new name exists': 'Yeni ad varsa üzerine yaz'
+'No Filename configured': 'Dosya adı yapılandırılmamış'
+'Cannot fetch file from {host}, please try passive mode': '{host} adresinden dosya alınamıyor, lütfen pasif modu deneyin'
+'Cannot fetch file from {host}': '{host} adresinden dosya alınamıyor'
+'Successfully retrieved: {name}': 'Başarıyla alındı: {name}'
+'File {oldName} existed, renamed it to {newName}': '{oldName} dosyası mevcuttu, {newName} olarak yeniden adlandırıldı'
+'Could not be write file: {name}': '{name} dosyası yazılamadı'
+'Successfully uploaded: {name}': 'Başarıyla yüklendi: {name}'
+'Could not delete file {name}': '{name} dosyası silinemedi'
+'Successfully deleted file: {name}': '{name} dosyası başarıyla silindi'
+'Cannot read directory from {host}': '{host} adresinden dizin okunamıyor'
+'No directory configured': 'Dizin yapılandırılmamış'
+'Could not create directory: {path}': '{path} dizini oluşturulamadı'
+'Successfully created directory: {path}': '{path} dizini başarıyla oluşturuldu'
+'Could not delete directory: {path}': '{path} dizini silinemedi'
+'Successfully deleted: {path}': 'Başarıyla silindi: {path}'
+'Invalid rename configuration': 'Geçersiz yeniden adlandırma yapılandırması'
+'Could not rename: {old} to {new}': '{old} konumu {new} olarak yeniden adlandırılamadı'
+'Successfully renamed: {old} to {new}': '{old} konumu {new} olarak başarıyla yeniden adlandırıldı'
+'Invalid resource': 'Geçersiz kaynak'
+'Request method': 'İstek yöntemi'
+'Request timeout': 'İstek zaman aşımı'
+'Request query': 'İstek sorgusu'
+'Request header': 'İstek başlığı'
+'Request body': 'İstek gövdesi'
+'SOAP version': 'SOAP sürümü'
+'Default (PHP default)': 'Varsayılan (PHP varsayılanı)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP protokol sürümü. PHP varsayılanı için boş bırakın.'
+Compression: Sıkıştırma
+'Compress SOAP requests and accept compressed responses.': 'SOAP isteklerini sıkıştırın ve sıkıştırılmış yanıtları kabul edin.'
+'Connection timeout': 'Bağlantı zaman aşımı'
+'Maximum time in seconds for the connection to be established.': 'Bağlantının kurulması için saniye cinsinden maksimum süre.'
+'WSDL mode': 'WSDL modu'
+'Will this connection use WSDL file format?': 'Bu bağlantı WSDL dosya biçimini kullanacak mı?'
+'WSDL file url': 'WSDL dosya URL''si'
+'Link to WSDL format that will be filled in for this soap connection': 'Bu SOAP bağlantısı için doldurulacak WSDL biçiminin bağlantısı'
+'WSDL cache': 'WSDL önbelleği'
+'No cache': 'Önbellek yok'
+'Memory cache': 'Bellek önbelleği'
+'Disk/File cache': 'Disk/Dosya önbelleği'
+Both: 'Her İkisi'
+'WSDL cache warning': 'WSDL önbellek uyarısı'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'Dosya tabanlı WSDL önbelleği etkin. Bu, sunucudaki paylaşımlı erişim nedeniyle güncel olmayan WSDL dosyaları ve güvenlik sorunlarına neden olabilir.'
+'SOAP service namespace': 'SOAP hizmet ad alanı'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'SOAP hizmetinin hedef ad alanı. WSDL modu devre dışıyken gereklidir.'
+'SOAPAction header': 'SOAPAction başlığı'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'İsteğe bağlı SOAPAction HTTP başlık değeri. Bazı SOAP sunucuları tarafından gereklidir.'
+Advanced: Gelişmiş
+'Override options for the SOAP connection.': 'SOAP bağlantısı için seçenekleri geçersiz kılın.'
+'SOAP headers': 'SOAP başlıkları'
+'SOAP operation name': 'SOAP işlem adı'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': 'Çağrılacak SOAP işleminin adı. Hem WSDL hem de WSDL olmayan mod için gereklidir.'
+'Use data transport as body?': 'Veri taşıma gövde olarak kullanılsın mı?'
+'SOAP body': 'SOAP gövdesi'
+'Define static variables to be used within the authorization process.': 'Yetkilendirme sürecinde kullanılacak statik değişkenleri tanımlayın.'
+'Authorized request base config': 'Yetkili istek temel yapılandırması'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Temel istek yapılandırmasını tanımlayın. Bu, bu bağlantıyı kullanan herhangi bir istek için varsayılan parametreleri ayarlamak üzere kullanılır.'
+'Override host': 'Sunucuyu geçersiz kıl'
+'Authorization process steps': 'Yetkilendirme süreci adımları'
+'Define each step for the authorization process.': 'Yetkilendirme sürecinin her adımını tanımlayın.'
+'The param name where the authentication parameters are located': 'Kimlik doğrulama parametrelerinin bulunduğu parametre adı'
+'Tag name': 'Tag adı'
+'Choose the tag name in which the response param value is stored': 'Yanıt parametre değerinin saklandığı tag adını seçin'
+'Example: token': 'Örnek: token'
+Expiration: 'Süre Sonu'
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Tag değeri için bir süre sonu zamanlayıcısı ayarlayın; böylece yeniden kimlik doğrulama bu süre sonu çerçevesi içinde yapılır'
+'Supported formats:': 'Desteklenen biçimler:'
+'Timestamp or date': 'Zaman damgası veya tarih'
+'Time format: ({time_format})': 'Saat biçimi: ({time_format})'
+'Text format: ({time_string})': 'Metin biçimi: ({time_string})'
+'Response type': 'Yanıt türü'
+'The type of response the URL will return': 'URL''nin döndüreceği yanıt türü'
+'Tag storage': 'Tag depolama alanı'
+'Define the tags you need to store for authentication': 'Kimlik doğrulama için saklamanız gereken tag''leri tanımlayın'
+'Run next step (default)': 'Sonraki adımı çalıştır (varsayılan)'
+'Skip next step': 'Sonraki adımı atla'
+'Stop loop': 'Döngüyü durdur'
+'Run previous step (default)': 'Önceki adımı çalıştır (varsayılan)'
+'Restart loop from beginning': 'Döngüyü baştan başlat'
+'Cannot authenticate on step #{step} from connection #{connectionID}': '#{connectionID} bağlantısının #{step} adımında kimlik doğrulanamıyor'
+'Invalid tag name': 'Geçersiz tag adı'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'tag:{tag} için geçersiz veya boş sunucu yanıtı | Parametre bulunamadı:{param}'
+'Invalid or empty server response for tag:{tag}': 'tag:{tag} için geçersiz veya boş sunucu yanıtı'
+'Are you sure you want to disable two-factor authentication?': 'İki faktörlü kimlik doğrulamayı devre dışı bırakmak istediğinize emin misiniz?'
+'You will need to re-enable 2FA after verifying your password': 'Parolanızı doğruladıktan sonra 2FA''yı yeniden etkinleştirmeniz gerekecek'
+'Enter your password to confirm': 'Onaylamak için parolanızı girin'
+'Check your email': 'E-postanızı kontrol edin'
+'We sent a 6-digit verification code to your email address': 'E-posta adresinize 6 haneli bir doğrulama kodu gönderdik'
+'Enter the code from your email': 'E-postanızdaki kodu girin'
+'Resend Code': 'Kodu Yeniden Gönder'
+Verify: Doğrula
+'Choose how you want to receive verification codes': 'Doğrulama kodlarını nasıl almak istediğinizi seçin'
+'Authenticator App (Recommended)': 'Kimlik Doğrulayıcı Uygulaması (Önerilir)'
+'Scan the QR code with your TOTP app': 'QR kodunu TOTP uygulamanızla tarayın'
+'Or enter this secret manually:': 'Veya bu secret''ı elle girin:'
+'Email Verification': 'E-posta Doğrulama'
+'We will send a 6-digit code to your email address': 'E-posta adresinize 6 haneli bir kod göndereceğiz'
+'Send Code to Email': 'Kodu E-postaya Gönder'
+'Create new': 'Yeni oluştur'
+Description: Açıklama
+Expires: 'Süresi Doluyor'
+'No API tokens created': 'API belirteci oluşturulmamış'
+URL: URL
+Uses: Kullanım
+'You are about to reset this process, are you sure?': 'Bu işlemi sıfırlamak üzeresiniz, emin misiniz?'
+Reset: Sıfırla
+'Reset automation': 'Otomasyonu sıfırla'
+'Quick Edit': 'Hızlı Düzenle'
+Hide: Gizle
+Show: Göster
+Export: 'Dışa aktar'
+Trash: 'Çöp Kutusu'
+Restore: 'Geri Yükle'
+'Delete Permanently': 'Kalıcı Olarak Sil'
+Issue: Sorun
+Connected: Bağlı
+'Used in': 'Şunlarda kullanılıyor:'
+'Last runs': 'Son çalıştırmalar'
+'Scheduled runs': 'Zamanlanmış çalıştırmalar'
+Steps: Adımlar
+'Message Queue': 'Mesaj Kuyruğu'
+'Scheduled At': 'Zamanlanma'
+'Created At': 'Oluşturulma'
+View: Görüntüle
+'Scheduled run': 'Zamanlanmış çalıştırma'
+Delete: Sil
+'Delete run': 'Çalıştırmayı sil'
+'Are you sure you want to delete this message?': 'Bu mesajı silmek istediğinize emin misiniz?'
+'Disabled modules.': 'Devre dışı modüller.'
+Module: Modül
+Requires: Gerektirir
+Reason: Neden
+Uninstall: Kaldır
+'Are you sure?': 'Emin misiniz?'
+'This will uninstall module {moduleName} from {vendor}': 'Bu, {moduleName} modülünü {vendor} konumundan kaldıracak'
+'Upload a newer module version to replace an incompatible module.': 'Uyumsuz bir modülü değiştirmek için daha yeni bir modül sürümü yükleyin.'
+Version: Sürüm
+Author: Yazar
+Manage: Yönet
+Reinstall: 'Yeniden Kur'
+Config: Yapılandırma
+Task: Görev
+Traces: Kayıtlar
+'You are about to kill this process, are you sure?': 'Bu işlemi sonlandırmak üzeresiniz, emin misiniz?'
+Kill: Sonlandır
+'New user': 'Yeni kullanıcı'
+'Edit user': 'Kullanıcıyı düzenle'
+Roles: Roller
+'Reset password': 'Parolayı sıfırla'
+'Reset password?': 'Parola sıfırlansın mı?'
+'A password reset email will be sent to {email}. The user can then set their own password.': '{email} adresine bir parola sıfırlama e-postası gönderilecek. Kullanıcı daha sonra kendi parolasını belirleyebilir.'
+'This will delete user {email}': 'Bu, {email} kullanıcısını silecek'
+Visibility: Görünürlük
+All: Tümü
+Dashboard: Pano
+'Verify Login': 'Girişi Doğrula'
+Login: Giriş
+'Forgot password?': 'Parolanızı mı unuttunuz?'
+'Password Reset Email Sent': 'Parola Sıfırlama E-postası Gönderildi'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'E-postanızla eşleşen bir hesap varsa, parolanızı sıfırlamak için kullanabileceğiniz bir bağlantı içeren bir e-posta az önce gönderildi.'
+'This link will expire in %expiration%': 'Bu bağlantının süresi %expiration% içinde dolacak'
+"If you don't receive an email please check your spam folder": "E-posta almazsanız lütfen spam klasörünüzü kontrol edin"
+'Back to login': 'Girişe dön'
+'Try again': 'Tekrar dene'
+'Reset your password': 'Parolanızı sıfırlayın'
+'Enter your email address and we will send you a link to reset your password.': 'E-posta adresinizi girin, parolanızı sıfırlamak için size bir bağlantı göndereceğiz.'
+'Page not found': 'Sayfa bulunamadı'
+'Oops! An Error Occurred': 'Hata Oluştu!'
+Back: Geri
+'Authenticator App': 'Kimlik Doğrulayıcı Uygulaması'
+'Fill in the code from your authenticator app': 'Kimlik doğrulayıcı uygulamanızdaki kodu girin'
+'Fill in the code send to your email': 'E-postanıza gönderilen kodu girin'
+'There was a problem validating your password reset request': 'Parola sıfırlama isteğiniz doğrulanırken bir sorun oluştu'
+'There is already an automation with this ref, please enter a different ref': 'Bu ref ile zaten bir otomasyon var, lütfen farklı bir ref girin'
+'There is already an automation with this name, please enter a different name': 'Bu adla zaten bir otomasyon var, lütfen farklı bir ad girin'
+'There is already an automation with this endpoint, please enter a different name': 'Bu endpoint ile zaten bir otomasyon var, lütfen farklı bir ad girin'
+'There is already an account with this email': 'Bu e-postayla zaten bir hesap var'
+'Your password should be at least { limit } characters': 'Parolanız en az { limit } karakter olmalıdır'
+'Please enter a password': 'Lütfen bir parola girin'
+'You should agree to our license terms.': 'Lisans şartlarımızı kabul etmelisiniz.'
+'Please enter your email': 'Lütfen e-postanızı girin'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: trusted
+'Has conditions': 'Koşulları var'
+'Not configured': 'Yapılandırılmamış'
+'No tasks configured': 'Görev yapılandırılmamış'
+Authorization: Yetkilendirme
+Delimiter: Ayırıcı
+'Sets the field delimiter separating values (one character only)': 'Değerleri ayıran alan ayırıcısını ayarlar (yalnızca bir karakter)'
+Enclosure: Sınırlayıcı
+'Sets the field enclosure (one character only)': 'Alan sınırlayıcısını ayarlar (yalnızca bir karakter)'
+'Escape character': 'Kaçış karakteri'
+'Sets the escape character (at most one character)': 'Kaçış karakterini ayarlar (en fazla bir karakter)'
+'End of line': 'Satır sonu'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'CSV dosyasındaki her satırın sonunu işaretlemek için kullanılan karakteri/karakterleri ayarlar'
+'Headers columns': 'Başlık sütunları'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'Başlık ve veri sütunlarının sırasını ayarlar Örn.: {val1} ve {val2} ise {func}, {result} döndürür'
+'Key separator': 'Anahtar ayırıcı'
+"Sets the separator for array's keys during its flattening": "Dizinin anahtarları için düzleştirme sırasında ayırıcıyı ayarlar"
+'Escape formula': 'Formülü kaçışla'
+'Escapes fields containing formulas by prepending them with a `\t` character': 'Formül içeren alanları başlarına `\t` karakteri ekleyerek kaçışlar'
+'No headers': 'Başlık yok'
+'Disables header in the encoded CSV': 'Kodlanmış CSV''de başlığı devre dışı bırakır'
+'As collection': 'Koleksiyon olarak'
+'Always returns results as a collection, even if only one line is decoded.': 'Yalnızca bir satır çözülse bile sonuçları her zaman koleksiyon olarak döndürür.'
+'Output UTF8 Bom key': 'UTF8 Bom çıktı anahtarı'
+File: Dosya
+'Handle binary file data (raw bytes)': 'İkili dosya verilerini (ham baytlar) işle'
+Extension: Uzantı
+'Mime type': 'MIME türü'
+'Sets the XML version attribute': 'XML sürüm özniteliğini ayarlar'
+Encoding: Kodlama
+'Sets the XML encoding attribute': 'XML kodlama özniteliğini ayarlar'
+'Root node': 'Kök düğüm'
+'Sets the root node name': 'Kök düğüm adını ayarlar'
+'Format output': 'Çıktıyı biçimlendir'
+'If set to true, formats the generated XML with line breaks and indentation': 'true olarak ayarlanırsa, oluşturulan XML''i satır sonları ve girintilerle biçimlendirir'
+Standalone: Bağımsız
+'Adds standalone attribute in the generated XML': 'Oluşturulan XML''e standalone özniteliği ekler'
+'Always returns results as a collection, even if only one line is decoded': 'Yalnızca bir satır çözülse bile sonuçları her zaman koleksiyon olarak döndürür'
+'Remove empty tags': 'Boş tag''leri kaldır'
+'Remove all empty tags in the generated XML': 'Oluşturulan XML''deki tüm boş tag''leri kaldırır'
+'Type-cast attributes': 'Tür dönüşümlü öznitelikler'
+'This provides the ability to forget the attribute type casting': 'Bu, öznitelik tür dönüşümünü göz ardı etme olanağı sağlar'
+'Inline dump': 'Satır içi döküm'
+Indentation: Girinti
+'Number of spaces': 'Boşluk sayısı'
+Documentation: Belgeler
+'Leave empty to keep current password.': 'Geçerli parolayı korumak için boş bırakın.'
+'New Password': 'Yeni Parola'
+Scopes: Kapsamlar
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'Kapsamlar, bu API belirtecinin neleri erişebileceğini tanımlar. Her kapsam belirli bir izin verir.'
+Restrictions: Kısıtlamalar
+"Restrictions limit an API key's usage and improves security": "Kısıtlamalar bir API anahtarının kullanımını sınırlar ve güvenliği artırır"
+'Restrict by IP addresses': 'IP adreslerine göre kısıtla'
+'Restrict by host domains': 'Sunucu alan adlarına göre kısıtla'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin" başlığı sahtelenebilir, bu nedenle bu bir güvenlik önleminden çok bir kolaylık kontrolüdür.'
+'New password': 'Yeni parola'
+'Repeat Password': 'Parolayı Tekrarla'
+'The password fields must match.': 'Parola alanları eşleşmelidir.'
+Debug: 'Hata Ayıklama'
+'Change your app secret. Will autogenerate if empty.': 'Uygulama secret''ınızı değiştirin. Boşsa otomatik oluşturulur.'
+Secret: Secret
+Mailer: 'Posta Gönderici'
+'Email sender': 'E-posta gönderen'
+'Send email logs to': 'E-posta günlüklerini şuraya gönder:'
+'Restrict everything by IP': 'Her şeyi IP ile kısıtla'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': 'Birden fazla IP adresini virgülle ayırın, yönetici IP adresleri dahildir.'
+'Worker limit': 'Çalışan sınırı'
+'Max workers allowed running at the same time.': 'Aynı anda çalışmasına izin verilen maksimum çalışan sayısı.'
+'Worker Queue limit': 'Çalışan Kuyruk sınırı'
+'Max queued items a single worker will handle.': 'Tek bir çalışanın işleyeceği maksimum kuyruklu öğe sayısı.'
+'Worker Time limit': 'Çalışan Süre sınırı'
+'Max seconds a single worker will run.': 'Tek bir çalışanın çalışacağı maksimum saniye.'
+'Worker Memory limit': 'Çalışan Bellek sınırı'
+'Max memory (MB) a single worker is allowed to use.': 'Tek bir çalışanın kullanmasına izin verilen maksimum bellek (MB).'
+'I accept the license terms and conditions': 'Lisans hüküm ve koşullarını kabul ediyorum'
+'Not required': 'Gerekli değil'
+Inactive: 'Etkin Değil'
+Active: Etkin
+Support: Destek
+'e.g. {examples}': 'örn. {examples}'
+'e.g. {examples}, etc.': 'örn. {examples}, vb.'
+'Full Access (*)': 'Tam Erişim (*)'
+Production: Üretim
+Development: Geliştirme
+Admin: Yönetici
+Editor: Düzenleyici
+Viewer: Görüntüleyici
+'Generic / Other': 'Genel / Diğer'
+Entities: Varlıklar
+Raw: Ham
+'QR Code': 'QR Kod'
+More...: 'Daha Fazla...'
+'Log out': 'Çıkış Yap'
+'To reset your password, please visit the following link': 'Parolanızı sıfırlamak için lütfen aşağıdaki bağlantıyı ziyaret edin'
+'This link will expire in {expiration}.': 'Bu bağlantının süresi {expiration} içinde dolacak.'
+Cheers!: 'İyi günler!'
+'Send password reset email': 'Parola sıfırlama e-postası gönder'
+Home: 'Ana Sayfa'
+"The requested page couldn't be located.": "İstenen sayfa bulunamadı."
+'Checkout for any URL misspelling or return to the homepage': 'URL yazım hatası olup olmadığını kontrol edin veya ana sayfaya dönün'
+Return: 'Geri Dön'
+'The server returned a "{status_code} {status_text}".': 'Sunucu "{status_code} {status_text}" döndürdü.'
+'Something is broken. Please let us know what you were doing when this error occurred.': 'Bir şey bozuldu. Bu hata oluştuğunda ne yaptığınızı lütfen bize bildirin.'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': 'En kısa sürede düzelteceğiz. Verdiğimiz rahatsızlıktan dolayı özür dileriz.'
+'You have unsaved changes! If you leave this page, your changes will be lost.': 'Kaydedilmemiş değişiklikleriniz var! Bu sayfadan ayrılırsanız değişiklikleriniz kaybolacak.'

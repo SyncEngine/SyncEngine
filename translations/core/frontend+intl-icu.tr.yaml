@@ -1,0 +1,167 @@
+'Add conditions group': 'Koşul grubu ekle'
+'Add field': 'Alan ekle'
+'All categories': 'Tüm kategoriler'
+Append: Ekle
+'Are you sure?': 'Emin misiniz?'
+Authorization: Yetkilendirme
+Auto: Otomatik
+'Available blueprints': 'Kullanılabilir Blueprint''ler'
+'Avg. memory per iteration': 'Yineleme başına ort. bellek'
+'Avg. time per iteration': 'Yineleme başına ort. süre'
+Cancel: İptal
+'Cannot parse JSON': 'JSON ayrıştırılamıyor'
+'Cannot parse value': 'Değer ayrıştırılamıyor'
+Close: Kapat
+'Close editor': 'Düzenleyiciyi kapat'
+'Column key/name': 'Sütun anahtarı/adı'
+'Column type': 'Sütun türü'
+Combine: Birleştir
+Compact: Kompakt
+Compare: Karşılaştır
+Config: Yapılandırma
+'Configure all fields manually': 'Tüm alanları elle yapılandır'
+Confirm: Onayla
+Connect: Bağlan
+Context: Bağlam
+Copy: Kopyala
+'Copy as tag': 'Tag olarak kopyala'
+'Copy conditions': 'Koşulları kopyala'
+Core: Core
+Create: Oluştur
+'Create and continue': 'Oluştur ve devam et'
+'Create new': 'Yeni oluştur'
+Custom: Özel
+Dark: Koyu
+Data: Veri
+Default: Varsayılan
+'Define request params to be used within preview.': 'Önizlemede kullanılacak istek parametrelerini tanımlayın.'
+'Define request query to be used within preview.': 'Önizlemede kullanılacak istek sorgusunu tanımlayın.'
+'Define static variables to be used within preview.': 'Önizlemede kullanılacak statik değişkenleri tanımlayın.'
+Delete: Sil
+Description: Açıklama
+Disable: Devre dışı bırak
+Disabled: Devre dışı
+Display: Görüntüle
+'Dry Fetch and Run (safe)': 'Kuru Getir ve Çalıştır (güvenli)'
+'Dry Run (safe)': 'Kuru Çalıştırma (güvenli)'
+Edit: Düzenle
+'Edit Routine': 'Prosedürü Düzenle'
+Enable: Etkinleştir
+End: Bitiş
+Error: Hata
+Errors: Hatalar
+Export: Dışa aktar
+'Fetch and Run': 'Getir ve Çalıştır'
+Field: Alan
+'Field Key': 'Alan Anahtarı'
+'Field Label': 'Alan Etiketi'
+'Field params': 'Alan parametreleri'
+Finish: Bitir
+Flow: Akış
+Format: Biçim
+From: Kaynak
+'Grouped diagnostics': 'Gruplandırılmış tanılamalar'
+Key: Anahtar
+Label: Etiket
+Light: Açık
+'Load more': 'Daha fazla yükle'
+Loading: Yükleniyor
+'Loading ...': 'Yükleniyor ...'
+Logs: Günlükler
+Manual: Elle
+'Memory usage before > after': 'Önce > sonra bellek kullanımı'
+Merge: Birleştir
+Modules: Modüller
+'Move down': 'Aşağı taşı'
+'Move up': 'Yukarı taşı'
+'Multiline content detected, please select paste method.': 'Çok satırlı içerik algılandı, lütfen yapıştırma yöntemini seçin.'
+Name: Ad
+New: Yeni
+'No blueprints available': 'Kullanılabilir Blueprint yok'
+'No fields found': 'Alan bulunamadı'
+'No items found': 'Öğe bulunamadı'
+'No results found.': 'Sonuç bulunamadı.'
+'No tasks configured': 'Görev yapılandırılmamış'
+'No {entityType} selected': 'Seçili {entityType} yok'
+'Not configured': 'Yapılandırılmamış'
+Operator: Operatör
+Other: Diğer
+Override: Geçersiz kıl
+'Peak memory increase': 'Zirve bellek artışı'
+'Peak memory usage': 'Zirve bellek kullanımı'
+'Peak memory usage by trace': 'Kayıt başına zirve bellek kullanımı'
+'Per page': 'Sayfa başına'
+'Please provide a webservice mode': 'Lütfen bir webservice modu sağlayın'
+Preview: Önizleme
+Raw: Ham
+'Read only': 'Salt okunur'
+Remove: Kaldır
+'Remove group': 'Grubu kaldır'
+Request: İstek
+'Request Params': 'İstek Parametreleri'
+'Request Query': 'İstek Sorgusu'
+Required: Zorunlu
+Result: Sonuç
+Routine: Prosedür
+Run: Çalıştır
+Save: Kaydet
+'Save and close': 'Kaydet ve kapat'
+'Save and continue': 'Kaydet ve devam et'
+'Search {entity}...': '{entity} ara...'
+'Secret already exists, are you sure you want to override it?': 'Secret zaten mevcut, geçersiz kılmak istediğinize emin misiniz?'
+Select: Seç
+'Select Blueprint': 'Blueprint Seç'
+'Select Codec': 'Kodek Seç'
+'Select Column': 'Sütun Seç'
+'Select Task': 'Görev Seç'
+'Select Webservice': 'Webservice Seç'
+'Select a blueprint or configure manually': 'Bir blueprint seçin veya elle yapılandırın'
+'Select field': 'Alan seç'
+'Select tag': 'Tag seç'
+'Select {entity}': '{entity} seç'
+Send: Gönder
+'Send data with context': 'Veriyi bağlamla gönder'
+'Send request?': 'İstek gönderilsin mi?'
+Set: Ayarla
+'Set and close': 'Ayarla ve kapat'
+Showing: Gösteriliyor
+Skipped: Atlandı
+Source: Kaynak
+Start: Başlat
+'Step #{number}': 'Adım #{number}'
+Storage: Depolama alanı
+Success: Başarılı
+'Switch to custom input': 'Özel girdiye geç'
+'Switch to predefined options': 'Ön tanımlı seçeneklere geç'
+'Switch to secret': 'Secret''a geç'
+Update: Güncelle
+'Update and close': 'Güncelle ve kapat'
+'Update full scope and close': 'Tüm kapsamı güncelle ve kapat'
+'Use current context': 'Geçerli bağlamı kullan'
+'User defined blueprints': 'Kullanıcı tanımlı Blueprint''ler'
+Value: Değer
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': 'Değer, beklenmeyen davranışa neden olabilecek başta/sonda boşluklar içeriyor.'
+Variables: Değişkenler
+'View full log': 'Tam günlüğü görüntüle'
+'Webservice has no fields': 'Webservice''in alanı yok'
+'Webservice not found': 'Webservice bulunamadı'
+'You will lose your current configuration': 'Geçerli yapılandırmanızı kaybedeceksiniz'
+contains: içerir
+'contains (strict)': 'içerir (katı)'
+'ends with': 'ile biter'
+'has key': 'anahtara sahip'
+'in (strict)': 'içinde (katı)'
+'is empty': 'boş'
+'is set': 'ayarlı'
+'not contains': 'içermez'
+'not contains (strict)': 'içermez (katı)'
+'not empty': 'boş değil'
+'not ends with': 'ile bitmez'
+'not has key': 'anahtara sahip değil'
+'not in': 'içinde değil'
+'not in (strict)': 'içinde değil (katı)'
+'not set': 'ayarlı değil'
+'not starts with': 'ile başlamaz'
+regex: regex
+'starts with': 'ile başlar'
+'{name} Types': '{name} Türleri'

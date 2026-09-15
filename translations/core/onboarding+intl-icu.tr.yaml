@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: 'SyncEngine''e Hoş Geldiniz'
+onboarding.dashboard.welcome.body: |
+  SyncEngine, modüler bir otomasyon ve veri senkronizasyon motorudur. Sistemler arasında güvenilir ve şeffaf entegrasyonlar kurmanızı sağlar.
+
+  Bu kısa tur, arayüzün temel bölümlerinde size yol gösterecek.
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: 'Gezinme Menüsü'
+onboarding.dashboard.menu.body: |
+  Kenar çubuğu ana gezinme alanınızdır.
+
+  İçeriğinize odaklanmak için menüyü daraltabilirsiniz.
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: 'Bağlantılar'
+onboarding.dashboard.connections.body: |
+  Bağlantılar, SyncEngine ile harici sistemleriniz arasındaki köprülerdir. Kimlik doğrulama, kimlik bilgileri ve güvenli veri aktarımını yönetirler.
+
+  Desteklenen türler arasında HTTP (çeşitli kimlik doğrulama yöntemleriyle), SFTP/FTP, SQL veritabanları, SOAP hizmetleri ve yerel dosya sistemi bulunur. Her bağlantı birden fazla otomasyonda yeniden kullanılabilir.
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: 'Otomasyonlar'
+onboarding.dashboard.automations.body: |
+  Otomasyonlar, iş akışlarınızı düzenleyen üst düzey kapsayıcılardır. Her otomasyon birden fazla akış içerebilir ve bunların nasıl tetikleneceğini tanımlar: elle, bir zamanlamayla veya olaylarla.
+
+  Otomasyonlar, her çalıştırmayı inceleyebilmeniz, hangi verilerin işlendiğini görebilmeniz ve sorunları ayıklayabilmeniz için yürütme geçmişi (kayıtlar) sağlar.
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: 'Akışlar'
+onboarding.dashboard.flows.body: |
+  Akışlar, bir otomasyon içindeki yürütme sırasını tanımlar. Her akış, her adımın bir Prosedürü tetiklediği bir dizi adım içerir.
+
+  Veriler bir prosedürden diğerine akar; her prosedür, veri alma, dönüştürme ve başka bir sisteme gönderme gibi belirli bir işlevi yerine getirir. Akışlar varsayılan olarak sırayla yürütülür.
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: 'Prosedürler'
+onboarding.dashboard.routines.body: |
+  Prosedürler, belirli bir işlevi yerine getiren yeniden kullanılabilir eylem (Görev) dizileridir.
+
+  Her prosedür yeniden kullanılabilir, modülerdir ve bir veya daha fazla Akış tarafından çağrılabilir; bu da size inanılmaz esneklik ve verimlilik sağlar.
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: 'Depolama Alanları'
+onboarding.dashboard.storages.body: |
+  SyncEngine'deki depolama alanları, otomasyonlarınız genelinde erişilebilen yapılandırılmış verileri tutmak için kullanılan güvenli, kalıcı kapsayıcılardır.
+  Uzun vadeli hafızanız gibi davranırlar; akışların ve prosedürlerin çalıştırmalar arasında bilgi kaydetmesine ve almasına olanak tanırlar.
+
+  Depolama alanları; harici veritabanlarına veya API'lere bağımlı olmadan, yeniden kullanılabilir veya paylaşılan verileri, yapılandırma değerlerini ve daha sonra erişmek istediğiniz sonuçları kaydetmek için idealdir.
+
+# Account step (popover)
+onboarding.dashboard.account.title: 'Hesap'
+onboarding.dashboard.account.body: |
+  Hesap bölümü, kullanıcı profilinize, ayarlarınıza ve erişim belirteçlerinize erişim sağlar.
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: 'Modüller'
+onboarding.dashboard.modules.body: |
+  Modüller, SyncEngine'e yeni işlevler ekleyen özelleştirilebilir uzantılardır. Üçüncü taraf hizmetlerle entegre olmak, çekirdek işlevleri genişletmek veya özel entegrasyonlar oluşturmak için kullanılabilirler.
+
+onboarding.dashboard.system.title: 'Sistem Panosu'
+onboarding.dashboard.system.body: |
+  Sistem panosu size şunlara hızlı erişim sağlar:
+
+  • SyncEngine ayarlarını yapılandırma
+  • Kasa'daki secret'ları ve hassas değerleri yönetme
+  • Arka plan çalışanlarını izleme
+  • Sistem bilgilerini görüntüleme
+  • vb.
+
+  SyncEngine kurulumunuzu yönetmek için bu araçları kullanın.
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: 'Çalışma Zamanı Geçmişi'
+onboarding.dashboard.runtime_history.body: |
+  Çalışma zamanı geçmişi, tüm otomasyon yürütmelerinin ayrıntılı bir günlüğünü sağlar; performansı izlemenize, sorunları ayıklamanıza ve veri akışlarını analiz etmenize olanak tanır.
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: "Hazırsınız!"
+onboarding.dashboard.summary.body: |
+  Artık SyncEngine'in temel kavramlarını biliyorsunuz:
+
+  • Bağlantılar sistemlerinizi birbirine bağlar
+  • Otomasyonlar iş akışlarını düzenler
+  • Akışlar yürütme dizilerini tanımlar
+  • Prosedürler yeniden kullanılabilir eylem dizileridir
+  • Görevler bireysel eylemlerdir
+  • Depolama alanları kalıcı verileri tutar
+  • Modüller yeni işlevler ekler
+
+  Bir Bağlantı oluşturarak başlayın, ardından Prosedürler ve Görevlerle ilk Akışınızı kurun.
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: 'Tekrar Yardıma mı İhtiyacınız Var?'
+onboarding.dashboard.help.body: |
+  Turu istediğiniz zaman, araç çubuğundaki soru işareti simgesine tıklayarak (varsa) başlatabilirsiniz. Arayüz hakkında daha fazla bilgi edinmek veya herhangi bir kavramı yeniden gözden geçirmek istediğinizde hızlı bir başvuru olarak kullanın.
+
+  Desteğe mi ihtiyacınız var? docs.syncengine.io adresini ziyaret edin veya syncengine.io/support adresinden bir bilet oluşturun.
