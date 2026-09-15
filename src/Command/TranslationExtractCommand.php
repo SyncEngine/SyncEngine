@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Translation\Catalogue\MergeOperation;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
+use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\Reader\TranslationReaderInterface;
 use Symfony\Component\Translation\Writer\TranslationWriterInterface;
 use SyncEngine\Framework\Translation\Extractor\JsExtractor;
@@ -19,19 +20,16 @@ use SyncEngine\Framework\Translation\Extractor\JsExtractor;
 #[AsCommand( name: 'syncengine:translation:extract', description: 'Extract translations from a project or module', )]
 final class TranslationExtractCommand extends Command
 {
+	const INTL_SUFFIX = MessageCatalogueInterface::INTL_DOMAIN_SUFFIX;
+
 	public function __construct(
 		#[Autowire( service: 'translation.extractor.php_ast' )]
-		private readonly ?ExtractorInterface         $phpExtractor,
-
+		private readonly ?ExtractorInterface        $phpExtractor,
 		#[Autowire( service: 'twig.translation.extractor' )]
-		private readonly ?ExtractorInterface         $twigExtractor,
-
-		private readonly TranslationReaderInterface $reader,
-
-		private readonly TranslationWriterInterface $writer,
-
+		private readonly ?ExtractorInterface        $twigExtractor,
 		private readonly JsExtractor                $jsExtractor,
-
+		private readonly TranslationReaderInterface $reader,
+		private readonly TranslationWriterInterface $writer,
 		#[Autowire( '%kernel.project_dir%' )]
 		private readonly string                     $projectDir,
 	) {
@@ -120,7 +118,9 @@ final class TranslationExtractCommand extends Command
 
 		if ( is_dir( $src ) ) {
 			if ( null === $this->phpExtractor ) {
-				$output->writeln( '<error>The PHP AST extractor is not available. Install "nikic/php-parser" to extract PHP translations.</error>' );
+				$output->writeln(
+					'<error>The PHP AST extractor is not available. Install "nikic/php-parser" to extract PHP translations.</error>'
+				);
 
 				return Command::FAILURE;
 			}
@@ -154,8 +154,8 @@ final class TranslationExtractCommand extends Command
 
 				$jsDomain = $input->getOption( 'js-domain' );
 
-				if ( $intlIcu && ! str_ends_with( $jsDomain, MessageCatalogue::INTL_DOMAIN_SUFFIX ) ) {
-					$jsDomain .= MessageCatalogue::INTL_DOMAIN_SUFFIX;
+				if ( $intlIcu && ! str_ends_with( $jsDomain, self::INTL_SUFFIX ) ) {
+					$jsDomain .= self::INTL_SUFFIX;
 				}
 
 				$this->jsExtractor->setPrefix( $prefix );
@@ -273,7 +273,7 @@ final class TranslationExtractCommand extends Command
 		$result = [];
 
 		foreach ( $catalogue->getDomains() as $domain ) {
-			$intlDomain   = $domain . MessageCatalogue::INTL_DOMAIN_SUFFIX;
+			$intlDomain   = $domain . self::INTL_SUFFIX;
 			$intlMessages = $catalogue->all( $intlDomain );
 
 			$result[ $domain ] = array_diff_key( $catalogue->all( $domain ), $intlMessages );
