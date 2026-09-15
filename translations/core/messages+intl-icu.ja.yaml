@@ -1,0 +1,1039 @@
+'Column definitions': '列定義'
+'Extend column definitions': '列定義を拡張'
+'Configure custom column types for each field.': '各フィールドにカスタム列タイプを設定します。'
+'Comma Separated Values': 'カンマ区切り値'
+'FormData encoded string': 'FormDataエンコード文字列'
+'JavaScript Object Notation': 'JavaScriptオブジェクト表記'
+'URL encoded string': 'URLエンコード文字列'
+'Extensible Markup Language': '拡張可能なマークアップ言語'
+"YAML Ain't Markup Language": "YAMLはマークアップ言語ではない"
+Address: 住所
+'Address column': '住所列'
+Strict: 厳密
+'Address columns': '住所列'
+'Country (Code)': '国（コード）'
+'Column name for: {field}': '{field} の列名'
+'Administrative Area / Province / State': '行政区域 / 州 / 都道府県'
+'Locality / City': '市区町村 / 都市'
+'Dependent Locality': '従属地域'
+'Postal / ZIP Code': '郵便番号 / ZIPコード'
+'Sorting Code': 'ソーティングコード'
+'Address Line 1': '住所1行目'
+'Address Line 2': '住所2行目'
+'Address Line 3': '住所3行目'
+Locale: ロケール
+Organization: 組織
+'Given Name': '名'
+'Additional Name': '追加名'
+'Family Name': '姓'
+Boolean: ブール
+'Format as true or false': 'trueまたはfalseとしてフォーマット'
+Format: フォーマット
+Integer: 整数
+'Custom text': 'カスタムテキスト'
+'Custom number': 'カスタム数値'
+'True value': 'trueの値'
+'False value': 'falseの値'
+'Fallback value': 'フォールバック値'
+'Null / Empty': 'Null / 空'
+Custom: カスタム
+'Fallback custom value': 'フォールバックのカスタム値'
+'Yes': 'はい'
+'No': 'いいえ'
+Collection: コレクション
+'A collection of a column type': '列タイプのコレクション'
+Associative: 連想
+'Column Type': '列タイプ'
+Key/Name: キー/名前
+Currency: 通貨
+'Currency column for money/price based values': '金額/価格ベースの値のための通貨列'
+'Currency sign': '通貨記号'
+'Add space between currency sign and value?': '通貨記号と値の間にスペースを入れますか？'
+'Put currency sign after value?': '通貨記号を値の後ろに置きますか？'
+Date: 日付
+'General date and time column': '一般的な日時列'
+Unchanged: 変更なし
+'Null': 'Null'
+'False': 'False'
+'Empty string': '空文字列'
+'Current timestamp as format': '現在のタイムスタンプをフォーマットとして使用'
+'Please check PHP date documentation': 'PHPのdateドキュメントを確認してください'
+Timezone: タイムゾーン
+'Please check PHP DateTimeZone documentation': 'PHPのDateTimeZoneドキュメントを確認してください'
+'Empty value': '空の値'
+Duration: 期間
+'General duration column': '一般的な期間列'
+'Please check PHP DateInterval documentation': 'PHPのDateIntervalドキュメントを確認してください'
+Email: メール
+'Email column': 'メール列'
+'Validation mode': '検証モード'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: メールアドレスがRFC標準に非常に厳密に準拠していることを保証します。例えば、ドメイン部分のIPアドレスは許可されません。'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: HTML5の入力ルールに従います。厳格なRFC標準よりもやや寛容です。'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: HTML5と同様ですが、TLDなしのメールアドレス（例：user@localhost）も許可します。'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: フォールバック
+'Fallback value if it is an invalid email address.': '無効なメールアドレスの場合のフォールバック値。'
+Enumeration: 列挙
+'Predefined select options': '定義済みの選択オプション'
+Options: オプション
+Value: 値
+Label: ラベル
+'Numeric options': '数値オプション'
+None: なし
+'Use column for type hinting': '型ヒントに列を使用'
+Soft: ソフト
+'Use fallback for invalid values': '無効な値にフォールバックを使用'
+'Throw error on invalid values': '無効な値でエラーをスロー'
+'Set the fallback value in case it is empty.': '空の場合にフォールバック値を設定します。'
+'Will also be used as fallback in soft mode.': 'ソフトモードでもフォールバックとして使用されます。'
+'Parse before validation': '検証前にパース'
+'Trim text': 'テキストをトリム'
+'Convert case': '大文字小文字を変換'
+'Capitalize first': '先頭を大文字にする'
+'Capitalize Words': '各単語の先頭を大文字にする'
+lowercase: 小文字
+UPPERCASE: 大文字
+'Invalid enum config': '無効なenum設定'
+'Invalid value for enum: {formatted}': 'enumの値が無効です: {formatted}'
+Number: 数値
+'Numeric column': '数値列'
+Type: タイプ
+'A raw number can be used for calculations and number storage.': '生の数値は計算や数値の保存に使用できます。'
+'A formatted number can be used for display.': 'フォーマット済みの数値は表示に使用できます。'
+'Raw number': '生の数値'
+'Format to a number type.': '数値タイプにフォーマットします。'
+Formatted: フォーマット済み
+'Format to a numeric string.': '数値文字列にフォーマットします。'
+Rounding: 丸め
+'Round halves up': '四捨五入'
+'Round halves down': '五捨六入'
+'Round halves to even numbers': '偶数への丸め'
+'Round halves to odd numbers': '奇数への丸め'
+Decimals: 小数桁
+'Trim trailing zeros (0)': '末尾のゼロ（0）を削除'
+'Decimal separator': '小数区切り文字'
+'Thousands separator': '桁区切り文字'
+none: なし
+space: スペース
+Schema: スキーマ
+'Schema definitions column': 'スキーマ定義列'
+'Schema source': 'スキーマソース'
+Manual: 手動
+Storage: ストレージ
+'Schema storage': 'スキーマストレージ'
+'Configure column types for each field.': '各フィールドの列タイプを設定します。'
+Slug: スラッグ
+'Format as a slug': 'スラッグとしてフォーマット'
+lowercase-dash: 小文字ダッシュ
+snake_case: スネークケース
+camelCase: キャメルケース
+UPPERCASE_UNDERSCORE: 大文字アンダースコア
+Case: ケース
+'camel Style': 'キャメルスタイル'
+'Word separator': '単語区切り文字'
+dash: ダッシュ
+underscore: アンダースコア
+Text: テキスト
+'General text column': '一般的なテキスト列'
+'Limit length?': '長さを制限しますか？'
+Max: 最大
+Unit: 単位
+Characters: 文字
+Words: 単語
+'Access denied.': 'アクセスが拒否されました。'
+'Invalid request method.': '無効なリクエストメソッドです。'
+'Entity not found': 'エンティティが見つかりません'
+'Action not supported: {action}': 'サポートされていないアクション: {action}'
+Update: 更新
+Create: 作成
+Account: アカウント
+'Edit account': 'アカウントを編集'
+'Edit user account': 'ユーザーアカウントを編集'
+Preferences: 環境設定
+'Edit preferences': '環境設定を編集'
+'API tokens': 'APIトークン'
+'Manage API tokens': 'APIトークンを管理'
+'Two-factor authentication': '二要素認証'
+'2FA is active for your account': 'お使いのアカウントで2FAが有効です'
+'Protect your account with a verification code': '確認コードでアカウントを保護'
+Disable: 無効にする
+Enable: 有効にする
+'Account updated successfully.': 'アカウントが正常に更新されました。'
+Edit: 編集
+'Preferences updated successfully.': '環境設定が正常に更新されました。'
+'Access tokens': 'アクセストークン'
+'API Tokens': 'APIトークン'
+'Create API token': 'APIトークンを作成'
+'Edit API token': 'APIトークンを編集'
+'Enable two-factor authentication': '二要素認証を有効にする'
+'Enable 2FA': '2FAを有効にする'
+'Invalid form submission. Please try again.': '無効なフォーム送信です。もう一度お試しください。'
+'The verification code you entered is invalid.': '入力された確認コードが無効です。'
+'Two-factor authentication has been enabled.': '二要素認証が有効になりました。'
+'Could not send verification email. Please try again.': '確認メールを送信できませんでした。もう一度お試しください。'
+'Verify your email': 'メールを確認'
+'Verify Email': 'メールを確認'
+'Disable two-factor authentication': '二要素認証を無効にする'
+'Disable 2FA': '2FAを無効にする'
+'Invalid password.': 'パスワードが無効です。'
+'Two-factor authentication has been disabled.': '二要素認証が無効になりました。'
+Automations: オートメーション
+'Successfully created automation!': 'オートメーションが正常に作成されました！'
+'New automation': '新しいオートメーション'
+'Successfully edited automation!': 'オートメーションが正常に編集されました！'
+'Edit automation': 'オートメーションを編集'
+Connections: 接続
+'Successfully created connection!': '接続が正常に作成されました！'
+'New connection': '新しい接続'
+'Successfully edited connection!': '接続が正常に編集されました！'
+'Edit connection': '接続を編集'
+Flows: フロー
+'Successfully created flow!': 'フローが正常に作成されました！'
+'New flow': '新しいフロー'
+'Successfully edited flow!': 'フローが正常に編集されました！'
+'Edit flow': 'フローを編集'
+'Connection required': '接続が必要です'
+'Connection not found': '接続が見つかりません'
+'Webservice not found': 'Webserviceが見つかりません'
+Modules: モジュール
+'Please upload a valid ZIP file': '有効なZIPファイルをアップロードしてください'
+Upload: アップロード
+'Unable to refresh system cache after module upload.': 'モジュールのアップロード後にシステムキャッシュを更新できませんでした。'
+'Install unsuccessful': 'インストールに失敗しました'
+'Unable to uninstall {moduleName}. It is still used in your system': '{moduleName} をアンインストールできません。システム内でまだ使用されています'
+'Uninstall unsuccessful': 'アンインストールに失敗しました'
+'Unable to refresh system cache after module uninstall.': 'モジュールのアンインストール後にシステムキャッシュを更新できませんでした。'
+'{moduleName} successfully uninstalled': '{moduleName} が正常にアンインストールされました'
+'Invalid module package: {moduleName}': '無効なモジュールパッケージ: {moduleName}'
+'Disabled manually': '手動で無効化'
+'Unable to refresh system cache after module disable.': 'モジュールの無効化後にシステムキャッシュを更新できませんでした。'
+'{moduleName} disabled': '{moduleName} が無効になりました'
+'Unable to disable {moduleName}.': '{moduleName} を無効にできません。'
+'Unable to refresh system cache after module enable.': 'モジュールの有効化後にシステムキャッシュを更新できませんでした。'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': '{moduleName} を有効にできません。キャッシュ再構築中に再度無効化されました。'
+'{moduleName} enabled': '{moduleName} が有効になりました'
+'Cannot move file': 'ファイルを移動できません'
+'Could not find module in zip file': 'ZIPファイル内にモジュールが見つかりませんでした'
+'Could not parse module namespace': 'モジュールの名前空間を解析できませんでした'
+'Cannot unzip file!': 'ファイルを解凍できません！'
+'Cant delete temp folder': '一時フォルダを削除できません'
+Configuration: 設定
+'Configure manager to optimize SyncEngine for your server.': 'サーバー向けにSyncEngineを最適化するマネージャーを設定します。'
+Manager: マネージャー
+'Auto-starts background async workers to handle automations.': 'オートメーションを処理するバックグラウンドの非同期ワーカーを自動起動します。'
+Enabled: 有効
+'Cannot enable manager': 'マネージャーを有効にできません'
+Disabled: 無効
+'The manager is controlled by a cronjob.': 'マネージャーはcronジョブによって制御されます。'
+External: 外部
+'The manager is controlled externally.': 'マネージャーは外部から制御されます。'
+'Queue size:': 'キューサイズ:'
+'Active workers:': 'アクティブなワーカー:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'ワーカーID #{pid} | 作成: {timestamp} | Ping: {ping}'
+Processes: プロセス
+System: システム
+Save: 保存
+'Invalid Manager': '無効なマネージャー'
+'Configuration saved': '設定が保存されました'
+Routines: ルーチン
+'Successfully created routine!': 'ルーチンが正常に作成されました！'
+'New routine': '新しいルーチン'
+'Successfully edited routine!': 'ルーチンが正常に編集されました！'
+'Edit routine': 'ルーチンを編集'
+Storages: ストレージ
+'Successfully created storage!': 'ストレージが正常に作成されました！'
+'New storage': '新しいストレージ'
+'Successfully edited storage!': 'ストレージが正常に編集されました！'
+'Edit storage': 'ストレージを編集'
+'Clear cache': 'キャッシュをクリア'
+Environment: 環境
+'Configure environment setup': '環境設定を構成'
+Vault: Vault
+'Configure vault secrets': 'VaultのSecretを設定'
+'Manage system processes': 'システムプロセスを管理'
+Import: インポート
+'Import JSON configs': 'JSON設定をインポート'
+Info: 情報
+'System information': 'システム情報'
+Help: ヘルプ
+'JSON data': 'JSONデータ'
+'Format must be JSON.': '形式はJSONである必要があります。'
+'Import successful': 'インポートが成功しました'
+Users: ユーザー
+'Successfully created user!': 'ユーザーが正常に作成されました！'
+'Successfully edited user!': 'ユーザーが正常に編集されました！'
+'You cannot reset your own password.': '自分のパスワードはリセットできません。'
+'Password reset email sent successfully!': 'パスワードリセットメールが正常に送信されました！'
+'An error occurred while resetting the password.': 'パスワードのリセット中にエラーが発生しました。'
+'You cannot delete your own account.': '自分のアカウントは削除できません。'
+'Successfully deleted user!': 'ユーザーが正常に削除されました！'
+'Endpoint not found: {value}': 'Endpointが見つかりません: {value}'
+'Automation is not enabled': 'オートメーションが有効になっていません'
+'Automation is already running': 'オートメーションはすでに実行中です'
+'File not found': 'ファイルが見つかりません'
+'Scheduled processes are disabled.': 'スケジュールされたプロセスは無効になっています。'
+'Automation cannot accept a new request right now.': 'オートメーションは現在新しいリクエストを受け付けられません。'
+'Entity type not found': 'エンティティタイプが見つかりません'
+'Entity deleted': 'エンティティが削除されました'
+'An error occurred while sending the password reset email.': 'パスワードリセットメールの送信中にエラーが発生しました。'
+'Your password reset request': 'パスワードリセットのリクエスト'
+'No reset password token found in the URL or in the session.': 'URLまたはセッションにパスワードリセットトークンが見つかりません。'
+Install: インストール
+'Unknown database error': '不明なデータベースエラー'
+'Could not repair database': 'データベースを修復できませんでした'
+'Unable to access this page!': 'このページにアクセスできません！'
+Register: 登録
+Variables: 変数
+'Define static variables to be used within the automation.': 'オートメーション内で使用する静的変数を定義します。'
+Source: ソース
+'Select the data source for this automation': 'このオートメーションのデータソースを選択'
+Request: リクエスト
+'Extract data from the current request body.': '現在のリクエストボディからデータを抽出します。'
+'Cannot be used with scheduled automations.': 'スケジュールされたオートメーションでは使用できません。'
+Retrieve: 取得
+'Retrieve data from a webservice or other custom source.': 'Webserviceまたは他のカスタムソースからデータを取得します。'
+'Run automation in batches': 'オートメーションをバッチで実行'
+'Batch method': 'バッチ方式'
+'Batches are made remotely using retrieve parameters': '取得パラメータを使用してバッチをリモートで作成'
+'Batches are created locally': 'バッチをローカルで作成'
+'Limit batch size': 'バッチサイズを制限'
+'Limit the number of records to fetch/run at once.': '一度に取得/実行するレコード数を制限します。'
+Interval: 間隔
+'Set an interval time between each batch.': '各バッチの間隔時間を設定します。'
+Seconds: 秒
+'Configure where to extract request data from.': 'リクエストデータの抽出元を設定します。'
+'Request param': 'リクエストパラメータ'
+'Define the param name to use as the data source.': 'データソースとして使用するパラメータ名を定義します。'
+'Leave empty to use the full request data.': '空のままにすると、リクエストデータ全体が使用されます。'
+'Configure tasks to retrieve the data': 'データを取得するタスクを設定'
+'Define source schema structure.': 'ソーススキーマ構造を定義します。'
+'Predefined schema storage': '定義済みスキーマストレージ'
+'Manual definitions': '手動定義'
+'Event handler on empty source': '空のソースに対するイベントハンドラ'
+Cancel: キャンセル
+Error: エラー
+'Optionally trigger error when there is no data available from the source.': 'ソースからデータが利用できない場合に、必要に応じてエラーを発生させます。'
+Actions: アクション
+'The actions that need to be done with the source data.': 'ソースデータに対して実行する必要があるアクション。'
+Flow: フロー
+Routine: ルーチン
+Tasks: タスク
+Events: イベント
+'Select the behavior on various events in this automation.': 'このオートメーションの各種イベントにおける動作を選択します。'
+'On Cancel': 'キャンセル時'
+'Actions to execute when the automation is cancelled.': 'オートメーションがキャンセルされたときに実行するアクション。'
+'On Error': 'エラー時'
+'Actions to execute when the automation fails.': 'オートメーションが失敗したときに実行するアクション。'
+'On Success': '成功時'
+'Actions to execute when the automation completed successfully.': 'オートメーションが正常に完了したときに実行するアクション。'
+Response: レスポンス
+'What this automation should respond in case of a HTTP request.': 'HTTPリクエストの場合にこのオートメーションが応答する内容。'
+'Success status and data': '成功ステータスとデータ'
+'Data only': 'データのみ'
+'Success status only': '成功ステータスのみ'
+'File Download': 'ファイルダウンロード'
+'Download file selector': 'ダウンロードファイルセレクタ'
+Execution: 実行
+'Control how this automation is executed.': 'このオートメーションの実行方法を制御します。'
+'Execution mode': '実行モード'
+Single: シングル
+'Only one run at a time and blocks new requests while a run is active or scheduled.': '一度に1つの実行のみで、実行がアクティブまたはスケジュールされている間は新しいリクエストをブロックします。'
+Parallel: パラレル
+'Multiple simultaneous execution runs allowed': '複数の同時実行を許可'
+Queued: キュー
+'Accepts new requests but executes only one run at a time.': '新しいリクエストは受け付けますが、一度に1つの実行のみ行います。'
+'Stale run timeout': '実行の失効タイムアウト'
+'Seconds without a activity before a run is considered stale and automatically reset.': '実行が失効とみなされ自動的にリセットされるまでの、アクティビティがない秒数。'
+'Defaults to {default}.': 'デフォルトは {default} です。'
+'History traces retention limit': '履歴トレースの保持上限'
+'Configure execution history of this automation.': 'このオートメーションの実行履歴を設定します。'
+'Maximum number of stored traces for this automation.': 'このオートメーションに保存されるトレースの最大数。'
+'Leave empty to use the global default of {param}.': '空のままにすると、グローバルデフォルトの {param} が使用されます。'
+Status: ステータス
+Default: デフォルト
+Fixed: 固定
+Days: 日
+Webservice: Webservice
+Trigger: トリガー
+Start: 開始
+Stop: 停止
+Continue: 続行
+Success: 成功
+Unknown: 不明
+Trashed: ゴミ箱
+Visible: 表示
+Hidden: 非表示
+Registered: 登録済み
+Scheduled: スケジュール済み
+Running: 実行中
+Stopped: 停止済み
+Failed: 失敗
+Cancelled: キャンセル済み
+Dynamic: 動的
+Sequence: シーケンス
+'Add steps': 'ステップを追加'
+'Input data': '入力データ'
+'Input variables': '入力変数'
+Conditions: 条件
+'Input schema': '入力スキーマ'
+'Output schema': '出力スキーマ'
+'Data type': 'データタイプ'
+Columns: 列
+Key: キー
+Name: 名前
+'Field name key': 'フィールド名キー'
+'By default it will fetch the index key unless the value is an array containing field information.': 'デフォルトでは、値がフィールド情報を含む配列でない限り、インデックスキーを取得します。'
+'Field label key': 'フィールドラベルキー'
+'Used in case the value is an array containing field information.': '値がフィールド情報を含む配列の場合に使用されます。'
+'Schema storages': 'スキーマストレージ'
+'From source schema': 'ソーススキーマから'
+'To target schema': 'ターゲットスキーマへ'
+'Format options': 'フォーマットオプション'
+'Response format': 'レスポンスフォーマット'
+'This webservice does not validate authorization.': 'このWebserviceは認可を検証しません。'
+'Added to queue!': 'キューに追加されました！'
+'Finished executing endpoint.': 'Endpointの実行が完了しました。'
+'There were errors while executing this endpoint.': 'このEndpointの実行中にエラーが発生しました。'
+'Dots (.) in refs are forbidden: {ref}': 'ref内のドット（.）は禁止されています: {ref}'
+'Entity not found for: {ref}': '{ref} のエンティティが見つかりません'
+'Model not found for: {ref} ({class})': '{ref} ({class}) のモデルが見つかりません'
+'Response param name': 'レスポンスパラメータ名'
+'The param name where the results are located': '結果が配置されるパラメータ名'
+'Nested keys are supported: key.nested_key': 'ネストされたキーがサポートされています: key.nested_key'
+'Key / Column name override to store results': '結果を保存するためのキー/列名の上書き'
+'Start with dot (.) for root': 'ルートにはドット（.）で始めます'
+Action: アクション
+'Replace current data with results': '現在のデータを結果で置き換える'
+'Merge results with current data': '結果を現在のデータとマージする'
+'Insert results into current data without replacing existing values': '既存の値を置き換えずに結果を現在のデータに挿入する'
+'Combine recursively?': '再帰的に結合しますか？'
+'Catch errors': 'エラーをキャッチ'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': 'エラーの処理方法を定義します。エラーが条件に一致した場合、エラーを防ぎ、代わりに定義されたアクションを実行します。エラーは引き続きログに記録されます。'
+'Leave empty to catch all errors.': '空のままにすると、すべてのエラーをキャッチします。'
+'No actions defined': 'アクションが定義されていません'
+'Run catch {name}': 'キャッチ {name} を実行'
+Cache: キャッシュ
+'Get or set a value in the context cache': 'コンテキストキャッシュの値を取得または設定'
+'Set cache': 'キャッシュを設定'
+'Get cache': 'キャッシュを取得'
+'Set from data': 'データから設定'
+'Manual value': '手動値'
+'Key / Column name': 'キー/列名'
+'Leave empty for root': 'ルートの場合は空のままにします'
+'Cache value': 'キャッシュ値'
+'Cache tag reference/path': 'キャッシュTag参照/パス'
+'Can be used like: {tag}': '{tag} のように使用できます'
+Method: メソッド
+Replace: 置き換え
+Merge: マージ
+Append: 追加
+'Not found action': '見つからない場合のアクション'
+'Action if the tag is not found': 'Tagが見つからない場合のアクション'
+'Override with empty value': '空の値で上書き'
+'Skip task': 'タスクをスキップ'
+'Cache tag reference missing': 'キャッシュTag参照がありません'
+Choose: 選択
+'Choose between different options based on conditions': '条件に基づいて異なるオプションから選択'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': 'オプションとその条件を定義します。条件が有効になると、そのオプションのみが実行されます。'
+'Default tasks': 'デフォルトタスク'
+'These tasks will run if none of the option conditions are met.': 'オプションの条件がどれも満たされない場合に実行されるタスク。'
+'Run option {name}': 'オプション {name} を実行'
+'Run default': 'デフォルトを実行'
+Extract: 抽出
+'Extract a column from each item in your data': 'データ内の各アイテムから列を抽出'
+'The data column name to extract items from': 'アイテムを抽出するデータ列名'
+'The column to extract': '抽出する列'
+'The target column to put results': '結果を配置するターゲット列'
+'Leave empty to use the Key / Column name set above': '空のままにすると、上で設定したキー/列名が使用されます'
+'No column key configured': '列キーが設定されていません'
+'Data not iterable': 'データを反復処理できません'
+'Could not extract': '抽出できませんでした'
+Filter: フィルター
+'Filter data based on conditions': '条件に基づいてデータをフィルタリング'
+'Leave empty for root iteration': 'ルートの反復処理の場合は空のままにします'
+'Filter method': 'フィルターメソッド'
+'Keep valid rows': '有効な行を保持'
+'Keep invalid rows': '無効な行を保持'
+'No conditions configured': '条件が設定されていません'
+'Data key not found': 'データキーが見つかりません'
+Group: グループ
+'Group your data': 'データをグループ化'
+'The data column name to group items for': 'アイテムをグループ化するデータ列名'
+'Group by': 'グループ化キー'
+'Set column name/key to group by value': '値でグループ化する列名/キーを設定'
+'Default group key': 'デフォルトのグループキー'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': '行に定義されたグループ列が含まれない場合、または値が空の場合に使用されます。設定されていない場合、行は削除されます。'
+'No group column configured': 'グループ列が設定されていません'
+'Invalid group column: {value}': '無効なグループ列: {value}'
+Index: インデックス
+'Index your data': 'データにインデックスを付ける'
+'The data column name to index items for': 'アイテムにインデックスを付けるデータ列名'
+'Numeric list': '数値リスト'
+'Associative indexes': '連想インデックス'
+'New index key': '新しいインデックスキー'
+'The template for the indexed keys': 'インデックス化されたキーのテンプレート'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': '列キーをTagとして使用: {tag} | ワイルドカード: {wildcards}'
+'No index method configured': 'インデックスメソッドが設定されていません'
+'No index key template configured': 'インデックスキーテンプレートが設定されていません'
+Loop: ループ
+'Iterate over a set of rows': '一連の行を反復処理'
+'Loop method': 'ループメソッド'
+Row: 行
+Batches: バッチ
+'Batch size': 'バッチサイズ'
+'Set the number of records to fetch/run at once.': '一度に取得/実行するレコード数を設定します。'
+'Data column not found: {key}': 'データ列が見つかりません: {key}'
+'Data column not iterable: {key}': 'データ列を反復処理できません: {key}'
+'Invalid action': '無効なアクション'
+'No batch size configured': 'バッチサイズが設定されていません'
+Map: マップ
+'Map key value pairs': 'キーと値のペアをマップ'
+'The data column name for the value that needs to be mapped': 'マップする必要がある値のデータ列名'
+'Nested keys are supported: {example}': 'ネストされたキーがサポートされています: {example}'
+'Map columns': '列をマップ'
+'Convert key names and definition schema.': 'キー名と定義スキーマを変換します。'
+'Map values': '値をマップ'
+'Convert values for a column': '列の値を変換'
+'Only return mapped items?': 'マップされたアイテムのみを返しますか？'
+'This will also reorder your data in the order of your map.': 'これにより、データもマップの順序に並べ替えられます。'
+'Remove old keys?': '古いキーを削除しますか？'
+'Map source': 'マップソース'
+Mapper: マッパー
+'Convert column types to schema where available?': '可能な場合、列タイプをスキーマに変換しますか？'
+'No manual map configured.': '手動マップが設定されていません。'
+'Cannot map empty data': '空のデータをマップできません'
+'Cannot map scalar data': 'スカラーデータをマップできません'
+'Merge columns and/or values': '列および/または値をマージ'
+'The data column name to merge': 'マージするデータ列名'
+'Merge values of a column into a single value': '列の値を単一の値にマージ'
+'Merge columns': '列をマージ'
+'Merge both': '両方をマージ'
+'Key merge method': 'キーのマージメソッド'
+'Merge column key names': '列キー名をマージ'
+'Merge column keys using an indexed name': 'インデックス付きの名前を使用して列キーをマージ'
+'Merge column keys using a regular expression': '正規表現を使用して列キーをマージ'
+'Column keys that need to be merged': 'マージする必要がある列キー'
+'Column key name': '列キー名'
+'Regex to match keys with and merge': 'キーを照合してマージする正規表現'
+'Indexed key to search for and merge': '検索してマージするインデックス付きキー'
+'Nested keys are not supported': 'ネストされたキーはサポートされていません'
+'Wildcards: {wildcards}': 'ワイルドカード: {wildcards}'
+'Index starts with': 'インデックスの開始文字'
+'Method to merge values from multiple columns': '複数の列から値をマージするメソッド'
+'Each column value will be appended': '各列の値が追加されます'
+'Latter column values merge into the former': '後方の列の値が前方の列にマージされます'
+'Latter column values replaces the former': '後方の列の値が前方の列を置き換えます'
+'Latter column values insert into the former': '後方の列の値が前方の列に挿入されます'
+Separator: 区切り文字
+Comma: カンマ
+Semicolon: セミコロン
+Space: スペース
+Tab: タブ
+'New line': '改行'
+'Value template': '値テンプレート'
+'The template for each separate value to be merged': 'マージされる各値のテンプレート'
+'Remove original column key(s)?': '元の列キーを削除しますか？'
+'Only keep unique values?': '一意の値のみを保持しますか？'
+'By default all values are kept.': 'デフォルトではすべての値が保持されます。'
+'Preserve column keys?': '列キーを保持しますか？'
+'Keep empty values?': '空の値を保持しますか？'
+'By default all empty column values will not be merged.': 'デフォルトでは、空の列値はすべてマージされません。'
+'No key configured': 'キーが設定されていません'
+'No columns defined': '列が定義されていません'
+'No key method selected': 'キーメソッドが選択されていません'
+'Cannot merge scalar value.': 'スカラー値をマージできません。'
+'Find and replace': '検索と置換'
+'The data column name for the values that need to be replaced': '置換する必要がある値のデータ列名'
+'In case the value is a list of values this task will iterate the replacements for all': '値が値のリストの場合、このタスクはすべての置換を反復処理します'
+'Replace values': '値を置換'
+'Replace keys': 'キーを置換'
+'Replace keys and values': 'キーと値を置換'
+'Replace recursively?': '再帰的に置換しますか？'
+Find: 検索
+'Find value not set': '検索値が設定されていません'
+'Cannot replace scalar data': 'スカラーデータを置換できません'
+'Retrieve your data from your specific connection': '特定の接続からデータを取得'
+'The data column name to pass to the webservice': 'Webserviceに渡すデータ列名'
+Connection: 接続
+'Response data': 'レスポンスデータ'
+'No connection configured': '接続が設定されていません'
+'Data not found: {key}': 'データが見つかりません: {key}'
+Send: 送信
+'Send your data to your specific connection': '特定の接続にデータを送信'
+'Retrieve response data': 'レスポンスデータを取得'
+Set: 設定
+'Set your own values': '独自の値を設定'
+'The data column key name for the values that needs to be set': '設定する必要がある値のデータ列キー名'
+'Reorder data?': 'データを並べ替えますか？'
+'This will append all configured columns at the end of the current data.': '設定されたすべての列が現在のデータの末尾に追加されます。'
+'Force if invalid?': '無効な場合に強制しますか？'
+'When existing data is scalar, create new data collection from values set in this task.': '既存のデータがスカラーの場合、このタスクで設定された値から新しいデータコレクションを作成します。'
+'You can still reference the original value through the {placeholder} tag.': '{placeholder} Tagを使用して元の値を参照することもできます。'
+'Set method': '設定メソッド'
+'Set column values': '列の値を設定'
+'Set schema': 'スキーマを設定'
+'Set both': '両方を設定'
+'Remove columns not defined in schema?': 'スキーマで定義されていない列を削除しますか？'
+'Column key/name': '列キー/名前'
+'-- Unchanged --': '-- 変更なし --'
+'Use {wildcard} to insert the current value.': '{wildcard} を使用して現在の値を挿入します。'
+Unset: 未設定
+'Data is not iterable': 'データを反復処理できません'
+'No set params configured': '設定パラメータが設定されていません'
+Sort: 並べ替え
+'Sort your data': 'データを並べ替え'
+'The data column key name for the values that needs to be sorted': '並べ替える必要がある値のデータ列キー名'
+'Sort by key / column name': 'キー/列名で並べ替え'
+'Sort by value': '値で並べ替え'
+'Sort by column value': '列の値で並べ替え'
+'Sort by': '並べ替え基準'
+'Set column name/key to sort by value': '値で並べ替える列名/キーを設定'
+Ascending: 昇順
+Descending: 降順
+'Ascending natural order': '昇順の自然順'
+'Descending natural order': '降順の自然順'
+'No sort method configured': '並べ替えメソッドが設定されていません'
+'Invalid sort order: {order}': '無効な並べ替え順序: {order}'
+'No sort column configured': '並べ替え列が設定されていません'
+Split: 分割
+'Split value and/or split column key into multiple': '値および/または列キーを複数に分割'
+'The data column name to split': '分割するデータ列名'
+'Split value': '値を分割'
+'Split into column keys': '列キーに分割'
+'Split value and split into column keys': '値を分割して列キーに分割'
+'Column key split method': '列キーの分割メソッド'
+'Split into column keys by providing custom names': 'カスタム名を指定して列キーに分割'
+'Split into column keys using an indexed name': 'インデックス付きの名前を使用して列キーに分割'
+'Column key names': '列キー名'
+'Current value index/key (optional)': '現在の値のインデックス/キー（オプション）'
+'New column key name': '新しい列キー名'
+'Indexed key': 'インデックス付きキー'
+'The template for the new indexed keys.': '新しいインデックス付きキーのテンプレート。'
+'Remove original key(s)?': '元のキーを削除しますか？'
+'Regular expression (Regex)': '正規表現（Regex）'
+'Regular expression': '正規表現'
+'Regex must be made for splitting values, not matching.': 'Regexはマッチング用ではなく、値の分割用に作成する必要があります。'
+'Split value column definition': '分割値の列定義'
+'No action configured': 'アクションが設定されていません'
+'Loop key not supported': 'ループキーはサポートされていません'
+'Value is not splittable into list': '値をリストに分割できません'
+'Column `{type}` does not exist': '列 `{type}` が存在しません'
+'Value is not splittable into keys': '値をキーに分割できません'
+'No columns configured': '列が設定されていません'
+Store: ストア
+'Get or set a storage': 'ストレージを取得または設定'
+'Set storage': 'ストレージを設定'
+'Get storage': 'ストレージを取得'
+'Storage column key/path': 'ストレージ列キー/パス'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': 'この値が保存されるパスを設定するか、空のままにします。ドット（.）を使用してストレージ内を移動します。'
+'No storage selected': 'ストレージが選択されていません'
+'Storage not found': 'ストレージが見つかりません'
+'Raw storage cannot contain paths': 'Rawストレージはパスを含めることができません'
+'This is a raw storage, please select a different storage or change the storage type': 'これはRawストレージです。別のストレージを選択するか、ストレージタイプを変更してください'
+Template: テンプレート
+'Create your own modifier template with Twig': 'Twigで独自のモディファイアテンプレートを作成'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': '出力Tag {example_var} はTwigテンプレートエンジンの前にTagとして解析されます。実行ステートメント {example_func} のみがTwigで解析されます。'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': '`data` の値がタスク出力に使用されます。利用可能な変数: `data`、`config`、`cache`、`variables`、`context`。'
+'Add your code here': 'ここにコードを追加'
+'No template set': 'テンプレートが設定されていません'
+Trace: トレース
+'Trace current status with a log or error.': 'ログまたはエラーで現在のステータスをトレースします。'
+'Trace type': 'トレースタイプ'
+'Creating an error will result in the trace reporting as failed.': 'エラーを作成すると、トレースは失敗として報告されます。'
+'Log message': 'ログメッセージ'
+'Error message': 'エラーメッセージ'
+Message: メッセージ
+'Extra info': '追加情報'
+'Include data?': 'データを含めますか？'
+'Message not configured': 'メッセージが設定されていません'
+'Trigger something independently from the current flow': '現在のフローから独立して何かをトリガー'
+'Run async?': '非同期で実行しますか？'
+Experimental: 実験的
+'If the automation is using batches then this trigger will always run async.': 'オートメーションがバッチを使用している場合、このトリガーは常に非同期で実行されます。'
+'Pass current data?': '現在のデータを渡しますか？'
+'Override current data?': '現在のデータを上書きしますか？'
+'Leave empty to pass root data': '空のままにするとルートデータが渡されます'
+'Define static variables to be used for this trigger. Existing variables will also be included.': 'このトリガーで使用する静的変数を定義します。既存の変数も含まれます。'
+Automation: オートメーション
+Wait: 待機
+'Wait for time to pass': '時間が経過するのを待機'
+'Seconds to wait': '待機する秒数'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'FTPサーバーに接続してファイルをアップロードおよび/またはダウンロード'
+'{type} extension is not available': '{type} 拡張機能が利用できません'
+Host: ホスト
+Port: ポート
+Username: ユーザー名
+Password: パスワード
+'Passive mode': 'パッシブモード'
+'Connect using SSL': 'SSLを使用して接続'
+'Process timeout in seconds': 'プロセスのタイムアウト（秒）'
+'Cannot connect to {host}': '{host} に接続できません'
+'Cannot login to {host}': '{host} にログインできません'
+'Successfully connected to {host}': '{host} への接続に成功しました'
+'Could not connect to {host}': '{host} に接続できませんでした'
+'HTTP No auth': 'HTTP認証なし'
+'Connect without authorization': '認証なしで接続'
+'Allow HTTP': 'HTTPを許可'
+'Allow unsafe HTTP connection without SSL encryption': 'SSL暗号化なしの安全でないHTTP接続を許可'
+Endpoint: Endpoint
+'Send current data': '現在のデータを送信'
+'Select data transport location': 'データ転送先を選択'
+'Request {type}': 'リクエスト {type}'
+'HTTP Basic Auth': 'HTTP Basic認証'
+'Connect with basic authorization': 'Basic認証で接続'
+'Username / key': 'ユーザー名/キー'
+'Password / Secret': 'パスワード/Secret'
+'HTTP Bearer token': 'HTTP Bearerトークン'
+'Connect with Bearer Token authorization': 'Bearerトークン認証で接続'
+Token: トークン
+'HTTP Authorization server': 'HTTP認可サーバー'
+'Connect to a HTTP server using an authorization server': '認可サーバーを使用してHTTPサーバーに接続'
+Body: ボディ
+Header: ヘッダー
+'Redirect url': 'リダイレクトURL'
+'Local File system': 'ローカルファイルシステム'
+'Use the local filesystem defined by your environment': '環境によって定義されたローカルファイルシステムを使用'
+'Root path': 'ルートパス'
+'Relative path?': '相対パスにしますか？'
+'Makes the root path relative to the SyncEngine installation': 'ルートパスをSyncEngineのインストール先からの相対パスにします'
+'Successfully accessed {root}': '{root} へのアクセスに成功しました'
+'Could not access {root}': '{root} にアクセスできませんでした'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'SFTPサーバーに接続してファイルをアップロードおよび/またはダウンロード'
+'Authentication type': '認証タイプ'
+'Private key': '秘密鍵'
+'Username and password': 'ユーザー名とパスワード'
+'Private key password': '秘密鍵のパスワード'
+'If your private key is password protected, you can fill in that password here': '秘密鍵がパスワードで保護されている場合は、ここにそのパスワードを入力できます'
+'Cannot login to {host}: {error}': '{host} にログインできません: {error}'
+'Could not rename': '名前を変更できませんでした'
+SOAP: SOAP
+'Connect using SOAP': 'SOAPを使用して接続'
+'HTTP Authentication': 'HTTP認証'
+'Basic authentication': 'Basic認証'
+'SOAP multistep server': 'SOAPマルチステップサーバー'
+'Connect to a SOAP server using multistep setup': 'マルチステップ設定を使用してSOAPサーバーに接続'
+'SOAP extension is not available': 'SOAP拡張機能が利用できません'
+Url: URL
+'The URL for this authentication step': 'この認証ステップのURL'
+SQL: SQL
+'Connect to a SQL server': 'SQLサーバーに接続'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': 'データベース拡張機能が利用できません。次のいずれかをインストールしてください: {options}'
+'Select database driver': 'データベースドライバーを選択'
+Database: データベース
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: クエリ
+'Fetch method': '取得メソッド'
+'Associated array': '連想配列'
+'Key => Value pairs': 'キー => 値のペア'
+'Key column': 'キー列'
+'Choose the key you want to use as the row key': '行キーとして使用するキーを選択'
+Path: パス
+'Select what you want to retrieve': '取得する内容を選択'
+'File contents': 'ファイルの内容'
+'List directories and filenames': 'ディレクトリとファイル名を一覧表示'
+'List filenames': 'ファイル名を一覧表示'
+'List directories': 'ディレクトリを一覧表示'
+Filename: ファイル名
+'Select what action you want to send': '送信するアクションを選択'
+'Upload file contents': 'ファイルの内容をアップロード'
+'Delete file': 'ファイルを削除'
+'Create directory': 'ディレクトリを作成'
+'Delete directory': 'ディレクトリを削除'
+'Rename or move a file or directory': 'ファイルまたはディレクトリの名前を変更または移動'
+'Overwrite if file exists': 'ファイルが存在する場合は上書き'
+'Directory name': 'ディレクトリ名'
+'Old name': '旧名'
+'New name': '新名'
+'Overwrite if new name exists': '新しい名前が存在する場合は上書き'
+'No Filename configured': 'ファイル名が設定されていません'
+'Cannot fetch file from {host}, please try passive mode': '{host} からファイルを取得できません。パッシブモードをお試しください'
+'Cannot fetch file from {host}': '{host} からファイルを取得できません'
+'Successfully retrieved: {name}': '{name} の取得に成功しました'
+'File {oldName} existed, renamed it to {newName}': 'ファイル {oldName} が存在したため、{newName} に名前を変更しました'
+'Could not be write file: {name}': 'ファイルを書き込めませんでした: {name}'
+'Successfully uploaded: {name}': '{name} のアップロードに成功しました'
+'Could not delete file {name}': 'ファイル {name} を削除できませんでした'
+'Successfully deleted file: {name}': 'ファイル {name} の削除に成功しました'
+'Cannot read directory from {host}': '{host} からディレクトリを読み取れません'
+'No directory configured': 'ディレクトリが設定されていません'
+'Could not create directory: {path}': 'ディレクトリを作成できませんでした: {path}'
+'Successfully created directory: {path}': 'ディレクトリ {path} の作成に成功しました'
+'Could not delete directory: {path}': 'ディレクトリを削除できませんでした: {path}'
+'Successfully deleted: {path}': '{path} の削除に成功しました'
+'Invalid rename configuration': '無効な名前変更設定'
+'Could not rename: {old} to {new}': '{old} を {new} に名前変更できませんでした'
+'Successfully renamed: {old} to {new}': '{old} を {new} に名前変更しました'
+'Invalid resource': '無効なリソース'
+'Request method': 'リクエストメソッド'
+'Request timeout': 'リクエストタイムアウト'
+'Request query': 'リクエストクエリ'
+'Request header': 'リクエストヘッダー'
+'Request body': 'リクエストボディ'
+'SOAP version': 'SOAPバージョン'
+'Default (PHP default)': 'デフォルト（PHPデフォルト）'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAPプロトコルバージョン。空のままにするとPHPデフォルトが使用されます。'
+Compression: 圧縮
+'Compress SOAP requests and accept compressed responses.': 'SOAPリクエストを圧縮し、圧縮されたレスポンスを受け入れます。'
+'Connection timeout': '接続タイムアウト'
+'Maximum time in seconds for the connection to be established.': '接続が確立されるまでの最大時間（秒）。'
+'WSDL mode': 'WSDLモード'
+'Will this connection use WSDL file format?': 'この接続はWSDLファイル形式を使用しますか？'
+'WSDL file url': 'WSDLファイルURL'
+'Link to WSDL format that will be filled in for this soap connection': 'このSOAP接続に設定されるWSDL形式へのリンク'
+'WSDL cache': 'WSDLキャッシュ'
+'No cache': 'キャッシュなし'
+'Memory cache': 'メモリキャッシュ'
+'Disk/File cache': 'ディスク/ファイルキャッシュ'
+Both: 両方
+'WSDL cache warning': 'WSDLキャッシュの警告'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': 'ファイルベースのWSDLキャッシュが有効です。サーバー上の共有アクセスにより、古いWSDLファイルやセキュリティの問題が発生する可能性があります。'
+'SOAP service namespace': 'SOAPサービスの名前空間'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'SOAPサービスのターゲット名前空間。WSDLモードが無効な場合に必要です。'
+'SOAPAction header': 'SOAPActionヘッダー'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': 'オプションのSOAPAction HTTPヘッダー値。一部のSOAPサーバーで必要です。'
+Advanced: 詳細
+'Override options for the SOAP connection.': 'SOAP接続のオプションを上書きします。'
+'SOAP headers': 'SOAPヘッダー'
+'SOAP operation name': 'SOAPオペレーション名'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': '呼び出すSOAPオペレーションの名前。WSDLモードと非WSDLモードの両方で必要です。'
+'Use data transport as body?': 'データ転送をボディとして使用しますか？'
+'SOAP body': 'SOAPボディ'
+'Define static variables to be used within the authorization process.': '認可プロセス内で使用する静的変数を定義します。'
+'Authorized request base config': '認可済みリクエストのベース設定'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'ベースのリクエスト設定を定義します。これはこの接続を使用するすべてのリクエストのデフォルトパラメータを設定するために使用されます。'
+'Override host': 'ホストを上書き'
+'Authorization process steps': '認可プロセスのステップ'
+'Define each step for the authorization process.': '認可プロセスの各ステップを定義します。'
+'The param name where the authentication parameters are located': '認証パラメータが配置されるパラメータ名'
+'Tag name': 'Tag名'
+'Choose the tag name in which the response param value is stored': 'レスポンスパラメータの値が保存されるTag名を選択'
+'Example: token': '例: token'
+Expiration: 有効期限
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Tag値の有効期限タイマーを設定すると、この有効期限の期間内に再認証が行われます'
+'Supported formats:': 'サポートされている形式:'
+'Timestamp or date': 'タイムスタンプまたは日付'
+'Time format: ({time_format})': '時刻形式: ({time_format})'
+'Text format: ({time_string})': 'テキスト形式: ({time_string})'
+'Response type': 'レスポンスタイプ'
+'The type of response the URL will return': 'URLが返すレスポンスのタイプ'
+'Tag storage': 'Tagストレージ'
+'Define the tags you need to store for authentication': '認証のために保存する必要があるTagを定義'
+'Run next step (default)': '次のステップを実行（デフォルト）'
+'Skip next step': '次のステップをスキップ'
+'Stop loop': 'ループを停止'
+'Run previous step (default)': '前のステップを実行（デフォルト）'
+'Restart loop from beginning': 'ループを最初から再開'
+'Cannot authenticate on step #{step} from connection #{connectionID}': '接続 #{connectionID} のステップ #{step} で認証できません'
+'Invalid tag name': '無効なTag名'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Tag:{tag} のサーバーレスポンスが無効または空です | パラメータが見つかりません:{param}'
+'Invalid or empty server response for tag:{tag}': 'Tag:{tag} のサーバーレスポンスが無効または空です'
+'Are you sure you want to disable two-factor authentication?': '二要素認証を無効にしてもよろしいですか？'
+'You will need to re-enable 2FA after verifying your password': 'パスワードを確認した後、2FAを再度有効にする必要があります'
+'Enter your password to confirm': '確認のためパスワードを入力してください'
+'Check your email': 'メールを確認してください'
+'We sent a 6-digit verification code to your email address': '6桁の確認コードをメールアドレスに送信しました'
+'Enter the code from your email': 'メールに記載されたコードを入力してください'
+'Resend Code': 'コードを再送信'
+Verify: 確認
+'Choose how you want to receive verification codes': '確認コードの受け取り方法を選択してください'
+'Authenticator App (Recommended)': '認証アプリ（推奨）'
+'Scan the QR code with your TOTP app': 'TOTPアプリでQRコードをスキャンしてください'
+'Or enter this secret manually:': 'または、このSecretを手動で入力してください:'
+'Email Verification': 'メール確認'
+'We will send a 6-digit code to your email address': '6桁のコードをメールアドレスに送信します'
+'Send Code to Email': 'コードをメールに送信'
+'Create new': '新規作成'
+Description: 説明
+Expires: 有効期限
+'No API tokens created': 'APIトークンが作成されていません'
+URL: URL
+Uses: 使用回数
+'You are about to reset this process, are you sure?': 'このプロセスをリセットしようとしています。よろしいですか？'
+Reset: リセット
+'Reset automation': 'オートメーションをリセット'
+'Quick Edit': 'クイック編集'
+Hide: 非表示
+Show: 表示
+Export: エクスポート
+Trash: ゴミ箱
+Restore: 復元
+'Delete Permanently': '完全に削除'
+Issue: 問題
+Connected: 接続済み
+'Used in': '使用箇所'
+'Last runs': '最近の実行'
+'Scheduled runs': 'スケジュールされた実行'
+Steps: ステップ
+'Message Queue': 'メッセージキュー'
+'Scheduled At': 'スケジュール日時'
+'Created At': '作成日時'
+View: 表示
+'Scheduled run': 'スケジュールされた実行'
+Delete: 削除
+'Delete run': '実行を削除'
+'Are you sure you want to delete this message?': 'このメッセージを削除してもよろしいですか？'
+'Disabled modules.': '無効なモジュール。'
+Module: モジュール
+Requires: 必要条件
+Reason: 理由
+Uninstall: アンインストール
+'Are you sure?': 'よろしいですか？'
+'This will uninstall module {moduleName} from {vendor}': '{vendor} からモジュール {moduleName} をアンインストールします'
+'Upload a newer module version to replace an incompatible module.': '互換性のないモジュールを置き換えるには、新しいバージョンのモジュールをアップロードしてください。'
+Version: バージョン
+Author: 作者
+Manage: 管理
+Reinstall: 再インストール
+Config: 設定
+Task: タスク
+Traces: トレース
+'You are about to kill this process, are you sure?': 'このプロセスを強制終了しようとしています。よろしいですか？'
+Kill: 強制終了
+'New user': '新しいユーザー'
+'Edit user': 'ユーザーを編集'
+Roles: ロール
+'Reset password': 'パスワードをリセット'
+'Reset password?': 'パスワードをリセットしますか？'
+'A password reset email will be sent to {email}. The user can then set their own password.': 'パスワードリセットメールが {email} に送信されます。ユーザーはその後、自分のパスワードを設定できます。'
+'This will delete user {email}': 'ユーザー {email} が削除されます'
+Visibility: 可視性
+All: すべて
+Dashboard: ダッシュボード
+'Verify Login': 'ログイン確認'
+Login: ログイン
+'Forgot password?': 'パスワードをお忘れですか？'
+'Password Reset Email Sent': 'パスワードリセットメールを送信しました'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': 'メールアドレスに一致するアカウントが存在する場合、パスワードをリセットするためのリンクを含むメールが送信されました。'
+'This link will expire in %expiration%': 'このリンクは %expiration% で有効期限が切れます'
+"If you don't receive an email please check your spam folder": "メールが届かない場合は、スパムフォルダをご確認ください"
+'Back to login': 'ログインに戻る'
+'Try again': 'もう一度試す'
+'Reset your password': 'パスワードをリセット'
+'Enter your email address and we will send you a link to reset your password.': 'メールアドレスを入力すると、パスワードをリセットするためのリンクを送信します。'
+'Page not found': 'ページが見つかりません'
+'Oops! An Error Occurred': 'おっと！エラーが発生しました'
+Back: 戻る
+'Authenticator App': '認証アプリ'
+'Fill in the code from your authenticator app': '認証アプリのコードを入力してください'
+'Fill in the code send to your email': 'メールに送信されたコードを入力してください'
+'There was a problem validating your password reset request': 'パスワードリセットリクエストの検証中に問題が発生しました'
+'There is already an automation with this ref, please enter a different ref': 'このrefのオートメーションはすでに存在します。別のrefを入力してください'
+'There is already an automation with this name, please enter a different name': 'この名前のオートメーションはすでに存在します。別の名前を入力してください'
+'There is already an automation with this endpoint, please enter a different name': 'このEndpointのオートメーションはすでに存在します。別の名前を入力してください'
+'There is already an account with this email': 'このメールアドレスのアカウントはすでに存在します'
+'Your password should be at least { limit } characters': 'パスワードは少なくとも { limit } 文字以上にしてください'
+'Please enter a password': 'パスワードを入力してください'
+'You should agree to our license terms.': 'ライセンス条項に同意する必要があります。'
+'Please enter your email': 'メールアドレスを入力してください'
+choose_provider: プロバイダーを選択
+auth_code: 認証コード
+trusted: 信頼済み
+'Has conditions': '条件あり'
+'Not configured': '未設定'
+'No tasks configured': 'タスクが設定されていません'
+Authorization: 認可
+Delimiter: 区切り文字
+'Sets the field delimiter separating values (one character only)': '値を区切るフィールド区切り文字を設定します（1文字のみ）'
+Enclosure: 囲み文字
+'Sets the field enclosure (one character only)': 'フィールドの囲み文字を設定します（1文字のみ）'
+'Escape character': 'エスケープ文字'
+'Sets the escape character (at most one character)': 'エスケープ文字を設定します（最大1文字）'
+'End of line': '行末'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'CSVファイルの各行の終わりを示す文字を設定します'
+'Headers columns': 'ヘッダー列'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': 'ヘッダー列とデータ列の順序を設定します。例: {val1} と {val2} の場合、{func} は {result} を返します'
+'Key separator': 'キー区切り文字'
+"Sets the separator for array's keys during its flattening": "フラット化中に配列のキーの区切り文字を設定します"
+'Escape formula': '数式をエスケープ'
+'Escapes fields containing formulas by prepending them with a `\t` character': '数式を含むフィールドの先頭に `\t` 文字を付けてエスケープします'
+'No headers': 'ヘッダーなし'
+'Disables header in the encoded CSV': 'エンコードされたCSVのヘッダーを無効にします'
+'As collection': 'コレクションとして'
+'Always returns results as a collection, even if only one line is decoded.': '1行だけがデコードされた場合でも、常に結果をコレクションとして返します。'
+'Output UTF8 Bom key': 'UTF8 BOMキーを出力'
+File: ファイル
+'Handle binary file data (raw bytes)': 'バイナリファイルデータ（生のバイト）を処理'
+Extension: 拡張子
+'Mime type': 'MIMEタイプ'
+'Sets the XML version attribute': 'XMLバージョン属性を設定します'
+Encoding: エンコーディング
+'Sets the XML encoding attribute': 'XMLエンコーディング属性を設定します'
+'Root node': 'ルートノード'
+'Sets the root node name': 'ルートノード名を設定します'
+'Format output': '出力をフォーマット'
+'If set to true, formats the generated XML with line breaks and indentation': 'trueに設定すると、生成されたXMLを改行とインデントでフォーマットします'
+Standalone: スタンドアロン
+'Adds standalone attribute in the generated XML': '生成されたXMLにstandalone属性を追加します'
+'Always returns results as a collection, even if only one line is decoded': '1行だけがデコードされた場合でも、常に結果をコレクションとして返します'
+'Remove empty tags': '空のタグを削除'
+'Remove all empty tags in the generated XML': '生成されたXML内のすべての空のタグを削除します'
+'Type-cast attributes': '属性を型キャスト'
+'This provides the ability to forget the attribute type casting': '属性の型キャストを省略する機能を提供します'
+'Inline dump': 'インラインダンプ'
+Indentation: インデント
+'Number of spaces': 'スペース数'
+Documentation: ドキュメント
+'Leave empty to keep current password.': '空のままにすると現在のパスワードが維持されます。'
+'New Password': '新しいパスワード'
+Scopes: スコープ
+'Scopes define what this API token can access. Each scope grants a specific permission.': 'スコープはこのAPIトークンがアクセスできる範囲を定義します。各スコープは特定の権限を付与します。'
+Restrictions: 制限
+"Restrictions limit an API key's usage and improves security": "制限によりAPIキーの使用が制限され、セキュリティが向上します"
+'Restrict by IP addresses': 'IPアドレスで制限'
+'Restrict by host domains': 'ホストドメインで制限'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin"ヘッダーは偽装される可能性があるため、これはセキュリティ対策というより利便性のためのチェックです。'
+'New password': '新しいパスワード'
+'Repeat Password': 'パスワードの再入力'
+'The password fields must match.': 'パスワードフィールドが一致している必要があります。'
+Debug: デバッグ
+'Change your app secret. Will autogenerate if empty.': 'アプリのSecretを変更します。空の場合は自動生成されます。'
+Secret: Secret
+Mailer: メーラー
+'Email sender': 'メール送信者'
+'Send email logs to': 'メールログの送信先'
+'Restrict everything by IP': 'すべてをIPで制限'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': '複数のIPアドレスはカンマで区切ります。管理者のIPアドレスも含まれます。'
+'Worker limit': 'ワーカー上限'
+'Max workers allowed running at the same time.': '同時に実行できるワーカーの最大数。'
+'Worker Queue limit': 'ワーカーキューの上限'
+'Max queued items a single worker will handle.': '1つのワーカーが処理するキューの最大アイテム数。'
+'Worker Time limit': 'ワーカーの時間上限'
+'Max seconds a single worker will run.': '1つのワーカーが実行される最大秒数。'
+'Worker Memory limit': 'ワーカーのメモリ上限'
+'Max memory (MB) a single worker is allowed to use.': '1つのワーカーが使用できる最大メモリ（MB）。'
+'I accept the license terms and conditions': 'ライセンスの利用規約に同意します'
+'Not required': '必須ではありません'
+Inactive: 非アクティブ
+Active: アクティブ
+Support: サポート
+'e.g. {examples}': '例: {examples}'
+'e.g. {examples}, etc.': '例: {examples} など'
+'Full Access (*)': 'フルアクセス（*）'
+Production: 本番
+Development: 開発
+Admin: 管理者
+Editor: 編集者
+Viewer: 閲覧者
+'Generic / Other': '一般/その他'
+Entities: エンティティ
+Raw: Raw
+'QR Code': 'QRコード'
+More...: もっと見る...
+'Log out': 'ログアウト'
+'To reset your password, please visit the following link': 'パスワードをリセットするには、次のリンクにアクセスしてください'
+'This link will expire in {expiration}.': 'このリンクは {expiration} で有効期限が切れます。'
+Cheers!: それでは！
+'Send password reset email': 'パスワードリセットメールを送信'
+Home: ホーム
+"The requested page couldn't be located.": "要求されたページが見つかりませんでした。"
+'Checkout for any URL misspelling or return to the homepage': 'URLの入力ミスがないか確認するか、ホームページに戻ってください'
+Return: 戻る
+'The server returned a "{status_code} {status_text}".': 'サーバーは "{status_code} {status_text}" を返しました。'
+'Something is broken. Please let us know what you were doing when this error occurred.': '何かが壊れています。このエラーが発生したときに何をしていたかをお知らせください。'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': 'できるだけ早く修正いたします。ご不便をおかけして申し訳ございません。'
+'You have unsaved changes! If you leave this page, your changes will be lost.': '保存されていない変更があります！このページを離れると、変更は失われます。'

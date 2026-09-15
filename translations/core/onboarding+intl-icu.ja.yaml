@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: 'SyncEngineへようこそ'
+onboarding.dashboard.welcome.body: |
+  SyncEngineは、モジュール式の自動化およびデータ同期エンジンです。システム間で信頼性が高く、透明性のある統合を構築できます。
+
+  このクイックツアーでは、インターフェースの主要な部分を案内します。
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: 'ナビゲーションメニュー'
+onboarding.dashboard.menu.body: |
+  サイドバーがメインのナビゲーションです。
+
+  メニューを折りたたんで、コンテンツに集中できます。
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: '接続'
+onboarding.dashboard.connections.body: |
+  接続は、SyncEngineと外部システムをつなぐ橋渡しです。認証、認証情報、安全なデータ転送を処理します。
+
+  サポートされているタイプには、HTTP（さまざまな認証方法）、SFTP/FTP、SQLデータベース、SOAPサービス、ローカルファイルシステムが含まれます。各接続は複数のオートメーションで再利用できます。
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: 'オートメーション'
+onboarding.dashboard.automations.body: |
+  オートメーションは、ワークフローを調整する最上位のコンテナです。各オートメーションには複数のフローを含めることができ、手動、スケジュール、またはイベントによるトリガー方法を定義できます。
+
+  オートメーションは実行履歴（トレース）を提供するため、すべての実行を検査し、処理されたデータを確認し、問題をデバッグできます。
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: 'フロー'
+onboarding.dashboard.flows.body: |
+  フローは、オートメーション内の実行順序を定義します。各フローには一連のステップが含まれ、各ステップがルーチンをトリガーします。
+
+  データはルーチンから次のルーチンへと流れ、各ルーチンはデータの取得、変換、別のシステムへの送信などの特定の機能を実行します。フローはデフォルトで順番に実行されます。
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: 'ルーチン'
+onboarding.dashboard.routines.body: |
+  ルーチンは、特定の機能を実行するアクション（タスク）の再利用可能なシーケンスです。
+
+  各ルーチンは再利用可能でモジュール式であり、1つ以上のフローから呼び出すことができ、優れた柔軟性と効率性を提供します。
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: 'ストレージ'
+onboarding.dashboard.storages.body: |
+  SyncEngineのストレージは、オートメーション全体でアクセスできる構造化データを保持するための、安全で永続的なコンテナです。
+  長期記憶として機能し、フローやルーチンが実行間で情報を保存および取得できるようにします。
+
+  ストレージは、外部データベースやAPIに依存せずに、後でアクセスしたい再利用可能なデータや共有データ、設定値、結果を保存するのに最適です。
+
+# Account step (popover)
+onboarding.dashboard.account.title: 'アカウント'
+onboarding.dashboard.account.body: |
+  アカウントセクションでは、ユーザープロフィール、設定、アクセストークンにアクセスできます。
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: 'モジュール'
+onboarding.dashboard.modules.body: |
+  モジュールは、SyncEngineに新しい機能を追加するカスタマイズ可能な拡張機能です。サードパーティサービスとの統合、Core機能の拡張、カスタム統合の作成に使用できます。
+
+onboarding.dashboard.system.title: 'システムダッシュボード'
+onboarding.dashboard.system.body: |
+  システムダッシュボードでは、以下にすばやくアクセスできます:
+
+  • SyncEngineの設定を構成
+  • VaultでSecretや機密値を管理
+  • バックグラウンドワーカーを監視
+  • システム情報を表示
+  • など
+
+  これらのツールを使用して、SyncEngineのインストールを管理してください。
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: 'ランタイム履歴'
+onboarding.dashboard.runtime_history.body: |
+  ランタイム履歴は、すべてのオートメーション実行の詳細なログを提供し、パフォーマンスの追跡、問題のデバッグ、データフローの分析を可能にします。
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: "準備完了です！"
+onboarding.dashboard.summary.body: |
+  SyncEngineのCoreコンセプトを理解しました:
+
+  • 接続がシステムをつなぐ
+  • オートメーションがワークフローを調整する
+  • フローが実行順序を定義する
+  • ルーチンは再利用可能なアクションのシーケンス
+  • タスクは個々のアクション
+  • ストレージが永続データを保持する
+  • モジュールが新しい機能を追加する
+
+  まず接続を作成し、次にルーチンとタスクを使って最初のフローを構築してください。
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: 'またヘルプが必要ですか？'
+onboarding.dashboard.help.body: |
+  ツールバーの疑問符アイコン（利用可能な場合）をクリックすると、いつでもツアーを開始できます。インターフェースについて詳しく知りたいときや、コンセプトを再確認したいときに、クイックリファレンスとして使用してください。
+
+  サポートが必要ですか？ docs.syncengine.io にアクセスするか、syncengine.io/support でチケットを作成してください。

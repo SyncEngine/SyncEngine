@@ -1,0 +1,167 @@
+'Add conditions group': '条件グループを追加'
+'Add field': 'フィールドを追加'
+'All categories': 'すべてのカテゴリ'
+Append: 追加
+'Are you sure?': 'よろしいですか？'
+Authorization: 認可
+Auto: 自動
+'Available blueprints': '利用可能なBlueprint'
+'Avg. memory per iteration': '反復あたりの平均メモリ'
+'Avg. time per iteration': '反復あたりの平均時間'
+Cancel: キャンセル
+'Cannot parse JSON': 'JSONを解析できません'
+'Cannot parse value': '値を解析できません'
+Close: 閉じる
+'Close editor': 'エディターを閉じる'
+'Column key/name': '列キー/名前'
+'Column type': '列タイプ'
+Combine: 結合
+Compact: コンパクト
+Compare: 比較
+Config: 設定
+'Configure all fields manually': 'すべてのフィールドを手動で設定'
+Confirm: 確認
+Connect: 接続
+Context: コンテキスト
+Copy: コピー
+'Copy as tag': 'Tagとしてコピー'
+'Copy conditions': '条件をコピー'
+Core: Core
+Create: 作成
+'Create and continue': '作成して続行'
+'Create new': '新規作成'
+Custom: カスタム
+Dark: ダーク
+Data: データ
+Default: デフォルト
+'Define request params to be used within preview.': 'プレビュー内で使用するリクエストパラメータを定義します。'
+'Define request query to be used within preview.': 'プレビュー内で使用するリクエストクエリを定義します。'
+'Define static variables to be used within preview.': 'プレビュー内で使用する静的変数を定義します。'
+Delete: 削除
+Description: 説明
+Disable: 無効にする
+Disabled: 無効
+Display: 表示
+'Dry Fetch and Run (safe)': 'ドライ取得と実行（安全）'
+'Dry Run (safe)': 'ドライ実行（安全）'
+Edit: 編集
+'Edit Routine': 'ルーチンを編集'
+Enable: 有効にする
+End: 終了
+Error: エラー
+Errors: エラー
+Export: エクスポート
+'Fetch and Run': '取得して実行'
+Field: フィールド
+'Field Key': 'フィールドキー'
+'Field Label': 'フィールドラベル'
+'Field params': 'フィールドパラメータ'
+Finish: 完了
+Flow: フロー
+Format: フォーマット
+From: 開始
+'Grouped diagnostics': 'グループ化された診断'
+Key: キー
+Label: ラベル
+Light: ライト
+'Load more': 'さらに読み込む'
+Loading: 読み込み中
+'Loading ...': '読み込み中 ...'
+Logs: ログ
+Manual: 手動
+'Memory usage before > after': 'メモリ使用量 実行前 > 実行後'
+Merge: マージ
+Modules: モジュール
+'Move down': '下に移動'
+'Move up': '上に移動'
+'Multiline content detected, please select paste method.': '複数行のコンテンツが検出されました。貼り付け方法を選択してください。'
+Name: 名前
+New: 新規
+'No blueprints available': '利用可能なBlueprintがありません'
+'No fields found': 'フィールドが見つかりません'
+'No items found': 'アイテムが見つかりません'
+'No results found.': '結果が見つかりません。'
+'No tasks configured': 'タスクが設定されていません'
+'No {entityType} selected': '{entityType} が選択されていません'
+'Not configured': '未設定'
+Operator: 演算子
+Other: その他
+Override: 上書き
+'Peak memory increase': 'ピークメモリ増加量'
+'Peak memory usage': 'ピークメモリ使用量'
+'Peak memory usage by trace': 'トレースごとのピークメモリ使用量'
+'Per page': 'ページあたり'
+'Please provide a webservice mode': 'Webserviceモードを指定してください'
+Preview: プレビュー
+Raw: Raw
+'Read only': '読み取り専用'
+Remove: 削除
+'Remove group': 'グループを削除'
+Request: リクエスト
+'Request Params': 'リクエストパラメータ'
+'Request Query': 'リクエストクエリ'
+Required: 必須
+Result: 結果
+Routine: ルーチン
+Run: 実行
+Save: 保存
+'Save and close': '保存して閉じる'
+'Save and continue': '保存して続行'
+'Search {entity}...': '{entity} を検索...'
+'Secret already exists, are you sure you want to override it?': 'Secretはすでに存在します。上書きしてもよろしいですか？'
+Select: 選択
+'Select Blueprint': 'Blueprintを選択'
+'Select Codec': 'コーデックを選択'
+'Select Column': '列を選択'
+'Select Task': 'タスクを選択'
+'Select Webservice': 'Webserviceを選択'
+'Select a blueprint or configure manually': 'Blueprintを選択するか、手動で設定してください'
+'Select field': 'フィールドを選択'
+'Select tag': 'Tagを選択'
+'Select {entity}': '{entity} を選択'
+Send: 送信
+'Send data with context': 'コンテキスト付きでデータを送信'
+'Send request?': 'リクエストを送信しますか？'
+Set: 設定
+'Set and close': '設定して閉じる'
+Showing: 表示中
+Skipped: スキップ
+Source: ソース
+Start: 開始
+'Step #{number}': 'ステップ #{number}'
+Storage: ストレージ
+Success: 成功
+'Switch to custom input': 'カスタム入力に切り替え'
+'Switch to predefined options': '定義済みオプションに切り替え'
+'Switch to secret': 'Secretに切り替え'
+Update: 更新
+'Update and close': '更新して閉じる'
+'Update full scope and close': '全スコープを更新して閉じる'
+'Use current context': '現在のコンテキストを使用'
+'User defined blueprints': 'ユーザー定義のBlueprint'
+Value: 値
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': '値に先頭/末尾のスペースが含まれています。予期しない動作を引き起こす可能性があります。'
+Variables: 変数
+'View full log': '完全なログを表示'
+'Webservice has no fields': 'Webserviceにフィールドがありません'
+'Webservice not found': 'Webserviceが見つかりません'
+'You will lose your current configuration': '現在の設定が失われます'
+contains: 含む
+'contains (strict)': '含む（厳密）'
+'ends with': 'で終わる'
+'has key': 'キーを持つ'
+'in (strict)': '含まれる（厳密）'
+'is empty': '空である'
+'is set': '設定されている'
+'not contains': '含まない'
+'not contains (strict)': '含まない（厳密）'
+'not empty': '空でない'
+'not ends with': 'で終わらない'
+'not has key': 'キーを持たない'
+'not in': '含まれない'
+'not in (strict)': '含まれない（厳密）'
+'not set': '設定されていない'
+'not starts with': 'で始まらない'
+regex: 正規表現
+'starts with': 'で始まる'
+'{name} Types': '{name} タイプ'
