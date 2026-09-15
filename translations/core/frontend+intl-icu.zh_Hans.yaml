@@ -1,0 +1,167 @@
+'Add conditions group': '添加条件组'
+'Add field': '添加字段'
+'All categories': '所有类别'
+Append: 追加
+'Are you sure?': '您确定吗？'
+Authorization: 授权
+Auto: 自动
+'Available blueprints': '可用的 Blueprint'
+'Avg. memory per iteration': '每次迭代的平均内存'
+'Avg. time per iteration': '每次迭代的平均时间'
+Cancel: 取消
+'Cannot parse JSON': '无法解析 JSON'
+'Cannot parse value': '无法解析值'
+Close: 关闭
+'Close editor': '关闭编辑器'
+'Column key/name': '列键/名称'
+'Column type': '列类型'
+Combine: 组合
+Compact: 紧凑
+Compare: 比较
+Config: 配置
+'Configure all fields manually': '手动配置所有字段'
+Confirm: 确认
+Connect: 连接
+Context: 上下文
+Copy: 复制
+'Copy as tag': '复制为 Tag'
+'Copy conditions': '复制条件'
+Core: Core
+Create: 创建
+'Create and continue': '创建并继续'
+'Create new': '新建'
+Custom: 自定义
+Dark: 深色
+Data: 数据
+Default: 默认
+'Define request params to be used within preview.': '定义预览中使用的请求参数。'
+'Define request query to be used within preview.': '定义预览中使用的请求查询。'
+'Define static variables to be used within preview.': '定义预览中使用的静态变量。'
+Delete: 删除
+Description: 描述
+Disable: 禁用
+Disabled: 已禁用
+Display: 显示
+'Dry Fetch and Run (safe)': '试运行获取并执行（安全）'
+'Dry Run (safe)': '试运行（安全）'
+Edit: 编辑
+'Edit Routine': '编辑例程'
+Enable: 启用
+End: 结束
+Error: 错误
+Errors: 错误
+Export: 导出
+'Fetch and Run': '获取并执行'
+Field: 字段
+'Field Key': '字段键'
+'Field Label': '字段标签'
+'Field params': '字段参数'
+Finish: 完成
+Flow: 流程
+Format: 格式
+From: 从
+'Grouped diagnostics': '分组诊断'
+Key: 键
+Label: 标签
+Light: 浅色
+'Load more': '加载更多'
+Loading: 加载中
+'Loading ...': '加载中 ...'
+Logs: 日志
+Manual: 手动
+'Memory usage before > after': '内存使用 之前 > 之后'
+Merge: 合并
+Modules: 模块
+'Move down': '下移'
+'Move up': '上移'
+'Multiline content detected, please select paste method.': '检测到多行内容，请选择粘贴方式。'
+Name: 名称
+New: 新建
+'No blueprints available': '没有可用的 Blueprint'
+'No fields found': '未找到字段'
+'No items found': '未找到项目'
+'No results found.': '未找到结果。'
+'No tasks configured': '未配置任务'
+'No {entityType} selected': '未选择 {entityType}'
+'Not configured': '未配置'
+Operator: 运算符
+Other: 其他
+Override: 覆盖
+'Peak memory increase': '峰值内存增加'
+'Peak memory usage': '峰值内存使用'
+'Peak memory usage by trace': '按追踪的峰值内存使用'
+'Per page': '每页'
+'Please provide a webservice mode': '请提供 Webservice 模式'
+Preview: 预览
+Raw: 原始
+'Read only': '只读'
+Remove: 移除
+'Remove group': '移除组'
+Request: 请求
+'Request Params': '请求参数'
+'Request Query': '请求查询'
+Required: 必填
+Result: 结果
+Routine: 例程
+Run: 运行
+Save: 保存
+'Save and close': '保存并关闭'
+'Save and continue': '保存并继续'
+'Search {entity}...': '搜索 {entity}...'
+'Secret already exists, are you sure you want to override it?': 'Secret 已存在，您确定要覆盖它吗？'
+Select: 选择
+'Select Blueprint': '选择 Blueprint'
+'Select Codec': '选择编解码器'
+'Select Column': '选择列'
+'Select Task': '选择任务'
+'Select Webservice': '选择 Webservice'
+'Select a blueprint or configure manually': '选择 Blueprint 或手动配置'
+'Select field': '选择字段'
+'Select tag': '选择 Tag'
+'Select {entity}': '选择 {entity}'
+Send: 发送
+'Send data with context': '发送带上下文的数据'
+'Send request?': '发送请求？'
+Set: 设置
+'Set and close': '设置并关闭'
+Showing: 显示
+Skipped: 已跳过
+Source: 来源
+Start: 开始
+'Step #{number}': '步骤 #{number}'
+Storage: 存储
+Success: 成功
+'Switch to custom input': '切换到自定义输入'
+'Switch to predefined options': '切换到预定义选项'
+'Switch to secret': '切换到 Secret'
+Update: 更新
+'Update and close': '更新并关闭'
+'Update full scope and close': '更新完整范围并关闭'
+'Use current context': '使用当前上下文'
+'User defined blueprints': '用户定义的 Blueprint'
+Value: 值
+'Value contains leading/trailing spaces which can potentially cause unexpected behavior.': '值包含前导/尾随空格，可能导致意外行为。'
+Variables: 变量
+'View full log': '查看完整日志'
+'Webservice has no fields': 'Webservice 没有字段'
+'Webservice not found': '未找到 Webservice'
+'You will lose your current configuration': '您将丢失当前配置'
+contains: 包含
+'contains (strict)': '包含（严格）'
+'ends with': '以...结尾'
+'has key': '具有键'
+'in (strict)': '在...中（严格）'
+'is empty': '为空'
+'is set': '已设置'
+'not contains': '不包含'
+'not contains (strict)': '不包含（严格）'
+'not empty': '不为空'
+'not ends with': '不以...结尾'
+'not has key': '不具有键'
+'not in': '不在...中'
+'not in (strict)': '不在...中（严格）'
+'not set': '未设置'
+'not starts with': '不以...开头'
+regex: 正则表达式
+'starts with': '以...开头'
+'{name} Types': '{name} 类型'

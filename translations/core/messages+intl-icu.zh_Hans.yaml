@@ -1,0 +1,1039 @@
+'Column definitions': '列定义'
+'Extend column definitions': '扩展列定义'
+'Configure custom column types for each field.': '为每个字段配置自定义列类型。'
+'Comma Separated Values': '逗号分隔值'
+'FormData encoded string': 'FormData 编码字符串'
+'JavaScript Object Notation': 'JavaScript 对象表示法'
+'URL encoded string': 'URL 编码字符串'
+'Extensible Markup Language': '可扩展标记语言'
+"YAML Ain't Markup Language": 'YAML 不是标记语言'
+Address: 地址
+'Address column': '地址列'
+Strict: 严格
+'Address columns': '地址列'
+'Country (Code)': '国家/地区（代码）'
+'Column name for: {field}': '字段 {field} 的列名：'
+'Administrative Area / Province / State': '行政区 / 省 / 州'
+'Locality / City': '地区 / 城市'
+'Dependent Locality': '下级地区'
+'Postal / ZIP Code': '邮政编码 / ZIP 代码'
+'Sorting Code': '排序代码'
+'Address Line 1': '地址行 1'
+'Address Line 2': '地址行 2'
+'Address Line 3': '地址行 3'
+Locale: 区域设置
+Organization: 组织
+'Given Name': '名'
+'Additional Name': '附加名'
+'Family Name': '姓'
+Boolean: 布尔值
+'Format as true or false': '格式化为 true 或 false'
+Format: 格式
+Integer: 整数
+'Custom text': '自定义文本'
+'Custom number': '自定义数字'
+'True value': '真值'
+'False value': '假值'
+'Fallback value': '回退值'
+'Null / Empty': 'Null / 空'
+Custom: 自定义
+'Fallback custom value': '回退自定义值'
+'Yes': '是'
+'No': '否'
+Collection: 集合
+'A collection of a column type': '一种列类型的集合'
+Associative: 关联
+'Column Type': '列类型'
+Key/Name: 键/名称
+Currency: 货币
+'Currency column for money/price based values': '用于金额/价格类值的货币列'
+'Currency sign': '货币符号'
+'Add space between currency sign and value?': '在货币符号和值之间添加空格？'
+'Put currency sign after value?': '将货币符号放在值之后？'
+Date: 日期
+'General date and time column': '通用日期和时间列'
+Unchanged: 不变
+'Null': 'Null'
+'False': 'False'
+'Empty string': '空字符串'
+'Current timestamp as format': '当前时间戳作为格式'
+'Please check PHP date documentation': '请查阅 PHP 日期文档'
+Timezone: 时区
+'Please check PHP DateTimeZone documentation': '请查阅 PHP DateTimeZone 文档'
+'Empty value': '空值'
+Duration: 持续时间
+'General duration column': '通用持续时间列'
+'Please check PHP DateInterval documentation': '请查阅 PHP DateInterval 文档'
+Email: 电子邮件
+'Email column': '电子邮件列'
+'Validation mode': '验证模式'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`：确保电子邮件地址严格遵循 RFC 标准。例如，它不允许在域名部分使用 IP 地址。'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5：遵循 HTML5 输入规则，比严格的 RFC 标准稍微宽松。'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`：与 HTML5 类似，但也允许没有 TLD 的电子邮件地址（例如 user@localhost）。'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: 回退
+'Fallback value if it is an invalid email address.': '当电子邮件地址无效时使用的回退值。'
+Enumeration: 枚举
+'Predefined select options': '预定义的选择选项'
+Options: 选项
+Value: 值
+Label: 标签
+'Numeric options': '数字选项'
+None: 无
+'Use column for type hinting': '使用列进行类型提示'
+Soft: 宽松
+'Use fallback for invalid values': '对无效值使用回退'
+'Throw error on invalid values': '对无效值抛出错误'
+'Set the fallback value in case it is empty.': '在值为空时设置回退值。'
+'Will also be used as fallback in soft mode.': '在宽松模式下也将用作回退值。'
+'Parse before validation': '在验证前解析'
+'Trim text': '去除文本首尾空格'
+'Convert case': '转换大小写'
+'Capitalize first': '首字母大写'
+'Capitalize Words': '每个单词首字母大写'
+lowercase: 小写
+UPPERCASE: 大写
+'Invalid enum config': '无效的枚举配置'
+'Invalid value for enum: {formatted}': '枚举值无效：{formatted}'
+Number: 数字
+'Numeric column': '数字列'
+Type: 类型
+'A raw number can be used for calculations and number storage.': '原始数字可用于计算和数字存储。'
+'A formatted number can be used for display.': '格式化数字可用于显示。'
+'Raw number': '原始数字'
+'Format to a number type.': '格式化为数字类型。'
+Formatted: 已格式化
+'Format to a numeric string.': '格式化为数字字符串。'
+Rounding: 舍入
+'Round halves up': '四舍五入（半数向上）'
+'Round halves down': '半数向下舍入'
+'Round halves to even numbers': '半数舍入到偶数'
+'Round halves to odd numbers': '半数舍入到奇数'
+Decimals: 小数位
+'Trim trailing zeros (0)': '去除末尾的零（0）'
+'Decimal separator': '小数分隔符'
+'Thousands separator': '千位分隔符'
+none: 无
+space: 空格
+Schema: 模式
+'Schema definitions column': '模式定义列'
+'Schema source': '模式来源'
+Manual: 手动
+Storage: 存储
+'Schema storage': '模式存储'
+'Configure column types for each field.': '为每个字段配置列类型。'
+Slug: 别名
+'Format as a slug': '格式化为别名'
+lowercase-dash: 小写-连字符
+snake_case: 蛇形命名
+camelCase: 驼峰命名
+UPPERCASE_UNDERSCORE: 大写-下划线
+Case: 大小写
+'camel Style': '驼峰风格'
+'Word separator': '单词分隔符'
+dash: 连字符
+underscore: 下划线
+Text: 文本
+'General text column': '通用文本列'
+'Limit length?': '限制长度？'
+Max: 最大
+Unit: 单位
+Characters: 字符
+Words: 单词
+'Access denied.': '访问被拒绝。'
+'Invalid request method.': '无效的请求方法。'
+'Entity not found': '未找到实体'
+'Action not supported: {action}': '不支持的操作：{action}'
+Update: 更新
+Create: 创建
+Account: 账户
+'Edit account': '编辑账户'
+'Edit user account': '编辑用户账户'
+Preferences: 偏好设置
+'Edit preferences': '编辑偏好设置'
+'API tokens': 'API 令牌'
+'Manage API tokens': '管理 API 令牌'
+'Two-factor authentication': '双重身份验证'
+'2FA is active for your account': '您的账户已启用 2FA'
+'Protect your account with a verification code': '使用验证码保护您的账户'
+Disable: 禁用
+Enable: 启用
+'Account updated successfully.': '账户更新成功。'
+Edit: 编辑
+'Preferences updated successfully.': '偏好设置更新成功。'
+'Access tokens': '访问令牌'
+'API Tokens': 'API 令牌'
+'Create API token': '创建 API 令牌'
+'Edit API token': '编辑 API 令牌'
+'Enable two-factor authentication': '启用双重身份验证'
+'Enable 2FA': '启用 2FA'
+'Invalid form submission. Please try again.': '无效的表单提交。请重试。'
+'The verification code you entered is invalid.': '您输入的验证码无效。'
+'Two-factor authentication has been enabled.': '双重身份验证已启用。'
+'Could not send verification email. Please try again.': '无法发送验证电子邮件。请重试。'
+'Verify your email': '验证您的电子邮件'
+'Verify Email': '验证电子邮件'
+'Disable two-factor authentication': '禁用双重身份验证'
+'Disable 2FA': '禁用 2FA'
+'Invalid password.': '密码无效。'
+'Two-factor authentication has been disabled.': '双重身份验证已禁用。'
+Automations: 自动化
+'Successfully created automation!': '自动化创建成功！'
+'New automation': '新建自动化'
+'Successfully edited automation!': '自动化编辑成功！'
+'Edit automation': '编辑自动化'
+Connections: 连接
+'Successfully created connection!': '连接创建成功！'
+'New connection': '新建连接'
+'Successfully edited connection!': '连接编辑成功！'
+'Edit connection': '编辑连接'
+Flows: 流程
+'Successfully created flow!': '流程创建成功！'
+'New flow': '新建流程'
+'Successfully edited flow!': '流程编辑成功！'
+'Edit flow': '编辑流程'
+'Connection required': '需要连接'
+'Connection not found': '未找到连接'
+'Webservice not found': '未找到 Webservice'
+Modules: 模块
+'Please upload a valid ZIP file': '请上传有效的 ZIP 文件'
+Upload: 上传
+'Unable to refresh system cache after module upload.': '模块上传后无法刷新系统缓存。'
+'Install unsuccessful': '安装失败'
+'Unable to uninstall {moduleName}. It is still used in your system': '无法卸载 {moduleName}。它仍被您的系统使用'
+'Uninstall unsuccessful': '卸载失败'
+'Unable to refresh system cache after module uninstall.': '模块卸载后无法刷新系统缓存。'
+'{moduleName} successfully uninstalled': '{moduleName} 已成功卸载'
+'Invalid module package: {moduleName}': '无效的模块包：{moduleName}'
+'Disabled manually': '已手动禁用'
+'Unable to refresh system cache after module disable.': '模块禁用后无法刷新系统缓存。'
+'{moduleName} disabled': '{moduleName} 已禁用'
+'Unable to disable {moduleName}.': '无法禁用 {moduleName}。'
+'Unable to refresh system cache after module enable.': '模块启用后无法刷新系统缓存。'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': '无法启用 {moduleName}。在缓存重建期间它被再次禁用。'
+'{moduleName} enabled': '{moduleName} 已启用'
+'Cannot move file': '无法移动文件'
+'Could not find module in zip file': '在 zip 文件中找不到模块'
+'Could not parse module namespace': '无法解析模块命名空间'
+'Cannot unzip file!': '无法解压文件！'
+'Cant delete temp folder': '无法删除临时文件夹'
+Configuration: 配置
+'Configure manager to optimize SyncEngine for your server.': '配置管理器以针对您的服务器优化 SyncEngine。'
+Manager: 管理器
+'Auto-starts background async workers to handle automations.': '自动启动后台异步工作进程来处理自动化。'
+Enabled: 已启用
+'Cannot enable manager': '无法启用管理器'
+Disabled: 已禁用
+'The manager is controlled by a cronjob.': '管理器由 cronjob 控制。'
+External: 外部
+'The manager is controlled externally.': '管理器由外部控制。'
+'Queue size:': '队列大小：'
+'Active workers:': '活动工作进程：'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': '工作进程 ID #{pid} | 创建时间：{timestamp} | Ping：{ping}'
+Processes: 进程
+System: 系统
+Save: 保存
+'Invalid Manager': '无效的管理器'
+'Configuration saved': '配置已保存'
+Routines: 例程
+'Successfully created routine!': '例程创建成功！'
+'New routine': '新建例程'
+'Successfully edited routine!': '例程编辑成功！'
+'Edit routine': '编辑例程'
+Storages: 存储
+'Successfully created storage!': '存储创建成功！'
+'New storage': '新建存储'
+'Successfully edited storage!': '存储编辑成功！'
+'Edit storage': '编辑存储'
+'Clear cache': '清除缓存'
+Environment: 环境
+'Configure environment setup': '配置环境设置'
+Vault: Vault
+'Configure vault secrets': '配置 Vault Secret'
+'Manage system processes': '管理系统进程'
+Import: 导入
+'Import JSON configs': '导入 JSON 配置'
+Info: 信息
+'System information': '系统信息'
+Help: 帮助
+'JSON data': 'JSON 数据'
+'Format must be JSON.': '格式必须是 JSON。'
+'Import successful': '导入成功'
+Users: 用户
+'Successfully created user!': '用户创建成功！'
+'Successfully edited user!': '用户编辑成功！'
+'You cannot reset your own password.': '您不能重置自己的密码。'
+'Password reset email sent successfully!': '密码重置电子邮件发送成功！'
+'An error occurred while resetting the password.': '重置密码时发生错误。'
+'You cannot delete your own account.': '您不能删除自己的账户。'
+'Successfully deleted user!': '用户删除成功！'
+'Endpoint not found: {value}': '未找到 Endpoint：{value}'
+'Automation is not enabled': '自动化未启用'
+'Automation is already running': '自动化已在运行'
+'File not found': '未找到文件'
+'Scheduled processes are disabled.': '计划进程已禁用。'
+'Automation cannot accept a new request right now.': '自动化目前无法接受新请求。'
+'Entity type not found': '未找到实体类型'
+'Entity deleted': '实体已删除'
+'An error occurred while sending the password reset email.': '发送密码重置电子邮件时发生错误。'
+'Your password reset request': '您的密码重置请求'
+'No reset password token found in the URL or in the session.': '在 URL 或会话中未找到密码重置令牌。'
+Install: 安装
+'Unknown database error': '未知的数据库错误'
+'Could not repair database': '无法修复数据库'
+'Unable to access this page!': '无法访问此页面！'
+Register: 注册
+Variables: 变量
+'Define static variables to be used within the automation.': '定义要在自动化中使用的静态变量。'
+Source: 来源
+'Select the data source for this automation': '为此自动化选择数据源'
+Request: 请求
+'Extract data from the current request body.': '从当前请求正文中提取数据。'
+'Cannot be used with scheduled automations.': '不能与计划自动化一起使用。'
+Retrieve: 检索
+'Retrieve data from a webservice or other custom source.': '从 Webservice 或其他自定义来源检索数据。'
+'Run automation in batches': '分批运行自动化'
+'Batch method': '批次方法'
+'Batches are made remotely using retrieve parameters': '使用检索参数远程创建批次'
+'Batches are created locally': '在本地创建批次'
+'Limit batch size': '限制批次大小'
+'Limit the number of records to fetch/run at once.': '限制每次获取/运行的记录数。'
+Interval: 间隔
+'Set an interval time between each batch.': '设置每个批次之间的间隔时间。'
+Seconds: 秒
+'Configure where to extract request data from.': '配置从何处提取请求数据。'
+'Request param': '请求参数'
+'Define the param name to use as the data source.': '定义用作数据源的参数名称。'
+'Leave empty to use the full request data.': '留空以使用完整的请求数据。'
+'Configure tasks to retrieve the data': '配置任务以检索数据'
+'Define source schema structure.': '定义来源模式结构。'
+'Predefined schema storage': '预定义的模式存储'
+'Manual definitions': '手动定义'
+'Event handler on empty source': '来源为空时的事件处理'
+Cancel: 取消
+Error: 错误
+'Optionally trigger error when there is no data available from the source.': '可选：当来源没有可用数据时触发错误。'
+Actions: 操作
+'The actions that need to be done with the source data.': '需要对来源数据执行的操作。'
+Flow: 流程
+Routine: 例程
+Tasks: 任务
+Events: 事件
+'Select the behavior on various events in this automation.': '选择此自动化中各种事件的行为。'
+'On Cancel': '取消时'
+'Actions to execute when the automation is cancelled.': '自动化被取消时要执行的操作。'
+'On Error': '出错时'
+'Actions to execute when the automation fails.': '自动化失败时要执行的操作。'
+'On Success': '成功时'
+'Actions to execute when the automation completed successfully.': '自动化成功完成时要执行的操作。'
+Response: 响应
+'What this automation should respond in case of a HTTP request.': '此自动化在收到 HTTP 请求时应响应的内容。'
+'Success status and data': '成功状态和数据'
+'Data only': '仅数据'
+'Success status only': '仅成功状态'
+'File Download': '文件下载'
+'Download file selector': '下载文件选择器'
+Execution: 执行
+'Control how this automation is executed.': '控制此自动化的执行方式。'
+'Execution mode': '执行模式'
+Single: 单一
+'Only one run at a time and blocks new requests while a run is active or scheduled.': '一次只运行一个，当有运行处于活动或计划状态时阻止新请求。'
+Parallel: 并行
+'Multiple simultaneous execution runs allowed': '允许多个同时执行'
+Queued: 排队
+'Accepts new requests but executes only one run at a time.': '接受新请求，但一次只执行一个运行。'
+'Stale run timeout': '过期运行超时'
+'Seconds without a activity before a run is considered stale and automatically reset.': '运行在多少秒内没有活动后被视为过期并自动重置。'
+'Defaults to {default}.': '默认为 {default}。'
+'History traces retention limit': '历史追踪保留限制'
+'Configure execution history of this automation.': '配置此自动化的执行历史。'
+'Maximum number of stored traces for this automation.': '此自动化存储的追踪最大数量。'
+'Leave empty to use the global default of {param}.': '留空以使用全局默认值 {param}。'
+Status: 状态
+Default: 默认
+Fixed: 固定
+Days: 天
+Webservice: Webservice
+Trigger: 触发
+Start: 开始
+Stop: 停止
+Continue: 继续
+Success: 成功
+Unknown: 未知
+Trashed: 已删除
+Visible: 可见
+Hidden: 隐藏
+Registered: 已注册
+Scheduled: 已计划
+Running: 运行中
+Stopped: 已停止
+Failed: 失败
+Cancelled: 已取消
+Dynamic: 动态
+Sequence: 序列
+'Add steps': '添加步骤'
+'Input data': '输入数据'
+'Input variables': '输入变量'
+Conditions: 条件
+'Input schema': '输入模式'
+'Output schema': '输出模式'
+'Data type': '数据类型'
+Columns: 列
+Key: 键
+Name: 名称
+'Field name key': '字段名称键'
+'By default it will fetch the index key unless the value is an array containing field information.': '默认情况下，除非值是包含字段信息的数组，否则将获取索引键。'
+'Field label key': '字段标签键'
+'Used in case the value is an array containing field information.': '当值是包含字段信息的数组时使用。'
+'Schema storages': '模式存储'
+'From source schema': '来自来源模式'
+'To target schema': '到目标模式'
+'Format options': '格式选项'
+'Response format': '响应格式'
+'This webservice does not validate authorization.': '此 Webservice 不验证授权。'
+'Added to queue!': '已加入队列！'
+'Finished executing endpoint.': 'Endpoint 执行完成。'
+'There were errors while executing this endpoint.': '执行此 Endpoint 时出现错误。'
+'Dots (.) in refs are forbidden: {ref}': 'ref 中不允许使用点（.）：{ref}'
+'Entity not found for: {ref}': '未找到实体：{ref}'
+'Model not found for: {ref} ({class})': '未找到模型：{ref}（{class}）'
+'Response param name': '响应参数名称'
+'The param name where the results are located': '结果所在的参数名称'
+'Nested keys are supported: key.nested_key': '支持嵌套键：key.nested_key'
+'Key / Column name override to store results': '用于存储结果的键 / 列名覆盖'
+'Start with dot (.) for root': '以点（.）开头表示根'
+Action: 操作
+'Replace current data with results': '用结果替换当前数据'
+'Merge results with current data': '将结果与当前数据合并'
+'Insert results into current data without replacing existing values': '将结果插入当前数据而不替换现有值'
+'Combine recursively?': '递归合并？'
+'Catch errors': '捕获错误'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': '定义如何处理错误。当错误匹配某个条件时，将阻止该错误并改为运行定义的操作。错误仍会被记录。'
+'Leave empty to catch all errors.': '留空以捕获所有错误。'
+'No actions defined': '未定义操作'
+'Run catch {name}': '运行捕获 {name}'
+Cache: 缓存
+'Get or set a value in the context cache': '在上下文缓存中获取或设置值'
+'Set cache': '设置缓存'
+'Get cache': '获取缓存'
+'Set from data': '从数据设置'
+'Manual value': '手动值'
+'Key / Column name': '键 / 列名'
+'Leave empty for root': '留空表示根'
+'Cache value': '缓存值'
+'Cache tag reference/path': '缓存 Tag 引用/路径'
+'Can be used like: {tag}': '可以这样使用：{tag}'
+Method: 方法
+Replace: 替换
+Merge: 合并
+Append: 追加
+'Not found action': '未找到时的操作'
+'Action if the tag is not found': '未找到 Tag 时的操作'
+'Override with empty value': '用空值覆盖'
+'Skip task': '跳过任务'
+'Cache tag reference missing': '缺少缓存 Tag 引用'
+Choose: 选择
+'Choose between different options based on conditions': '根据条件在不同选项之间选择'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': '定义选项及其条件。一旦某个条件成立，将只运行该选项。'
+'Default tasks': '默认任务'
+'These tasks will run if none of the option conditions are met.': '如果没有满足任何选项条件，将运行这些任务。'
+'Run option {name}': '运行选项 {name}'
+'Run default': '运行默认'
+Extract: 提取
+'Extract a column from each item in your data': '从数据中的每个项目提取一列'
+'The data column name to extract items from': '要从中提取项目的数据列名'
+'The column to extract': '要提取的列'
+'The target column to put results': '存放结果的目标列'
+'Leave empty to use the Key / Column name set above': '留空以使用上面设置的键 / 列名'
+'No column key configured': '未配置列键'
+'Data not iterable': '数据不可迭代'
+'Could not extract': '无法提取'
+Filter: 过滤
+'Filter data based on conditions': '根据条件过滤数据'
+'Leave empty for root iteration': '留空表示根迭代'
+'Filter method': '过滤方法'
+'Keep valid rows': '保留有效行'
+'Keep invalid rows': '保留无效行'
+'No conditions configured': '未配置条件'
+'Data key not found': '未找到数据键'
+Group: 分组
+'Group your data': '对数据进行分组'
+'The data column name to group items for': '用于对项目分组的数据列名'
+'Group by': '分组依据'
+'Set column name/key to group by value': '设置用于按值分组的列名/键'
+'Default group key': '默认分组键'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': '当行不包含定义的分组列或该列为空值时使用。如果未设置，该行将被移除。'
+'No group column configured': '未配置分组列'
+'Invalid group column: {value}': '无效的分组列：{value}'
+Index: 索引
+'Index your data': '为数据建立索引'
+'The data column name to index items for': '用于为项目建立索引的数据列名'
+'Numeric list': '数字列表'
+'Associative indexes': '关联索引'
+'New index key': '新索引键'
+'The template for the indexed keys': '索引键的模板'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': '使用列键作为 Tag：{tag} | 通配符：{wildcards}'
+'No index method configured': '未配置索引方法'
+'No index key template configured': '未配置索引键模板'
+Loop: 循环
+'Iterate over a set of rows': '遍历一组行'
+'Loop method': '循环方法'
+Row: 行
+Batches: 批次
+'Batch size': '批次大小'
+'Set the number of records to fetch/run at once.': '设置每次获取/运行的记录数。'
+'Data column not found: {key}': '未找到数据列：{key}'
+'Data column not iterable: {key}': '数据列不可迭代：{key}'
+'Invalid action': '无效的操作'
+'No batch size configured': '未配置批次大小'
+Map: 映射
+'Map key value pairs': '映射键值对'
+'The data column name for the value that needs to be mapped': '需要映射的值的数据列名'
+'Nested keys are supported: {example}': '支持嵌套键：{example}'
+'Map columns': '映射列'
+'Convert key names and definition schema.': '转换键名和定义模式。'
+'Map values': '映射值'
+'Convert values for a column': '转换列的值'
+'Only return mapped items?': '只返回映射的项目？'
+'This will also reorder your data in the order of your map.': '这也会按照映射的顺序重新排列您的数据。'
+'Remove old keys?': '移除旧键？'
+'Map source': '映射来源'
+Mapper: 映射器
+'Convert column types to schema where available?': '在可用时将列类型转换为模式？'
+'No manual map configured.': '未配置手动映射。'
+'Cannot map empty data': '无法映射空数据'
+'Cannot map scalar data': '无法映射标量数据'
+'Merge columns and/or values': '合并列和/或值'
+'The data column name to merge': '要合并的数据列名'
+'Merge values of a column into a single value': '将列的值合并为单个值'
+'Merge columns': '合并列'
+'Merge both': '两者都合并'
+'Key merge method': '键合并方法'
+'Merge column key names': '合并列键名'
+'Merge column keys using an indexed name': '使用索引名称合并列键'
+'Merge column keys using a regular expression': '使用正则表达式合并列键'
+'Column keys that need to be merged': '需要合并的列键'
+'Column key name': '列键名'
+'Regex to match keys with and merge': '用于匹配并合并键的正则表达式'
+'Indexed key to search for and merge': '要搜索并合并的索引键'
+'Nested keys are not supported': '不支持嵌套键'
+'Wildcards: {wildcards}': '通配符：{wildcards}'
+'Index starts with': '索引以...开头'
+'Method to merge values from multiple columns': '合并多个列的值的方法'
+'Each column value will be appended': '每个列值将被追加'
+'Latter column values merge into the former': '后面的列值合并到前面的列值中'
+'Latter column values replaces the former': '后面的列值替换前面的列值'
+'Latter column values insert into the former': '后面的列值插入到前面的列值中'
+Separator: 分隔符
+Comma: 逗号
+Semicolon: 分号
+Space: 空格
+Tab: 制表符
+'New line': '换行'
+'Value template': '值模板'
+'The template for each separate value to be merged': '每个要合并的单独值的模板'
+'Remove original column key(s)?': '移除原始列键？'
+'Only keep unique values?': '只保留唯一值？'
+'By default all values are kept.': '默认情况下保留所有值。'
+'Preserve column keys?': '保留列键？'
+'Keep empty values?': '保留空值？'
+'By default all empty column values will not be merged.': '默认情况下，所有空的列值都不会被合并。'
+'No key configured': '未配置键'
+'No columns defined': '未定义列'
+'No key method selected': '未选择键方法'
+'Cannot merge scalar value.': '无法合并标量值。'
+'Find and replace': '查找和替换'
+'The data column name for the values that need to be replaced': '需要替换的值的数据列名'
+'In case the value is a list of values this task will iterate the replacements for all': '如果值是值列表，此任务将遍历所有值的替换'
+'Replace values': '替换值'
+'Replace keys': '替换键'
+'Replace keys and values': '替换键和值'
+'Replace recursively?': '递归替换？'
+Find: 查找
+'Find value not set': '未设置查找值'
+'Cannot replace scalar data': '无法替换标量数据'
+'Retrieve your data from your specific connection': '从您的特定连接检索数据'
+'The data column name to pass to the webservice': '要传递给 Webservice 的数据列名'
+Connection: 连接
+'Response data': '响应数据'
+'No connection configured': '未配置连接'
+'Data not found: {key}': '未找到数据：{key}'
+Send: 发送
+'Send your data to your specific connection': '将您的数据发送到您的特定连接'
+'Retrieve response data': '检索响应数据'
+Set: 设置
+'Set your own values': '设置您自己的值'
+'The data column key name for the values that needs to be set': '需要设置的值的数据库列键名'
+'Reorder data?': '重新排序数据？'
+'This will append all configured columns at the end of the current data.': '这会将所有配置的列追加到当前数据的末尾。'
+'Force if invalid?': '无效时强制？'
+'When existing data is scalar, create new data collection from values set in this task.': '当现有数据是标量时，根据此任务中设置的值创建新的数据集合。'
+'You can still reference the original value through the {placeholder} tag.': '您仍然可以通过 {placeholder} Tag 引用原始值。'
+'Set method': '设置方法'
+'Set column values': '设置列值'
+'Set schema': '设置模式'
+'Set both': '两者都设置'
+'Remove columns not defined in schema?': '移除模式中未定义的列？'
+'Column key/name': '列键/名称'
+'-- Unchanged --': '-- 不变 --'
+'Use {wildcard} to insert the current value.': '使用 {wildcard} 插入当前值。'
+Unset: 取消设置
+'Data is not iterable': '数据不可迭代'
+'No set params configured': '未配置设置参数'
+Sort: 排序
+'Sort your data': '对数据进行排序'
+'The data column key name for the values that needs to be sorted': '需要排序的值的数据库列键名'
+'Sort by key / column name': '按键 / 列名排序'
+'Sort by value': '按值排序'
+'Sort by column value': '按列值排序'
+'Sort by': '排序依据'
+'Set column name/key to sort by value': '设置用于按值排序的列名/键'
+Ascending: 升序
+Descending: 降序
+'Ascending natural order': '升序自然顺序'
+'Descending natural order': '降序自然顺序'
+'No sort method configured': '未配置排序方法'
+'Invalid sort order: {order}': '无效的排序顺序：{order}'
+'No sort column configured': '未配置排序列'
+Split: 拆分
+'Split value and/or split column key into multiple': '将值和/或列键拆分为多个'
+'The data column name to split': '要拆分的数据列名'
+'Split value': '拆分值'
+'Split into column keys': '拆分为列键'
+'Split value and split into column keys': '拆分值并拆分为列键'
+'Column key split method': '列键拆分方法'
+'Split into column keys by providing custom names': '通过提供自定义名称拆分为列键'
+'Split into column keys using an indexed name': '使用索引名称拆分为列键'
+'Column key names': '列键名'
+'Current value index/key (optional)': '当前值索引/键（可选）'
+'New column key name': '新列键名'
+'Indexed key': '索引键'
+'The template for the new indexed keys.': '新索引键的模板。'
+'Remove original key(s)?': '移除原始键？'
+'Regular expression (Regex)': '正则表达式（Regex）'
+'Regular expression': '正则表达式'
+'Regex must be made for splitting values, not matching.': '正则表达式必须用于拆分值，而不是匹配。'
+'Split value column definition': '拆分值列定义'
+'No action configured': '未配置操作'
+'Loop key not supported': '不支持循环键'
+'Value is not splittable into list': '值无法拆分为列表'
+'Column `{type}` does not exist': '列 `{type}` 不存在'
+'Value is not splittable into keys': '值无法拆分为键'
+'No columns configured': '未配置列'
+Store: 存储
+'Get or set a storage': '获取或设置存储'
+'Set storage': '设置存储'
+'Get storage': '获取存储'
+'Storage column key/path': '存储列键/路径'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': '设置此值的存储路径或留空。使用点（.）在存储中导航。'
+'No storage selected': '未选择存储'
+'Storage not found': '未找到存储'
+'Raw storage cannot contain paths': '原始存储不能包含路径'
+'This is a raw storage, please select a different storage or change the storage type': '这是原始存储，请选择其他存储或更改存储类型'
+Template: 模板
+'Create your own modifier template with Twig': '使用 Twig 创建您自己的修饰模板'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': '输出 Tag {example_var} 会在 Twig 模板引擎之前作为 Tag 解析。只有执行语句 {example_func} 会在 Twig 中解析。'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': '`data` 的值用于任务输出。可用变量：`data`、`config`、`cache`、`variables` 和 `context`。'
+'Add your code here': '在此处添加您的代码'
+'No template set': '未设置模板'
+Trace: 追踪
+'Trace current status with a log or error.': '使用日志或错误追踪当前状态。'
+'Trace type': '追踪类型'
+'Creating an error will result in the trace reporting as failed.': '创建错误将导致追踪报告为失败。'
+'Log message': '日志消息'
+'Error message': '错误消息'
+Message: 消息
+'Extra info': '附加信息'
+'Include data?': '包含数据？'
+'Message not configured': '未配置消息'
+'Trigger something independently from the current flow': '独立于当前流程触发某些操作'
+'Run async?': '异步运行？'
+Experimental: 实验性
+'If the automation is using batches then this trigger will always run async.': '如果自动化使用批次，则此触发将始终异步运行。'
+'Pass current data?': '传递当前数据？'
+'Override current data?': '覆盖当前数据？'
+'Leave empty to pass root data': '留空以传递根数据'
+'Define static variables to be used for this trigger. Existing variables will also be included.': '定义用于此触发的静态变量。现有变量也会被包含。'
+Automation: 自动化
+Wait: 等待
+'Wait for time to pass': '等待时间过去'
+'Seconds to wait': '等待秒数'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': '连接到 FTP 服务器以上传和/或下载文件'
+'{type} extension is not available': '{type} 扩展不可用'
+Host: 主机
+Port: 端口
+Username: 用户名
+Password: 密码
+'Passive mode': '被动模式'
+'Connect using SSL': '使用 SSL 连接'
+'Process timeout in seconds': '进程超时（秒）'
+'Cannot connect to {host}': '无法连接到 {host}'
+'Cannot login to {host}': '无法登录到 {host}'
+'Successfully connected to {host}': '已成功连接到 {host}'
+'Could not connect to {host}': '无法连接到 {host}'
+'HTTP No auth': 'HTTP 无认证'
+'Connect without authorization': '无需授权即可连接'
+'Allow HTTP': '允许 HTTP'
+'Allow unsafe HTTP connection without SSL encryption': '允许没有 SSL 加密的不安全 HTTP 连接'
+Endpoint: Endpoint
+'Send current data': '发送当前数据'
+'Select data transport location': '选择数据传输位置'
+'Request {type}': '请求 {type}'
+'HTTP Basic Auth': 'HTTP 基本认证'
+'Connect with basic authorization': '使用基本授权连接'
+'Username / key': '用户名 / 键'
+'Password / Secret': '密码 / Secret'
+'HTTP Bearer token': 'HTTP Bearer 令牌'
+'Connect with Bearer Token authorization': '使用 Bearer 令牌授权连接'
+Token: 令牌
+'HTTP Authorization server': 'HTTP 授权服务器'
+'Connect to a HTTP server using an authorization server': '使用授权服务器连接到 HTTP 服务器'
+Body: 正文
+Header: 头部
+'Redirect url': '重定向 URL'
+'Local File system': '本地文件系统'
+'Use the local filesystem defined by your environment': '使用您的环境定义的本地文件系统'
+'Root path': '根路径'
+'Relative path?': '相对路径？'
+'Makes the root path relative to the SyncEngine installation': '使根路径相对于 SyncEngine 安装目录'
+'Successfully accessed {root}': '已成功访问 {root}'
+'Could not access {root}': '无法访问 {root}'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': '连接到 SFTP 服务器以上传和/或下载文件'
+'Authentication type': '身份验证类型'
+'Private key': '私钥'
+'Username and password': '用户名和密码'
+'Private key password': '私钥密码'
+'If your private key is password protected, you can fill in that password here': '如果您的私钥受密码保护，您可以在此处填写该密码'
+'Cannot login to {host}: {error}': '无法登录到 {host}：{error}'
+'Could not rename': '无法重命名'
+SOAP: SOAP
+'Connect using SOAP': '使用 SOAP 连接'
+'HTTP Authentication': 'HTTP 身份验证'
+'Basic authentication': '基本身份验证'
+'SOAP multistep server': 'SOAP 多步骤服务器'
+'Connect to a SOAP server using multistep setup': '使用多步骤设置连接到 SOAP 服务器'
+'SOAP extension is not available': 'SOAP 扩展不可用'
+Url: URL
+'The URL for this authentication step': '此身份验证步骤的 URL'
+SQL: SQL
+'Connect to a SQL server': '连接到 SQL 服务器'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': '没有可用的数据库扩展，请安装以下之一：{options}'
+'Select database driver': '选择数据库驱动程序'
+Database: 数据库
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB：3306 | PostgreSQL：5431-5432 | SQL Server：1433-1434'
+Query: 查询
+'Fetch method': '获取方法'
+'Associated array': '关联数组'
+'Key => Value pairs': '键 => 值对'
+'Key column': '键列'
+'Choose the key you want to use as the row key': '选择要用作行键的键'
+Path: 路径
+'Select what you want to retrieve': '选择要检索的内容'
+'File contents': '文件内容'
+'List directories and filenames': '列出目录和文件名'
+'List filenames': '列出文件名'
+'List directories': '列出目录'
+Filename: 文件名
+'Select what action you want to send': '选择要发送的操作'
+'Upload file contents': '上传文件内容'
+'Delete file': '删除文件'
+'Create directory': '创建目录'
+'Delete directory': '删除目录'
+'Rename or move a file or directory': '重命名或移动文件或目录'
+'Overwrite if file exists': '文件存在时覆盖'
+'Directory name': '目录名'
+'Old name': '旧名称'
+'New name': '新名称'
+'Overwrite if new name exists': '新名称存在时覆盖'
+'No Filename configured': '未配置文件名'
+'Cannot fetch file from {host}, please try passive mode': '无法从 {host} 获取文件，请尝试被动模式'
+'Cannot fetch file from {host}': '无法从 {host} 获取文件'
+'Successfully retrieved: {name}': '已成功检索：{name}'
+'File {oldName} existed, renamed it to {newName}': '文件 {oldName} 已存在，已将其重命名为 {newName}'
+'Could not be write file: {name}': '无法写入文件：{name}'
+'Successfully uploaded: {name}': '已成功上传：{name}'
+'Could not delete file {name}': '无法删除文件 {name}'
+'Successfully deleted file: {name}': '已成功删除文件：{name}'
+'Cannot read directory from {host}': '无法从 {host} 读取目录'
+'No directory configured': '未配置目录'
+'Could not create directory: {path}': '无法创建目录：{path}'
+'Successfully created directory: {path}': '已成功创建目录：{path}'
+'Could not delete directory: {path}': '无法删除目录：{path}'
+'Successfully deleted: {path}': '已成功删除：{path}'
+'Invalid rename configuration': '无效的重命名配置'
+'Could not rename: {old} to {new}': '无法将 {old} 重命名为 {new}'
+'Successfully renamed: {old} to {new}': '已成功将 {old} 重命名为 {new}'
+'Invalid resource': '无效的资源'
+'Request method': '请求方法'
+'Request timeout': '请求超时'
+'Request query': '请求查询'
+'Request header': '请求头部'
+'Request body': '请求正文'
+'SOAP version': 'SOAP 版本'
+'Default (PHP default)': '默认（PHP 默认）'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP 协议版本。留空使用 PHP 默认值。'
+Compression: 压缩
+'Compress SOAP requests and accept compressed responses.': '压缩 SOAP 请求并接受压缩的响应。'
+'Connection timeout': '连接超时'
+'Maximum time in seconds for the connection to be established.': '建立连接的最大时间（秒）。'
+'WSDL mode': 'WSDL 模式'
+'Will this connection use WSDL file format?': '此连接是否使用 WSDL 文件格式？'
+'WSDL file url': 'WSDL 文件 URL'
+'Link to WSDL format that will be filled in for this soap connection': '为此 SOAP 连接填写的 WSDL 格式链接'
+'WSDL cache': 'WSDL 缓存'
+'No cache': '无缓存'
+'Memory cache': '内存缓存'
+'Disk/File cache': '磁盘/文件缓存'
+Both: 两者
+'WSDL cache warning': 'WSDL 缓存警告'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': '已启用基于文件的 WSDL 缓存。由于服务器上的共享访问，这可能会导致 WSDL 文件过时和安全问题。'
+'SOAP service namespace': 'SOAP 服务命名空间'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'SOAP 服务的目标命名空间。在 WSDL 模式禁用时必填。'
+'SOAPAction header': 'SOAPAction 头部'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': '可选的 SOAPAction HTTP 头部值。某些 SOAP 服务器需要。'
+Advanced: 高级
+'Override options for the SOAP connection.': '覆盖 SOAP 连接的选项。'
+'SOAP headers': 'SOAP 头部'
+'SOAP operation name': 'SOAP 操作名称'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': '要调用的 SOAP 操作名称。WSDL 和非 WSDL 模式都需要。'
+'Use data transport as body?': '使用数据传输作为正文？'
+'SOAP body': 'SOAP 正文'
+'Define static variables to be used within the authorization process.': '定义要在授权过程中使用的静态变量。'
+'Authorized request base config': '授权请求基础配置'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': '定义基础请求配置。这将用于为使用此连接的任何请求设置默认参数。'
+'Override host': '覆盖主机'
+'Authorization process steps': '授权过程步骤'
+'Define each step for the authorization process.': '定义授权过程的每个步骤。'
+'The param name where the authentication parameters are located': '身份验证参数所在的参数名称'
+'Tag name': 'Tag 名称'
+'Choose the tag name in which the response param value is stored': '选择存储响应参数值的 Tag 名称'
+'Example: token': '示例：token'
+Expiration: 过期
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': '为 Tag 值设置过期计时器，以便在此过期时间范围内重新进行身份验证'
+'Supported formats:': '支持的格式：'
+'Timestamp or date': '时间戳或日期'
+'Time format: ({time_format})': '时间格式：（{time_format}）'
+'Text format: ({time_string})': '文本格式：（{time_string}）'
+'Response type': '响应类型'
+'The type of response the URL will return': 'URL 将返回的响应类型'
+'Tag storage': 'Tag 存储'
+'Define the tags you need to store for authentication': '定义身份验证需要存储的 Tag'
+'Run next step (default)': '运行下一步（默认）'
+'Skip next step': '跳过下一步'
+'Stop loop': '停止循环'
+'Run previous step (default)': '运行上一步（默认）'
+'Restart loop from beginning': '从头重新开始循环'
+'Cannot authenticate on step #{step} from connection #{connectionID}': '无法在连接 #{connectionID} 的步骤 #{step} 上进行身份验证'
+'Invalid tag name': '无效的 Tag 名称'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Tag {tag} 的服务器响应无效或为空 | 未找到参数：{param}'
+'Invalid or empty server response for tag:{tag}': 'Tag {tag} 的服务器响应无效或为空'
+'Are you sure you want to disable two-factor authentication?': '您确定要禁用双重身份验证吗？'
+'You will need to re-enable 2FA after verifying your password': '验证密码后，您需要重新启用 2FA'
+'Enter your password to confirm': '输入您的密码以确认'
+'Check your email': '查看您的电子邮件'
+'We sent a 6-digit verification code to your email address': '我们已向您的电子邮件地址发送了 6 位验证码'
+'Enter the code from your email': '输入您电子邮件中的验证码'
+'Resend Code': '重新发送验证码'
+Verify: 验证
+'Choose how you want to receive verification codes': '选择您希望如何接收验证码'
+'Authenticator App (Recommended)': '身份验证器应用（推荐）'
+'Scan the QR code with your TOTP app': '使用您的 TOTP 应用扫描二维码'
+'Or enter this secret manually:': '或手动输入此 Secret：'
+'Email Verification': '电子邮件验证'
+'We will send a 6-digit code to your email address': '我们将向您的电子邮件地址发送 6 位验证码'
+'Send Code to Email': '将验证码发送到电子邮件'
+'Create new': '新建'
+Description: 描述
+Expires: 过期时间
+'No API tokens created': '尚未创建 API 令牌'
+URL: URL
+Uses: 使用次数
+'You are about to reset this process, are you sure?': '您即将重置此进程，确定吗？'
+Reset: 重置
+'Reset automation': '重置自动化'
+'Quick Edit': '快速编辑'
+Hide: 隐藏
+Show: 显示
+Export: 导出
+Trash: 删除
+Restore: 还原
+'Delete Permanently': '永久删除'
+Issue: 问题
+Connected: 已连接
+'Used in': '用于'
+'Last runs': '最近运行'
+'Scheduled runs': '计划运行'
+Steps: 步骤
+'Message Queue': '消息队列'
+'Scheduled At': '计划时间'
+'Created At': '创建时间'
+View: 查看
+'Scheduled run': '计划运行'
+Delete: 删除
+'Delete run': '删除运行'
+'Are you sure you want to delete this message?': '您确定要删除此消息吗？'
+'Disabled modules.': '已禁用的模块。'
+Module: 模块
+Requires: 需要
+Reason: 原因
+Uninstall: 卸载
+'Are you sure?': '您确定吗？'
+'This will uninstall module {moduleName} from {vendor}': '这将从 {vendor} 卸载模块 {moduleName}'
+'Upload a newer module version to replace an incompatible module.': '上传较新的模块版本以替换不兼容的模块。'
+Version: 版本
+Author: 作者
+Manage: 管理
+Reinstall: 重新安装
+Config: 配置
+Task: 任务
+Traces: 追踪
+'You are about to kill this process, are you sure?': '您即将终止此进程，确定吗？'
+Kill: 终止
+'New user': '新建用户'
+'Edit user': '编辑用户'
+Roles: 角色
+'Reset password': '重置密码'
+'Reset password?': '重置密码？'
+'A password reset email will be sent to {email}. The user can then set their own password.': '密码重置电子邮件将发送到 {email}。然后用户可以设置自己的密码。'
+'This will delete user {email}': '这将删除用户 {email}'
+Visibility: 可见性
+All: 全部
+Dashboard: 仪表盘
+'Verify Login': '验证登录'
+Login: 登录
+'Forgot password?': '忘记密码？'
+'Password Reset Email Sent': '密码重置电子邮件已发送'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': '如果存在与您的电子邮件匹配的账户，则刚刚发送了一封包含可用于重置密码的链接的电子邮件。'
+'This link will expire in %expiration%': '此链接将在 %expiration% 后过期'
+"If you don't receive an email please check your spam folder": '如果您没有收到电子邮件，请检查您的垃圾邮件文件夹'
+'Back to login': '返回登录'
+'Try again': '重试'
+'Reset your password': '重置您的密码'
+'Enter your email address and we will send you a link to reset your password.': '输入您的电子邮件地址，我们将向您发送用于重置密码的链接。'
+'Page not found': '页面未找到'
+'Oops! An Error Occurred': '哎呀！发生错误'
+Back: 返回
+'Authenticator App': '身份验证器应用'
+'Fill in the code from your authenticator app': '填写身份验证器应用中的验证码'
+'Fill in the code send to your email': '填写发送到您电子邮件的验证码'
+'There was a problem validating your password reset request': '验证您的密码重置请求时出现问题'
+'There is already an automation with this ref, please enter a different ref': '已存在使用此 ref 的自动化，请输入不同的 ref'
+'There is already an automation with this name, please enter a different name': '已存在使用此名称的自动化，请输入不同的名称'
+'There is already an automation with this endpoint, please enter a different name': '已存在使用此 endpoint 的自动化，请输入不同的名称'
+'There is already an account with this email': '已存在使用此电子邮件的账户'
+'Your password should be at least { limit } characters': '您的密码应至少包含 { limit } 个字符'
+'Please enter a password': '请输入密码'
+'You should agree to our license terms.': '您应同意我们的许可条款。'
+'Please enter your email': '请输入您的电子邮件'
+choose_provider: choose_provider
+auth_code: auth_code
+trusted: trusted
+'Has conditions': '有条件'
+'Not configured': '未配置'
+'No tasks configured': '未配置任务'
+Authorization: 授权
+Delimiter: 分隔符
+'Sets the field delimiter separating values (one character only)': '设置分隔值的字段分隔符（仅一个字符）'
+Enclosure: 封闭符
+'Sets the field enclosure (one character only)': '设置字段封闭符（仅一个字符）'
+'Escape character': '转义字符'
+'Sets the escape character (at most one character)': '设置转义字符（最多一个字符）'
+'End of line': '行尾'
+'Sets the character(s) used to mark the end of each line in the CSV file': '设置用于标记 CSV 文件中每行结尾的字符'
+'Headers columns': '表头列'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': '设置表头和数据列的顺序，例如：如果 {val1} 和 {val2}，则 {func} 返回 {result}'
+'Key separator': '键分隔符'
+"Sets the separator for array's keys during its flattening": '设置在展平过程中用于数组键的分隔符'
+'Escape formula': '转义公式'
+'Escapes fields containing formulas by prepending them with a `\t` character': '通过在包含公式的字段前添加 `\t` 字符来转义这些字段'
+'No headers': '无表头'
+'Disables header in the encoded CSV': '在编码的 CSV 中禁用表头'
+'As collection': '作为集合'
+'Always returns results as a collection, even if only one line is decoded.': '始终将结果作为集合返回，即使只解码一行。'
+'Output UTF8 Bom key': '输出 UTF8 BOM 键'
+File: 文件
+'Handle binary file data (raw bytes)': '处理二进制文件数据（原始字节）'
+Extension: 扩展名
+'Mime type': 'MIME 类型'
+'Sets the XML version attribute': '设置 XML 版本属性'
+Encoding: 编码
+'Sets the XML encoding attribute': '设置 XML 编码属性'
+'Root node': '根节点'
+'Sets the root node name': '设置根节点名称'
+'Format output': '格式化输出'
+'If set to true, formats the generated XML with line breaks and indentation': '如果设置为 true，则使用换行和缩进格式化生成的 XML'
+Standalone: 独立
+'Adds standalone attribute in the generated XML': '在生成的 XML 中添加 standalone 属性'
+'Always returns results as a collection, even if only one line is decoded': '始终将结果作为集合返回，即使只解码一行'
+'Remove empty tags': '移除空 Tag'
+'Remove all empty tags in the generated XML': '移除生成的 XML 中的所有空 Tag'
+'Type-cast attributes': '类型转换属性'
+'This provides the ability to forget the attribute type casting': '这提供了忽略属性类型转换的能力'
+'Inline dump': '内联转储'
+Indentation: 缩进
+'Number of spaces': '空格数'
+Documentation: 文档
+'Leave empty to keep current password.': '留空以保留当前密码。'
+'New Password': '新密码'
+Scopes: 作用域
+'Scopes define what this API token can access. Each scope grants a specific permission.': '作用域定义此 API 令牌可以访问的内容。每个作用域授予特定权限。'
+Restrictions: 限制
+"Restrictions limit an API key's usage and improves security": '限制可限制 API 密钥的使用并提高安全性'
+'Restrict by IP addresses': '按 IP 地址限制'
+'Restrict by host domains': '按主机域名限制'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin" 头部可以被伪造，因此这更多是一种便利性检查，而不是安全措施。'
+'New password': '新密码'
+'Repeat Password': '重复密码'
+'The password fields must match.': '密码字段必须匹配。'
+Debug: 调试
+'Change your app secret. Will autogenerate if empty.': '更改您的应用 Secret。留空将自动生成。'
+Secret: Secret
+Mailer: 邮件程序
+'Email sender': '电子邮件发件人'
+'Send email logs to': '将电子邮件日志发送到'
+'Restrict everything by IP': '按 IP 限制所有内容'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': '多个 IP 地址用逗号分隔，包含管理员 IP 地址。'
+'Worker limit': '工作进程限制'
+'Max workers allowed running at the same time.': '允许同时运行的最大工作进程数。'
+'Worker Queue limit': '工作进程队列限制'
+'Max queued items a single worker will handle.': '单个工作进程将处理的最大排队项目数。'
+'Worker Time limit': '工作进程时间限制'
+'Max seconds a single worker will run.': '单个工作进程运行的最大秒数。'
+'Worker Memory limit': '工作进程内存限制'
+'Max memory (MB) a single worker is allowed to use.': '单个工作进程允许使用的最大内存（MB）。'
+'I accept the license terms and conditions': '我接受许可条款和条件'
+'Not required': '非必需'
+Inactive: 非活动
+Active: 活动
+Support: 支持
+'e.g. {examples}': '例如：{examples}'
+'e.g. {examples}, etc.': '例如：{examples} 等。'
+'Full Access (*)': '完全访问（*）'
+Production: 生产
+Development: 开发
+Admin: 管理员
+Editor: 编辑者
+Viewer: 查看者
+'Generic / Other': '通用 / 其他'
+Entities: 实体
+Raw: 原始
+'QR Code': '二维码'
+More...: 更多...
+'Log out': '退出登录'
+'To reset your password, please visit the following link': '要重置您的密码，请访问以下链接'
+'This link will expire in {expiration}.': '此链接将在 {expiration} 后过期。'
+Cheers!: 谢谢！
+'Send password reset email': '发送密码重置电子邮件'
+Home: 首页
+"The requested page couldn't be located.": '无法找到请求的页面。'
+'Checkout for any URL misspelling or return to the homepage': '检查 URL 是否有拼写错误，或返回首页'
+Return: 返回
+'The server returned a "{status_code} {status_text}".': '服务器返回了 "{status_code} {status_text}"。'
+'Something is broken. Please let us know what you were doing when this error occurred.': '出现了一些问题。请告诉我们发生此错误时您在做什么。'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': '我们将尽快修复。对造成的不便深表歉意。'
+'You have unsaved changes! If you leave this page, your changes will be lost.': '您有未保存的更改！如果离开此页面，您的更改将丢失。'

@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: '欢迎使用 SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine 是一个模块化的自动化和数据同步引擎。它让您能够在系统之间构建可靠、透明的集成。
+
+  这个快速导览将带您了解界面的关键部分。
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: '导航菜单'
+onboarding.dashboard.menu.body: |
+  侧边栏是您的主要导航。
+
+  您可以折叠菜单以专注于内容。
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: '连接'
+onboarding.dashboard.connections.body: |
+  连接是 SyncEngine 与外部系统之间的桥梁。它们处理身份验证、凭据和安全的数据传输。
+
+  支持的类型包括 HTTP（支持多种认证方式）、SFTP/FTP、SQL 数据库、SOAP 服务和本地文件系统。每个连接都可以在多个自动化中重复使用。
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: '自动化'
+onboarding.dashboard.automations.body: |
+  自动化是编排工作流的顶层容器。每个自动化可以包含多个流程，并定义它们的触发方式：手动、按计划或由事件触发。
+
+  自动化提供执行历史（追踪），因此您可以检查每次运行、查看处理了哪些数据，并调试任何问题。
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: '流程'
+onboarding.dashboard.flows.body: |
+  流程定义自动化内的执行顺序。每个流程包含一系列步骤，每个步骤触发一个例程。
+
+  数据从一个例程流向下一个例程，每个例程执行特定功能，例如检索数据、转换数据以及将数据发送到另一个系统。流程默认按顺序执行。
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: '例程'
+onboarding.dashboard.routines.body: |
+  例程是可重复使用的操作（任务）序列，用于执行特定功能。
+
+  每个例程都可重复使用、模块化，并且可以被一个或多个流程调用，为您提供极大的灵活性和效率。
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: '存储'
+onboarding.dashboard.storages.body: |
+  SyncEngine 中的存储是安全、持久的容器，用于保存可在自动化之间访问的结构化数据。
+  它们充当您的长期记忆，允许流程和例程在运行之间保存和检索信息。
+
+  存储非常适合保存可重复使用或共享的数据、配置值以及您以后想要访问的结果，而无需依赖外部数据库或 API。
+
+# Account step (popover)
+onboarding.dashboard.account.title: '账户'
+onboarding.dashboard.account.body: |
+  账户部分提供对您的用户资料、设置和访问令牌的访问。
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: '模块'
+onboarding.dashboard.modules.body: |
+  模块是可自定义的扩展，为 SyncEngine 添加新功能。它们可用于与第三方服务集成、扩展 Core 功能或创建自定义集成。
+
+onboarding.dashboard.system.title: '系统仪表盘'
+onboarding.dashboard.system.body: |
+  系统仪表盘让您快速访问：
+
+  • 配置 SyncEngine 设置
+  • 在 Vault 中管理 Secret 和敏感值
+  • 监控后台工作进程
+  • 查看系统信息
+  • 等等
+
+  使用这些工具来管理您的 SyncEngine 安装。
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: '运行时历史'
+onboarding.dashboard.runtime_history.body: |
+  运行时历史提供所有自动化执行的详细日志，让您能够跟踪性能、调试问题并分析数据流。
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: "您已准备就绪！"
+onboarding.dashboard.summary.body: |
+  您现在了解了 SyncEngine 的核心概念：
+
+  • 连接桥接您的系统
+  • 自动化编排工作流
+  • 流程定义执行顺序
+  • 例程是可重复使用的操作序列
+  • 任务是单个操作
+  • 存储保存持久数据
+  • 模块添加新功能
+
+  首先创建一个连接，然后使用例程和任务构建您的第一个流程。
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: '还需要帮助吗？'
+onboarding.dashboard.help.body: |
+  您可以随时通过单击工具栏中的问号图标（如果可用）来触发导览。每当您想了解更多界面信息或重新查看任何概念时，都可以将其用作快速参考。
+
+  需要支持？请访问 docs.syncengine.io 或在 syncengine.io/support 创建工单。
