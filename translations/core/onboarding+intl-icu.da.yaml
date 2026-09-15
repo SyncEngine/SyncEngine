@@ -1,86 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
 onboarding.dashboard.welcome.title: 'Velkommen til SyncEngine'
 onboarding.dashboard.welcome.body: |
-  SyncEngine er en modulær automatiserings- og datasynkroniseringsmotor. Den lar deg bygge pålitelige, transparente integrasjoner mellom systemer.
+  SyncEngine er en modulær automatiserings- og datasynkroniseringsmotor. Med den kan du bygge pålidelige, transparente integrationer mellem systemer.
 
-  Denne hurtige turen vil guide deg gjennom de viktigste delene av grensesnittet.
+  Denne hurtige rundvisning fører dig gennem de vigtigste dele af grænsefladen.
 
-onboarding.dashboard.menu.title: 'Navigasjonsmeny'
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: 'Navigationsmenu'
 onboarding.dashboard.menu.body: |
-  Sidefeltet er din hovednavigasjon.
+  Sidepanelet er din primære navigation.
 
-  Du kan skjemme menyen for å fokusere på innholdet ditt.
+  Du kan skjule menuen for at fokusere på dit indhold.
 
-onboarding.dashboard.connections.title: 'Tilkoblinger'
+# Connections step (popover)
+onboarding.dashboard.connections.title: 'Forbindelser'
 onboarding.dashboard.connections.body: |
-  Tilkoblinger er broene mellom SyncEngine og eksterne systemer. De håndterer autentisering, legitimasjon og sikker overføring av data.
+  Forbindelser er broerne mellem SyncEngine og dine eksterne systemer. De håndterer godkendelse, legitimationsoplysninger og sikker dataoverførsel.
 
-  Støttede typer inkluderer HTTP (med ulike autentiseringsmetoder), SFTP/FTP, SQL-databaser, SOAP-tjenester og det lokale filsystemet. Hver tilkobling kan gjenbrukes på tvers av flere automatiseringer.
+  Understøttede typer omfatter HTTP (med forskellige godkendelsesmetoder), SFTP/FTP, SQL-databaser, SOAP-tjenester og det lokale filsystem. Hver forbindelse kan genbruges på tværs af flere automatiseringer.
 
+# Automations step (popover)
 onboarding.dashboard.automations.title: 'Automatiseringer'
 onboarding.dashboard.automations.body: |
-  Automatiseringer er øverste nivå-konteinere som orchestrerer arbeidsflytene dine. Hver automatisering kan inneholde flere flyter og definere hvordan de utløses: manuelt, etter et tidsskjema eller ved hendelser.
+  Automatiseringer er de øverste containere, der orkestrerer dine arbejdsgange. Hver automatisering kan indeholde flere flyt og definere, hvordan de udløses: manuelt, efter en tidsplan eller via hændelser.
 
-  Automatiseringer gir kjøringshistorikk (traces) slik at du kan inspisere hver kjøring, se hvilke data som ble behandlet og feilsøke eventuelle problemer.
+  Automatiseringer giver udførelseshistorik (forløb), så du kan inspicere hver kørsel, se, hvilke data der blev behandlet, og fejlsøge eventuelle problemer.
 
-onboarding.dashboard.flows.title: 'Flyter'
+# Flows step (popover)
+onboarding.dashboard.flows.title: 'Flyt'
 onboarding.dashboard.flows.body: |
-  Flyter definerer sekvensen av utførelse innenfor en automatisering. Hver flyt inneholder en serie med steg, der hvert steg utløser en Routine.
+  Flyt definerer eksekveringssekvensen i en automatisering. Hvert flyt indeholder en serie trin, hvor hvert trin udløser en rutine.
 
-  Data flyter fra én Routine til neste, der hver Routine utfører en spesifikk funksjon, som å hente data, transformere dem og sende dem til et annet system. Flyter utføres i sekvens som standard.
+  Data flyder fra én rutine til den næste, hvor hver rutine udfører en bestemt funktion, f.eks. at hente data, transformere dem og sende dem til et andet system. Flyt eksekveres som standard i sekvens.
 
-onboarding.dashboard.routines.title: 'Routines'
+# Routines step (popover)
+onboarding.dashboard.routines.title: 'Rutiner'
 onboarding.dashboard.routines.body: |
-  Routines er gjenbrukbare sekvenser av handlinger (Oppgaver) som utfører en spesifikk funksjon.
+  Rutiner er genanvendelige sekvenser af handlinger (opgaver), der udfører en bestemt funktion.
 
-  Hver Routine er gjenbrukbar, modulær og kan kalles av én eller flere Flyter, noe som gir deg utrolig fleksibilitet og effektivitet.
+  Hver rutine er genanvendelig, modulær og kan kaldes af et eller flere flyt, hvilket giver dig fantastisk fleksibilitet og effektivitet.
 
-onboarding.dashboard.storages.title: 'Lagring'
+# Storages step (popover)
+onboarding.dashboard.storages.title: 'Lagre'
 onboarding.dashboard.storages.body: |
-  Lagringer i SyncEngine er sikre, vedvarende containere brukt til å holde strukturerte data som kan akseseres på tvers av automatiseringene dine.
-  De fungerer som ditt langtidshukommelse, lar flyter og Routines lagre og hente informasjon mellom kjøringene.
+  Lagre i SyncEngine er sikre, persistente containere, der bruges til at opbevare strukturerede data, som kan tilgås på tværs af dine automatiseringer.
+  De fungerer som din langtidshukommelse og giver flyt og rutiner mulighed for at gemme og hente oplysninger mellem kørsler.
 
-  Lagringer er ideelle for å lagre gjenbrukbare eller delte data, konfigurasjonsverdier og resultater du vil aksesere senere, uten å stole på eksterne databaser eller API-er.
+  Lagre er ideelle til at gemme genanvendelige eller delte data, konfigurationsværdier og resultater, du ønsker at tilgå senere, uden at skulle stole på eksterne databaser eller API'er.
 
+# Account step (popover)
 onboarding.dashboard.account.title: 'Konto'
 onboarding.dashboard.account.body: |
-  Konto-seksjonen gir tilgang til din brukerprofil, innstillinger og tilgangstokener.
+  Kontosektionen giver adgang til din brugerprofil, dine indstillinger og dine adgangstokens.
 
+# Modules step (popover)
 onboarding.dashboard.modules.title: 'Moduler'
 onboarding.dashboard.modules.body: |
-  Moduler er tilpassbare utvidelser som legger til ny funksjonalitet i SyncEngine. De kan brukes til å integrere med tredjepartstjenester, utvide grunnleggende funksjonalitet eller lage tilpassede integrasjoner.
+  Moduler er tilpasselige udvidelser, der tilføjer ny funktionalitet til SyncEngine. De kan bruges til at integrere med tredjepartstjenester, udvide kernens funktionalitet eller oprette brugerdefinerede integrationer.
 
 onboarding.dashboard.system.title: 'Systemdashboard'
 onboarding.dashboard.system.body: |
-  Systemdashboardet gir deg rask tilgang til:
+  Systemdashboardet giver dig hurtig adgang til:
 
-  • Konfigurere SyncEngine-innstillinger
-  • Administrere Secrets og sensitive verdier i Vault
-  • Overvåke bakgrunnsarbeidere
-  • Se systeminformasjon
+  • Konfigurere SyncEngine-indstillinger
+  • Administrere Secrets og følsomme værdier i Vault
+  • Overvåge baggrundsarbejdere
+  • Se systemoplysninger
   • osv.
 
-  Bruk disse verktøyene til å administrere SyncEngine-installasjonen din.
+  Brug disse værktøjer til at administrere din SyncEngine-installation.
 
-onboarding.dashboard.runtime_history.title: 'Kjøringshistorikk'
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: 'Kørselshistorik'
 onboarding.dashboard.runtime_history.body: |
-  Kjøringshistorikk gir en detaljert logg over alle automatiseringskjøringer, noe som lar deg spore ytelse, feilsøke problemer og analysere dataflyter.
+  Kørselshistorik giver en detaljeret log over alle automatiseringseksekveringer, så du kan spore ydeevne, fejlsøge problemer og analysere dataflyt.
 
+# Summary step (modal)
 onboarding.dashboard.summary.title: 'Du er klar!'
 onboarding.dashboard.summary.body: |
-  Du kjenner nå til kjernekonseptene i SyncEngine:
+  Du kender nu kernens koncepter i SyncEngine:
 
-  • Tilkoblinger broer mellom systemene dine
-  • Automatiseringer orchestrerer arbeidsflyter
-  • Flyter definerer utførelsessekvenser
-  • Routines er gjenbrukbare sekvenser av handlinger
-  • Oppgaver er de enkelte handlingene
-  • Lagringer holder vedvarende data
-  • Moduler legger til ny funksjonalitet
+  • Forbindelser kobler dine systemer sammen
+  • Automatiseringer orkestrerer arbejdsgange
+  • Flyt definerer eksekveringssekvenser
+  • Rutiner er genanvendelige sekvenser af handlinger
+  • Opgaver er de enkelte handlinger
+  • Lagre gemmer persistente data
+  • Moduler tilføjer ny funktionalitet
 
-  Begynn med å opprette en Tilkobling, bygg deretter din første Flyt med Routines og Oppgaver.
+  Start med at oprette en forbindelse, og byg derefter dit første flyt med rutiner og opgaver.
 
-onboarding.dashboard.help.title: 'Trenger du igjen hjelp?'
+# Help icon step (popover)
+onboarding.dashboard.help.title: 'Har du brug for hjælp igen?'
 onboarding.dashboard.help.body: |
-  Du kan starte turen når som helst ved å klikke på spørsmålstegn-ikonet i verktøylinjen (hvis tilgjengelig). Bruk det som en rask referanse når du vil lære mer om grensesnittet eller gjenta et konsept.
+  Du kan starte rundvisningen når som helst ved at klikke på spørgsmålstegnsikonet på værktøjslinjen (hvis det er tilgængeligt). Brug det som hurtig reference, når du vil lære mere om grænsefladen eller gense et koncept.
 
-  Trenger du støtte? Besøk docs.syncengine.io eller opprett en sak på syncengine.io/support.
+  Har du brug for support? Besøg docs.syncengine.io, eller opret en sag på syncengine.io/support.
