@@ -85,7 +85,7 @@ final class TranslationExtractCommand extends Command
 			'intl-icu',
 			null,
 			InputOption::VALUE_NONE,
-			'Extract translations into the intl-icu domain',
+			'Extract PHP/Twig and JS translations into the intl-icu domain',
 		)->addOption(
 			'js',
 			null,
@@ -95,7 +95,7 @@ final class TranslationExtractCommand extends Command
 			'js-domain',
 			null,
 			InputOption::VALUE_REQUIRED,
-			'Default domain for JavaScript extraction (default: frontend)',
+			'Default domain for JavaScript extraction (default: frontend; +intl-icu is appended when --intl-icu is used)',
 			'frontend',
 		);
 	}
@@ -103,15 +103,16 @@ final class TranslationExtractCommand extends Command
 	protected function execute(
 		InputInterface $input, OutputInterface $output,
 	): int {
-		$locale = $input->getArgument( 'locale' );
-		$root   = $this->resolveRoot( $input->getArgument( 'root' ) );
+		$locale  = $input->getArgument( 'locale' );
+		$root    = $this->resolveRoot( $input->getArgument( 'root' ) );
 		$intlIcu = $input->getOption( 'intl-icu' );
 
 		$domain = $this->resolveDomain( $root, $intlIcu );
 
 		$translationPath = $root . '/translations';
 
-		$catalogue = new MessageCatalogue( $locale );
+		$coreCatalogue = new MessageCatalogue( $locale );
+		$jsCatalogue   = null;
 
 		$prefix = $input->getOption( 'no-fill' ) ? "\0" : $input->getOption( 'prefix' );
 
@@ -125,7 +126,7 @@ final class TranslationExtractCommand extends Command
 			}
 
 			$this->phpExtractor->setPrefix( $prefix );
-			$this->phpExtractor->extract( $src, $catalogue );
+			$this->phpExtractor->extract( $src, $coreCatalogue );
 		}
 
 		$templates = $root . '/templates';
@@ -138,21 +139,39 @@ final class TranslationExtractCommand extends Command
 			}
 
 			$this->twigExtractor->setPrefix( $prefix );
-			$this->twigExtractor->extract( $templates, $catalogue );
+			$this->twigExtractor->extract( $templates, $coreCatalogue );
 		}
 
 		if ( $input->getOption( 'js' ) ) {
 			$assets = $root . '/assets';
+
 			if ( is_dir( $assets ) ) {
-				$this->jsExtractor->setPrefix( $prefix );
+				// JS extraction always uses its own domain (--js-domain, default
+				// "frontend") and never pollutes the unified PHP/Twig domain. With
+				// --intl-icu the +intl-icu suffix is appended to the JS domain as
+				// well, so PHP/Twig and JS translations both use ICU formatting.
+				$jsCatalogue = new MessageCatalogue( $locale );
+
 				$jsDomain = $input->getOption( 'js-domain' );
-				// Should handle intl-icu?
+
+				if ( $intlIcu && ! str_ends_with( $jsDomain, MessageCatalogue::INTL_DOMAIN_SUFFIX ) ) {
+					$jsDomain .= MessageCatalogue::INTL_DOMAIN_SUFFIX;
+				}
+
+				$this->jsExtractor->setPrefix( $prefix );
 				$this->jsExtractor->setDefaultDomain( $jsDomain );
-				$this->jsExtractor->extract( $assets, $catalogue );
+				$this->jsExtractor->extract( $assets, $jsCatalogue );
 			}
 		}
 
-		$catalogue = $this->moveToDomain( $catalogue, $domain );
+		// PHP/Twig messages always land in the unified target domain, regardless of
+		// the intermediate domains the extractors used.
+		$catalogue = $this->moveToDomain( $coreCatalogue, $domain );
+
+		// JS messages keep their extracted domain(s).
+		if ( null !== $jsCatalogue ) {
+			$this->mergeCatalogue( $catalogue, $jsCatalogue );
+		}
 
 		if ( ! $input->getOption( 'force' ) && is_dir( $translationPath ) ) {
 			$existing = new MessageCatalogue( $locale );
@@ -163,15 +182,17 @@ final class TranslationExtractCommand extends Command
 			);
 
 			if ( $input->getOption( 'clean' ) ) {
-				$catalogue = $this->cleanCatalogue(
-					$existing,
-					$catalogue,
-					$domain,
-				);
+				$catalogue = $this->cleanCatalogue( $existing, $catalogue );
 			} else {
-				$catalogue = ( new MergeOperation(
+				$merged = ( new MergeOperation(
 					$existing, $catalogue,
 				) )->getResult();
+
+				if ( ! $merged instanceof MessageCatalogue ) {
+					throw new \LogicException( 'The translation merge did not return a MessageCatalogue.' );
+				}
+
+				$catalogue = $merged;
 			}
 		}
 
@@ -234,13 +255,44 @@ final class TranslationExtractCommand extends Command
 		return $intlIcu ? basename( $root ) . '+intl-icu' : basename( $root );
 	}
 
+	/**
+	 * Moves every message of the source catalogue into a single target domain.
+	 */
+	/**
+	 * Returns every message of a catalogue keyed by its exact storage domain.
+	 *
+	 * MessageCatalogue::getDomains() strips the "+intl-icu" suffix and
+	 * MessageCatalogue::all() merges ICU messages into the plain domain, so the
+	 * plain facade API would silently move ICU messages back into the plain
+	 * domain. This helper keeps both variants separate.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	private function getDomainMessages( MessageCatalogue $catalogue ): array
+	{
+		$result = [];
+
+		foreach ( $catalogue->getDomains() as $domain ) {
+			$intlDomain   = $domain . MessageCatalogue::INTL_DOMAIN_SUFFIX;
+			$intlMessages = $catalogue->all( $intlDomain );
+
+			$result[ $domain ] = array_diff_key( $catalogue->all( $domain ), $intlMessages );
+
+			if ( $intlMessages ) {
+				$result[ $intlDomain ] = $intlMessages;
+			}
+		}
+
+		return $result;
+	}
+
 	private function moveToDomain(
 		MessageCatalogue $catalogue, string $domain,
 	): MessageCatalogue {
 		$result = new MessageCatalogue( $catalogue->getLocale() );
 
-		foreach ( $catalogue->getDomains() as $sourceDomain ) {
-			foreach ( $catalogue->all( $sourceDomain ) as $id => $message ) {
+		foreach ( $this->getDomainMessages( $catalogue ) as $sourceDomain => $messages ) {
+			foreach ( $messages as $id => $message ) {
 				$result->set( $id, $message, $domain );
 
 				$metadata = $catalogue->getMetadata( $id, $sourceDomain );
@@ -254,22 +306,47 @@ final class TranslationExtractCommand extends Command
 		return $result;
 	}
 
+	/**
+	 * Merges all messages and metadata from the source catalogue into the target,
+	 * keeping their original domains.
+	 */
+	private function mergeCatalogue( MessageCatalogue $target, MessageCatalogue $source ): void
+	{
+		foreach ( $this->getDomainMessages( $source ) as $domain => $messages ) {
+			foreach ( $messages as $id => $message ) {
+				$target->set( $id, $message, $domain );
+
+				$metadata = $source->getMetadata( $id, $domain );
+
+				if ( null !== $metadata ) {
+					$target->setMetadata( $id, $metadata, $domain );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Keeps only the extracted messages (in every extracted domain), preserving the
+	 * existing translation values and metadata.
+	 */
 	private function cleanCatalogue(
-		MessageCatalogue $existing, MessageCatalogue $extracted, string $domain,
+		MessageCatalogue $existing, MessageCatalogue $extracted,
 	): MessageCatalogue {
 		$result = new MessageCatalogue( $extracted->getLocale() );
 
-		foreach ( $extracted->all( $domain ) as $id => $message ) {
-			$result->set(
-				$id,
-				$existing->get( $id, $domain, $message ),
-				$domain,
-			);
+		foreach ( $this->getDomainMessages( $extracted ) as $domain => $messages ) {
+			foreach ( $messages as $id => $message ) {
+				$result->set(
+					$id,
+					$existing->has( $id, $domain ) ? $existing->get( $id, $domain ) : $message,
+					$domain,
+				);
 
-			$metadata = $existing->getMetadata( $id, $domain );
+				$metadata = $existing->getMetadata( $id, $domain );
 
-			if ( null !== $metadata ) {
-				$result->setMetadata( $id, $metadata, $domain );
+				if ( null !== $metadata ) {
+					$result->setMetadata( $id, $metadata, $domain );
+				}
 			}
 		}
 
@@ -281,9 +358,7 @@ final class TranslationExtractCommand extends Command
 	): MessageCatalogue {
 		$result = new MessageCatalogue( $catalogue->getLocale() );
 
-		foreach ( $catalogue->getDomains() as $domain ) {
-			$messages = $catalogue->all( $domain );
-
+		foreach ( $this->getDomainMessages( $catalogue ) as $domain => $messages ) {
 			ksort( $messages );
 
 			foreach ( $messages as $id => $message ) {
