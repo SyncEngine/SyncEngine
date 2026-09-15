@@ -27,6 +27,11 @@ Thank you for contributing to SyncEngine! Your efforts help us build a more reli
 - Improve or add documentation in the [SyncEngine Docs](https://docs.syncengine.io/).
 - Submit PRs to the [docs repository](https://github.com/SyncEngine/SyncEngine-docs).
 
+### 5. **Translations**
+
+- Improve or add new translations and help the project become more accessible to other languages.
+- Open an issue or create a pull request (PR) to suggest changes or add new translations.
+
 ---
 
 ## Coding Standards
