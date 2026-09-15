@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: 'SyncEngine에 오신 것을 환영합니다'
+onboarding.dashboard.welcome.body: |
+  SyncEngine은 모듈식 자동화 및 데이터 동기화 엔진입니다. 시스템 간에 안정적이고 투명한 통합을 구축할 수 있습니다.
+
+  이 빠른 둘러보기는 인터페이스의 주요 부분을 안내합니다.
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: '탐색 메뉴'
+onboarding.dashboard.menu.body: |
+  사이드바가 기본 탐색입니다.
+
+  메뉴를 접어 콘텐츠에 집중할 수 있습니다.
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: '연결'
+onboarding.dashboard.connections.body: |
+  연결은 SyncEngine과 외부 시스템 사이의 다리 역할을 합니다. 인증, 자격 증명, 안전한 데이터 전송을 처리합니다.
+
+  지원되는 유형에는 HTTP(다양한 인증 방법), SFTP/FTP, SQL 데이터베이스, SOAP 서비스, 로컬 파일 시스템이 포함됩니다. 각 연결은 여러 자동화에서 재사용할 수 있습니다.
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: '자동화'
+onboarding.dashboard.automations.body: |
+  자동화는 워크플로를 조율하는 최상위 컨테이너입니다. 각 자동화에는 여러 흐름이 포함될 수 있으며 수동, 일정 또는 이벤트로 트리거되는 방식을 정의할 수 있습니다.
+
+  자동화는 실행 기록(traces)을 제공하므로 모든 실행을 검사하고, 처리된 데이터를 확인하고, 문제를 디버깅할 수 있습니다.
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: '흐름'
+onboarding.dashboard.flows.body: |
+  흐름은 자동화 내에서 실행 순서를 정의합니다. 각 흐름에는 일련의 단계가 포함되며, 각 단계는 절차를 트리거합니다.
+
+  데이터는 한 절차에서 다음 절차로 흐르며, 각 절차는 데이터 검색, 변환, 다른 시스템으로 전송과 같은 특정 기능을 수행합니다. 흐름은 기본적으로 순서대로 실행됩니다.
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: '절차'
+onboarding.dashboard.routines.body: |
+  절차는 특정 기능을 수행하는 작업(Task)의 재사용 가능한 시퀀스입니다.
+
+  각 절차는 재사용 가능하고 모듈식이며 하나 이상의 흐름에서 호출할 수 있어 뛰어난 유연성과 효율성을 제공합니다.
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: '저장소'
+onboarding.dashboard.storages.body: |
+  SyncEngine의 저장소는 자동화 전반에서 액세스할 수 있는 구조화된 데이터를 보관하는 안전하고 영구적인 컨테이너입니다.
+  장기 기억 역할을 하여 흐름과 절차가 실행 간에 정보를 저장하고 검색할 수 있게 합니다.
+
+  저장소는 외부 데이터베이스나 API에 의존하지 않고 나중에 액세스하려는 재사용 가능하거나 공유된 데이터, 구성 값, 결과를 저장하는 데 적합합니다.
+
+# Account step (popover)
+onboarding.dashboard.account.title: '계정'
+onboarding.dashboard.account.body: |
+  계정 섹션에서는 사용자 프로필, 설정, 액세스 토큰에 액세스할 수 있습니다.
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: '모듈'
+onboarding.dashboard.modules.body: |
+  모듈은 SyncEngine에 새로운 기능을 추가하는 사용자 지정 가능한 확장 기능입니다. 타사 서비스와 통합하거나 Core 기능을 확장하거나 사용자 지정 통합을 만드는 데 사용할 수 있습니다.
+
+onboarding.dashboard.system.title: '시스템 대시보드'
+onboarding.dashboard.system.body: |
+  시스템 대시보드에서 다음에 빠르게 액세스할 수 있습니다:
+
+  • SyncEngine 설정 구성
+  • 금고에서 Secret 및 민감한 값 관리
+  • 백그라운드 워커 모니터링
+  • 시스템 정보 보기
+  • 기타
+
+  이러한 도구를 사용하여 SyncEngine 설치를 관리하세요.
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: '런타임 기록'
+onboarding.dashboard.runtime_history.body: |
+  런타임 기록은 모든 자동화 실행에 대한 상세 로그를 제공하여 성능 추적, 문제 디버깅, 데이터 흐름 분석을 가능하게 합니다.
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: "모든 준비가 완료되었습니다!"
+onboarding.dashboard.summary.body: |
+  이제 SyncEngine의 핵심 개념을 알게 되었습니다:
+
+  • 연결이 시스템을 연결합니다
+  • 자동화가 워크플로를 조율합니다
+  • 흐름이 실행 순서를 정의합니다
+  • 절차는 재사용 가능한 작업 시퀀스입니다
+  • 작업은 개별 동작입니다
+  • 저장소가 영구 데이터를 보관합니다
+  • 모듈이 새로운 기능을 추가합니다
+
+  먼저 연결을 만든 다음, 절차와 작업으로 첫 번째 흐름을 구축하세요.
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: '도움이 다시 필요하신가요?'
+onboarding.dashboard.help.body: |
+  도구 모음의 물음표 아이콘(사용 가능한 경우)을 클릭하면 언제든지 둘러보기를 시작할 수 있습니다. 인터페이스에 대해 더 알아보거나 개념을 다시 확인하고 싶을 때 빠른 참조로 사용하세요.
+
+  지원이 필요하신가요? docs.syncengine.io를 방문하거나 syncengine.io/support에서 티켓을 생성하세요.

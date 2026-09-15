@@ -1,0 +1,1039 @@
+'Column definitions': '열 정의'
+'Extend column definitions': '열 정의 확장'
+'Configure custom column types for each field.': '각 필드에 대한 사용자 지정 열 유형을 구성합니다.'
+'Comma Separated Values': '쉼표로 구분된 값'
+'FormData encoded string': 'FormData 인코딩 문자열'
+'JavaScript Object Notation': 'JavaScript 객체 표기법'
+'URL encoded string': 'URL 인코딩 문자열'
+'Extensible Markup Language': '확장 가능한 마크업 언어'
+"YAML Ain't Markup Language": "YAML은 마크업 언어가 아님"
+Address: 주소
+'Address column': '주소 열'
+Strict: 엄격
+'Address columns': '주소 열'
+'Country (Code)': '국가(코드)'
+'Column name for: {field}': '{field}의 열 이름'
+'Administrative Area / Province / State': '행정 구역 / 주 / 도'
+'Locality / City': '지역 / 도시'
+'Dependent Locality': '종속 지역'
+'Postal / ZIP Code': '우편번호 / ZIP 코드'
+'Sorting Code': '정렬 코드'
+'Address Line 1': '주소 1'
+'Address Line 2': '주소 2'
+'Address Line 3': '주소 3'
+Locale: 로케일
+Organization: 조직
+'Given Name': '이름'
+'Additional Name': '추가 이름'
+'Family Name': '성'
+Boolean: 불리언
+'Format as true or false': 'true 또는 false로 형식 지정'
+Format: 형식
+Integer: 정수
+'Custom text': '사용자 지정 텍스트'
+'Custom number': '사용자 지정 숫자'
+'True value': 'true 값'
+'False value': 'false 값'
+'Fallback value': '대체 값'
+'Null / Empty': 'Null / 비어 있음'
+Custom: 사용자 지정
+'Fallback custom value': '대체 사용자 지정 값'
+'Yes': '예'
+'No': '아니요'
+Collection: 컬렉션
+'A collection of a column type': '열 유형의 컬렉션'
+Associative: 연관
+'Column Type': '열 유형'
+Key/Name: 키/이름
+Currency: 통화
+'Currency column for money/price based values': '금액/가격 기반 값용 통화 열'
+'Currency sign': '통화 기호'
+'Add space between currency sign and value?': '통화 기호와 값 사이에 공백을 추가하시겠습니까?'
+'Put currency sign after value?': '통화 기호를 값 뒤에 배치하시겠습니까?'
+Date: 날짜
+'General date and time column': '일반 날짜 및 시간 열'
+Unchanged: 변경 없음
+'Null': 'Null'
+'False': 'False'
+'Empty string': '빈 문자열'
+'Current timestamp as format': '현재 타임스탬프를 형식으로 사용'
+'Please check PHP date documentation': 'PHP date 문서를 확인하세요'
+Timezone: 시간대
+'Please check PHP DateTimeZone documentation': 'PHP DateTimeZone 문서를 확인하세요'
+'Empty value': '빈 값'
+Duration: 기간
+'General duration column': '일반 기간 열'
+'Please check PHP DateInterval documentation': 'PHP DateInterval 문서를 확인하세요'
+Email: 이메일
+'Email column': '이메일 열'
+'Validation mode': '검증 모드'
+'Strict`: Ensures the email address follows the RFC standards very closely. For example, it does not allow IP addresses in the domain part.': 'Strict`: 이메일 주소가 RFC 표준을 매우 엄격하게 따르도록 보장합니다. 예를 들어 도메인 부분에 IP 주소를 허용하지 않습니다.'
+'HTML5: Follows the HTML5 input rules, which are slightly more permissive than the strict RFC standards.': 'HTML5: 엄격한 RFC 표준보다 약간 더 허용적인 HTML5 입력 규칙을 따릅니다.'
+'HTML5 allow-no-tld`: Similar to HTML5, but it also allows email addresses without a TLD (e.g., user@localhost).': 'HTML5 allow-no-tld`: HTML5와 유사하지만 TLD가 없는 이메일 주소(예: user@localhost)도 허용합니다.'
+HTML5: HTML5
+'HTML5 allow-no-tld': 'HTML5 allow-no-tld'
+Fallback: 대체
+'Fallback value if it is an invalid email address.': '유효하지 않은 이메일 주소인 경우의 대체 값입니다.'
+Enumeration: 열거
+'Predefined select options': '사전 정의된 선택 옵션'
+Options: 옵션
+Value: 값
+Label: 라벨
+'Numeric options': '숫자 옵션'
+None: 없음
+'Use column for type hinting': '유형 힌트에 열 사용'
+Soft: 소프트
+'Use fallback for invalid values': '유효하지 않은 값에 대체 값 사용'
+'Throw error on invalid values': '유효하지 않은 값에 오류 발생'
+'Set the fallback value in case it is empty.': '비어 있는 경우 대체 값을 설정합니다.'
+'Will also be used as fallback in soft mode.': '소프트 모드에서도 대체 값으로 사용됩니다.'
+'Parse before validation': '검증 전 구문 분석'
+'Trim text': '텍스트 공백 제거'
+'Convert case': '대소문자 변환'
+'Capitalize first': '첫 글자 대문자'
+'Capitalize Words': '단어 첫 글자 대문자'
+lowercase: 소문자
+UPPERCASE: 대문자
+'Invalid enum config': '잘못된 열거 구성'
+'Invalid value for enum: {formatted}': '열거에 대한 잘못된 값: {formatted}'
+Number: 숫자
+'Numeric column': '숫자 열'
+Type: 유형
+'A raw number can be used for calculations and number storage.': '원시 숫자는 계산 및 숫자 저장에 사용할 수 있습니다.'
+'A formatted number can be used for display.': '형식화된 숫자는 표시에 사용할 수 있습니다.'
+'Raw number': '원시 숫자'
+'Format to a number type.': '숫자 유형으로 형식 지정합니다.'
+Formatted: 형식화됨
+'Format to a numeric string.': '숫자 문자열로 형식 지정합니다.'
+Rounding: 반올림
+'Round halves up': '0.5 올림 반올림'
+'Round halves down': '0.5 내림 반올림'
+'Round halves to even numbers': '0.5를 짝수로 반올림'
+'Round halves to odd numbers': '0.5를 홀수로 반올림'
+Decimals: 소수 자릿수
+'Trim trailing zeros (0)': '끝자리 0 제거'
+'Decimal separator': '소수 구분 기호'
+'Thousands separator': '천 단위 구분 기호'
+none: 없음
+space: 공백
+Schema: 스키마
+'Schema definitions column': '스키마 정의 열'
+'Schema source': '스키마 소스'
+Manual: 수동
+Storage: 저장소
+'Schema storage': '스키마 저장소'
+'Configure column types for each field.': '각 필드에 대한 열 유형을 구성합니다.'
+Slug: 슬러그
+'Format as a slug': '슬러그로 형식 지정'
+lowercase-dash: lowercase-dash
+snake_case: snake_case
+camelCase: camelCase
+UPPERCASE_UNDERSCORE: UPPERCASE_UNDERSCORE
+Case: 대소문자
+'camel Style': 'camel 스타일'
+'Word separator': '단어 구분 기호'
+dash: 하이픈
+underscore: 밑줄
+Text: 텍스트
+'General text column': '일반 텍스트 열'
+'Limit length?': '길이 제한?'
+Max: 최대
+Unit: 단위
+Characters: 문자
+Words: 단어
+'Access denied.': '액세스가 거부되었습니다.'
+'Invalid request method.': '잘못된 요청 메서드입니다.'
+'Entity not found': '엔티티를 찾을 수 없습니다'
+'Action not supported: {action}': '지원되지 않는 작업: {action}'
+Update: 업데이트
+Create: 만들기
+Account: 계정
+'Edit account': '계정 편집'
+'Edit user account': '사용자 계정 편집'
+Preferences: 기본 설정
+'Edit preferences': '기본 설정 편집'
+'API tokens': 'API 토큰'
+'Manage API tokens': 'API 토큰 관리'
+'Two-factor authentication': '2단계 인증'
+'2FA is active for your account': '계정에 2FA가 활성화되어 있습니다'
+'Protect your account with a verification code': '인증 코드로 계정을 보호하세요'
+Disable: 비활성화
+Enable: 활성화
+'Account updated successfully.': '계정이 성공적으로 업데이트되었습니다.'
+Edit: 편집
+'Preferences updated successfully.': '기본 설정이 성공적으로 업데이트되었습니다.'
+'Access tokens': '액세스 토큰'
+'API Tokens': 'API 토큰'
+'Create API token': 'API 토큰 만들기'
+'Edit API token': 'API 토큰 편집'
+'Enable two-factor authentication': '2단계 인증 활성화'
+'Enable 2FA': '2FA 활성화'
+'Invalid form submission. Please try again.': '잘못된 양식 제출입니다. 다시 시도해 주세요.'
+'The verification code you entered is invalid.': '입력한 인증 코드가 유효하지 않습니다.'
+'Two-factor authentication has been enabled.': '2단계 인증이 활성화되었습니다.'
+'Could not send verification email. Please try again.': '인증 이메일을 보낼 수 없습니다. 다시 시도해 주세요.'
+'Verify your email': '이메일 인증'
+'Verify Email': '이메일 인증'
+'Disable two-factor authentication': '2단계 인증 비활성화'
+'Disable 2FA': '2FA 비활성화'
+'Invalid password.': '비밀번호가 유효하지 않습니다.'
+'Two-factor authentication has been disabled.': '2단계 인증이 비활성화되었습니다.'
+Automations: 자동화
+'Successfully created automation!': '자동화가 성공적으로 생성되었습니다!'
+'New automation': '새 자동화'
+'Successfully edited automation!': '자동화가 성공적으로 편집되었습니다!'
+'Edit automation': '자동화 편집'
+Connections: 연결
+'Successfully created connection!': '연결이 성공적으로 생성되었습니다!'
+'New connection': '새 연결'
+'Successfully edited connection!': '연결이 성공적으로 편집되었습니다!'
+'Edit connection': '연결 편집'
+Flows: 흐름
+'Successfully created flow!': '흐름이 성공적으로 생성되었습니다!'
+'New flow': '새 흐름'
+'Successfully edited flow!': '흐름이 성공적으로 편집되었습니다!'
+'Edit flow': '흐름 편집'
+'Connection required': '연결이 필요합니다'
+'Connection not found': '연결을 찾을 수 없습니다'
+'Webservice not found': 'Webservice를 찾을 수 없습니다'
+Modules: 모듈
+'Please upload a valid ZIP file': '유효한 ZIP 파일을 업로드해 주세요'
+Upload: 업로드
+'Unable to refresh system cache after module upload.': '모듈 업로드 후 시스템 캐시를 새로 고칠 수 없습니다.'
+'Install unsuccessful': '설치 실패'
+'Unable to uninstall {moduleName}. It is still used in your system': '{moduleName}을(를) 제거할 수 없습니다. 시스템에서 아직 사용 중입니다'
+'Uninstall unsuccessful': '제거 실패'
+'Unable to refresh system cache after module uninstall.': '모듈 제거 후 시스템 캐시를 새로 고칠 수 없습니다.'
+'{moduleName} successfully uninstalled': '{moduleName}이(가) 성공적으로 제거되었습니다'
+'Invalid module package: {moduleName}': '잘못된 모듈 패키지: {moduleName}'
+'Disabled manually': '수동으로 비활성화됨'
+'Unable to refresh system cache after module disable.': '모듈 비활성화 후 시스템 캐시를 새로 고칠 수 없습니다.'
+'{moduleName} disabled': '{moduleName} 비활성화됨'
+'Unable to disable {moduleName}.': '{moduleName}을(를) 비활성화할 수 없습니다.'
+'Unable to refresh system cache after module enable.': '모듈 활성화 후 시스템 캐시를 새로 고칠 수 없습니다.'
+'Unable to enable {moduleName}. It was disabled again during cache rebuild.': '{moduleName}을(를) 활성화할 수 없습니다. 캐시 재구축 중 다시 비활성화되었습니다.'
+'{moduleName} enabled': '{moduleName} 활성화됨'
+'Cannot move file': '파일을 이동할 수 없습니다'
+'Could not find module in zip file': 'ZIP 파일에서 모듈을 찾을 수 없습니다'
+'Could not parse module namespace': '모듈 네임스페이스를 구문 분석할 수 없습니다'
+'Cannot unzip file!': '파일의 압축을 풀 수 없습니다!'
+'Cant delete temp folder': '임시 폴더를 삭제할 수 없습니다'
+Configuration: 구성
+'Configure manager to optimize SyncEngine for your server.': '서버에 맞게 SyncEngine을 최적화하도록 매니저를 구성합니다.'
+Manager: 매니저
+'Auto-starts background async workers to handle automations.': '자동화를 처리하기 위해 백그라운드 비동기 워커를 자동으로 시작합니다.'
+Enabled: 활성화됨
+'Cannot enable manager': '매니저를 활성화할 수 없습니다'
+Disabled: 비활성화됨
+'The manager is controlled by a cronjob.': '매니저는 cronjob에 의해 제어됩니다.'
+External: 외부
+'The manager is controlled externally.': '매니저는 외부에서 제어됩니다.'
+'Queue size:': '큐 크기:'
+'Active workers:': '활성 워커:'
+'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': '워커 ID #{pid} | 생성: {timestamp} | 핑: {ping}'
+Processes: 프로세스
+System: 시스템
+Save: 저장
+'Invalid Manager': '잘못된 매니저'
+'Configuration saved': '구성이 저장되었습니다'
+Routines: 절차
+'Successfully created routine!': '절차가 성공적으로 생성되었습니다!'
+'New routine': '새 절차'
+'Successfully edited routine!': '절차가 성공적으로 편집되었습니다!'
+'Edit routine': '절차 편집'
+Storages: 저장소
+'Successfully created storage!': '저장소가 성공적으로 생성되었습니다!'
+'New storage': '새 저장소'
+'Successfully edited storage!': '저장소가 성공적으로 편집되었습니다!'
+'Edit storage': '저장소 편집'
+'Clear cache': '캐시 지우기'
+Environment: 환경
+'Configure environment setup': '환경 설정 구성'
+Vault: 금고
+'Configure vault secrets': '금고 Secret 구성'
+'Manage system processes': '시스템 프로세스 관리'
+Import: 가져오기
+'Import JSON configs': 'JSON 구성 가져오기'
+Info: 정보
+'System information': '시스템 정보'
+Help: 도움말
+'JSON data': 'JSON 데이터'
+'Format must be JSON.': '형식은 JSON이어야 합니다.'
+'Import successful': '가져오기 성공'
+Users: 사용자
+'Successfully created user!': '사용자가 성공적으로 생성되었습니다!'
+'Successfully edited user!': '사용자가 성공적으로 편집되었습니다!'
+'You cannot reset your own password.': '자신의 비밀번호는 재설정할 수 없습니다.'
+'Password reset email sent successfully!': '비밀번호 재설정 이메일이 성공적으로 전송되었습니다!'
+'An error occurred while resetting the password.': '비밀번호를 재설정하는 중 오류가 발생했습니다.'
+'You cannot delete your own account.': '자신의 계정은 삭제할 수 없습니다.'
+'Successfully deleted user!': '사용자가 성공적으로 삭제되었습니다!'
+'Endpoint not found: {value}': 'Endpoint를 찾을 수 없습니다: {value}'
+'Automation is not enabled': '자동화가 활성화되어 있지 않습니다'
+'Automation is already running': '자동화가 이미 실행 중입니다'
+'File not found': '파일을 찾을 수 없습니다'
+'Scheduled processes are disabled.': '예약된 프로세스가 비활성화되어 있습니다.'
+'Automation cannot accept a new request right now.': '자동화가 지금 새 요청을 수락할 수 없습니다.'
+'Entity type not found': '엔티티 유형을 찾을 수 없습니다'
+'Entity deleted': '엔티티가 삭제되었습니다'
+'An error occurred while sending the password reset email.': '비밀번호 재설정 이메일을 보내는 중 오류가 발생했습니다.'
+'Your password reset request': '비밀번호 재설정 요청'
+'No reset password token found in the URL or in the session.': 'URL 또는 세션에서 비밀번호 재설정 토큰을 찾을 수 없습니다.'
+Install: 설치
+'Unknown database error': '알 수 없는 데이터베이스 오류'
+'Could not repair database': '데이터베이스를 복구할 수 없습니다'
+'Unable to access this page!': '이 페이지에 액세스할 수 없습니다!'
+Register: 가입
+Variables: 변수
+'Define static variables to be used within the automation.': '자동화 내에서 사용할 정적 변수를 정의합니다.'
+Source: 소스
+'Select the data source for this automation': '이 자동화의 데이터 소스를 선택하세요'
+Request: 요청
+'Extract data from the current request body.': '현재 요청 본문에서 데이터를 추출합니다.'
+'Cannot be used with scheduled automations.': '예약된 자동화에는 사용할 수 없습니다.'
+Retrieve: 검색
+'Retrieve data from a webservice or other custom source.': 'Webservice 또는 기타 사용자 지정 소스에서 데이터를 검색합니다.'
+'Run automation in batches': '자동화를 배치로 실행'
+'Batch method': '배치 방법'
+'Batches are made remotely using retrieve parameters': '배치는 검색 매개변수를 사용하여 원격으로 생성됩니다'
+'Batches are created locally': '배치는 로컬에서 생성됩니다'
+'Limit batch size': '배치 크기 제한'
+'Limit the number of records to fetch/run at once.': '한 번에 가져오거나 실행할 레코드 수를 제한합니다.'
+Interval: 간격
+'Set an interval time between each batch.': '각 배치 사이의 간격 시간을 설정합니다.'
+Seconds: 초
+'Configure where to extract request data from.': '요청 데이터를 추출할 위치를 구성합니다.'
+'Request param': '요청 매개변수'
+'Define the param name to use as the data source.': '데이터 소스로 사용할 매개변수 이름을 정의합니다.'
+'Leave empty to use the full request data.': '전체 요청 데이터를 사용하려면 비워 두세요.'
+'Configure tasks to retrieve the data': '데이터를 검색할 작업을 구성합니다'
+'Define source schema structure.': '소스 스키마 구조를 정의합니다.'
+'Predefined schema storage': '사전 정의된 스키마 저장소'
+'Manual definitions': '수동 정의'
+'Event handler on empty source': '빈 소스에 대한 이벤트 핸들러'
+Cancel: 취소
+Error: 오류
+'Optionally trigger error when there is no data available from the source.': '소스에서 사용 가능한 데이터가 없을 때 선택적으로 오류를 트리거합니다.'
+Actions: 작업
+'The actions that need to be done with the source data.': '소스 데이터로 수행해야 하는 작업입니다.'
+Flow: 흐름
+Routine: 절차
+Tasks: 작업
+Events: 이벤트
+'Select the behavior on various events in this automation.': '이 자동화의 다양한 이벤트에 대한 동작을 선택합니다.'
+'On Cancel': '취소 시'
+'Actions to execute when the automation is cancelled.': '자동화가 취소될 때 실행할 작업입니다.'
+'On Error': '오류 시'
+'Actions to execute when the automation fails.': '자동화가 실패할 때 실행할 작업입니다.'
+'On Success': '성공 시'
+'Actions to execute when the automation completed successfully.': '자동화가 성공적으로 완료되었을 때 실행할 작업입니다.'
+Response: 응답
+'What this automation should respond in case of a HTTP request.': 'HTTP 요청이 있을 때 이 자동화가 응답해야 하는 내용입니다.'
+'Success status and data': '성공 상태 및 데이터'
+'Data only': '데이터만'
+'Success status only': '성공 상태만'
+'File Download': '파일 다운로드'
+'Download file selector': '다운로드 파일 선택기'
+Execution: 실행
+'Control how this automation is executed.': '이 자동화가 실행되는 방식을 제어합니다.'
+'Execution mode': '실행 모드'
+Single: 단일
+'Only one run at a time and blocks new requests while a run is active or scheduled.': '한 번에 하나의 실행만 허용하며 실행이 활성화되거나 예약된 동안 새 요청을 차단합니다.'
+Parallel: 병렬
+'Multiple simultaneous execution runs allowed': '여러 동시 실행 허용'
+Queued: 대기열
+'Accepts new requests but executes only one run at a time.': '새 요청을 수락하지만 한 번에 하나의 실행만 수행합니다.'
+'Stale run timeout': '오래된 실행 제한 시간'
+'Seconds without a activity before a run is considered stale and automatically reset.': '실행이 오래된 것으로 간주되어 자동으로 재설정되기 전의 비활동 시간(초)입니다.'
+'Defaults to {default}.': '기본값은 {default}입니다.'
+'History traces retention limit': '실행 기록 보존 한도'
+'Configure execution history of this automation.': '이 자동화의 실행 기록을 구성합니다.'
+'Maximum number of stored traces for this automation.': '이 자동화에 저장되는 최대 실행 기록 수입니다.'
+'Leave empty to use the global default of {param}.': '전역 기본값 {param}을(를) 사용하려면 비워 두세요.'
+Status: 상태
+Default: 기본값
+Fixed: 고정
+Days: 일
+Webservice: Webservice
+Trigger: 트리거
+Start: 시작
+Stop: 중지
+Continue: 계속
+Success: 성공
+Unknown: 알 수 없음
+Trashed: 휴지통
+Visible: 표시
+Hidden: 숨김
+Registered: 등록됨
+Scheduled: 예약됨
+Running: 실행 중
+Stopped: 중지됨
+Failed: 실패
+Cancelled: 취소됨
+Dynamic: 동적
+Sequence: 시퀀스
+'Add steps': '단계 추가'
+'Input data': '입력 데이터'
+'Input variables': '입력 변수'
+Conditions: 조건
+'Input schema': '입력 스키마'
+'Output schema': '출력 스키마'
+'Data type': '데이터 유형'
+Columns: 열
+Key: 키
+Name: 이름
+'Field name key': '필드 이름 키'
+'By default it will fetch the index key unless the value is an array containing field information.': '기본적으로 값이 필드 정보를 포함하는 배열이 아닌 한 인덱스 키를 가져옵니다.'
+'Field label key': '필드 라벨 키'
+'Used in case the value is an array containing field information.': '값이 필드 정보를 포함하는 배열인 경우에 사용됩니다.'
+'Schema storages': '스키마 저장소'
+'From source schema': '소스 스키마에서'
+'To target schema': '대상 스키마로'
+'Format options': '형식 옵션'
+'Response format': '응답 형식'
+'This webservice does not validate authorization.': '이 Webservice는 인증을 검증하지 않습니다.'
+'Added to queue!': '대기열에 추가되었습니다!'
+'Finished executing endpoint.': 'Endpoint 실행이 완료되었습니다.'
+'There were errors while executing this endpoint.': '이 Endpoint를 실행하는 동안 오류가 발생했습니다.'
+'Dots (.) in refs are forbidden: {ref}': 'ref에 점(.)은 허용되지 않습니다: {ref}'
+'Entity not found for: {ref}': '다음에 대한 엔티티를 찾을 수 없습니다: {ref}'
+'Model not found for: {ref} ({class})': '다음에 대한 모델을 찾을 수 없습니다: {ref} ({class})'
+'Response param name': '응답 매개변수 이름'
+'The param name where the results are located': '결과가 위치한 매개변수 이름'
+'Nested keys are supported: key.nested_key': '중첩 키가 지원됩니다: key.nested_key'
+'Key / Column name override to store results': '결과를 저장할 키 / 열 이름 재정의'
+'Start with dot (.) for root': '루트는 점(.)으로 시작'
+Action: 작업
+'Replace current data with results': '현재 데이터를 결과로 대체'
+'Merge results with current data': '결과를 현재 데이터와 병합'
+'Insert results into current data without replacing existing values': '기존 값을 대체하지 않고 결과를 현재 데이터에 삽입'
+'Combine recursively?': '재귀적으로 결합하시겠습니까?'
+'Catch errors': '오류 포착'
+'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.': '오류 처리 방법을 정의합니다. 오류가 조건과 일치하면 오류를 방지하고 대신 정의된 작업을 실행합니다. 오류는 계속 기록됩니다.'
+'Leave empty to catch all errors.': '모든 오류를 포착하려면 비워 두세요.'
+'No actions defined': '정의된 작업이 없습니다'
+'Run catch {name}': 'catch {name} 실행'
+Cache: 캐시
+'Get or set a value in the context cache': '컨텍스트 캐시에서 값 가져오기 또는 설정'
+'Set cache': '캐시 설정'
+'Get cache': '캐시 가져오기'
+'Set from data': '데이터에서 설정'
+'Manual value': '수동 값'
+'Key / Column name': '키 / 열 이름'
+'Leave empty for root': '루트는 비워 두세요'
+'Cache value': '캐시 값'
+'Cache tag reference/path': '캐시 Tag 참조/경로'
+'Can be used like: {tag}': '다음과 같이 사용할 수 있습니다: {tag}'
+Method: 메서드
+Replace: 대체
+Merge: 병합
+Append: 추가
+'Not found action': '찾을 수 없음 작업'
+'Action if the tag is not found': 'Tag를 찾을 수 없는 경우의 작업'
+'Override with empty value': '빈 값으로 재정의'
+'Skip task': '작업 건너뛰기'
+'Cache tag reference missing': '캐시 Tag 참조가 없습니다'
+Choose: 선택
+'Choose between different options based on conditions': '조건에 따라 다양한 옵션 중에서 선택'
+'Define the options and their conditions. Once a condition is valid it will run only that option.': '옵션과 해당 조건을 정의합니다. 조건이 유효하면 해당 옵션만 실행됩니다.'
+'Default tasks': '기본 작업'
+'These tasks will run if none of the option conditions are met.': '옵션 조건이 하나도 충족되지 않으면 이러한 작업이 실행됩니다.'
+'Run option {name}': '옵션 {name} 실행'
+'Run default': '기본 실행'
+Extract: 추출
+'Extract a column from each item in your data': '데이터의 각 항목에서 열 추출'
+'The data column name to extract items from': '항목을 추출할 데이터 열 이름'
+'The column to extract': '추출할 열'
+'The target column to put results': '결과를 넣을 대상 열'
+'Leave empty to use the Key / Column name set above': '위에서 설정한 키 / 열 이름을 사용하려면 비워 두세요'
+'No column key configured': '구성된 열 키가 없습니다'
+'Data not iterable': '데이터를 반복할 수 없습니다'
+'Could not extract': '추출할 수 없습니다'
+Filter: 필터
+'Filter data based on conditions': '조건에 따라 데이터 필터링'
+'Leave empty for root iteration': '루트 반복은 비워 두세요'
+'Filter method': '필터 방법'
+'Keep valid rows': '유효한 행 유지'
+'Keep invalid rows': '유효하지 않은 행 유지'
+'No conditions configured': '구성된 조건이 없습니다'
+'Data key not found': '데이터 키를 찾을 수 없습니다'
+Group: 그룹
+'Group your data': '데이터 그룹화'
+'The data column name to group items for': '항목을 그룹화할 데이터 열 이름'
+'Group by': '그룹 기준'
+'Set column name/key to group by value': '값으로 그룹화할 열 이름/키 설정'
+'Default group key': '기본 그룹 키'
+'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.': '행에 정의된 그룹 열이 없거나 값이 비어 있는 경우 사용됩니다. 설정하지 않으면 행이 제거됩니다.'
+'No group column configured': '구성된 그룹 열이 없습니다'
+'Invalid group column: {value}': '잘못된 그룹 열: {value}'
+Index: 인덱스
+'Index your data': '데이터 인덱싱'
+'The data column name to index items for': '항목을 인덱싱할 데이터 열 이름'
+'Numeric list': '숫자 목록'
+'Associative indexes': '연관 인덱스'
+'New index key': '새 인덱스 키'
+'The template for the indexed keys': '인덱싱된 키의 템플릿'
+'Use column keys as tags: {tag} | Wildcards: {wildcards}': '열 키를 Tag로 사용: {tag} | 와일드카드: {wildcards}'
+'No index method configured': '구성된 인덱스 방법이 없습니다'
+'No index key template configured': '구성된 인덱스 키 템플릿이 없습니다'
+Loop: 루프
+'Iterate over a set of rows': '행 집합 반복'
+'Loop method': '루프 방법'
+Row: 행
+Batches: 배치
+'Batch size': '배치 크기'
+'Set the number of records to fetch/run at once.': '한 번에 가져오거나 실행할 레코드 수를 설정합니다.'
+'Data column not found: {key}': '데이터 열을 찾을 수 없습니다: {key}'
+'Data column not iterable: {key}': '데이터 열을 반복할 수 없습니다: {key}'
+'Invalid action': '잘못된 작업'
+'No batch size configured': '구성된 배치 크기가 없습니다'
+Map: 매핑
+'Map key value pairs': '키-값 쌍 매핑'
+'The data column name for the value that needs to be mapped': '매핑해야 하는 값의 데이터 열 이름'
+'Nested keys are supported: {example}': '중첩 키가 지원됩니다: {example}'
+'Map columns': '열 매핑'
+'Convert key names and definition schema.': '키 이름과 정의 스키마를 변환합니다.'
+'Map values': '값 매핑'
+'Convert values for a column': '열의 값 변환'
+'Only return mapped items?': '매핑된 항목만 반환하시겠습니까?'
+'This will also reorder your data in the order of your map.': '이렇게 하면 데이터도 매핑 순서대로 재정렬됩니다.'
+'Remove old keys?': '이전 키를 제거하시겠습니까?'
+'Map source': '매핑 소스'
+Mapper: 매퍼
+'Convert column types to schema where available?': '가능한 경우 열 유형을 스키마로 변환하시겠습니까?'
+'No manual map configured.': '수동 매핑이 구성되지 않았습니다.'
+'Cannot map empty data': '빈 데이터를 매핑할 수 없습니다'
+'Cannot map scalar data': '스칼라 데이터를 매핑할 수 없습니다'
+'Merge columns and/or values': '열 및/또는 값 병합'
+'The data column name to merge': '병합할 데이터 열 이름'
+'Merge values of a column into a single value': '열의 값을 단일 값으로 병합'
+'Merge columns': '열 병합'
+'Merge both': '둘 다 병합'
+'Key merge method': '키 병합 방법'
+'Merge column key names': '열 키 이름 병합'
+'Merge column keys using an indexed name': '인덱스된 이름을 사용하여 열 키 병합'
+'Merge column keys using a regular expression': '정규식을 사용하여 열 키 병합'
+'Column keys that need to be merged': '병합해야 하는 열 키'
+'Column key name': '열 키 이름'
+'Regex to match keys with and merge': '키를 일치시키고 병합할 정규식'
+'Indexed key to search for and merge': '검색하고 병합할 인덱스된 키'
+'Nested keys are not supported': '중첩 키는 지원되지 않습니다'
+'Wildcards: {wildcards}': '와일드카드: {wildcards}'
+'Index starts with': '인덱스 시작 문자'
+'Method to merge values from multiple columns': '여러 열의 값을 병합하는 방법'
+'Each column value will be appended': '각 열 값이 추가됩니다'
+'Latter column values merge into the former': '이후 열 값이 이전 열 값에 병합됩니다'
+'Latter column values replaces the former': '이후 열 값이 이전 열 값을 대체합니다'
+'Latter column values insert into the former': '이후 열 값이 이전 열 값에 삽입됩니다'
+Separator: 구분 기호
+Comma: 쉼표
+Semicolon: 세미콜론
+Space: 공백
+Tab: 탭
+'New line': '새 줄'
+'Value template': '값 템플릿'
+'The template for each separate value to be merged': '병합할 각 개별 값의 템플릿'
+'Remove original column key(s)?': '원래 열 키를 제거하시겠습니까?'
+'Only keep unique values?': '고유한 값만 유지하시겠습니까?'
+'By default all values are kept.': '기본적으로 모든 값이 유지됩니다.'
+'Preserve column keys?': '열 키를 유지하시겠습니까?'
+'Keep empty values?': '빈 값을 유지하시겠습니까?'
+'By default all empty column values will not be merged.': '기본적으로 빈 열 값은 병합되지 않습니다.'
+'No key configured': '구성된 키가 없습니다'
+'No columns defined': '정의된 열이 없습니다'
+'No key method selected': '선택된 키 방법이 없습니다'
+'Cannot merge scalar value.': '스칼라 값을 병합할 수 없습니다.'
+'Find and replace': '찾기 및 바꾸기'
+'The data column name for the values that need to be replaced': '바꿔야 하는 값의 데이터 열 이름'
+'In case the value is a list of values this task will iterate the replacements for all': '값이 값 목록인 경우 이 작업은 모든 값에 대해 바꾸기를 반복합니다'
+'Replace values': '값 바꾸기'
+'Replace keys': '키 바꾸기'
+'Replace keys and values': '키와 값 바꾸기'
+'Replace recursively?': '재귀적으로 바꾸시겠습니까?'
+Find: 찾기
+'Find value not set': '찾기 값이 설정되지 않았습니다'
+'Cannot replace scalar data': '스칼라 데이터를 바꿀 수 없습니다'
+'Retrieve your data from your specific connection': '특정 연결에서 데이터 검색'
+'The data column name to pass to the webservice': 'Webservice에 전달할 데이터 열 이름'
+Connection: 연결
+'Response data': '응답 데이터'
+'No connection configured': '구성된 연결이 없습니다'
+'Data not found: {key}': '데이터를 찾을 수 없습니다: {key}'
+Send: 보내기
+'Send your data to your specific connection': '특정 연결로 데이터 보내기'
+'Retrieve response data': '응답 데이터 검색'
+Set: 설정
+'Set your own values': '자체 값 설정'
+'The data column key name for the values that needs to be set': '설정해야 하는 값의 데이터 열 키 이름'
+'Reorder data?': '데이터를 재정렬하시겠습니까?'
+'This will append all configured columns at the end of the current data.': '구성된 모든 열이 현재 데이터 끝에 추가됩니다.'
+'Force if invalid?': '유효하지 않은 경우 강제하시겠습니까?'
+'When existing data is scalar, create new data collection from values set in this task.': '기존 데이터가 스칼라인 경우 이 작업에서 설정된 값으로 새 데이터 컬렉션을 만듭니다.'
+'You can still reference the original value through the {placeholder} tag.': '{placeholder} Tag를 통해 원래 값을 계속 참조할 수 있습니다.'
+'Set method': '설정 방법'
+'Set column values': '열 값 설정'
+'Set schema': '스키마 설정'
+'Set both': '둘 다 설정'
+'Remove columns not defined in schema?': '스키마에 정의되지 않은 열을 제거하시겠습니까?'
+'Column key/name': '열 키/이름'
+'-- Unchanged --': '-- 변경 없음 --'
+'Use {wildcard} to insert the current value.': '{wildcard}을(를) 사용하여 현재 값을 삽입합니다.'
+Unset: 설정 해제
+'Data is not iterable': '데이터를 반복할 수 없습니다'
+'No set params configured': '구성된 설정 매개변수가 없습니다'
+Sort: 정렬
+'Sort your data': '데이터 정렬'
+'The data column key name for the values that needs to be sorted': '정렬해야 하는 값의 데이터 열 키 이름'
+'Sort by key / column name': '키 / 열 이름으로 정렬'
+'Sort by value': '값으로 정렬'
+'Sort by column value': '열 값으로 정렬'
+'Sort by': '정렬 기준'
+'Set column name/key to sort by value': '값으로 정렬할 열 이름/키 설정'
+Ascending: 오름차순
+Descending: 내림차순
+'Ascending natural order': '오름차순 자연 순서'
+'Descending natural order': '내림차순 자연 순서'
+'No sort method configured': '구성된 정렬 방법이 없습니다'
+'Invalid sort order: {order}': '잘못된 정렬 순서: {order}'
+'No sort column configured': '구성된 정렬 열이 없습니다'
+Split: 분할
+'Split value and/or split column key into multiple': '값 및/또는 열 키를 여러 개로 분할'
+'The data column name to split': '분할할 데이터 열 이름'
+'Split value': '값 분할'
+'Split into column keys': '열 키로 분할'
+'Split value and split into column keys': '값을 분할하고 열 키로 분할'
+'Column key split method': '열 키 분할 방법'
+'Split into column keys by providing custom names': '사용자 지정 이름을 제공하여 열 키로 분할'
+'Split into column keys using an indexed name': '인덱스된 이름을 사용하여 열 키로 분할'
+'Column key names': '열 키 이름'
+'Current value index/key (optional)': '현재 값 인덱스/키(선택 사항)'
+'New column key name': '새 열 키 이름'
+'Indexed key': '인덱스된 키'
+'The template for the new indexed keys.': '새 인덱스된 키의 템플릿입니다.'
+'Remove original key(s)?': '원래 키를 제거하시겠습니까?'
+'Regular expression (Regex)': '정규식(Regex)'
+'Regular expression': '정규식'
+'Regex must be made for splitting values, not matching.': '정규식은 일치가 아닌 값 분할용으로 작성해야 합니다.'
+'Split value column definition': '값 열 정의 분할'
+'No action configured': '구성된 작업이 없습니다'
+'Loop key not supported': '루프 키가 지원되지 않습니다'
+'Value is not splittable into list': '값을 목록으로 분할할 수 없습니다'
+'Column `{type}` does not exist': '열 `{type}`이(가) 존재하지 않습니다'
+'Value is not splittable into keys': '값을 키로 분할할 수 없습니다'
+'No columns configured': '구성된 열이 없습니다'
+Store: 저장
+'Get or set a storage': '저장소 가져오기 또는 설정'
+'Set storage': '저장소 설정'
+'Get storage': '저장소 가져오기'
+'Storage column key/path': '저장소 열 키/경로'
+'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.': '이 값이 저장될 경로를 설정하거나 비워 두세요. 점(.)을 사용하여 저장소 내부로 이동합니다.'
+'No storage selected': '선택된 저장소가 없습니다'
+'Storage not found': '저장소를 찾을 수 없습니다'
+'Raw storage cannot contain paths': '원시 저장소에는 경로를 포함할 수 없습니다'
+'This is a raw storage, please select a different storage or change the storage type': '이것은 원시 저장소입니다. 다른 저장소를 선택하거나 저장소 유형을 변경해 주세요'
+Template: 템플릿
+'Create your own modifier template with Twig': 'Twig로 나만의 수정자 템플릿 만들기'
+'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.': '출력 Tag {example_var}은(는) Twig 템플릿 엔진보다 먼저 Tag로 구문 분석됩니다. 실행 문 {example_func}만 Twig에서 구문 분석됩니다.'
+'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.': '`data`의 값은 작업 출력에 사용됩니다. 사용 가능한 변수: `data`, `config`, `cache`, `variables`, `context`.'
+'Add your code here': '여기에 코드를 추가하세요'
+'No template set': '설정된 템플릿이 없습니다'
+Trace: 실행 기록
+'Trace current status with a log or error.': '로그 또는 오류로 현재 상태를 기록합니다.'
+'Trace type': '실행 기록 유형'
+'Creating an error will result in the trace reporting as failed.': '오류를 생성하면 실행 기록이 실패로 보고됩니다.'
+'Log message': '로그 메시지'
+'Error message': '오류 메시지'
+Message: 메시지
+'Extra info': '추가 정보'
+'Include data?': '데이터를 포함하시겠습니까?'
+'Message not configured': '구성된 메시지가 없습니다'
+'Trigger something independently from the current flow': '현재 흐름과 독립적으로 무언가 트리거'
+'Run async?': '비동기로 실행하시겠습니까?'
+Experimental: 실험적
+'If the automation is using batches then this trigger will always run async.': '자동화가 배치를 사용하는 경우 이 트리거는 항상 비동기로 실행됩니다.'
+'Pass current data?': '현재 데이터를 전달하시겠습니까?'
+'Override current data?': '현재 데이터를 재정의하시겠습니까?'
+'Leave empty to pass root data': '루트 데이터를 전달하려면 비워 두세요'
+'Define static variables to be used for this trigger. Existing variables will also be included.': '이 트리거에 사용할 정적 변수를 정의합니다. 기존 변수도 포함됩니다.'
+Automation: 자동화
+Wait: 대기
+'Wait for time to pass': '시간이 지나기를 기다립니다'
+'Seconds to wait': '대기 시간(초)'
+FTP: FTP
+'Connect to a FTP server to upload and/or download files': 'FTP 서버에 연결하여 파일을 업로드 및/또는 다운로드합니다'
+'{type} extension is not available': '{type} 확장을 사용할 수 없습니다'
+Host: 호스트
+Port: 포트
+Username: 사용자 이름
+Password: 비밀번호
+'Passive mode': '수동 모드'
+'Connect using SSL': 'SSL로 연결'
+'Process timeout in seconds': '프로세스 제한 시간(초)'
+'Cannot connect to {host}': '{host}에 연결할 수 없습니다'
+'Cannot login to {host}': '{host}에 로그인할 수 없습니다'
+'Successfully connected to {host}': '{host}에 성공적으로 연결되었습니다'
+'Could not connect to {host}': '{host}에 연결할 수 없습니다'
+'HTTP No auth': 'HTTP 인증 없음'
+'Connect without authorization': '인증 없이 연결'
+'Allow HTTP': 'HTTP 허용'
+'Allow unsafe HTTP connection without SSL encryption': 'SSL 암호화 없는 안전하지 않은 HTTP 연결 허용'
+Endpoint: Endpoint
+'Send current data': '현재 데이터 보내기'
+'Select data transport location': '데이터 전송 위치 선택'
+'Request {type}': '요청 {type}'
+'HTTP Basic Auth': 'HTTP Basic 인증'
+'Connect with basic authorization': '기본 인증으로 연결'
+'Username / key': '사용자 이름 / 키'
+'Password / Secret': '비밀번호 / Secret'
+'HTTP Bearer token': 'HTTP Bearer 토큰'
+'Connect with Bearer Token authorization': 'Bearer 토큰 인증으로 연결'
+Token: 토큰
+'HTTP Authorization server': 'HTTP 인증 서버'
+'Connect to a HTTP server using an authorization server': '인증 서버를 사용하여 HTTP 서버에 연결'
+Body: 본문
+Header: 헤더
+'Redirect url': '리디렉션 URL'
+'Local File system': '로컬 파일 시스템'
+'Use the local filesystem defined by your environment': '환경에 정의된 로컬 파일 시스템 사용'
+'Root path': '루트 경로'
+'Relative path?': '상대 경로?'
+'Makes the root path relative to the SyncEngine installation': '루트 경로를 SyncEngine 설치 디렉터리를 기준으로 설정'
+'Successfully accessed {root}': '{root}에 성공적으로 액세스했습니다'
+'Could not access {root}': '{root}에 액세스할 수 없습니다'
+SFTP: SFTP
+'Connect to a SFTP server to upload and/or download files': 'SFTP 서버에 연결하여 파일을 업로드 및/또는 다운로드합니다'
+'Authentication type': '인증 유형'
+'Private key': '개인 키'
+'Username and password': '사용자 이름 및 비밀번호'
+'Private key password': '개인 키 비밀번호'
+'If your private key is password protected, you can fill in that password here': '개인 키가 비밀번호로 보호된 경우 여기에 해당 비밀번호를 입력할 수 있습니다'
+'Cannot login to {host}: {error}': '{host}에 로그인할 수 없습니다: {error}'
+'Could not rename': '이름을 바꿀 수 없습니다'
+SOAP: SOAP
+'Connect using SOAP': 'SOAP로 연결'
+'HTTP Authentication': 'HTTP 인증'
+'Basic authentication': '기본 인증'
+'SOAP multistep server': 'SOAP 다단계 서버'
+'Connect to a SOAP server using multistep setup': '다단계 설정으로 SOAP 서버에 연결'
+'SOAP extension is not available': 'SOAP 확장을 사용할 수 없습니다'
+Url: URL
+'The URL for this authentication step': '이 인증 단계의 URL'
+SQL: SQL
+'Connect to a SQL server': 'SQL 서버에 연결'
+MySQLi: MySQLi
+PDO: PDO
+'No database extensions are available, please install one of the following: {options}': '사용 가능한 데이터베이스 확장이 없습니다. 다음 중 하나를 설치해 주세요: {options}'
+'Select database driver': '데이터베이스 드라이버 선택'
+Database: 데이터베이스
+'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+Query: 쿼리
+'Fetch method': '가져오기 방법'
+'Associated array': '연관 배열'
+'Key => Value pairs': '키 => 값 쌍'
+'Key column': '키 열'
+'Choose the key you want to use as the row key': '행 키로 사용할 키를 선택하세요'
+Path: 경로
+'Select what you want to retrieve': '검색할 항목을 선택하세요'
+'File contents': '파일 내용'
+'List directories and filenames': '디렉터리 및 파일 이름 나열'
+'List filenames': '파일 이름 나열'
+'List directories': '디렉터리 나열'
+Filename: 파일 이름
+'Select what action you want to send': '보낼 작업을 선택하세요'
+'Upload file contents': '파일 내용 업로드'
+'Delete file': '파일 삭제'
+'Create directory': '디렉터리 만들기'
+'Delete directory': '디렉터리 삭제'
+'Rename or move a file or directory': '파일 또는 디렉터리 이름 바꾸기 또는 이동'
+'Overwrite if file exists': '파일이 있으면 덮어쓰기'
+'Directory name': '디렉터리 이름'
+'Old name': '이전 이름'
+'New name': '새 이름'
+'Overwrite if new name exists': '새 이름이 있으면 덮어쓰기'
+'No Filename configured': '구성된 파일 이름이 없습니다'
+'Cannot fetch file from {host}, please try passive mode': '{host}에서 파일을 가져올 수 없습니다. 수동 모드를 시도해 주세요'
+'Cannot fetch file from {host}': '{host}에서 파일을 가져올 수 없습니다'
+'Successfully retrieved: {name}': '성공적으로 검색했습니다: {name}'
+'File {oldName} existed, renamed it to {newName}': '파일 {oldName}이(가) 존재하여 {newName}(으)로 이름을 변경했습니다'
+'Could not be write file: {name}': '파일을 쓸 수 없습니다: {name}'
+'Successfully uploaded: {name}': '성공적으로 업로드했습니다: {name}'
+'Could not delete file {name}': '파일 {name}을(를) 삭제할 수 없습니다'
+'Successfully deleted file: {name}': '파일을 성공적으로 삭제했습니다: {name}'
+'Cannot read directory from {host}': '{host}에서 디렉터리를 읽을 수 없습니다'
+'No directory configured': '구성된 디렉터리가 없습니다'
+'Could not create directory: {path}': '디렉터리를 만들 수 없습니다: {path}'
+'Successfully created directory: {path}': '디렉터리를 성공적으로 만들었습니다: {path}'
+'Could not delete directory: {path}': '디렉터리를 삭제할 수 없습니다: {path}'
+'Successfully deleted: {path}': '성공적으로 삭제했습니다: {path}'
+'Invalid rename configuration': '잘못된 이름 변경 구성'
+'Could not rename: {old} to {new}': '{old}을(를) {new}(으)로 이름을 바꿀 수 없습니다'
+'Successfully renamed: {old} to {new}': '{old}을(를) {new}(으)로 성공적으로 이름을 변경했습니다'
+'Invalid resource': '잘못된 리소스'
+'Request method': '요청 메서드'
+'Request timeout': '요청 제한 시간'
+'Request query': '요청 쿼리'
+'Request header': '요청 헤더'
+'Request body': '요청 본문'
+'SOAP version': 'SOAP 버전'
+'Default (PHP default)': '기본값(PHP 기본값)'
+'SOAP protocol version. Leave empty for PHP default.': 'SOAP 프로토콜 버전. PHP 기본값을 사용하려면 비워 두세요.'
+Compression: 압축
+'Compress SOAP requests and accept compressed responses.': 'SOAP 요청을 압축하고 압축된 응답을 수락합니다.'
+'Connection timeout': '연결 제한 시간'
+'Maximum time in seconds for the connection to be established.': '연결이 설정되는 최대 시간(초)입니다.'
+'WSDL mode': 'WSDL 모드'
+'Will this connection use WSDL file format?': '이 연결이 WSDL 파일 형식을 사용하시겠습니까?'
+'WSDL file url': 'WSDL 파일 URL'
+'Link to WSDL format that will be filled in for this soap connection': '이 SOAP 연결에 입력될 WSDL 형식 링크'
+'WSDL cache': 'WSDL 캐시'
+'No cache': '캐시 없음'
+'Memory cache': '메모리 캐시'
+'Disk/File cache': '디스크/파일 캐시'
+Both: 둘 다
+'WSDL cache warning': 'WSDL 캐시 경고'
+'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.': '파일 기반 WSDL 캐시가 활성화되어 있습니다. 이로 인해 오래된 WSDL 파일과 서버의 공유 액세스로 인한 보안 문제가 발생할 수 있습니다.'
+'SOAP service namespace': 'SOAP 서비스 네임스페이스'
+'Target namespace of the SOAP service. Required when WSDL mode is disabled.': 'SOAP 서비스의 대상 네임스페이스입니다. WSDL 모드가 비활성화된 경우 필수입니다.'
+'SOAPAction header': 'SOAPAction 헤더'
+'Optional SOAPAction HTTP header value. Required by some SOAP servers.': '선택적 SOAPAction HTTP 헤더 값입니다. 일부 SOAP 서버에서 필요합니다.'
+Advanced: 고급
+'Override options for the SOAP connection.': 'SOAP 연결에 대한 옵션을 재정의합니다.'
+'SOAP headers': 'SOAP 헤더'
+'SOAP operation name': 'SOAP 작업 이름'
+'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.': '호출할 SOAP 작업의 이름입니다. WSDL 및 비-WSDL 모드 모두에서 필요합니다.'
+'Use data transport as body?': '데이터 전송을 본문으로 사용하시겠습니까?'
+'SOAP body': 'SOAP 본문'
+'Define static variables to be used within the authorization process.': '인증 프로세스 내에서 사용할 정적 변수를 정의합니다.'
+'Authorized request base config': '인증된 요청 기본 구성'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': '기본 요청 구성을 정의합니다. 이 연결을 사용하는 모든 요청의 기본 매개변수를 설정하는 데 사용됩니다.'
+'Override host': '호스트 재정의'
+'Authorization process steps': '인증 프로세스 단계'
+'Define each step for the authorization process.': '인증 프로세스의 각 단계를 정의합니다.'
+'The param name where the authentication parameters are located': '인증 매개변수가 위치한 매개변수 이름'
+'Tag name': 'Tag 이름'
+'Choose the tag name in which the response param value is stored': '응답 매개변수 값이 저장될 Tag 이름을 선택하세요'
+'Example: token': '예: token'
+Expiration: 만료
+'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe': 'Tag 값에 대한 만료 타이머를 설정하여 이 만료 기간 내에 재인증이 수행되도록 합니다'
+'Supported formats:': '지원되는 형식:'
+'Timestamp or date': '타임스탬프 또는 날짜'
+'Time format: ({time_format})': '시간 형식: ({time_format})'
+'Text format: ({time_string})': '텍스트 형식: ({time_string})'
+'Response type': '응답 유형'
+'The type of response the URL will return': 'URL이 반환할 응답 유형'
+'Tag storage': 'Tag 저장소'
+'Define the tags you need to store for authentication': '인증을 위해 저장해야 하는 Tag를 정의합니다'
+'Run next step (default)': '다음 단계 실행(기본값)'
+'Skip next step': '다음 단계 건너뛰기'
+'Stop loop': '루프 중지'
+'Run previous step (default)': '이전 단계 실행(기본값)'
+'Restart loop from beginning': '루프를 처음부터 다시 시작'
+'Cannot authenticate on step #{step} from connection #{connectionID}': '연결 #{connectionID}의 단계 #{step}에서 인증할 수 없습니다'
+'Invalid tag name': '잘못된 Tag 이름'
+'Invalid or empty server response for tag:{tag} | Param not found:{param}': 'Tag에 대한 서버 응답이 잘못되었거나 비어 있습니다: {tag} | 매개변수를 찾을 수 없습니다: {param}'
+'Invalid or empty server response for tag:{tag}': 'Tag에 대한 서버 응답이 잘못되었거나 비어 있습니다: {tag}'
+'Are you sure you want to disable two-factor authentication?': '2단계 인증을 비활성화하시겠습니까?'
+'You will need to re-enable 2FA after verifying your password': '비밀번호를 확인한 후 2FA를 다시 활성화해야 합니다'
+'Enter your password to confirm': '확인을 위해 비밀번호를 입력하세요'
+'Check your email': '이메일을 확인하세요'
+'We sent a 6-digit verification code to your email address': '6자리 인증 코드를 이메일 주소로 보냈습니다'
+'Enter the code from your email': '이메일로 받은 코드를 입력하세요'
+'Resend Code': '코드 다시 보내기'
+Verify: 인증
+'Choose how you want to receive verification codes': '인증 코드를 받을 방법을 선택하세요'
+'Authenticator App (Recommended)': '인증 앱(권장)'
+'Scan the QR code with your TOTP app': 'TOTP 앱으로 QR 코드를 스캔하세요'
+'Or enter this secret manually:': '또는 이 Secret을 수동으로 입력하세요:'
+'Email Verification': '이메일 인증'
+'We will send a 6-digit code to your email address': '6자리 코드를 이메일 주소로 보내드립니다'
+'Send Code to Email': '이메일로 코드 보내기'
+'Create new': '새로 만들기'
+Description: 설명
+Expires: 만료
+'No API tokens created': '생성된 API 토큰이 없습니다'
+URL: URL
+Uses: 사용 횟수
+'You are about to reset this process, are you sure?': '이 프로세스를 재설정하려고 합니다. 계속하시겠습니까?'
+Reset: 재설정
+'Reset automation': '자동화 재설정'
+'Quick Edit': '빠른 편집'
+Hide: 숨기기
+Show: 표시
+Export: 내보내기
+Trash: 휴지통
+Restore: 복원
+'Delete Permanently': '영구 삭제'
+Issue: 문제
+Connected: 연결됨
+'Used in': '사용 위치'
+'Last runs': '최근 실행'
+'Scheduled runs': '예약된 실행'
+Steps: 단계
+'Message Queue': '메시지 큐'
+'Scheduled At': '예약 시간'
+'Created At': '생성 시간'
+View: 보기
+'Scheduled run': '예약된 실행'
+Delete: 삭제
+'Delete run': '실행 삭제'
+'Are you sure you want to delete this message?': '이 메시지를 삭제하시겠습니까?'
+'Disabled modules.': '비활성화된 모듈.'
+Module: 모듈
+Requires: 요구 사항
+Reason: 이유
+Uninstall: 제거
+'Are you sure?': '확실합니까?'
+'This will uninstall module {moduleName} from {vendor}': '{vendor}의 모듈 {moduleName}을(를) 제거합니다'
+'Upload a newer module version to replace an incompatible module.': '호환되지 않는 모듈을 대체하려면 최신 모듈 버전을 업로드하세요.'
+Version: 버전
+Author: 작성자
+Manage: 관리
+Reinstall: 재설치
+Config: 설정
+Task: 작업
+Traces: 실행 기록
+'You are about to kill this process, are you sure?': '이 프로세스를 종료하려고 합니다. 계속하시겠습니까?'
+Kill: 종료
+'New user': '새 사용자'
+'Edit user': '사용자 편집'
+Roles: 역할
+'Reset password': '비밀번호 재설정'
+'Reset password?': '비밀번호를 재설정하시겠습니까?'
+'A password reset email will be sent to {email}. The user can then set their own password.': '비밀번호 재설정 이메일이 {email}(으)로 전송됩니다. 사용자가 직접 비밀번호를 설정할 수 있습니다.'
+'This will delete user {email}': '사용자 {email}을(를) 삭제합니다'
+Visibility: 표시 여부
+All: 모두
+Dashboard: 대시보드
+'Verify Login': '로그인 인증'
+Login: 로그인
+'Forgot password?': '비밀번호를 잊으셨나요?'
+'Password Reset Email Sent': '비밀번호 재설정 이메일 전송됨'
+'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.': '입력한 이메일과 일치하는 계정이 있으면 비밀번호를 재설정하는 데 사용할 수 있는 링크가 포함된 이메일이 방금 전송되었습니다.'
+'This link will expire in %expiration%': '이 링크는 %expiration% 후에 만료됩니다'
+"If you don't receive an email please check your spam folder": "이메일을 받지 못한 경우 스팸 폴더를 확인해 주세요"
+'Back to login': '로그인으로 돌아가기'
+'Try again': '다시 시도'
+'Reset your password': '비밀번호 재설정'
+'Enter your email address and we will send you a link to reset your password.': '이메일 주소를 입력하면 비밀번호를 재설정할 수 있는 링크를 보내드립니다.'
+'Page not found': '페이지를 찾을 수 없습니다'
+'Oops! An Error Occurred': '이런! 오류가 발생했습니다'
+Back: 뒤로
+'Authenticator App': '인증 앱'
+'Fill in the code from your authenticator app': '인증 앱의 코드를 입력하세요'
+'Fill in the code send to your email': '이메일로 전송된 코드를 입력하세요'
+'There was a problem validating your password reset request': '비밀번호 재설정 요청을 검증하는 중 문제가 발생했습니다'
+'There is already an automation with this ref, please enter a different ref': '이 ref를 사용하는 자동화가 이미 있습니다. 다른 ref를 입력해 주세요'
+'There is already an automation with this name, please enter a different name': '이 이름을 사용하는 자동화가 이미 있습니다. 다른 이름을 입력해 주세요'
+'There is already an automation with this endpoint, please enter a different name': '이 endpoint를 사용하는 자동화가 이미 있습니다. 다른 이름을 입력해 주세요'
+'There is already an account with this email': '이 이메일을 사용하는 계정이 이미 있습니다'
+'Your password should be at least { limit } characters': '비밀번호는 최소 { limit }자 이상이어야 합니다'
+'Please enter a password': '비밀번호를 입력해 주세요'
+'You should agree to our license terms.': '라이선스 약관에 동의해야 합니다.'
+'Please enter your email': '이메일을 입력해 주세요'
+choose_provider: 공급자 선택
+auth_code: 인증 코드
+trusted: 신뢰됨
+'Has conditions': '조건 있음'
+'Not configured': '구성되지 않음'
+'No tasks configured': '구성된 작업이 없습니다'
+Authorization: 인증
+Delimiter: 구분 기호
+'Sets the field delimiter separating values (one character only)': '값을 구분하는 필드 구분 기호를 설정합니다(문자 1개만)'
+Enclosure: 묶음 문자
+'Sets the field enclosure (one character only)': '필드 묶음 문자를 설정합니다(문자 1개만)'
+'Escape character': '이스케이프 문자'
+'Sets the escape character (at most one character)': '이스케이프 문자를 설정합니다(최대 1개)'
+'End of line': '줄 끝'
+'Sets the character(s) used to mark the end of each line in the CSV file': 'CSV 파일에서 각 줄의 끝을 표시하는 데 사용되는 문자를 설정합니다'
+'Headers columns': '헤더 열'
+'Sets the order of the header and data columns E.g.: if {val1} and {val2} then {func} returns {result}': '헤더 및 데이터 열의 순서를 설정합니다. 예: {val1} 및 {val2}이면 {func}은(는) {result}을(를) 반환합니다'
+'Key separator': '키 구분 기호'
+"Sets the separator for array's keys during its flattening": "배열을 평면화할 때 배열 키의 구분 기호를 설정합니다"
+'Escape formula': '수식 이스케이프'
+'Escapes fields containing formulas by prepending them with a `\t` character': '수식이 포함된 필드 앞에 `\t` 문자를 추가하여 이스케이프합니다'
+'No headers': '헤더 없음'
+'Disables header in the encoded CSV': '인코딩된 CSV에서 헤더를 비활성화합니다'
+'As collection': '컬렉션으로'
+'Always returns results as a collection, even if only one line is decoded.': '한 줄만 디코딩되더라도 항상 결과를 컬렉션으로 반환합니다.'
+'Output UTF8 Bom key': 'UTF8 BOM 키 출력'
+File: 파일
+'Handle binary file data (raw bytes)': '이진 파일 데이터(원시 바이트) 처리'
+Extension: 확장자
+'Mime type': 'MIME 유형'
+'Sets the XML version attribute': 'XML 버전 속성을 설정합니다'
+Encoding: 인코딩
+'Sets the XML encoding attribute': 'XML 인코딩 속성을 설정합니다'
+'Root node': '루트 노드'
+'Sets the root node name': '루트 노드 이름을 설정합니다'
+'Format output': '출력 형식'
+'If set to true, formats the generated XML with line breaks and indentation': 'true로 설정하면 생성된 XML에 줄 바꿈과 들여쓰기를 적용합니다'
+Standalone: 독립형
+'Adds standalone attribute in the generated XML': '생성된 XML에 standalone 속성을 추가합니다'
+'Always returns results as a collection, even if only one line is decoded': '한 줄만 디코딩되더라도 항상 결과를 컬렉션으로 반환합니다'
+'Remove empty tags': '빈 Tag 제거'
+'Remove all empty tags in the generated XML': '생성된 XML에서 모든 빈 Tag를 제거합니다'
+'Type-cast attributes': '유형 변환 속성'
+'This provides the ability to forget the attribute type casting': '속성 유형 변환을 생략할 수 있는 기능을 제공합니다'
+'Inline dump': '인라인 덤프'
+Indentation: 들여쓰기
+'Number of spaces': '공백 수'
+Documentation: 문서
+'Leave empty to keep current password.': '현재 비밀번호를 유지하려면 비워 두세요.'
+'New Password': '새 비밀번호'
+Scopes: 범위
+'Scopes define what this API token can access. Each scope grants a specific permission.': '범위는 이 API 토큰이 액세스할 수 있는 대상을 정의합니다. 각 범위는 특정 권한을 부여합니다.'
+Restrictions: 제한
+"Restrictions limit an API key's usage and improves security": "제한은 API 키의 사용을 제한하고 보안을 향상시킵니다"
+'Restrict by IP addresses': 'IP 주소로 제한'
+'Restrict by host domains': '호스트 도메인으로 제한'
+'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.': '"origin" 헤더는 위조될 수 있으므로 보안 조치보다는 편의 확인에 가깝습니다.'
+'New password': '새 비밀번호'
+'Repeat Password': '비밀번호 확인'
+'The password fields must match.': '비밀번호 필드가 일치해야 합니다.'
+Debug: 디버그
+'Change your app secret. Will autogenerate if empty.': '앱 Secret을 변경합니다. 비어 있으면 자동 생성됩니다.'
+Secret: Secret
+Mailer: 메일러
+'Email sender': '이메일 발신자'
+'Send email logs to': '이메일 로그를 다음으로 보내기'
+'Restrict everything by IP': '모든 것을 IP로 제한'
+'Separate multiple IP addresses by comma, admin IP addresses are included.': '여러 IP 주소를 쉼표로 구분합니다. 관리자 IP 주소가 포함됩니다.'
+'Worker limit': '워커 제한'
+'Max workers allowed running at the same time.': '동시에 실행할 수 있는 최대 워커 수입니다.'
+'Worker Queue limit': '워커 큐 제한'
+'Max queued items a single worker will handle.': '단일 워커가 처리할 최대 대기열 항목 수입니다.'
+'Worker Time limit': '워커 시간 제한'
+'Max seconds a single worker will run.': '단일 워커가 실행되는 최대 시간(초)입니다.'
+'Worker Memory limit': '워커 메모리 제한'
+'Max memory (MB) a single worker is allowed to use.': '단일 워커가 사용할 수 있는 최대 메모리(MB)입니다.'
+'I accept the license terms and conditions': '라이선스 약관에 동의합니다'
+'Not required': '필수 아님'
+Inactive: 비활성
+Active: 활성
+Support: 지원
+'e.g. {examples}': '예: {examples}'
+'e.g. {examples}, etc.': '예: {examples} 등'
+'Full Access (*)': '전체 액세스(*)'
+Production: 프로덕션
+Development: 개발
+Admin: 관리자
+Editor: 편집자
+Viewer: 뷰어
+'Generic / Other': '일반 / 기타'
+Entities: 엔티티
+Raw: 원시
+'QR Code': 'QR 코드'
+More...: 더 보기...
+'Log out': '로그아웃'
+'To reset your password, please visit the following link': '비밀번호를 재설정하려면 다음 링크를 방문해 주세요'
+'This link will expire in {expiration}.': '이 링크는 {expiration} 후에 만료됩니다.'
+Cheers!: 감사합니다!
+'Send password reset email': '비밀번호 재설정 이메일 보내기'
+Home: 홈
+"The requested page couldn't be located.": "요청한 페이지를 찾을 수 없습니다."
+'Checkout for any URL misspelling or return to the homepage': 'URL 철자 오류가 있는지 확인하거나 홈페이지로 돌아가세요'
+Return: 돌아가기
+'The server returned a "{status_code} {status_text}".': '서버가 "{status_code} {status_text}"을(를) 반환했습니다.'
+'Something is broken. Please let us know what you were doing when this error occurred.': '문제가 발생했습니다. 이 오류가 발생했을 때 무엇을 하고 있었는지 알려주세요.'
+'We will fix it as soon as possible. Sorry for any inconvenience caused.': '가능한 한 빨리 수정하겠습니다. 불편을 끼쳐 드려 죄송합니다.'
+'You have unsaved changes! If you leave this page, your changes will be lost.': '저장하지 않은 변경 사항이 있습니다! 이 페이지를 떠나면 변경 사항이 손실됩니다.'
