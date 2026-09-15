@@ -142,7 +142,7 @@ Unit: Einheit
 Characters: Zeichen
 Words: Wörter
 'Access denied.': 'Zugriff verweigert.'
-'Invalid request method.': 'Ungültige Anfragemethode.'
+'Invalid request method.': 'Ungültige Request-Methode.'
 'Entity not found': 'Entität nicht gefunden'
 'Action not supported: {action}': 'Aktion nicht unterstützt: {action}'
 Update: Aktualisieren
@@ -273,7 +273,7 @@ Users: Benutzer
 'Automation is already running': 'Automatisierung läuft bereits'
 'File not found': 'Datei nicht gefunden'
 'Scheduled processes are disabled.': 'Geplante Prozesse sind deaktiviert.'
-'Automation cannot accept a new request right now.': 'Automatisierung kann derzeit keine neue Anfrage annehmen.'
+'Automation cannot accept a new request right now.': 'Automatisierung kann derzeit keine neue Request annehmen.'
 'Entity type not found': 'Entitätstyp nicht gefunden'
 'Entity deleted': 'Entität gelöscht'
 'An error occurred while sending the password reset email.': 'Beim Senden der Passwort-Zurücksetzungs-E-Mail ist ein Fehler aufgetreten.'
@@ -289,7 +289,7 @@ Variables: Variablen
 Source: Quelle
 'Select the data source for this automation': 'Datenquelle für diese Automatisierung auswählen'
 Request: Anfrage
-'Extract data from the current request body.': 'Daten aus dem aktuellen Anfrageinhalt extrahieren.'
+'Extract data from the current request body.': 'Daten aus dem aktuellen Request-Body extrahieren.'
 'Cannot be used with scheduled automations.': 'Kann nicht mit geplanten Automatisierungen verwendet werden.'
 Retrieve: Abrufen
 'Retrieve data from a webservice or other custom source.': 'Daten von einem Webservice oder einer anderen Quelle abrufen.'
@@ -302,10 +302,10 @@ Retrieve: Abrufen
 Interval: Intervall
 'Set an interval time between each batch.': 'Legt ein Zeitintervall zwischen jedem Batch fest.'
 Seconds: Sekunden
-'Configure where to extract request data from.': 'Konfigurieren Sie, woher Anfrageextrahiert werden soll.'
-'Request param': 'Anfrageparameter'
+'Configure where to extract request data from.': 'Konfigurieren Sie, woher Request-Daten extrahiert werden sollen.'
+'Request param': 'Request-Parameter'
 'Define the param name to use as the data source.': 'Definieren Sie den Parameternamen als Datenquelle.'
-'Leave empty to use the full request data.': 'Leer lassen, um die vollständigen Anfragedaten zu verwenden.'
+'Leave empty to use the full request data.': 'Leer lassen, um die vollständigen Request-Daten zu verwenden.'
 'Configure tasks to retrieve the data': 'Aufgaben zum Datenabruf konfigurieren'
 'Define source schema structure.': 'Quellschemastruktur definieren.'
 'Predefined schema storage': 'Vordefinierte Schemaspeicherung'
@@ -338,11 +338,11 @@ Execution: Ausführung
 'Control how this automation is executed.': 'Steuerung der Automatisierungsausführung.'
 'Execution mode': 'Ausführungsmodus'
 Single: Einzeln
-'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Nur ein Lauf gleichzeitig; blockiert neue Anfragen während eines aktiven/geplanten Laufs.'
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Nur ein Lauf gleichzeitig; blockiert neue Requests während eines aktiven/geplanten Laufs.'
 Parallel: Parallel
 'Multiple simultaneous execution runs allowed': 'Mehrere gleichzeitige Ausführungen erlaubt'
 Queued: In Warteschlange
-'Accepts new requests but executes only one run at a time.': 'Akzeptiert neue Anfragen, führt aber nur einen Lauf gleichzeitig aus.'
+'Accepts new requests but executes only one run at a time.': 'Akzeptiert neue Requests, führt aber nur einen Lauf gleichzeitig aus.'
 'Stale run timeout': 'Timeout für inaktiven Lauf'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunden ohne Aktivität, bevor ein Lauf als inaktiv gilt und automatisch zurückgesetzt wird.'
 'Defaults to {default}.': 'Standardmäßig {default}.'
@@ -680,7 +680,7 @@ Password: Passwort
 Endpoint: Endpoint
 'Send current data': 'Aktuelle Daten senden'
 'Select data transport location': 'Datenübertragungsort auswählen'
-'Request {type}': 'Anfrage {type}'
+'Request {type}': 'Request {type}'
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Mit Basisauthentifizierung verbinden'
 'Username / key': 'Benutzername / Schlüssel'
@@ -769,16 +769,16 @@ Filename: Dateiname
 'Could not rename: {old} to {new}': 'Konnte nicht umbenennen: {old} in {new}'
 'Successfully renamed: {old} to {new}': 'Erfolgreich umbenannt: {old} in {new}'
 'Invalid resource': 'Ungültige Ressource'
-'Request method': 'Anfragetyp'
-'Request timeout': 'Anfrage-Timeout'
-'Request query': 'Anfrageabfrage'
-'Request header': 'Anfrageheader'
-'Request body': 'Anfragekörper'
+'Request method': 'Request-Methode'
+'Request timeout': 'Request-Timeout'
+'Request query': 'Query-Parameter'
+'Request header': 'Request-Header'
+'Request body': 'Request-Body'
 'SOAP version': 'SOAP-Version'
 'Default (PHP default)': 'Standard (PHP-Standard)'
 'SOAP protocol version. Leave empty for PHP default.': 'SOAP-Protokollversion. Leer lassen für PHP-Standard.'
 Compression: Komprimierung
-'Compress SOAP requests and accept compressed responses.': 'SOAP-Anfragen komprimieren und komprimierte Antworten akzeptieren.'
+'Compress SOAP requests and accept compressed responses.': 'SOAP-Requests komprimieren und komprimierte Antworten akzeptieren.'
 'Connection timeout': 'Verbindungs-Timeout'
 'Maximum time in seconds for the connection to be established.': 'Maximale Zeit in Sekunden für den Verbindungsaufbau.'
 'WSDL mode': 'WSDL-Modus'
@@ -804,8 +804,8 @@ Advanced: Erweitert
 'Use data transport as body?': 'Datenübertragung als Körper verwenden?'
 'SOAP body': 'SOAP-Körper'
 'Define static variables to be used within the authorization process.': 'Statische Variablen für den Autorisierungsprozess definieren.'
-'Authorized request base config': 'Autorisierte Anfrage-Basiskonfiguration'
-'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Grundlegende Anfragenkonfiguration definieren. Dient zum Festlegen der Standardparameter für jede Anfrage mit dieser Verbindung.'
+'Authorized request base config': 'Autorisierte Request-Basiskonfiguration'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Grundlegende Request-Konfiguration definieren. Dient zum Festlegen der Standardparameter für jede Request mit dieser Verbindung.'
 'Override host': 'Host überschreiben'
 'Authorization process steps': 'Autorisierungsvorgangsschritte'
 'Define each step for the authorization process.': 'Jeden Schritt des Autorisierungsvorgangs definieren.'

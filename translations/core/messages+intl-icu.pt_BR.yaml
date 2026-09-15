@@ -771,7 +771,7 @@ Filename: Nome do arquivo
 'Invalid resource': 'Recurso inválido'
 'Request method': 'Método de requisição'
 'Request timeout': 'Tempo limite da requisição'
-'Request query': 'Consulta da requisição'
+'Request query': 'Parâmetros de consulta'
 'Request header': 'Cabeçalho da requisição'
 'Request body': 'Corpo da requisição'
 'SOAP version': 'Versão SOAP'

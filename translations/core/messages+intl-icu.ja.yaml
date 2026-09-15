@@ -771,7 +771,7 @@ Filename: ファイル名
 'Invalid resource': '無効なリソース'
 'Request method': 'リクエストメソッド'
 'Request timeout': 'リクエストタイムアウト'
-'Request query': 'リクエストクエリ'
+'Request query': 'クエリパラメータ'
 'Request header': 'リクエストヘッダー'
 'Request body': 'リクエストボディ'
 'SOAP version': 'SOAPバージョン'

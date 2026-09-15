@@ -35,7 +35,7 @@ Dark: 'Sombre'
 Data: 'Données'
 Default: 'Par défaut'
 'Define request params to be used within preview.': "Définir les paramètres de requête à utiliser dans l'aperçu."
-'Define request query to be used within preview.': "Définir la requête à utiliser dans l'aperçu."
+'Define request query to be used within preview.': "Définir les paramètres de requête à utiliser dans l'aperçu."
 'Define static variables to be used within preview.': "Définir les variables statiques à utiliser dans l'aperçu."
 Delete: 'Supprimer'
 Description: 'Description'
@@ -99,7 +99,7 @@ Remove: 'Supprimer'
 'Remove group': 'Supprimer le groupe'
 Request: 'Requête'
 'Request Params': 'Paramètres de requête'
-'Request Query': 'Requête'
+'Request Query': 'Paramètres de requête'
 Required: 'Requis'
 Result: 'Résultat'
 Routine: 'Routine'

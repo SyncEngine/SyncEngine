@@ -771,7 +771,7 @@ Filename: "Ім'я файлу"
 'Invalid resource': 'Недійсний ресурс'
 'Request method': 'Метод запиту'
 'Request timeout': 'Тайм-аут запиту'
-'Request query': 'Query запиту'
+'Request query': 'Параметри запиту'
 'Request header': 'Заголовок запиту'
 'Request body': 'Тіло запиту'
 'SOAP version': 'Версія SOAP'

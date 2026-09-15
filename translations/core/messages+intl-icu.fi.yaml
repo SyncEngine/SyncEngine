@@ -771,7 +771,7 @@ Filename: Tiedostonimi
 'Invalid resource': 'Virheellinen resurssi'
 'Request method': 'Pyyntömenetelmä'
 'Request timeout': 'Pyynnön aikakatkaisu'
-'Request query': 'Pyynnön kysely'
+'Request query': 'Kyselyparametrit'
 'Request header': 'Pyynnön otsikko'
 'Request body': 'Pyynnön runko'
 'SOAP version': 'SOAP-versio'

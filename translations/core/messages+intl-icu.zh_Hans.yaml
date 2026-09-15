@@ -771,7 +771,7 @@ Filename: 文件名
 'Invalid resource': '无效的资源'
 'Request method': '请求方法'
 'Request timeout': '请求超时'
-'Request query': '请求查询'
+'Request query': '查询参数'
 'Request header': '请求头部'
 'Request body': '请求正文'
 'SOAP version': 'SOAP 版本'

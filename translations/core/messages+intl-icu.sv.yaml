@@ -142,7 +142,7 @@ Unit: Enhet
 Characters: Tecken
 Words: Ord
 'Access denied.': 'Åtkomst nekad.'
-'Invalid request method.': 'Ogiltig begäransmetod.'
+'Invalid request method.': 'Ogiltig requestmetod.'
 'Entity not found': 'Entitet hittades inte'
 'Action not supported: {action}': 'Åtgärd stöds inte: {action}'
 Update: Uppdatera
@@ -273,7 +273,7 @@ Users: Användare
 'Automation is already running': 'Automatisering körs redan'
 'File not found': 'Fil hittades inte'
 'Scheduled processes are disabled.': 'Planerade processer är inaktiverade.'
-'Automation cannot accept a new request right now.': 'Automatisering kan inte acceptera en ny begäran just nu.'
+'Automation cannot accept a new request right now.': 'Automatisering kan inte acceptera en ny request just nu.'
 'Entity type not found': 'Entitetstyp hittades inte'
 'Entity deleted': 'Entitet borttagen'
 'An error occurred while sending the password reset email.': 'Ett fel inträffade vid skickande av lösenordsåterställnings-e-post.'
@@ -289,7 +289,7 @@ Variables: Variabler
 Source: Källa
 'Select the data source for this automation': 'Välj databasen för denna automatisering'
 Request: Begäran
-'Extract data from the current request body.': 'Extrahera data från nuvarande begäransbody.'
+'Extract data from the current request body.': 'Extrahera data från nuvarande request body.'
 'Cannot be used with scheduled automations.': 'Kan inte användas med planerade automatiseringar.'
 Retrieve: Hämta
 'Retrieve data from a webservice or other custom source.': 'Hämta data från en webservice eller annan källa.'
@@ -302,10 +302,10 @@ Retrieve: Hämta
 Interval: Intervall
 'Set an interval time between each batch.': 'Ställ in en tidsintervall mellan varje batch.'
 Seconds: Sekunder
-'Configure where to extract request data from.': 'Konfigurera var begäransdata ska extraheras från.'
-'Request param': 'Begäransparam'
+'Configure where to extract request data from.': 'Konfigurera var requestdata ska extraheras från.'
+'Request param': 'Requestparam'
 'Define the param name to use as the data source.': 'Definiera parameternamnet att använda som databas.'
-'Leave empty to use the full request data.': 'Lämna tomt för att använda hela begäransdata.'
+'Leave empty to use the full request data.': 'Lämna tomt för att använda hela requestdata.'
 'Configure tasks to retrieve the data': 'Konfigurera uppgifter för att hämta data'
 'Define source schema structure.': 'Definiera källschemastruktur.'
 'Predefined schema storage': 'Fördefinierad schemalagring'
@@ -338,11 +338,11 @@ Execution: Exekvering
 'Control how this automation is executed.': 'Styr hur denna automatisering exekveras.'
 'Execution mode': 'Exekveringsläge'
 Single: Enskild
-'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Endast en körning i taget och blockerar nya begärningar medan en körning är aktiv eller planerad.'
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Endast en körning i taget och blockerar nya requests medan en körning är aktiv eller planerad.'
 Parallel: Parallel
 'Multiple simultaneous execution runs allowed': 'Flera samtidiga exekveringar tillåtna'
 Queued: I kö
-'Accepts new requests but executes only one run at a time.': 'Accepterar nya begärningar men exekverar endast en körning i taget.'
+'Accepts new requests but executes only one run at a time.': 'Accepterar nya requests men exekverar endast en körning i taget.'
 'Stale run timeout': 'Stale run timeout'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder utan aktivitet innan en körning anses stale och automatiskt återställs.'
 'Defaults to {default}.': 'Standardinställning är {default}.'
@@ -680,7 +680,7 @@ Password: Lösenord
 Endpoint: Endpoint
 'Send current data': 'Skicka nuvarande data'
 'Select data transport location': 'Välj datatransportplats'
-'Request {type}': 'Begäran {type}'
+'Request {type}': 'Request {type}'
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Anslut med basic auktorisation'
 'Username / key': 'Användarnamn / nyckel'
@@ -769,16 +769,16 @@ Filename: Filnamn
 'Could not rename: {old} to {new}': 'Kunde inte döpa om: {old} till {new}'
 'Successfully renamed: {old} to {new}': 'Omdöpt: {old} till {new}'
 'Invalid resource': 'Ogiltig resurs'
-'Request method': 'Begäransmetod'
-'Request timeout': 'Begärans timeout'
-'Request query': 'Begäransquery'
-'Request header': 'Begäransheader'
-'Request body': 'Begäransbody'
+'Request method': 'Requestmetod'
+'Request timeout': 'Request timeout'
+'Request query': 'Frågeparametrar'
+'Request header': 'Requestheader'
+'Request body': 'Request body'
 'SOAP version': 'SOAP-version'
 'Default (PHP default)': 'Standard (PHP-standard)'
 'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protokollversion. Lämna tomt för PHP-standard.'
 Compression: Kompression
-'Compress SOAP requests and accept compressed responses.': 'Komprimera SOAP-begärningar och acceptera komprimerade svar.'
+'Compress SOAP requests and accept compressed responses.': 'Komprimera SOAP-requests och acceptera komprimerade svar.'
 'Connection timeout': 'Anslutningstimeout'
 'Maximum time in seconds for the connection to be established.': 'Maximal tid i sekunder för att etablera anslutningen.'
 'WSDL mode': 'WSDL-läge'
@@ -804,8 +804,8 @@ Advanced: Avancerad
 'Use data transport as body?': 'Använd datatransport som body?'
 'SOAP body': 'SOAP-body'
 'Define static variables to be used within the authorization process.': 'Definiera statiska variabler att användas inom auktorisationsprocessen.'
-'Authorized request base config': 'Auktoriserad begäransbas-config'
-'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definiera bas-begäranskonfiguration. Detta används för att ställa in standardparams för alla begärningar med denna anslutning.'
+'Authorized request base config': 'Auktoriserad requestbas-config'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definiera bas-requestkonfigurationen. Detta används för att ställa in standardparams för alla requests med denna anslutning.'
 'Override host': 'Överskriv värd'
 'Authorization process steps': 'Auktoriseringsprocesssteg'
 'Define each step for the authorization process.': 'Definiera varje steg för auktorisationsprocessen.'

@@ -142,7 +142,7 @@ Unit: Eenheid
 Characters: Tekens
 Words: Woorden
 'Access denied.': 'Toegang geweigerd.'
-'Invalid request method.': 'Ongeldige verzoekmethode.'
+'Invalid request method.': 'Ongeldige requestmethode.'
 'Entity not found': 'Entiteit niet gevonden'
 'Action not supported: {action}': 'Actie niet ondersteund: {action}'
 Update: Bijwerken
@@ -273,7 +273,7 @@ Users: Gebruikers
 'Automation is already running': 'Automatisering wordt al uitgevoerd'
 'File not found': 'Bestand niet gevonden'
 'Scheduled processes are disabled.': 'Geplande processen zijn uitgeschakeld.'
-'Automation cannot accept a new request right now.': 'Automatisering kan op dit moment geen nieuw verzoek accepteren.'
+'Automation cannot accept a new request right now.': 'Automatisering kan op dit moment geen nieuwe request accepteren.'
 'Entity type not found': 'Entiteitstype niet gevonden'
 'Entity deleted': 'Entiteit verwijderd'
 'An error occurred while sending the password reset email.': 'Er is een fout opgetreden bij het verzenden van de wachtwoordreset-e-mail.'
@@ -289,7 +289,7 @@ Variables: Variabelen
 Source: Bron
 'Select the data source for this automation': 'Selecteer de databron voor deze automatisering'
 Request: Verzoek
-'Extract data from the current request body.': 'Extraheer gegevens uit het huidige verzoeklichaam.'
+'Extract data from the current request body.': 'Extraheer gegevens uit de huidige request body.'
 'Cannot be used with scheduled automations.': 'Kan niet worden gebruikt met geplande automatiseringen.'
 Retrieve: Ophalen
 'Retrieve data from a webservice or other custom source.': 'Haal gegevens op van een webservice of andere aangepaste bron.'
@@ -302,10 +302,10 @@ Retrieve: Ophalen
 Interval: Interval
 'Set an interval time between each batch.': 'Stel een interval in tussen elke batch.'
 Seconds: Seconden
-'Configure where to extract request data from.': 'Configureer waar verzoekgegevens moeten worden geëxtraheerd.'
-'Request param': 'Verzoekparameter'
+'Configure where to extract request data from.': 'Configureer waar requestgegevens moeten worden geëxtraheerd.'
+'Request param': 'Requestparameter'
 'Define the param name to use as the data source.': 'Definieer de parameternaam om als databron te gebruiken.'
-'Leave empty to use the full request data.': 'Laat leeg om volledige verzoekgegevens te gebruiken.'
+'Leave empty to use the full request data.': 'Laat leeg om volledige requestgegevens te gebruiken.'
 'Configure tasks to retrieve the data': 'Taken configureren om gegevens op te halen'
 'Define source schema structure.': 'Definieer bronschemastructuur.'
 'Predefined schema storage': 'Vooraf gedefinieerde schemaopslag'
@@ -338,11 +338,11 @@ Execution: Uitvoering
 'Control how this automation is executed.': 'Regel hoe deze automatisering wordt uitgevoerd.'
 'Execution mode': 'Uitvoeringsmodus'
 Single: Enkel
-'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Slechts één uitvoering tegelijk en blokkeert nieuwe verzoeken terwijl een uitvoering actief of gepland is.'
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Slechts één uitvoering tegelijk en blokkeert nieuwe requests terwijl een uitvoering actief of gepland is.'
 Parallel: Parallel
 'Multiple simultaneous execution runs allowed': 'Meerdere gelijktijdige uitvoeringen toegestaan'
 Queued: In wachtrij
-'Accepts new requests but executes only one run at a time.': 'Accepteert nieuwe verzoeken maar voert slechts één uitvoering tegelijk uit.'
+'Accepts new requests but executes only one run at a time.': 'Accepteert nieuwe requests maar voert slechts één uitvoering tegelijk uit.'
 'Stale run timeout': 'Timeout voor verouderde uitvoering'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Seconden zonder activiteit voordat een uitvoering als verouderd wordt beschouwd en automatisch wordt gereset.'
 'Defaults to {default}.': 'Standaardinstelling is {default}.'
@@ -390,7 +390,7 @@ Name: Naam
 'From source schema': 'Van bronschema'
 'To target schema': 'Na doelschema'
 'Format options': 'Opties voor formattering'
-'Response format': 'Antwoordformaat'
+'Response format': 'Response format'
 'This webservice does not validate authorization.': 'Deze webservice valideert autorisatie niet.'
 'Added to queue!': 'Toegevoegd aan wachtrij!'
 'Finished executing endpoint.': 'Endpoint voltooid.'
@@ -398,7 +398,7 @@ Name: Naam
 'Dots (.) in refs are forbidden: {ref}': 'Punten (.) in refs zijn verboden: {ref}'
 'Entity not found for: {ref}': 'Entiteit niet gevonden voor: {ref}'
 'Model not found for: {ref} ({class})': 'Model niet gevonden voor: {ref} ({class})'
-'Response param name': 'Naam antwoordparameter'
+'Response param name': 'Responseparameternaam'
 'The param name where the results are located': 'De parameternaam waar de resultaten zich bevinden'
 'Nested keys are supported: key.nested_key': 'Geneste sleutels worden ondersteund: key.nested_key'
 'Key / Column name override to store results': 'Sleutel/kolomnaam overschrijven om resultaten op te slaan'
@@ -556,12 +556,12 @@ Find: Vind
 'Retrieve your data from your specific connection': 'Haal uw gegevens op van uw specifieke verbinding'
 'The data column name to pass to the webservice': 'De gegevenenskolomnaam om door te geven aan de webservice'
 Connection: Verbinding
-'Response data': 'Antwoordgegevens'
+'Response data': 'Responsedata'
 'No connection configured': 'Geen verbinding geconfigureerd'
 'Data not found: {key}': 'Gegevens niet gevonden: {key}'
 Send: Verzenden
 'Send your data to your specific connection': 'Verzend uw gegevens naar uw specifieke verbinding'
-'Retrieve response data': 'Antwoordgegevens ophalen'
+'Retrieve response data': 'Responsedata ophalen'
 Set: Instellen
 'Set your own values': 'Stel uw eigen waarden in'
 'The data column key name for the values that needs to be set': 'De gegevenenskolomsleutelnaam voor de waarden die moeten worden ingesteld'
@@ -680,7 +680,7 @@ Password: Wachtwoord
 Endpoint: Endpoint
 'Send current data': 'Huidige gegevens verzenden'
 'Select data transport location': 'Selecteer gegevens transportlocatie'
-'Request {type}': 'Verzoek {type}'
+'Request {type}': 'Request {type}'
 'HTTP Basic Auth': 'HTTP Basisauthenticatie'
 'Connect with basic authorization': 'Verbind met basisautorizatie'
 'Username / key': 'Gebruikersnaam / sleutel'
@@ -769,16 +769,16 @@ Filename: Bestandsnaam
 'Could not rename: {old} to {new}': 'Kon niet hernoemen: {old} naar {new}'
 'Successfully renamed: {old} to {new}': 'Succesvol hernoemd: {old} naar {new}'
 'Invalid resource': 'Ongeldige resource'
-'Request method': 'Verzoekmethode'
-'Request timeout': 'Verzoek timeout'
-'Request query': 'Verzoek query'
-'Request header': 'Verzoek header'
-'Request body': 'Verzoek lichaam'
+'Request method': 'Requestmethode'
+'Request timeout': 'Request timeout'
+'Request query': 'Queryparameters'
+'Request header': 'Requestheader'
+'Request body': 'Request body'
 'SOAP version': 'SOAP-versie'
 'Default (PHP default)': 'Standaard (PHP-standaard)'
 'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protocolversie. Laat leeg voor PHP-standaard.'
 Compression: Compressie
-'Compress SOAP requests and accept compressed responses.': 'Comprimeer SOAP-verzoeken en accepteer gecomprimeerde antwoorden.'
+'Compress SOAP requests and accept compressed responses.': 'Comprimeer SOAP-requests en accepteer gecomprimeerde antwoorden.'
 'Connection timeout': 'Verbinding timeout'
 'Maximum time in seconds for the connection to be established.': 'Maximale tijd in seconden voor het tot stand brengen van de verbinding.'
 'WSDL mode': 'WSDL-modus'
@@ -804,8 +804,8 @@ Advanced: Geavanceerd
 'Use data transport as body?': 'Gegevenstransport als lichaam gebruiken?'
 'SOAP body': 'SOAP-lichaam'
 'Define static variables to be used within the authorization process.': 'Definieer statische variabelen die binnen het autorisatieproces moeten worden gebruikt.'
-'Authorized request base config': 'Geautoriseerd verzoek basisconfiguratie'
-'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definieer de basisverzoekconfiguratie. Dit wordt gebruikt om de standaardparams voor elk verzoek met deze verbinding in te stellen.'
+'Authorized request base config': 'Geautoriseerde request-basisconfiguratie'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definieer de basisrequestconfiguratie. Dit wordt gebruikt om de standaardparams voor elke request met deze verbinding in te stellen.'
 'Override host': 'Host overschrijven'
 'Authorization process steps': 'Autorisatieproces stappen'
 'Define each step for the authorization process.': 'Definieer elke stap voor het autorisatieproces.'
@@ -819,8 +819,8 @@ Expiration: Verloop
 'Timestamp or date': 'Timestamp of datum'
 'Time format: ({time_format})': 'Tijdformaat: ({time_format})'
 'Text format: ({time_string})': 'Tekstformaat: ({time_string})'
-'Response type': 'Antwoordtype'
-'The type of response the URL will return': 'Het type antwoord dat de URL zal retourneren'
+'Response type': 'Responsetype'
+'The type of response the URL will return': 'Het type response dat de URL retourneert'
 'Tag storage': 'Tag-opslag'
 'Define the tags you need to store for authentication': 'Definieer de tags die u moet opslaan voor authenticatie'
 'Run next step (default)': 'Volgende stap uitvoeren (standaard)'

@@ -35,7 +35,7 @@ Dark: Escuro
 Data: Dados
 Default: Padrão
 'Define request params to be used within preview.': 'Defina os parâmetros de requisição a serem usados na pré-visualização.'
-'Define request query to be used within preview.': 'Defina a query da requisição a ser usada na pré-visualização.'
+'Define request query to be used within preview.': 'Defina os parâmetros de consulta a serem usados na pré-visualização.'
 'Define static variables to be used within preview.': 'Defina variáveis estáticas a serem usadas na pré-visualização.'
 Delete: Excluir
 Description: Descrição
@@ -98,8 +98,8 @@ Raw: Bruto
 Remove: Remover
 'Remove group': 'Remover grupo'
 Request: Requisição
-'Request Params': 'Parâmetros da Requisição'
-'Request Query': 'Query da Requisição'
+'Request Params': 'Parâmetros da requisição'
+'Request Query': 'Parâmetros de consulta'
 Required: Obrigatório
 Result: Resultado
 Routine: Rotina

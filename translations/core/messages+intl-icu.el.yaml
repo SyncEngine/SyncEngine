@@ -771,7 +771,7 @@ Filename: Όνομα αρχείου
 'Invalid resource': 'Μη έγκυρη πόλη'
 'Request method': 'Μέθοδος αιτήματος'
 'Request timeout': 'Timeout αιτήματος'
-'Request query': 'Query αιτήματος'
+'Request query': 'Παράμετροι ερωτήματος'
 'Request header': 'Header αιτήματος'
 'Request body': 'Body αιτήματος'
 'SOAP version': 'Έκδοση SOAP'

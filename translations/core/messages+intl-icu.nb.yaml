@@ -142,7 +142,7 @@ Unit: Enhets
 Characters: Tegn
 Words: Ord
 'Access denied.': 'Tilgang nektet.'
-'Invalid request method.': 'Ugyldig forespørselsmetode.'
+'Invalid request method.': 'Ugyldig requestmetode.'
 'Entity not found': 'Enhet ikke funnet'
 'Action not supported: {action}': 'Handling ikke støttet: {action}'
 Update: Oppdater
@@ -273,7 +273,7 @@ Users: Brukere
 'Automation is already running': 'Automatisering kjører allerede'
 'File not found': 'Fil ikke funnet'
 'Scheduled processes are disabled.': 'Planlagte prosesser er deaktivert.'
-'Automation cannot accept a new request right now.': 'Automatisering kan ikke akseptere en ny forespørsel akkurat nå.'
+'Automation cannot accept a new request right now.': 'Automatisering kan ikke akseptere en ny request akkurat nå.'
 'Entity type not found': 'Enhetstype ikke funnet'
 'Entity deleted': 'Enhet slettet'
 'An error occurred while sending the password reset email.': 'Det oppstod en feil under sending av passordnullstillings-e-post.'
@@ -289,7 +289,7 @@ Variables: Variable
 Source: Kilde
 'Select the data source for this automation': 'Velg databasen for denne automatiseringen'
 Request: Forespørsel
-'Extract data from the current request body.': 'Ekstraher data fra nåværende forespørselsbody.'
+'Extract data from the current request body.': 'Ekstraher data fra nåværende request body.'
 'Cannot be used with scheduled automations.': 'Kan ikke brukes med planlagte automatiseringer.'
 Retrieve: Hent
 'Retrieve data from a webservice or other custom source.': 'Hent data fra en webservice eller annen kilde.'
@@ -302,10 +302,10 @@ Retrieve: Hent
 Interval: Intervall
 'Set an interval time between each batch.': 'Sett et tidsintervall mellom hver batch.'
 Seconds: Sekunder
-'Configure where to extract request data from.': 'Konfigurer hvor forespørselsdata skal ekstraheres fra.'
-'Request param': 'Forespørselfparam'
+'Configure where to extract request data from.': 'Konfigurer hvor requestdata skal ekstraheres fra.'
+'Request param': 'Requestparam'
 'Define the param name to use as the data source.': 'Definer parameternavnet å bruke som databas.'
-'Leave empty to use the full request data.': 'La stå tom for å bruke hele forespørselsdataen.'
+'Leave empty to use the full request data.': 'La stå tom for å bruke hele requestdataen.'
 'Configure tasks to retrieve the data': 'Konfigurer oppgaver for å hente data'
 'Define source schema structure.': 'Definer kildeskjemastuktur.'
 'Predefined schema storage': 'Forhåndsdefinert skjema lagring'
@@ -338,11 +338,11 @@ Execution: Eksekvering
 'Control how this automation is executed.': 'Styr hvordan denne automatiseringen eksekveres.'
 'Execution mode': 'Eksekveringsmodus'
 Single: Enkelt
-'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Kun én kjøring om gangen og blokkerer nye forespørsler mens en kjøring er aktiv eller planlagt.'
+'Only one run at a time and blocks new requests while a run is active or scheduled.': 'Kun én kjøring om gangen og blokkerer nye requests mens en kjøring er aktiv eller planlagt.'
 Parallel: Parallel
 'Multiple simultaneous execution runs allowed': 'Flere samtidige eksekveringer tillatt'
 Queued: I kø
-'Accepts new requests but executes only one run at a time.': 'Aksepterer nye forespørsler men kjører kun én kjøring om gangen.'
+'Accepts new requests but executes only one run at a time.': 'Aksepterer nye requests men kjører kun én kjøring om gangen.'
 'Stale run timeout': 'Stale run timeout'
 'Seconds without a activity before a run is considered stale and automatically reset.': 'Sekunder uten aktivitet før en kjøring anses stale og automatisk nullstilles.'
 'Defaults to {default}.': 'Standardinnstilling er {default}.'
@@ -680,7 +680,7 @@ Password: Passord
 Endpoint: Endpoint
 'Send current data': 'Send nåværende data'
 'Select data transport location': 'Velg datatransportlocatie'
-'Request {type}': 'Forespørsel {type}'
+'Request {type}': 'Request {type}'
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Koble med basic autorisasjon'
 'Username / key': 'Brukernavn / nøkkel'
@@ -769,16 +769,16 @@ Filename: Filnavn
 'Could not rename: {old} to {new}': 'Kunne ikke omdøpe: {old} til {new}'
 'Successfully renamed: {old} to {new}': 'Omdøpt: {old} til {new}'
 'Invalid resource': 'Ugyldig ressurs'
-'Request method': 'Forespørselsmetode'
-'Request timeout': 'Forespørselfimeout'
-'Request query': 'Forespørselsquery'
-'Request header': 'Forespørselheader'
-'Request body': 'Forespørselsbody'
+'Request method': 'Requestmetode'
+'Request timeout': 'Request timeout'
+'Request query': 'Spørringsparametere'
+'Request header': 'Requestheader'
+'Request body': 'Request body'
 'SOAP version': 'SOAP-versjon'
 'Default (PHP default)': 'Standard (PHP-standard)'
 'SOAP protocol version. Leave empty for PHP default.': 'SOAP-protokollversjon. La stå tom for PHP-standard.'
 Compression: Komprimering
-'Compress SOAP requests and accept compressed responses.': 'Komprimer SOAP-forespørsler og accepter komprimerte svar.'
+'Compress SOAP requests and accept compressed responses.': 'Komprimer SOAP-requests og accepter komprimerte svar.'
 'Connection timeout': 'Tilkoblingstimeout'
 'Maximum time in seconds for the connection to be established.': 'Maksimal tid i sekunder for å etablere tilkoblingen.'
 'WSDL mode': 'WSDL-modus'
@@ -804,8 +804,8 @@ Advanced: Avansert
 'Use data transport as body?': 'Bruk datatransport som body?'
 'SOAP body': 'SOAP-body'
 'Define static variables to be used within the authorization process.': 'Definer statiske variable å brukes innen autorisasjonsprosessen.'
-'Authorized request base config': 'Autorisert forespørsel base-config'
-'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definer base-forespørselskonfigurasjon. Dette brukes for å sette standardparams for alle forespørsler med denne tilkoblingen.'
+'Authorized request base config': 'Autorisert request base-config'
+'Define the base request configuration. This will be used to set the default params for any request using this connection.': 'Definer base-requestkonfigurasjonen. Dette brukes for å sette standardparams for alle requests med denne tilkoblingen.'
 'Override host': 'Overskriv vert'
 'Authorization process steps': 'Autorisasjonsprosesser steg'
 'Define each step for the authorization process.': 'Definer hvert steg for autorisasjonsprosessen.'

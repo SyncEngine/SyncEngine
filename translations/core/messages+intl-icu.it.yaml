@@ -142,7 +142,7 @@ Unit: Unità
 Characters: Caratteri
 Words: Parole
 'Access denied.': 'Accesso negato.'
-'Invalid request method.': 'Metodo richiesta non valido.'
+'Invalid request method.': 'Metodo della richiesta non valido.'
 'Entity not found': 'Entità non trovata'
 'Action not supported: {action}': 'Azione non supportata: {action}'
 Update: Aggiorna
@@ -303,7 +303,7 @@ Interval: Intervallo
 'Set an interval time between each batch.': 'Imposta un tempo di intervallo tra ogni batch.'
 Seconds: Secondi
 'Configure where to extract request data from.': 'Configura dove estrarre i dati della richiesta.'
-'Request param': 'Parametro richiesta'
+'Request param': 'Parametro della richiesta'
 'Define the param name to use as the data source.': 'Definisci il nome del parametro da usare come fonte dati.'
 'Leave empty to use the full request data.': 'Lascia vuoto per usare tutti i dati della richiesta.'
 'Configure tasks to retrieve the data': 'Configura attività per recuperare i dati'
@@ -680,7 +680,7 @@ Password: Password
 Endpoint: Endpoint
 'Send current data': 'Invia dati correnti'
 'Select data transport location': 'Seleziona posizione trasporto dati'
-'Request {type}': 'Richiesta {type}'
+'Request {type}': 'Request {type}'
 'HTTP Basic Auth': 'HTTP Basic Auth'
 'Connect with basic authorization': 'Connetti con autorizzazione base'
 'Username / key': 'Nome utente / chiave'
@@ -769,11 +769,11 @@ Filename: Nome file
 'Could not rename: {old} to {new}': 'Impossibile rinominare: {old} in {new}'
 'Successfully renamed: {old} to {new}': 'Rinominato: {old} in {new}'
 'Invalid resource': 'Risorsa non valida'
-'Request method': 'Metodo richiesta'
-'Request timeout': 'Timeout richiesta'
-'Request query': 'Query richiesta'
-'Request header': 'Header richiesta'
-'Request body': 'Body richiesta'
+'Request method': 'Metodo della richiesta'
+'Request timeout': 'Timeout della richiesta'
+'Request query': 'Parametri di query'
+'Request header': 'Header della richiesta'
+'Request body': 'Corpo della richiesta'
 'SOAP version': 'Versione SOAP'
 'Default (PHP default)': 'Predefinito (PHP default)'
 'SOAP protocol version. Leave empty for PHP default.': 'Versione protocollo SOAP. Lascia vuoto per PHP default.'

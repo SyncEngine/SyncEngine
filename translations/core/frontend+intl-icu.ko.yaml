@@ -35,7 +35,7 @@ Dark: 다크
 Data: 데이터
 Default: 기본값
 'Define request params to be used within preview.': '미리보기에 사용할 요청 매개변수를 정의합니다.'
-'Define request query to be used within preview.': '미리보기에 사용할 요청 쿼리를 정의합니다.'
+'Define request query to be used within preview.': '미리보기에 사용할 쿼리 매개변수를 정의합니다.'
 'Define static variables to be used within preview.': '미리보기에 사용할 정적 변수를 정의합니다.'
 Delete: 삭제
 Description: 설명
@@ -99,7 +99,7 @@ Remove: 제거
 'Remove group': '그룹 제거'
 Request: 요청
 'Request Params': '요청 매개변수'
-'Request Query': '요청 쿼리'
+'Request Query': '쿼리 매개변수'
 Required: 필수
 Result: 결과
 Routine: 절차

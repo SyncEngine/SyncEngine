@@ -771,7 +771,7 @@ Filename: 파일 이름
 'Invalid resource': '잘못된 리소스'
 'Request method': '요청 메서드'
 'Request timeout': '요청 제한 시간'
-'Request query': '요청 쿼리'
+'Request query': '쿼리 매개변수'
 'Request header': '요청 헤더'
 'Request body': '요청 본문'
 'SOAP version': 'SOAP 버전'

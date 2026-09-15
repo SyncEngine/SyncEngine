@@ -35,7 +35,7 @@ Dark: Koyu
 Data: Veri
 Default: Varsayılan
 'Define request params to be used within preview.': 'Önizlemede kullanılacak istek parametrelerini tanımlayın.'
-'Define request query to be used within preview.': 'Önizlemede kullanılacak istek sorgusunu tanımlayın.'
+'Define request query to be used within preview.': 'Önizlemede kullanılacak sorgu parametrelerini tanımlayın.'
 'Define static variables to be used within preview.': 'Önizlemede kullanılacak statik değişkenleri tanımlayın.'
 Delete: Sil
 Description: Açıklama
@@ -99,7 +99,7 @@ Remove: Kaldır
 'Remove group': 'Grubu kaldır'
 Request: İstek
 'Request Params': 'İstek Parametreleri'
-'Request Query': 'İstek Sorgusu'
+'Request Query': 'Sorgu parametreleri'
 Required: Zorunlu
 Result: Sonuç
 Routine: Prosedür

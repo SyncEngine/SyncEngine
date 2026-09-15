@@ -35,7 +35,7 @@ Dark: Tumma
 Data: Data
 Default: Oletus
 'Define request params to be used within preview.': 'Määritä pyyntöparametrit, joita käytetään esikatselussa.'
-'Define request query to be used within preview.': 'Määritä pyynnön kysely, jota käytetään esikatselussa.'
+'Define request query to be used within preview.': 'Määritä kyselyparametrit, joita käytetään esikatselussa.'
 'Define static variables to be used within preview.': 'Määritä staattiset muuttujat, joita käytetään esikatselussa.'
 Delete: Poista
 Description: Kuvaus
@@ -99,7 +99,7 @@ Remove: Poista
 'Remove group': 'Poista ryhmä'
 Request: Pyyntö
 'Request Params': 'Pyyntöparametrit'
-'Request Query': 'Pyynnön kysely'
+'Request Query': 'Kyselyparametrit'
 Required: Pakollinen
 Result: Tulos
 Routine: Rutiini

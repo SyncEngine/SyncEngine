@@ -34,8 +34,8 @@ Custom: 'Personalizzato'
 Dark: 'Scuro'
 Data: 'Dati'
 Default: 'Predefinito'
-'Define request params to be used within preview.': "Definisci parametri di richiesta da usare nell'anteprima."
-'Define request query to be used within preview.': "Definisci query di richiesta da usare nell'anteprima."
+'Define request params to be used within preview.': "Definisci parametri della richiesta da usare nell'anteprima."
+'Define request query to be used within preview.': "Definisci parametri di query da usare nell'anteprima."
 'Define static variables to be used within preview.': "Definisci variabili statiche da usare nell'anteprima."
 Delete: 'Elimina'
 Description: 'Descrizione'
@@ -98,8 +98,8 @@ Raw: 'Dati grezzi'
 Remove: 'Rimuovi'
 'Remove group': 'Rimuovi gruppo'
 Request: 'Richiesta'
-'Request Params': 'Parametri di richiesta'
-'Request Query': 'Query di richiesta'
+'Request Params': 'Parametri della richiesta'
+'Request Query': 'Parametri di query'
 Required: 'Richiesto'
 Result: 'Risultato'
 Routine: 'Routine'

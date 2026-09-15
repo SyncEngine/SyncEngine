@@ -35,7 +35,7 @@ Dark: ダーク
 Data: データ
 Default: デフォルト
 'Define request params to be used within preview.': 'プレビュー内で使用するリクエストパラメータを定義します。'
-'Define request query to be used within preview.': 'プレビュー内で使用するリクエストクエリを定義します。'
+'Define request query to be used within preview.': 'プレビュー内で使用するクエリパラメータを定義します。'
 'Define static variables to be used within preview.': 'プレビュー内で使用する静的変数を定義します。'
 Delete: 削除
 Description: 説明
@@ -99,7 +99,7 @@ Remove: 削除
 'Remove group': 'グループを削除'
 Request: リクエスト
 'Request Params': 'リクエストパラメータ'
-'Request Query': 'リクエストクエリ'
+'Request Query': 'クエリパラメータ'
 Required: 必須
 Result: 結果
 Routine: ルーチン

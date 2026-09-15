@@ -35,7 +35,7 @@ Dark: 深色
 Data: 数据
 Default: 默认
 'Define request params to be used within preview.': '定义预览中使用的请求参数。'
-'Define request query to be used within preview.': '定义预览中使用的请求查询。'
+'Define request query to be used within preview.': '定义预览中使用的查询参数。'
 'Define static variables to be used within preview.': '定义预览中使用的静态变量。'
 Delete: 删除
 Description: 描述
@@ -99,7 +99,7 @@ Remove: 移除
 'Remove group': '移除组'
 Request: 请求
 'Request Params': '请求参数'
-'Request Query': '请求查询'
+'Request Query': '查询参数'
 Required: 必填
 Result: 结果
 Routine: 例程
