@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Setup;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +36,19 @@ class InstallController extends DefaultController
 		}
 
 		if ( $env->get( 'SYNCENGINE_INSTALLED' ) ) {
-			$this->addFlash( 'warning', $this->trans( 'The installer has already been run.' ) );
+			// @todo Redirect to a different route?
+			$this->addFlash( 'warning', $this->trans( 'The installer has already been completed and is no longer available.' ) );
+
+			$connected = $system->isDatabaseConnected();
+			if ( $connected instanceof \Throwable ) {
+				$syncengineLogger->error( $connected );
+				if ( $kernel->isDebug() ) {
+					$this->addFlash( 'warning', $connected->getMessage() );
+				} else {
+					$this->addFlash( 'warning', $this->trans( 'Could not connect to the database. Please verify your configuration.' ) );
+				}
+			}
+
 			$response->setStatusCode( Response::HTTP_FORBIDDEN );
 
 			return $this->render('index.html.twig', [], $response );
