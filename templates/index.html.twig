@@ -15,21 +15,7 @@
 	{% set maxContentWidth = maxContentWidth ?? 600 %}
 	<div id="content" class="container py-4" style="max-width: {{ maxContentWidth }}px;">
 
-		{% for message in app.flashes('error') %}
-			<div class="alert alert-danger">
-				{{ message }}
-			</div>
-		{% endfor %}
-		{% for message in app.flashes('warning') %}
-			<div class="alert alert-warning">
-				{{ message }}
-			</div>
-		{% endfor %}
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">
-				{{ message }}
-			</div>
-		{% endfor %}
+		{% include '_partials/flashes.html.twig' %}
 
 		{% block content %}
 
