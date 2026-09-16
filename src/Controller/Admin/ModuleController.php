@@ -128,7 +128,7 @@ class ModuleController extends AbstractAdminController
 				[
 					'vendor'          => $newModuleInfo['vendor'],
 					'moduleName'      => $newModuleInfo['moduleName'],
-					'previousVersion' => $newModuleInfo['previousVersion'],
+					'previousVersion' => $newModuleInfo['previousVersion'] ?: '0',
 				]
 			);
 		}
@@ -166,7 +166,7 @@ class ModuleController extends AbstractAdminController
 			[
 				'vendor'          => $vendor,
 				'moduleName'      => $moduleName,
-				'previousVersion' => $previousVersion,
+				'previousVersion' => $previousVersion ?: '0',
 			]
 		);
 	}
@@ -232,20 +232,20 @@ class ModuleController extends AbstractAdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$this->_deleteModule( $module );
-		$this->_refreshModuleRegistry();
-
 		return $this->redirectToRoute(
 			'syncengine_module_uninstall_finalize',
 			[
-				'moduleName' => $name,
+				'vendor' => $vendor,
+				'moduleName' => $moduleName,
 			]
 		);
 	}
 
-	#[Route( '/module/uninstall/finalize/{moduleName}', name: 'module_uninstall_finalize' )]
-	public function moduleUninstallFinalize( string $moduleName ): Response
+	#[Route( '/module/uninstall/finalize/{vendor}/{moduleName}', name: 'module_uninstall_finalize' )]
+	public function moduleUninstallFinalize( string $vendor, string $moduleName, Modules $modulesService ): Response
 	{
+		$name = $modulesService::getModulePackageName( $moduleName, $vendor );
+
 		if ( ! $this->_refreshContainer() ) {
 			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module uninstall.' ) );
 
@@ -254,7 +254,7 @@ class ModuleController extends AbstractAdminController
 
 		$this->addFlash(
 			'success',
-			$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $moduleName ] )
+			$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
 		);
 
 		return $this->redirectToRoute( 'syncengine_modules' );
