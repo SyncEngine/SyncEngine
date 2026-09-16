@@ -16,6 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Entity\Flow;
+use SyncEngine\Entity\Routine;
+use SyncEngine\Entity\Storage;
 use SyncEngine\Framework\ModuleRegistryManager;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Repository\Abstract\EngineRepository;
@@ -338,11 +343,11 @@ class ModuleController extends AbstractAdminController
 
 	private function activeSupervisors( EntityManagerInterface $entityManager, ModuleModel $module ): bool
 	{
-		$classes = [ 'Automation', 'Connection', 'Flow', 'Routine', 'Storage' ];
+		$classes = [ Automation::class, Connection::class, Flow::class, Routine::class, Storage::class ];
 
 		foreach ( $classes as $class ) {
 			/** @var EngineRepository $repository */
-			$repository = $entityManager->getRepository( 'SyncEngine\Entity\\' . $class );
+			$repository = $entityManager->getRepository( $class );
 			if ( $repository?->findBySupervisorClassLocator( $module->getClassLocator() ) ) {
 				return true;
 			}
