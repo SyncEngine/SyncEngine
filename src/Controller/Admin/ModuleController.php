@@ -389,22 +389,26 @@ class ModuleController extends AbstractAdminController
 			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
-		$modules       = $modulesService->getAll();
 		$modulePath    = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
 		$moduleLocator = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
 		$previousVersion = 0;
 
-		foreach ( $modules as $module ) {
-			if ( $moduleLocator === $module->getClassLocator() ) {
-				$previousVersion = $module->getVersion();
+		$moduleExists = $modulesService->has( $moduleLocator );
+		if ( $moduleExists )  {
+			$currentModule   = $modulesService->get( $moduleLocator );
+			$previousVersion = $currentModule->getVersion();
 
-				$this->_deleteModule( $module );
-			}
+			// Remove the current module files before installing the new version.
+			// This is to ensure that the new version is installed cleanly and that any old files are removed.
+			$this->_deleteModule( $currentModule );
 		}
+
+		// Remove module from disabled list if it was previously disabled.
+		// This is to ensure that the module can be re-enabled after an update.
+		$this->moduleRegistryManager->removeDisabledModule( $moduleLocator );
 
 		$moduleRoot = $this->getParameter( 'dir.modules' );
 		$moduleDir  = $moduleRoot . DIRECTORY_SEPARATOR . $modulePath;
-		$this->moduleRegistryManager->removeDisabledModule( $moduleLocator );
 
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
