@@ -2,7 +2,10 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
@@ -379,19 +382,34 @@ class SystemController extends AbstractAdminController
 							$value = bin2hex( random_bytes( 20 ) );
 						}
 					}
+					$env->set( $key, $value );
 				break;
 				case 'DATABASE_URL':
-				case 'MAILER_DSN':
-					if ( empty( $value ) ) {
-						$env->unset( $key );
-						continue 2; // Do not override default.
+					// @todo Improve database connection test. This uses Symfony internal code, but it works for now.
+					try {
+						$parser = new DsnParser( ConnectionFactory::DEFAULT_SCHEME_MAP );
+						$dsn    = $parser->parse( $value );
+
+						$connection = DriverManager::getConnection( $dsn );
+						$connection->getServerVersion(); // Loads connection. Alternative for the now private connect() method.
+						if ( $connection->isConnected() ) {
+							$env->set( $key, $value );
+						} else {
+							$this->addFlash( 'warning', $this->trans( 'Database connection failed' ) );
+						}
+					} catch ( \Throwable $e ) {
+						$this->addFlash( 'warning', $this->trans( 'Database connection failed: %error%', [ '%error%' => $e->getMessage() ] ) );
 					}
 				break;
-				case 'APP_DEBUG':
+				case 'MAILER_DSN':
+					if ( ! empty( $value ) ) {
+						$env->set( $key, $value );
+					}
+				break;
+				default:
+					$env->set( $key, $value );
 				break;
 			}
-
-			$env->set( $key, $value );
 		}
 		$env->persist();
 	}
