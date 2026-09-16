@@ -47,7 +47,9 @@
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-													<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName: disabled.module, vendor: disabled.vendor } ) }}">{{ 'Uninstall'|trans }}</button>
+													<a class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName: disabled.module, vendor: disabled.vendor } ) }}">
+														{{ 'Uninstall'|trans }}
+													</a>
 												</div>
 											</div>
 										</div>
@@ -148,10 +150,9 @@
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-														<button type="button" class="btn btn-danger"
-														        href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">
+														<a class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">
 															{{ 'Uninstall'|trans }}
-														</button>
+														</a>
 													</div>
 												</div>
 											</div>
