@@ -312,13 +312,22 @@ class SystemController extends AbstractAdminController
 	#[Route( '/env', name: 'system_env' )]
 	public function renderSystemEnv( Request $request, System $system ): Response
 	{
+		$env  = $system->getEnv();
+		$form = $this->formEnv( $request, $env );
+
+		if ( $this->isGranted('ROLE_ADMIN' ) ) {
+			$formData              = $env->fetch();
+			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
+			$form->setData( $formData );
+		}
+
 		return $this->render(
 			'admin/system/index.html.twig',
 			[
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Environment' ),
 				'icon'        => 'system-environment',
-				'form'        => $this->formEnv( $request, $system->getEnv() ),
+				'form'        => $form,
 				'breadcrumbs' => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_system_index' ),
@@ -344,10 +353,6 @@ class SystemController extends AbstractAdminController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->updateEnv( $form->getData(), $env );
-		} else {
-			$formData              = $env->fetch();
-			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
-			$form->setData( $formData );
 		}
 
 		return $form;
