@@ -17,13 +17,17 @@ class InstallController extends DefaultController
 	#[Route( '/install', name: 'install' )]
 	public function renderInstall(
 		Request $request,
-		EntityManagerInterface $entityManager,
 		System $system,
 		SystemController $systemController,
 		LoggerInterface $syncengineLogger,
 		KernelInterface $kernel,
 	): Response {
+
+		$env = $system->getEnv();
+
 		if ( true === $system->isInstalled() ) {
+			$env->update( 'SYNCENGINE_INSTALLED', 1 );
+
 			if ( true !== $system->isRegistered() ) {
 				return $this->redirectToRoute( 'syncengine_register' );
 			}
@@ -31,7 +35,12 @@ class InstallController extends DefaultController
 			return $this->redirectToRoute( 'syncengine_admin_login' );
 		}
 
-		$env  = $system->getEnv();
+		if ( $env->get( 'SYNCENGINE_INSTALLED' ) ) {
+			$this->addFlash( 'warning', $this->trans( 'The installer has already been run.' ) );
+
+			return $this->render('index.html.twig' );
+		}
+
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
 		try {
