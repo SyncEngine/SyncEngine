@@ -23,7 +23,8 @@ class InstallController extends DefaultController
 		KernelInterface $kernel,
 	): Response {
 
-		$env = $system->getEnv();
+		$env      = $system->getEnv();
+		$response = new Response();
 
 		if ( true === $system->isInstalled() ) {
 			$env->update( 'SYNCENGINE_INSTALLED', 1 );
@@ -37,8 +38,9 @@ class InstallController extends DefaultController
 
 		if ( $env->get( 'SYNCENGINE_INSTALLED' ) ) {
 			$this->addFlash( 'warning', $this->trans( 'The installer has already been run.' ) );
+			$response->setStatusCode( Response::HTTP_FORBIDDEN );
 
-			return $this->render('index.html.twig' );
+			return $this->render('index.html.twig', [], $response );
 		}
 
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
@@ -53,6 +55,7 @@ class InstallController extends DefaultController
 				if ( $dbConnected instanceof \Throwable ) {
 					$this->addFlash( 'warning', $dbConnected->getMessage() );
 					$syncengineLogger->error( $dbConnected );
+					$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 
 				} elseif ( $dbConnected ) {
 					// Install database schema.
@@ -61,6 +64,7 @@ class InstallController extends DefaultController
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
 						$syncengineLogger->error( $success );
+						$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 
 					} else {
 						// Check if installed successfully.
@@ -75,9 +79,12 @@ class InstallController extends DefaultController
 							$syncengineLogger->error( $success );
 						} else {
 							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
+							$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 						}
 					}
 				}
+			} elseif ( $form->isSubmitted() ) {
+				$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 			}
 		} catch ( \Throwable $e ) {
 			if ( $kernel->isDebug() ) {
@@ -85,6 +92,7 @@ class InstallController extends DefaultController
 			}
 			$this->addFlash( 'warning', $e->getMessage() );
 			$syncengineLogger->error( $e );
+			$response->setStatusCode( Response::HTTP_UNPROCESSABLE_ENTITY );
 		}
 
 		return $this->render( 'index.html.twig', [
@@ -100,7 +108,7 @@ class InstallController extends DefaultController
 					'current' => true,
 				],
 			],
-		] );
+		], $response );
 	}
 
 	#[Route( '/install/repair', name: 'install_repair' )]
