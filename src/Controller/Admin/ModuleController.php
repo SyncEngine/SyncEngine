@@ -212,20 +212,30 @@ class ModuleController extends AbstractAdminController
 		$name   = $modulesService::getModulePackageName( $moduleName, $vendor );
 		$module = $modulesService->get( $name );
 
-		if ( $this->activeSupervisors( $entityManager, $module ) ) {
-			$this->addFlash(
-				'warning',
-				$this->trans(
-					'Unable to uninstall {moduleName}. It is still used in your system',
-					[ 'moduleName' => $name ]
-				)
-			);
+		if ( ! $module ) {
+			$this->addFlash( 'warning', $this->trans( 'Module not found: {moduleName}', [ 'moduleName' => $name ] ) );
 
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		try {
+			if ( $this->activeSupervisors( $entityManager, $module ) ) {
+				$this->addFlash(
+					'warning',
+					$this->trans(
+						'Unable to uninstall {moduleName}. It is still used in your system',
+						[ 'moduleName' => $name ]
+					)
+				);
+
+				return $this->redirectToRoute( 'syncengine_modules' );
+			}
+
 			$module->uninstall();
+
+			$this->_deleteModule( $module );
+			$this->_refreshModuleRegistry();
+
 		} catch ( \Throwable $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) . ': ' . $e->getMessage() );
 
