@@ -12,6 +12,15 @@ class Modules
 	 */
 	public function __construct( private readonly ServiceLocator $container ) {}
 
+	public function has( string $moduleName, string $vendor = '' ): bool
+	{
+		if ( $vendor ) {
+			$moduleName = self::getModulePackageName( $moduleName, $vendor );
+		}
+
+		return $this->container->has( $moduleName );
+	}
+
 	/**
 	 * @return ModuleModel|null
 	 */
