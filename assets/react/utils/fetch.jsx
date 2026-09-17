@@ -1,5 +1,9 @@
 import { isObject } from './conditions';
 
+const csrfTokenCache = {
+	token: null,
+};
+
 const generateCsrfToken = () => {
 	const tokenName = window.SyncEngine?.csrfToken;
 
@@ -7,10 +11,14 @@ const generateCsrfToken = () => {
 		return [ null, null ];
 	}
 
+	if ( csrfTokenCache.token ) {
+		return [ window.SyncEngine?.csrfToken, csrfTokenCache.token ];
+	}
+
 	const token = crypto.randomUUID();
 
-	// Double-submit stateless token.
 	document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict; Secure`;
+	csrfTokenCache.token = token;
 
 	return [ tokenName, token ];
 }
@@ -60,12 +68,12 @@ const fetchJson = async ( url, init ) => {
 
 	} catch ( e ) {
 		// Distinguish network errors from parsing errors
-		const error = e instanceof TypeError 
+		const error = e instanceof TypeError
 			? { type: 'network', message: 'Network request failed' }
 			: { type: 'parsing', message: 'Failed to parse response' };
-		
+
 		console.error( '[fetchJson]', url, error );
-		
+
 		return { success: false, error: error };
 	}
 }
