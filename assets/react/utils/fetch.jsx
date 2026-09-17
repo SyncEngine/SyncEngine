@@ -16,8 +16,9 @@ const generateCsrfToken = () => {
 	}
 
 	const token = crypto.randomUUID();
+	const secure = window.location.protocol === 'https:' ? '; Secure' : '';
 
-	document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict; Secure`;
+	document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict${secure}`;
 	csrfTokenCache.token = token;
 
 	return [ tokenName, token ];
