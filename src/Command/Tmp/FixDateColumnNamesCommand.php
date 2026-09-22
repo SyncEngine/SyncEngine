@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use SyncEngine\Controller\DefaultController;
 
 /**
@@ -20,8 +21,10 @@ use SyncEngine\Controller\DefaultController;
 class FixDateColumnNamesCommand extends Command
 {
 	// @phpstan-ignore-next-line property.onlyWritten (Required to trigger DI container initialization)
-	public function __construct( private EntityManagerInterface $entityManager )
-	{
+	public function __construct(
+		private EntityManagerInterface $entityManager,
+		#[Autowire('%syncengine.db.table_prefix%')] private string $tablePrefix
+	) {
 		parent::__construct();
 	}
 
@@ -43,22 +46,24 @@ class FixDateColumnNamesCommand extends Command
 				$output->writeln( '<comment>Rolling back changes...</comment>' );
 
 				foreach ( [ 'trace', 'connection', 'automation', 'flow', 'routine', 'storage' ] as $entity ) {
-					$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `created_at` `created` LONGTEXT NOT NULL');
-					$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `updated_at` `modified` LONGTEXT NOT NULL');
+					$table = $this->tablePrefix . $entity;
+					$connection->executeStatement('ALTER TABLE '.$table.' CHANGE `created_at` `created` LONGTEXT NOT NULL');
+					$connection->executeStatement('ALTER TABLE '.$table.' CHANGE `updated_at` `modified` LONGTEXT NOT NULL');
 				}
 
-				$connection->executeStatement('ALTER TABLE api_token CHANGE `expires_at` `expires` LONGTEXT NOT NULL');
+				$connection->executeStatement('ALTER TABLE '.$this->tablePrefix.'api_token CHANGE `expires_at` `expires` LONGTEXT NOT NULL');
 
 				$output->writeln( '<info>Rollback completed successfully.</info>' );
 				return Command::SUCCESS;
 			}
 
 			foreach ( [ 'trace', 'connection', 'automation', 'flow', 'routine', 'storage' ] as $entity ) {
-				$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `created` `created_at` LONGTEXT NOT NULL');
-				$connection->executeStatement('ALTER TABLE '.$entity.' CHANGE `modified` `updated_at` LONGTEXT NOT NULL');
+				$table = $this->tablePrefix . $entity;
+				$connection->executeStatement('ALTER TABLE '.$table.' CHANGE `created` `created_at` LONGTEXT NOT NULL');
+				$connection->executeStatement('ALTER TABLE '.$table.' CHANGE `modified` `updated_at` LONGTEXT NOT NULL');
 			}
 
-			$connection->executeStatement('ALTER TABLE api_token CHANGE `expires` `expires_at` LONGTEXT NOT NULL');
+			$connection->executeStatement('ALTER TABLE '.$this->tablePrefix.'api_token CHANGE `expires` `expires_at` LONGTEXT NOT NULL');
 
 		} catch (\Exception $e) {
 			$output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
