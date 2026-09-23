@@ -3,6 +3,7 @@
 	"name": "syncengine/core",
 	"description": "A Fair-Code Modular Platform for Secure, Scalable and Automated Data Synchronization.",
 	"homepage": "https://www.syncengine.io",
+	"version": "0.1.0-beta.7",
 	"authors": [
 		{
 			"name": "Jory Hogeveen",
