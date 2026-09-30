@@ -73,17 +73,16 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('MAILER_DSN', MailDsnType::class, [
-				'label' => $this->translator->trans( 'Mailer' ),
+			/*->add('SYNCENGINE_MAILER_EMAIL_ADMIN', EmailType::class, [
+				'label' => $this->translator->trans( 'Send email logs to' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'smtp://user:pass@smtp.example.com:port?auth_mode=plain',
-					'data-icon'   => 'email',
+					'placeholder' => 'webmaster@yourdomain.com'
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-			])
+			])*/
 			->add('SYNCENGINE_MAILER_SENDER', EmailType::class, [
 				'label' => $this->translator->trans( 'Email sender' ),
 				'required' => false,
@@ -94,11 +93,12 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('SYNCENGINE_MAILER_EMAIL_ADMIN', EmailType::class, [
-				'label' => $this->translator->trans( 'Send email logs to' ),
+			->add('MAILER_DSN', MailDsnType::class, [
+				'label' => $this->translator->trans( 'Mailer' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'webmaster@yourdomain.com'
+					'placeholder' => 'smtp://user:pass@smtp.example.com:port?auth_mode=plain',
+					'data-icon'   => 'email',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
