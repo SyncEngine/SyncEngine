@@ -31,13 +31,13 @@ class DsnType extends TextType
 	public function dsnFields(): FieldCollection
 	{
 		return new FieldCollection( [
-			'protocol' => [ 'label' => $this->translator->trans( 'Protocol' ) ],
+			'protocol' => [ 'label' => $this->translator->trans( 'Protocol' ), 'customizable' => true ],
 			'username' => [ 'label' => $this->translator->trans( 'Username' ) ],
-			'password' => [ 'label' => $this->translator->trans( 'Password' ), 'type' => 'secret' ],
+			'password' => [ 'label' => $this->translator->trans( 'Password' ), 'type' => 'password' ],
 			'host'     => [ 'label' => $this->translator->trans( 'Host' ) ],
 			'port'     => [ 'label' => $this->translator->trans( 'Port' ), 'type' => 'number' ],
 			'path'     => [ 'label' => $this->translator->trans( 'Path' ) ],
-			'query'    => [ 'label' => $this->translator->trans( 'Parameters' ), 'type' => 'params' ],
+			'query'    => [ 'label' => $this->translator->trans( 'Parameters' ), 'type' => 'params', 'collapsed' => true ],
 		] );
 	}
 
