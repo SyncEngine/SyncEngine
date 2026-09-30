@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types';
 import Fields from '../components/form/Fields';
 import FieldContainer from '../components/form/Field/Container';
-import { isEmpty, validate } from '../utils/conditions';
+import { isEmpty, isObject, validate } from '../utils/conditions';
 import { deepClone } from '../utils/data';
 import { FieldsContext } from '../context/FieldsContext';
 import { createRefId } from '../utils/globals';
@@ -149,10 +149,12 @@ function compileDsnString( dsnObj ) {
 		dsnString += path;
 	}
 
-	const queryKeys = Object.keys( dsnObj.query );
-	if ( queryKeys.length > 0 ) {
-		const queryString = queryKeys.map( key => key + '=' + ( dsnObj.query[ key ] || '' ) ).join( '&' );
-		dsnString += '?' + queryString;
+	if ( isObject( dsnObj.query ) ) {
+		const queryKeys = Object.keys( dsnObj.query );
+		if ( queryKeys.length > 0 ) {
+			const queryString = queryKeys.map( key => key + '=' + ( dsnObj.query[ key ] || '' ) ).join( '&' );
+			dsnString += '?' + queryString;
+		}
 	}
 
 	return dsnString;
