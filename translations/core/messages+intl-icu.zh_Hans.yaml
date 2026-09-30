@@ -727,6 +727,8 @@ PDO: PDO
 Database: 数据库
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB：3306 | PostgreSQL：5431-5432 | SQL Server：1433-1434'
 Query: 查询
+Protocol: Protocol
+Parameters: 参数
 'Fetch method': '获取方法'
 'Associated array': '关联数组'
 'Key => Value pairs': '键 => 值对'

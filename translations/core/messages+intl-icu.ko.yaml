@@ -727,6 +727,8 @@ PDO: PDO
 Database: 데이터베이스
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: 쿼리
+Protocol: Protocol
+Parameters: 매개변수
 'Fetch method': '가져오기 방법'
 'Associated array': '연관 배열'
 'Key => Value pairs': '키 => 값 쌍'

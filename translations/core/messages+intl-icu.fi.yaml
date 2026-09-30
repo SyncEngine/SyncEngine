@@ -727,6 +727,8 @@ PDO: PDO
 Database: Tietokanta
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: Kysely
+Protocol: Protocol
+Parameters: Parametrit
 'Fetch method': 'Noutomenetelmä'
 'Associated array': 'Assosiatiivinen taulukko'
 'Key => Value pairs': 'Avain => arvo-parit'

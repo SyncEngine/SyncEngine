@@ -727,6 +727,8 @@ PDO: PDO
 Database: データベース
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: クエリ
+Protocol: Protocol
+Parameters: パラメータ
 'Fetch method': '取得メソッド'
 'Associated array': '連想配列'
 'Key => Value pairs': 'キー => 値のペア'

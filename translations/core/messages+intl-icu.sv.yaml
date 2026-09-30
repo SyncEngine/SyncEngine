@@ -727,6 +727,8 @@ PDO: PDO
 Database: Databas
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: Fråga
+Protocol: Protocol
+Parameters: Parametrar
 'Fetch method': 'Hämtningsmetod'
 'Associated array': 'Associerad array'
 'Key => Value pairs': 'Nyckel => Värde-par'

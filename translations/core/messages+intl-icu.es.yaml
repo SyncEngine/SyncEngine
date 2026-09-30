@@ -727,6 +727,8 @@ PDO: PDO
 Database: Base de datos
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: Consulta
+Protocol: Protocol
+Parameters: Parámetros
 'Fetch method': 'Método de fetch'
 'Associated array': 'Array asociado'
 'Key => Value pairs': 'Pares Clave => Valor'

@@ -727,6 +727,8 @@ PDO: PDO
 Database: Veritabanı
 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
 Query: Sorgu
+Protocol: Protocol
+Parameters: Parametreler
 'Fetch method': 'Getirme yöntemi'
 'Associated array': 'İlişkisel dizi'
 'Key => Value pairs': 'Anahtar => Değer çiftleri'
