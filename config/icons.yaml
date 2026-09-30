@@ -68,6 +68,7 @@ parameters:
     system-processes-manager: 'bi bi-cpu-fill'
     system-processes-config: 'bi bi-cpu'
     system-users: 'bi bi-people-fill'
+    email: 'bi bi-envelope'
     docs: 'bi bi-book-half'
     support: 'bi bi-life-preserver'
     git: 'bi bi-git'
