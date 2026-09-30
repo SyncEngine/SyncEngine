@@ -42,12 +42,12 @@ export default function FieldContainer( {
 	const hasHeader = !! label || !! toolbar;
 
 	const updateToolbar = useCallback( ( element, fieldId ) => {
-		if ( ! hasHeader || ! React.isValidElement( element ) ) {
+		if ( ! hasHeader || ! React.isValidElement( element ) || id !== fieldId) {
 			return false;
 		}
-		if ( React.isValidElement( _toolbar ) || id !== fieldId ) {
-			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
-			return false;
+		if ( React.isValidElement( _toolbar ) ) {
+			// Toolbar already set.
+			return true;
 		}
 
 		// Wrap in timeout to prevent React warning: https://stackoverflow.com/questions/62336340/cannot-update-a-component-while-rendering-a-different-component-warning/71257867#71257867
