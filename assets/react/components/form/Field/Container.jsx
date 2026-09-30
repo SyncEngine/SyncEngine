@@ -20,6 +20,7 @@ export default function FieldContainer( {
 	icon,
 	help,
 	description,
+	collapsible,
 	collapsed,
 	value,
 	children,
@@ -31,7 +32,7 @@ export default function FieldContainer( {
 	onUpdateDescription,
 } ) {
 
-	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ! label ? true : ! collapsed );
+	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ( ! label || ! collapsible ) ? true : ! collapsed );
 	const [ _toolbar, setToolbar ] = useState( undefined );
 
 	if ( ! id ) {
@@ -58,8 +59,8 @@ export default function FieldContainer( {
 		<Card className={ className }>
 			{ hasHeader &&
 				<Card.Header
-					className={ "bg-transparent btn d-flex justify-content-between border-bottom-0 " + classHeader }
-					onClick={ toggleOpen }
+					className={ "bg-transparent d-flex justify-content-between border-bottom-0 " + classHeader + ( collapsible ? ' btn' : '' ) }
+					onClick={ collapsible ? toggleOpen : undefined }
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
@@ -86,7 +87,9 @@ export default function FieldContainer( {
 								<Icon icon="configured" className="text-info-emphasis" />
 							</OverlayTrigger>
 						}
-						<Icon icon={ open ? "accordion-close" : "accordion-open" } />
+						{ collapsible &&
+							<Icon icon={ open ? "accordion-close" : "accordion-open" } />
+						}
 					</HStack>
 				</Card.Header>
 			}
