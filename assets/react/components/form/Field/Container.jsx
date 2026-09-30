@@ -20,7 +20,7 @@ export default function FieldContainer( {
 	icon,
 	help,
 	description,
-	collapsible,
+	collapsible = true,
 	collapsed,
 	value,
 	children,
