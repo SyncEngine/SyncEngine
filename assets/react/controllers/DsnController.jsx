@@ -70,7 +70,7 @@ function parseDsnString( dsn ) {
 					const slashIdx = rest.indexOf( '/' );
 					if ( slashIdx !== -1 ) {
 						host = rest.slice( 0, slashIdx );
-						path = rest.slice( slashIdx );
+						path = rest.slice( slashIdx + 1 );
 					} else {
 						host = rest;
 					}
@@ -104,114 +104,83 @@ function parseDsnString( dsn ) {
 	return { protocol, username, password, host, port, path, query };
 }
 
+function compileDsnString( dsnObj ) {
+	const protocol = dsnObj.protocol ?? '';
+	const username = dsnObj.username ?? '';
+	const password = dsnObj.password ?? '';
+	const host = dsnObj.host ?? '';
+	const port = dsnObj.port ?? '';
+	const path = dsnObj.path ?? '';
+
+	let dsnString = '';
+	let dnsCreds = '';
+
+	if ( protocol ) {
+		dsnString += protocol + '://';
+	} else {
+		dsnString += '//';
+	}
+
+	if ( username || password ) {
+		dnsCreds = ( username || '' );
+		if ( password ) {
+			dnsCreds += ':' + password;
+		}
+		dsnString += dnsCreds + '@';
+	}
+
+	if ( host ) {
+		if ( host.includes( ':' ) && ! host.startsWith( '[' ) ) {
+			dsnString += '[' + host + ']';
+		} else {
+			dsnString += host;
+		}
+		if ( port ) {
+			dsnString += ':' + port;
+		}
+	}
+
+	if ( path ) {
+		dsnString += path;
+	}
+
+	const queryKeys = Object.keys( dsnObj.query );
+	if ( queryKeys.length > 0 ) {
+		const queryString = queryKeys.map( key => key + '=' + ( dsnObj.query[ key ] || '' ) ).join( '&' );
+		dsnString += '?' + queryString;
+	}
+
+	return dsnString;
+}
+
 export default function DsnController( props ) {
 
 	const {
 		args = {},
 		value,
 		onChange,
+		label,
 	} = props;
 
-	const [ parsedDsn, setParsedDsn ] = useState( () => parseDsnString( value ?? '' ) );
+	const passwordPlaceholder = ':*******';
+
+	const [ parsedDsn, setParsedDsn ] = useState( parseDsnString( value ?? '' ) );
+	const [ compiledDsn, setCompiledDsn ] = useState( value ? value.replace( ':' + parsedDsn.password, passwordPlaceholder ) : '' );
 
 	useEffect( () => {
-		const parsed = parseDsnString( value ?? '' );
-		setParsedDsn( parsed );
+		setParsedDsn( parseDsnString( value ?? '' ) );
 	}, [ value ] );
 
-	const update = useCallback( ( values ) => {
-		const protocol = values.protocol ?? '';
-		const username = values.username ?? '';
-		const password = values.password ?? '';
-		const host = values.host ?? '';
-		const port = values.port ?? '';
-		const path = values.path ?? '';
-
-		let dsnString = '';
-
-		if ( protocol ) {
-			dsnString += protocol + '://';
-		} else {
-			dsnString += '//';
-		}
-
-		if ( username || password ) {
-			dsnString += ( username || '' );
-			if ( password ) {
-				dsnString += ':' + password;
-			}
-			dsnString += '@';
-		}
-
-		if ( host ) {
-			if ( host.includes( ':' ) && ! host.startsWith( '[' ) ) {
-				dsnString += '[' + host + ']';
-			} else {
-				dsnString += host;
-			}
-			if ( port ) {
-				dsnString += ':' + port;
-			}
-		}
-
-		if ( path ) {
-			dsnString += path;
-		}
-
-		const queryKeys = Object.keys( parsedDsn.query );
-		if ( queryKeys.length > 0 ) {
-			const queryString = queryKeys.map( key => key + '=' + ( parsedDsn.query[ key ] || '' ) ).join( '&' );
-			dsnString += '?' + queryString;
-		}
-
-		onChange( dsnString );
+	const update = useCallback( ( dsnObj ) => {
+		let dnsString = compileDsnString( dsnObj );
+		onChange( dnsString );
+		setCompiledDsn( dnsString.replace( ':' + dsnObj.password, passwordPlaceholder ) );
 	}, [ onChange, parsedDsn.query ] );
 
-	const parseFields = useCallback( ( fields ) => {
-		for ( const key in fields ) {
-			if ( ! fields.hasOwnProperty( key ) ) {
-				continue;
-			}
-			let field = fields[ key ];
-			const defaults = {
-				name: key,
-				type: 'text',
-			};
-
-			if ( 'object' !== typeof field ) {
-				field = defaults;
-			} else {
-				field = { ...field, ...defaults };
-			}
-
-			switch ( key ) {
-				case 'username':
-				case 'password':
-					field.type = 'password';
-					field.reveal = true;
-					break;
-				case 'protocol':
-					if ( field.choices ) {
-						field.type = 'select';
-					}
-					break;
-				case 'port':
-					field.type = 'number';
-					break;
-			}
-
-			fields[ key ] = field;
-		}
-
-		return fields;
-	}, [] );
-
-	const dsnFields = useMemo( () => {
-		return parseFields( args.fields ?? {} );
-	}, [ args.fields, parseFields ] );
+	const dsnFields = useMemo( () => args.fields ?? {}, [ args.fields ] );
 
 	return (
-		<FieldContainer label={ props.label } description={ props.description } collapsible={ false }>
+		<FieldContainer label={ label } description={ compiledDsn } collapsed={ false } collapsible={ false }>
 			<Fields value={ parsedDsn } onChange={ update } fields={ dsnFields } editable={ true }></Fields>
 		</FieldContainer>
 	);
