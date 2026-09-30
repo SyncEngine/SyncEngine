@@ -126,6 +126,20 @@ $input-focus-border-color-rgb: red($input-focus-border-color), green($input-focu
 	/*z-index: var(--z-index-floating-label);*/
 }
 
+// Replicate input-group-text[role=button]
+.btn-input-group, .input-group-button {
+	--bs-bg-opacity: 1;
+	display: flex;
+	align-items: center;
+	background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity)) !important;
+	border: var(--bs-border-width) solid var(--bs-border-color);
+
+	&:hover {
+		background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
+		border: var(--bs-border-width) solid var(--bs-border-color);
+	}
+}
+
 .icon-btn {
 	display: inline-block;
 	text-align: center;
