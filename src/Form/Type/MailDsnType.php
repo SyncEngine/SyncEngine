@@ -30,6 +30,8 @@ class MailDsnType extends DsnType
 		$fields['port']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
 		$fields['query']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
 
+		$fields['protocol']->setHelp( 'https://symfony.com/doc/current/mailer.html#using-built-in-transports' );
+
 		return $fields;
 	}
 

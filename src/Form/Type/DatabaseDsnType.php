@@ -35,6 +35,8 @@ class DatabaseDsnType extends DsnType
 			],
 		];
 
+		$fields['protocol']->setHelp( 'https://symfony.com/doc/current/doctrine.html#configuring-the-database' );
+
 		return $fields;
 	}
 
