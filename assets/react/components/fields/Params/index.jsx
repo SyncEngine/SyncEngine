@@ -44,6 +44,24 @@ function parseCodecQuery( query, choices ) {
 	return query;
 }
 
+const buildColumns = ( columns, choices, customizable ) => {
+	for ( const key in choices ) {
+		if ( ! columns.hasOwnProperty( key ) ) {
+			continue;
+		}
+		if ( ! isObject( columns[ key ] ) ) {
+			columns[ key ] = {
+				header: columns[ key ]
+			}
+		}
+		columns[ key ].choices = choices[ key ];
+		columns[ key ].type = 'select';
+		columns[ key ].compact = true;
+		columns[ key ].customizable = customizable;
+	}
+	return columns;
+}
+
 export default function Params( props ) {
 	const { t } = useTranslator();
 	const editable = isFieldEditable( props );
@@ -51,13 +69,14 @@ export default function Params( props ) {
 
 	const {
 		customizable,
-		columns = {
-			key: t('Key'),
-			value: t('Value'),
-		},
 		onChange,
 		query = {}
 	} = props;
+
+	const columns = buildColumns( props.columns ?? {
+		key: t('Key'),
+		value: t('Value'),
+	}, props.choices, customizable );
 
 	const isList = 1 === Object.values( columns ).length;
 
@@ -251,6 +270,7 @@ Params.propTypes = {
 	taggable: bool,
 	sortable: bool,
 	customizable: bool,
+	choices: object,
 	columns: oneOfType( [ object, array ] ),
 	formats: oneOfType( [ object, array ] ),
 	format: oneOfType( [ string, object ] ), // Sets a static format type for this field.
