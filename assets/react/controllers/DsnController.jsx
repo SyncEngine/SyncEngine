@@ -190,15 +190,18 @@ export default function DsnController( props ) {
 	const update = useCallback( ( dsnObj ) => {
 
 		if ( parsedDsn.protocol !== dsnObj.protocol ) {
-			if ( dsnObj.port === parsedDsn.port && ! isEmpty( defaults.port ) && defaults.port.hasOwnProperty( dsnObj.protocol ) ) {
 
-				const hasCurrentDefault = defaults.port.hasOwnProperty( parsedDsn.protocol );
-				const isCurrentDefault = hasCurrentDefault && String( defaults.port[ parsedDsn.protocol ] ) === String( parsedDsn.port );
+			for ( const key in defaults ) {
+				if ( dsnObj[ key ] === parsedDsn[ key ] && ! isEmpty( defaults[ key ] ) && defaults[ key ].hasOwnProperty( dsnObj.protocol ) ) {
 
-				if ( ! hasCurrentDefault || isCurrentDefault ) {
-					dsnObj.port = defaults.port[ dsnObj.protocol ];
+					const hasCurrentDefault = defaults[ key ].hasOwnProperty( parsedDsn.protocol );
+					const isCurrentDefault = hasCurrentDefault && String( defaults[ key ][ parsedDsn.protocol ] ) === String( parsedDsn[ key ] );
 
-					publishFieldValue( 'port', fieldsContext, dsnObj.port );
+					if ( ! hasCurrentDefault || isCurrentDefault ) {
+						dsnObj[ key ] = defaults[ key ][ dsnObj.protocol ];
+
+						publishFieldValue( key, fieldsContext, dsnObj[ key ] );
+					}
 				}
 			}
 		}
