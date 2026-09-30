@@ -592,6 +592,22 @@ function isMultiline( value ) {
 	return 'string' === typeof value && -1 !== value.indexOf( "\n" );
 }
 
+/**
+ * @param {string} value
+ * @returns {boolean}
+ */
+function isUrl( value ) {
+	if ( ! isString( value ) || isEmpty( value ) ) {
+		return false;
+	}
+	try {
+		const url = new URL( value );
+		return true;
+	} catch ( _ ) {
+		return false;
+	}
+}
+
 function isFieldEditable( props ) {
 	// Only on false, not on undefined/empty.
 	if ( false === props.editable ) {
@@ -635,6 +651,7 @@ export {
 	isMatch,
 	isEqual,
 	isMultiline,
+	isUrl,
 	isFieldEditable,
 	isItemDisabled,
 }
