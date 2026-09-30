@@ -46,9 +46,12 @@ class MailDsnType extends DsnType
 			'port' => [
 				'smtp'     => 587,
 				'sendmail' => null,
+				'native'   => null,
 			],
-			'query' => [
-				'charset' => 'utf8',
+			'path' => [
+				'smtp'     => '',
+				'sendmail' => 'default',
+				'native'   => 'default',
 			],
 		];
 	}
