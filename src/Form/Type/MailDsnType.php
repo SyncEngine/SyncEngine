@@ -24,7 +24,11 @@ class MailDsnType extends DsnType
 	{
 		$fields = parent::dsnFields();
 
-		$fields->remove( 'query' );
+		$fields['username']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
+		$fields['password']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
+		$fields['host']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
+		$fields['port']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
+		$fields['query']['conditions'] = [ 'protocol' => [ 'operator' => 'not_in', 'compare' => [ 'sendmail', 'native' ] ] ];
 
 		return $fields;
 	}
