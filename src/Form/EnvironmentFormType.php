@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Form\Type\DatabaseDsnType;
+use SyncEngine\Form\Type\MailDsnType;
 use SyncEngine\Service\System;
 
 class EnvironmentFormType extends AbstractType
@@ -21,15 +23,6 @@ class EnvironmentFormType extends AbstractType
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$dsnFields = [
-			'protocol' => [],
-			'username' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
-			'password' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
-			'host' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
-			'port' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
-			'path' => [],
-		];
-
 		$mode = $this->system->getEnv()->get( 'APP_ENV' );
 
 		$builder
@@ -69,31 +62,21 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('DATABASE_URL', TextType::class, [
+			->add('DATABASE_URL', DatabaseDsnType::class, [
 				'label' => $this->translator->trans( 'Database' ),
 				'required' => true,
 				'attr' => [
-					'placeholder'     => 'sql://user:pass@host:port/database',
-					'data-controller' => 'react',
-					'data-type'       => 'dsn',
-					'data-args'       => json_encode( [
-						'fields' => $dsnFields,
-					] ),
+					'placeholder' => 'mysql://user:pass@host:3306/database',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('MAILER_DSN', TextType::class, [
+			->add('MAILER_DSN', MailDsnType::class, [
 				'label' => $this->translator->trans( 'Mailer' ),
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'smtp://user:pass@smtp.example.com:port',
-					'data-controller' => 'react',
-					'data-type'       => 'dsn',
-					'data-args'       => json_encode( [
-						'fields' => $dsnFields,
-					] ),
+					'placeholder' => 'smtp://user:pass@smtp.example.com:port?auth_mode=plain',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
