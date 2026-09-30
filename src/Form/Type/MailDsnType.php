@@ -34,6 +34,7 @@ class MailDsnType extends DsnType
 		return [
 			[ 'label' => 'SMTP', 'value' => 'smtp' ],
 			[ 'label' => 'Sendmail', 'value' => 'sendmail' ],
+			[ 'label' => 'Native', 'value' => 'native', 'description' => $this->translator->trans( 'Not recommended' ) ],
 			//[ 'label' => 'Postmark', 'value' => 'postmark' ],
 			//[ 'label' => 'Gmail', 'value' => 'gmail' ],
 			//[ 'label' => 'Amazon SES', 'value' => 'ses' ],
