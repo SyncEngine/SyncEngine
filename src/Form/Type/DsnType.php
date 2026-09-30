@@ -11,6 +11,7 @@
 
 namespace SyncEngine\Form\Type;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +24,8 @@ use SyncEngine\Form\Fields\Collection\FieldCollection;
 class DsnType extends TextType
 {
 	public function __construct(
-		private readonly TranslatorInterface $translator,
+		protected readonly TranslatorInterface $translator,
+		protected readonly ParameterBagInterface $parameterBag,
 	) {}
 
 	public function dsnFields(): FieldCollection
@@ -37,6 +39,11 @@ class DsnType extends TextType
 			'path'     => [ 'label' => $this->translator->trans( 'Path' ) ],
 			'query'    => [ 'label' => $this->translator->trans( 'Parameters' ), 'type' => 'params' ],
 		] );
+	}
+
+	public function getBlockPrefix(): string
+	{
+		return $this->parameterBag->get( 'kernel.debug' ) ? 'text' : 'password';
 	}
 
 	public function getProtocols(): array
