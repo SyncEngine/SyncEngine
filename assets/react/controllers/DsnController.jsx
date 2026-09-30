@@ -165,6 +165,7 @@ export default function DsnController( props ) {
 		value,
 		onChange,
 		label,
+		element,
 	} = props;
 
 	const passwordPlaceholder = ':*******';
@@ -206,7 +207,6 @@ export default function DsnController( props ) {
 		setCompiledDsn( dnsString ? dnsString.replace( ':' + dsnObj.password, passwordPlaceholder ) : '' );
 	}, [ onChange, parsedDsn.protocol ] );
 
-	const dsnFields = useMemo( () => args.fields ?? {}, [ args.fields ] );
 	const validateDsn = useCallback( ( dsnObj ) => {
 		const validated = { ...dsnObj };
 		const fields = dsnFields ?? {};
@@ -224,8 +224,10 @@ export default function DsnController( props ) {
 		return validated;
 	}, [ dsnFields ] );
 
+	const icon = args.icon ?? element.getAttribute( 'data-icon' ) ?? '';
+
 	return (
-		<FieldContainer label={ label } description={ compiledDsn } collapsed={ false } collapsible={ false }>
+		<FieldContainer icon={ icon } label={ label } description={ compiledDsn } collapsed={ false } collapsible={ false }>
 			<Fields value={ deepClone( parsedDsn ) } onChange={ update } fields={ dsnFields } editable={ true } fieldsContext={ fieldsContext }></Fields>
 		</FieldContainer>
 	);
@@ -236,4 +238,5 @@ DsnController.propTypes = {
 	value: PropTypes.string,
 	onChange: PropTypes.func,
 	label: PropTypes.string,
+	element: PropTypes.node,
 };

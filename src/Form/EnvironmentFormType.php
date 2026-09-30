@@ -67,6 +67,7 @@ class EnvironmentFormType extends AbstractType
 				'required' => true,
 				'attr' => [
 					'placeholder' => 'mysql://user:pass@host:3306/database',
+					'data-icon'   => 'database',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
@@ -77,6 +78,7 @@ class EnvironmentFormType extends AbstractType
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'smtp://user:pass@smtp.example.com:port?auth_mode=plain',
+					'data-icon'   => 'email',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
