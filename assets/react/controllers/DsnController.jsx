@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types';
 import Fields from '../components/form/Fields';
 import FieldContainer from '../components/form/Field/Container';
-import { isEmpty } from '../utils/conditions';
+import { isEmpty, validate } from '../utils/conditions';
 import { deepClone } from '../utils/data';
 import { FieldsContext } from '../context/FieldsContext';
 import { createRefId } from '../utils/globals';
@@ -176,6 +176,8 @@ export default function DsnController( props ) {
 	const ref = useRef( createRefId() );
 	const fieldsContext = FieldsContext.create( 'dsn', parsedDsn, ref.current );
 
+	const dsnFields = useMemo( () => args.fields ?? {}, [ args.fields ] );
+
 	useEffect( () => {
 		const parsed = parseDsnString( value ?? '' );
 		setParsedDsn( parsed );
@@ -198,13 +200,29 @@ export default function DsnController( props ) {
 			}
 		}
 
-		let dnsString = compileDsnString( dsnObj );
+		let dnsString = compileDsnString( validateDsn( dsnObj ) );
 		onChange( dnsString );
 		setParsedDsn( deepClone( dsnObj ) );
 		setCompiledDsn( dnsString ? dnsString.replace( ':' + dsnObj.password, passwordPlaceholder ) : '' );
 	}, [ onChange, parsedDsn.protocol ] );
 
 	const dsnFields = useMemo( () => args.fields ?? {}, [ args.fields ] );
+	const validateDsn = useCallback( ( dsnObj ) => {
+		const validated = { ...dsnObj };
+		const fields = dsnFields ?? {};
+
+		for ( const key in dsnFields ) {
+			if ( ! fields.hasOwnProperty( key ) || ! fields[ key ].conditions ) {
+				continue;
+			}
+
+			if ( ! validate( fields[ key ].conditions, dsnObj ) ) {
+				delete validated[ key ];
+			}
+		}
+
+		return validated;
+	}, [ dsnFields ] );
 
 	return (
 		<FieldContainer label={ label } description={ compiledDsn } collapsed={ false } collapsible={ false }>
