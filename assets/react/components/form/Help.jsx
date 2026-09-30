@@ -3,6 +3,8 @@ import { array, bool, object, oneOfType, string } from 'prop-types';
 import { InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { objectToMappable } from '../../utils/data';
 import Icon from '../partials/Icon';
+import { isUrl } from '../../utils/conditions';
+import Button from '../partials/Button';
 
 export default function Help( {
 	id,
@@ -17,7 +19,9 @@ export default function Help( {
 	}
 
 	let button = React.isValidElement( icon ) ? icon : <Icon icon={ icon ?? 'help' } />;
-	if ( inputGroup ) {
+	if ( isUrl( text ) ) {
+		return <Button variant="input-group" className={ className } href={ text } target="_blank">{ button }</Button>
+	} if ( inputGroup ) {
 		button = <InputGroup.Text className={ className }>{ button }</InputGroup.Text>;
 	} else {
 		button = React.cloneElement( button, { className: className + ' mx-2' } );
