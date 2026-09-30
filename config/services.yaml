@@ -30,7 +30,7 @@ parameters:
     syncengine.namespace.modules: '%syncengine.namespace.root%\Module'
     syncengine.max_traces: '%env(SYNCENGINE_MAX_TRACES)%'
     syncengine.mailer.sender: '%env(SYNCENGINE_MAILER_SENDER)%'
-    syncengine.mailer.email_admin: '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%'
+    syncengine.mailer.email_admin: '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%' # @todo Currently not used, remove?
     syncengine.security.trusted_ips: '%env(SYNCENGINE_TRUSTED_IPS)%'
     syncengine.security.csrf_cookie_name: 'csrf-token'
     syncengine.db.table_prefix: '%env(string:SYNCENGINE_DB_TABLE_PREFIX)%'
