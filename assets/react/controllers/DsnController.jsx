@@ -1,7 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Fields from '../components/form/Fields';
 import FieldContainer from '../components/form/Field/Container';
+import { isEmpty } from '../utils/conditions';
+import { deepClone } from '../utils/data';
+import { FieldsContext } from '../context/FieldsContext';
+import { createRefId } from '../utils/globals';
+import { publishFieldValue } from '../hooks/useFieldValue';
 
 function parseDsnString( dsn ) {
 	if ( ! dsn || 'string' !== typeof dsn ) {
@@ -163,25 +168,47 @@ export default function DsnController( props ) {
 	} = props;
 
 	const passwordPlaceholder = ':*******';
+	const defaults = args.defaults ?? {};
 
 	const [ parsedDsn, setParsedDsn ] = useState( parseDsnString( value ?? '' ) );
 	const [ compiledDsn, setCompiledDsn ] = useState( value ? value.replace( ':' + parsedDsn.password, passwordPlaceholder ) : '' );
 
+	const ref = useRef( createRefId() );
+	const fieldsContext = FieldsContext.create( 'dsn', parsedDsn, ref.current );
+
 	useEffect( () => {
-		setParsedDsn( parseDsnString( value ?? '' ) );
+		const parsed = parseDsnString( value ?? '' );
+		setParsedDsn( parsed );
+		setCompiledDsn( value ? value.replace( ':' + parsed.password, passwordPlaceholder ) : '' );
 	}, [ value ] );
 
 	const update = useCallback( ( dsnObj ) => {
+
+		if ( parsedDsn.protocol !== dsnObj.protocol ) {
+			if ( dsnObj.port === parsedDsn.port && ! isEmpty( defaults.port ) && defaults.port.hasOwnProperty( dsnObj.protocol ) ) {
+
+				const hasCurrentDefault = defaults.port.hasOwnProperty( parsedDsn.protocol );
+				const isCurrentDefault = hasCurrentDefault && String( defaults.port[ parsedDsn.protocol ] ) === String( parsedDsn.port );
+
+				if ( ! hasCurrentDefault || isCurrentDefault ) {
+					dsnObj.port = defaults.port[ dsnObj.protocol ];
+
+					publishFieldValue( 'port', fieldsContext, dsnObj.port );
+				}
+			}
+		}
+
 		let dnsString = compileDsnString( dsnObj );
 		onChange( dnsString );
-		setCompiledDsn( dnsString.replace( ':' + dsnObj.password, passwordPlaceholder ) );
-	}, [ onChange, parsedDsn.query ] );
+		setParsedDsn( deepClone( dsnObj ) );
+		setCompiledDsn( dnsString ? dnsString.replace( ':' + dsnObj.password, passwordPlaceholder ) : '' );
+	}, [ onChange, parsedDsn.protocol ] );
 
 	const dsnFields = useMemo( () => args.fields ?? {}, [ args.fields ] );
 
 	return (
 		<FieldContainer label={ label } description={ compiledDsn } collapsed={ false } collapsible={ false }>
-			<Fields value={ parsedDsn } onChange={ update } fields={ dsnFields } editable={ true }></Fields>
+			<Fields value={ deepClone( parsedDsn ) } onChange={ update } fields={ dsnFields } editable={ true } fieldsContext={ fieldsContext }></Fields>
 		</FieldContainer>
 	);
 }
