@@ -15,9 +15,20 @@ import { isTag } from '../utils/tags';
  */
 export default function useEntities( type, items = [], query = null, endpoint = null ) {
 	const app = useGlobal();
-	const [ entities, setEntities ] = useState( items );
+
+	// Local state stores only IDs so data is always loaded from global state.
+	// This prevents staleness when global state updates externally.
+	const [ entityIds, setEntityIds ] = useState( () => {
+		if ( ! Array.isArray( items ) || items.length === 0 ) {
+			return new Set();
+		}
+		return new Set( items.map( entity => entity.id ) );
+	} );
 	const [ currentQuery, setQuery ] = useState( query );
 	const [ loading, setLoading ] = useState( false );
+
+	// Derived entities from global state using stored IDs.
+	const entities = Array.from( entityIds ).map( id => app.entities[ type ]?.[ id ] ?? null ).filter( Boolean );
 
 	if ( ! endpoint ) {
 		endpoint = app.endpoints.entities[ type ] ?? app.baseUrl;
@@ -34,7 +45,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 	useEffect(() => {
 		if ( ! isEmpty( items ) ) {
-			update( items, false );
+			update( items, true );
 		} else if ( currentQuery ) {
 			fetch( currentQuery );
 		}
@@ -117,7 +128,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			}
 
 			if ( updateState ) {
-				setEntities( entityRefs );
+				setEntityIds( new Set( entityRefs.map( e => e.id ) ) );
 			}
 			setLoading( false );
 			return entityRefs;
@@ -149,7 +160,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 					entityRefs = filter( resultFilters, entityRefs );
 				}
 
-				setEntities( entityRefs );
+				setEntityIds( new Set( entityRefs.map( e => e.id ) ) );
 			}
 
 			setLoading( false );
@@ -157,7 +168,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		}
 
 		if ( updateState ) {
-			setEntities( null );
+			setEntityIds( new Set() );
 		}
 		setLoading( false );
 		return results.error ?? false;
@@ -219,7 +230,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		} );
 
 		if ( updateState ) {
-			setEntities( entityRefs );
+			setEntityIds( new Set( entityRefs.map( e => e.id ) ) );
 		}
 
 		return entityRefs;
@@ -255,12 +266,10 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		// Edit registered entity.
 		update( entity, false );
 
-		setEntities( entities.map( item => {
-			if ( item.id === entity.id ) {
-				return entity;
-			}
-			return item;
-		} ) );
+		// Trigger re-render by creating new Set with same IDs.
+		if ( updateState ) {
+			setEntityIds( new Set( entityIds ) );
+		}
 
 		// Invalidate cache entries containing this entity ID using hook's callback method
 		invalidateCacheByCallback( ( key, entry ) => entry.value.has( entity.id ) );
@@ -273,10 +282,12 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		if ( ! entity.hasOwnProperty( 'id' ) ) {
 			return;
 		}
-		setEntities( [ ...entities, entity ] );
 
 		// Register new entity.
 		update( entity, false );
+
+		// Add ID to local set.
+		setEntityIds( new Set( [ ...entityIds, entity.id ] ) );
 
 		// Invalidate all caches for this type on creation using hook's method
 		invalidateCache();
