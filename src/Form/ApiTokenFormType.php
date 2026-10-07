@@ -35,7 +35,7 @@ class ApiTokenFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			] )
-			->add( 'expires', DateTimeType::class, [
+			->add( 'expiresAt', DateTimeType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
