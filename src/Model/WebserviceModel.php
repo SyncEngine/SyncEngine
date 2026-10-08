@@ -13,6 +13,7 @@ use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Locator\Webservices;
+use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Type\WebserviceTypeInterface;
 
@@ -178,7 +179,18 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 			$connectConfig = (array) json_decode( $request->get( 'connectConfig' ) ?? '', true );
 
 			// @todo provide context.
-			return $connection->handleConnect( array_filter( $connectConfig ), null )->getDebugResponse();
+			try {
+				$connectConfig = array_filter( $connectConfig );
+				return $connection->handleConnect( $connectConfig, null )->getDebugResponse();
+			} catch ( AuthResultException| \Throwable $e ) {
+				return ( new Result(
+					false, false, [
+					'Error'    => $e->getMessage(),
+					'Info'     => $e->getDebugInfo(),
+					'Response' => $e->getResponse(),
+					'Config'   => $connectConfig,
+				] ) )->getDebugResponse();
+			}
 		}
 
 		return new Response();
