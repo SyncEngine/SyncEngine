@@ -3,6 +3,7 @@
 namespace SyncEngine\Controller\Admin\Abstract;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -241,11 +242,17 @@ abstract class EntityController extends AbstractAdminController
 	 */
 	protected function _handleForm( EntityModel $model, FormInterface|string $form, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
+		$errors = [];
+
 		if ( $model instanceof EngineModel ) {
 			// Load config and store state.
 			// This will allow supervisors to store current state before updating.
 			// @todo Implement load/init method?
-			$model->getConfig();
+			try {
+				$model->getConfig();
+			} catch ( \Throwable $e ) {
+				$errors[] = $e->getMessage();
+			}
 		}
 
 		if ( ! $form instanceof FormInterface ) {
@@ -267,6 +274,12 @@ abstract class EntityController extends AbstractAdminController
 				$saveLabel = ( $model->getId() ) ? $this->trans( 'Update' ) : $this->trans( 'Create' );
 			}
 			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		}
+
+		if ( $errors ) {
+			foreach ( $errors as $error ) {
+				$form->addError( new FormError( $error ) );
+			}
 		}
 
 		$form->handleRequest( $request );
