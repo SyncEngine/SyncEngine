@@ -4,6 +4,20 @@ const csrfTokenCache = {
 	token: null,
 };
 
+const getCookie = ( name ) => {
+	const prefix = `${name}=`;
+
+	for ( const cookie of document.cookie.split(';') ) {
+		const entry = cookie.trim();
+
+		if ( entry.startsWith(prefix) ) {
+			return entry.slice(prefix.length);
+		}
+	}
+
+	return null;
+};
+
 const generateCsrfToken = () => {
 	const tokenName = window.SyncEngine?.csrfToken;
 
@@ -15,10 +29,16 @@ const generateCsrfToken = () => {
 		return [ window.SyncEngine?.csrfToken, csrfTokenCache.token ];
 	}
 
-	const token = crypto.randomUUID();
-	const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+	let token = getCookie(tokenName);
 
-	document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict${secure}`;
+	if ( ! token ) {
+		token = crypto.randomUUID();
+
+		const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+
+		document.cookie = `${tokenName}=${token}; Path=/; SameSite=Strict${secure}`;
+	}
+
 	csrfTokenCache.token = token;
 
 	return [ tokenName, token ];
