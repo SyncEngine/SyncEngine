@@ -224,7 +224,7 @@ trait ClientHttp
 					'DELETE'  => 'DELETE',
 					'HEAD'    => 'HEAD',
 					'CONNECT' => 'CONNECT',
-					'OPTIONS' => 'OPTION',
+					'OPTIONS' => 'OPTIONS',
 					'TRACE'   => 'TRACE',
 				],
 			],
