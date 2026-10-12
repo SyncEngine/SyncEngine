@@ -145,15 +145,24 @@ class BlueprintModel extends ServiceModel implements Configurable
 	}
 
 	/**
+	 * Run your own logic before the supervisable model is updated.
 	 * @todo Better name?
 	 */
 	public function beforeUpdate(): void {}
 
 	/**
+	 * Run your own logic after the supervisable model is updated.
 	 * @todo Better name?
 	 */
 	public function afterUpdate(): void {}
 
+	/**
+	 * Override this method to parse the raw database config before it is stored in the entity for use at runtime.
+	 *
+	 * @param array|object $config The raw config
+	 *
+	 * @return array The parsed config
+	 */
 	public function parseConfig( $config ): array
 	{
 		return $config;
