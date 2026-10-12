@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Blueprint\Type\BlueprintTypeInterface;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\AbstractModel;
@@ -123,6 +124,25 @@ class BlueprintModel extends ServiceModel implements Configurable
 	 * Prevents the need to overwrite the constructor.
 	 */
 	protected function init(): void {}
+
+	/**
+	 * Migrate the blueprint config to a new version.
+	 * Either fully override this method or call parent::migrate() after your own migration logic to set the new version.
+	 * @throws InvalidException if the blueprint version is not set.
+	 * @return void
+	 */
+	public function migrate(): void
+	{
+		$newVersion = $this->getVersion();
+
+		if ( empty( $newVersion ) ) {
+			throw new InvalidException( 'Blueprint version is not set, cannot migrate.' );
+		}
+
+		$config = $this->getBlueprintConfig();
+		$config['_version'] = $newVersion;
+		$this->getSupervisable()->setConfig( $config, '_blueprint' );
+	}
 
 	/**
 	 * @todo Better name?
