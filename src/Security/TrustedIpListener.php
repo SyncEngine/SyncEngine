@@ -14,6 +14,8 @@ class TrustedIpListener
 	public function __construct(
 		#[Autowire( '%syncengine.security.trusted_ips%' )]
 		private string $trustedIps,
+		#[Autowire( '%kernel.debug%' )]
+		private bool $debug,
 	) {}
 
 	public function __invoke( RequestEvent $event ): void
@@ -30,7 +32,7 @@ class TrustedIpListener
 		$ips[] = '127.0.0.1';
 
 		if ( ! IpUtils::checkIp( $request->getClientIp(), $ips ) ) {
-			throw new AccessDeniedHttpException();
+			throw new AccessDeniedHttpException( $this->debug ? $request->getClientIp() : null );
 		}
 	}
 }
