@@ -47,7 +47,12 @@ class SerializationSanitizer
 		}
 
 		if ( is_string( $data ) && str_contains( $data, '<' ) && ! empty( $options[ self::SANITIZE_HTML ] ) ) {
-			$data = $this->sanitizeHtml( $data );
+			if ( str_starts_with( $data, '<svg' ) && str_ends_with( $data, '</svg>' ) ) {
+				// Allow SVGs to pass through without sanitization.
+				$data = $this->sanitizeSvg( $data );
+			} else {
+				$data = $this->sanitizeHtml( $data );
+			}
 		}
 
 		return $data;
@@ -80,5 +85,16 @@ class SerializationSanitizer
 		}
 
 		return $this->htmlSanitizer->sanitize( $html );
+	}
+
+	public function sanitizeSvg( string $svg ): string
+	{
+		if (
+			preg_match('/<!DOCTYPE|<!ENTITY|<\s*(script|foreignObject|style|iframe|object|embed)\b|\bon[a-z]+\s*=|\b(href|src)\s*=|url\s*\(/i', $svg)
+		) {
+			return '<!-- SVG content removed by sanitizer -->';
+		}
+
+		return $svg;
 	}
 }
