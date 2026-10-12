@@ -168,7 +168,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 						static::initBlueprintConfig(),
 						$this->isFile() ?
 							[ '_blueprint' => [ '_class' => $this->getClassLocator() ] ]
-							: []
+							:
+							[ '_blueprint' => $this->getBlueprintConfig() ]
 					)
 				)
 			);
@@ -231,7 +232,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$blueprintConfig = $config['_blueprint'] ?? [];
 
 		if ( $blueprintConfig ) {
-			$config[ '_blueprint' ] = ConfigData::create( $blueprintConfig )->sanitize( $this->getConfigFields() );
+			$version = $blueprintConfig['_version'] ?? null;
+			$config['_blueprint'] = ConfigData::create( $blueprintConfig )->sanitize( $this->getConfigFields() );
+			if ( $version ) {
+				$config[ '_blueprint' ]['_version'] = $version;
+			}
 		}
 
 		return $config;
@@ -239,7 +244,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getBlueprintConfig(): array
 	{
-		return $this->getSupervisable()?->getConfig( '_blueprint' ) ?? static::initBlueprintConfig()['_blueprint'] ?? [ '_class' => static::getClassLocator() ];
+		$config = $this->getSupervisable()?->getConfig( '_blueprint' ) ?? static::initBlueprintConfig()['_blueprint'] ?? [ '_class' => static::getClassLocator() ];
+		if ( ! isset( $config['_version'] ) && $this->getVersion() ) {
+			$config['_version'] = $this->getVersion();
+		}
+		return $config;
 	}
 
 	final public static function initBlueprintConfig(): array
