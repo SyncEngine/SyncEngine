@@ -36,8 +36,27 @@ vi.mock('react-bootstrap', async () => {
 	};
 });
 
+// Mock window.matchMedia for useMediaQuery hook used by Repeatable/Actions
+if ( !window.matchMedia ) {
+	window.matchMedia = vi.fn( ( query ) => ( {
+		matches: false,
+		media: query,
+		onchange: null,
+		addEventListener: vi.fn(),
+		removeEventListener: vi.fn(),
+		dispatchEvent: vi.fn(),
+	} ) );
+}
+
 // Build a realistic SyncEngine mock
 function createSyncEngineMock() {
+	const breakpoints = {
+		get: (bp) => {
+			const map = { xs: 0, sm: 576, md: 768, lg: 992, xl: 1200, xxl: 1400 };
+			return map[ bp ] ?? 0;
+		},
+	};
+
 	return {
 		routes: { get: (type, params) => `/api/${type}${params ? '/' + JSON.stringify(params) : ''}` },
 		endpoints: {
@@ -55,6 +74,7 @@ function createSyncEngineMock() {
 		baseUrl: '',
 		models: {},
 		entities: {},
+		breakpoints,
 		context: {
 			register: vi.fn(),
 			clear: vi.fn(),
