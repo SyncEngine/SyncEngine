@@ -75,7 +75,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 					beforeNodeMorphed( oldNode ) {
 						if ( oldNode.nodeType === 1 && oldNode.hasAttribute ) {
 							if (
-								oldNode.hasAttribute( 'data-controller' )
+								oldNode.hasAttribute( 'data-controller' ) && 'react' === oldNode.getAttribute( 'data-controller' )
 								||
 								oldNode.hasAttribute( 'data-controlled-by' )
 							) {
@@ -88,7 +88,7 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 					beforeNodeRemoved( node ) {
 						if ( node.nodeType === 1 && node.hasAttribute ) {
 							if (
-								node.hasAttribute( 'data-controller' )
+								node.hasAttribute( 'data-controller' ) && 'react' === node.getAttribute( 'data-controller' )
 								||
 								node.hasAttribute( 'data-controlled-by' )
 							) {
