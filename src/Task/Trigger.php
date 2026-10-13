@@ -101,7 +101,8 @@ class Trigger extends TaskModel
 				'label'      => $this->trans( 'Routine' ),
 				'type'       => 'entity',
 				'entity'     => 'routine',
-				'actions'    => [ 'edit', 'create' ],
+				'actions'    => [ 'config', 'edit', 'create' ],
+				'config'     => 'entity:_step.fields',
 				'conditions' => [
 					'action' => 'routine',
 				],
@@ -151,6 +152,11 @@ class Trigger extends TaskModel
 	{
 		$traverseAutomation = false;
 
+		/** @var ExecuteData|null $request */
+		$request   = null;
+		$variables = $config['variables'] ?? [];
+		$service   = $context->getExecuteService();
+
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$method = 'execute';
@@ -161,9 +167,9 @@ class Trigger extends TaskModel
 					$scheduled = $context->getExecuteService()->schedule( $action, $context );
 					$info = [
 						'automation' => $action->getId(),
-						'status' => $scheduled->getStatus(),
-						'trace' => $scheduled->getTraceId(),
-						'reason' => $scheduled->getReason(),
+						'status'     => $scheduled->getStatus(),
+						'trace'      => $scheduled->getTraceId(),
+						'reason'     => $scheduled->getReason(),
 					];
 
 					if ( $scheduled->isRejected() ) {
@@ -182,7 +188,21 @@ class Trigger extends TaskModel
 			break;
 			case 'routine':
 				$method = 'executeRoutine';
-				$action = RoutineModel::get( $config['routine'] );
+				$routineConfig = $config['routine'];
+				if ( is_iterable( $routineConfig ) ) {
+					$routine = $routineConfig['id'] ?? $routineConfig['routine'];
+
+					$input = $routineConfig['input'] ?? null;
+					if ( $input ) {
+						$request = ExecuteData::create(
+							$service->parseConfig( $input, $context, $data )
+						);
+					}
+					$variables = array_merge( $variables, $routineConfig['variables'] ?? [] );
+				} else {
+					$routine = $routineConfig;
+				}
+				$action = RoutineModel::get( $routine );
 			break;
 			case 'tasks':
 				$method = 'executeTasks';
@@ -193,12 +213,9 @@ class Trigger extends TaskModel
 				return $data;
 		}
 
-		$service = $context->getExecuteService();
-
 		if ( $action ) {
 
-			$key       = $config['key'] ?? null;
-			$variables = $config['variables'] ?? [];
+			$key = $config['key'] ?? null;
 
 			if ( $traverseAutomation ) {
 				$context = $context->descend( $traverseAutomation, $variables );
@@ -206,9 +223,11 @@ class Trigger extends TaskModel
 				$context = $context->descend( null, $variables );
 			}
 
-			$request = new ExecuteData();
-			if ( ! empty( $config['pass_data'] ) ) {
-				$request->set( ExecuteData::create( $data->get( $key ) )->normalize() );
+			if ( ! $request ) {
+				$request = new ExecuteData();
+				if ( ! empty( $config['pass_data'] ) ) {
+					$request->set( ExecuteData::create( $data->get( $key ) )->normalize() );
+				}
 			}
 
 			$return = $service->$method( $action, $context, $request );
