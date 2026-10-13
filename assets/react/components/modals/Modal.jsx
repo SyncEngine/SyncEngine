@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 import Icon from '../partials/Icon';
+import { mergeClassNames } from '../../utils/props';
 
 // Lazy initialization of portal sandbox to avoid module-level DOM manipulation.
 const getPortalSandbox = () => {
@@ -87,8 +88,7 @@ const ModalControl = ( props ) => {
 		if ( 'fullscreen' === props.expandable ) {
 			override.fullscreen = true;
 		} else {
-			override.dialogClassName = props.dialogClassName ? props.dialogClassName +
-			                                                   ' modal-expanded' : 'modal-expanded';
+			override.dialogClassName = mergeClassNames( props.dialogClassName, 'modal-expanded' );
 		}
 	}
 
