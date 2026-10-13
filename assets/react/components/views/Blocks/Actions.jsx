@@ -222,7 +222,7 @@ export default function Actions( props ) {
 						<PreviewModal
 							key={ action.action }
 							title={ previewProps.title }
-							icon={ previewProps.icon ?? action.icon ?? "config" }
+							icon={ previewProps.icon ?? action.icon ?? 'config' }
 							entity={ previewProps.entity ?? item }
 							type={ previewProps.type ?? action.type ?? type }
 							config={ previewProps.config ?? action.value ?? ( item?.config ?? {} ) }
@@ -235,7 +235,11 @@ export default function Actions( props ) {
 					);
 				}
 				return (
-					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, {}, action.dropdown ) }>
+					<ModalToggle
+						key={ action.action }
+						trigger={ createTrigger( action, variants, {}, action.dropdown ) }
+						modalProps={ { size: action.size ?? 'lg' } }
+					>
 						{ action.fields }
 					</ModalToggle>
 				);
