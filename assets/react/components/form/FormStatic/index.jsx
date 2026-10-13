@@ -8,6 +8,19 @@ import { ContainerContext } from '../../../context/ContainerContext';
 import { createRefId } from '../../../utils/globals';
 import { deepClone } from '../../../utils/data';
 
+function isManagedNode( node ) {
+	if ( node.nodeType === 1 && node.hasAttribute ) {
+		if (
+			node.hasAttribute( 'data-controller' ) && 'react' === node.getAttribute( 'data-controller' )
+			||
+			node.hasAttribute( 'data-controlled-by' )
+		) {
+			return true;
+		}
+	}
+	return false;
+}
+
 const FormStatic = forwardRef( function FormStatic( props, ref ) {
 	const app = useGlobal();
 	const {
@@ -73,30 +86,10 @@ const FormStatic = forwardRef( function FormStatic( props, ref ) {
 					// Same rules as Turbo's data-turbo-permanent: leave anything
 					// Stimulus owns alone so it isn't disconnected/reconnected.
 					beforeNodeMorphed( oldNode ) {
-						if ( oldNode.nodeType === 1 && oldNode.hasAttribute ) {
-							if (
-								oldNode.hasAttribute( 'data-controller' ) && 'react' === oldNode.getAttribute( 'data-controller' )
-								||
-								oldNode.hasAttribute( 'data-controlled-by' )
-							) {
-								// Do not morph this node or it's children.
-								return false;
-							}
-						}
-						return true;
+						return ! isManagedNode( oldNode );
 					},
 					beforeNodeRemoved( node ) {
-						if ( node.nodeType === 1 && node.hasAttribute ) {
-							if (
-								node.hasAttribute( 'data-controller' ) && 'react' === node.getAttribute( 'data-controller' )
-								||
-								node.hasAttribute( 'data-controlled-by' )
-							) {
-								// Do not remove this node or it's children.
-								return false;
-							}
-						}
-						return true;
+						return ! isManagedNode( node );
 					}
 				},
 			} );
