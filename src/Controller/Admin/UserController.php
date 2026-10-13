@@ -131,6 +131,8 @@ class UserController extends AbstractAdminController
 			} catch ( \Exception $e ) {
 				$this->addFlash( 'error', $this->trans( 'An error occurred while resetting the password.' ) );
 			}
+		} else {
+			$this->addFlash( 'error', $this->trans( 'Your password reset request could not be validated.' ) );
 		}
 
 		return $this->redirectToRoute( 'syncengine_users_list' );
