@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { getTagParts, isTag, TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 import { TagsContext } from '../../../context/TagsContext';
 import { isEmpty } from '../../../utils/conditions';
-import { ReactNode } from 'react';
 
 export function isTagLabeled( tag, tags = {} ) {
 	const parts = getTagParts( tag );
