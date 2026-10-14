@@ -89,6 +89,11 @@ trait Supervisor
 	{
 		$param = null;
 
+		if ( ! $model ) {
+			$this->supervisor = null;
+			return;
+		}
+
 		if ( is_string( $model ) ) {
 			$param = $model;
 			$parts = explode( ':', $model );
