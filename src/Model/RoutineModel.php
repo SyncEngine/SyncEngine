@@ -24,13 +24,18 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		parent::__construct( $routine );
 	}
 
+	public function getTasksConfig(): array
+	{
+		return $this->getConfig( 'tasks', [] );
+	}
+
 	/**
 	 * @return TaskModel[]
 	 */
 	public function getTasks(): array
 	{
 		$tasks = [];
-		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
+		foreach ( $this->getTasksConfig() as $task ) {
 			$tasks[] = TaskModel::create( $task['_class'] ?? '' );
 		}
 
@@ -39,7 +44,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 
 	public function getTask( $ref ): TaskModel|null
 	{
-		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
+		foreach ( $this->getTasksConfig() as $task ) {
 			if ( $task['_ref'] === $ref ) {
 				return TaskModel::create( $task['_class'] ?? '' );
 			}
