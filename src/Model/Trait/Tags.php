@@ -12,14 +12,18 @@ trait Tags
 		$tags = [];
 
 		if ( $this instanceof Configurable ) {
-			$tags[ 'config' ] = [];
+			$tags['config'] = [];
 		}
 
 		return $tags;
 	}
 
-	public function getTagsResource( array $config = [], ?ExecuteContext $context = null ): array
+	public function getTagsResource( ?array $config = null, ?ExecuteContext $context = null ): array
 	{
-		return [ 'config' => $config ];
+		if ( ! isset( $config ) && $this instanceof Configurable ) {
+			$config = $this->getConfig();
+		}
+
+		return [ 'config' => $config ?? [] ];
 	}
 }
