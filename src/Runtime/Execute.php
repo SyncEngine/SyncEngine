@@ -440,17 +440,15 @@ class Execute
 
 		$context->startRoutine( $routine );
 
-		$config = $routine->getConfig();
-
-		$tasks = $config['tasks'] ?? [];
+		$tasks = $routine->getTasksConfig();
 		if ( $tasks ) {
-			$conditions = $config['conditions'] ?? [];
+			$conditions = $routine->getConditionsConfig();
 
 			if ( ! empty( $conditions ) ) {
 
 				$conditionResource = array_merge(
 					$context->getTagsResource(),
-					$routine->getTagsResource( $config ),
+					$routine->getTagsResource(),
 					[ 'data' => $data ],
 				);
 
