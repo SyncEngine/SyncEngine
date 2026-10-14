@@ -11,13 +11,32 @@ use SyncEngine\Service\ConditionsValidator;
 
 class ConfigData extends ResourceData
 {
+	public function isConfigured( array|FieldCollection $fields = [], ?iterable $config = null ): bool
+	{
+		if ( ! empty( $fields ) ) {
+			$config = $this->sanitize( $fields, $config );
+		} else {
+			$config ??= $this->normalize();
+		}
+
+		foreach ( $config as $k => $v ) {
+			if ( is_array( $v ) && $this->isConfigured( [], $v ) ) {
+				return true;
+			} elseif ( isset( $v ) && '' !== $v ) {
+				return true;
+			}
+
+			unset( $config[ $k ] );
+		}
+
+		return ! empty( $config );
+	}
+
 	public function sanitize( array|FieldCollection $fields, ?iterable $config = null ): array
 	{
 		$remove    = [];
 		$validator = new ConditionsValidator();
-		if ( null === $config ) {
-			$config = $this->normalize();
-		}
+		$config  ??= $this->normalize();
 
 		// @todo Refactor to use Field type objects instead of raw arrays
 		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
@@ -138,5 +157,4 @@ class ConfigData extends ResourceData
 
 		return $config;
 	}
-
 }
