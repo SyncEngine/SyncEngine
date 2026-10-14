@@ -60,6 +60,20 @@ class Modules
 		return $modules;
 	}
 
+	/**
+	 * @todo Move to controller?
+	 * @return array[]
+	 */
+	public function getNormalized(): array
+	{
+		$services = [];
+		foreach ( $this->getAll() as $key => $service ) {
+			$services[ $key ] = $service->normalize();
+		}
+
+		return $services;
+	}
+
 	public static function getModuleVendor( string|object $class ): string
 	{
 		$parsed = self::parseModulePackageName( $class );
