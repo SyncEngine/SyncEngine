@@ -53,4 +53,16 @@ abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 
 		return $config->get();
 	}
+
+	public function beforeUpdate(): void
+	{
+		parent::beforeUpdate();
+
+		$model = $this->getSupervisable();
+
+		// @todo Find a way to disable React to set the object_columns field as disabled, so we don't have to unset it here.
+		$blueprintConfig = $this->getBlueprintConfig();
+		unset( $blueprintConfig['object_columns'] );
+		$model->setConfig( $blueprintConfig, '_blueprint' );
+	}
 }
