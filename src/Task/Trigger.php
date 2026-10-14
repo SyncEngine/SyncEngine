@@ -191,18 +191,27 @@ class Trigger extends TaskModel
 				$routineConfig = $config['routine'];
 				if ( is_iterable( $routineConfig ) ) {
 					$routine = $routineConfig['id'] ?? $routineConfig['routine'];
+					$action = RoutineModel::get( $routine );
 
-					$input = $routineConfig['input'] ?? null;
-					if ( $input ) {
-						$request = ExecuteData::create(
-							$service->parseConfig( $input, $context, $data )
+					if ( $action ) {
+						$input = $routineConfig['input'] ?? null;
+						if ( $input && ConfigData::create( $input )->isConfigured( $action->getInputSchema()->getFields() ) ) {
+							$request = ExecuteData::create(
+								$service->parseConfig( $input, $context, $data )
+							);
+						}
+						$variables = array_merge(
+							$variables,
+							// @todo VariablesData object?
+							array_filter(
+								$routineConfig['variables'] ?? [],
+								fn ( $v ) => isset( $v ) && '' !== $v
+							)
 						);
 					}
-					$variables = array_merge( $variables, $routineConfig['variables'] ?? [] );
 				} else {
-					$routine = $routineConfig;
+					$action = RoutineModel::get( $routineConfig );
 				}
-				$action = RoutineModel::get( $routine );
 			break;
 			case 'tasks':
 				$method = 'executeTasks';
