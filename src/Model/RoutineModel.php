@@ -24,6 +24,11 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		parent::__construct( $routine );
 	}
 
+	public function getConditionsConfig(): array
+	{
+		return $this->getConfig( 'conditions', [] );
+	}
+
 	public function getTasksConfig(): array
 	{
 		return $this->getConfig( 'tasks', [] );
