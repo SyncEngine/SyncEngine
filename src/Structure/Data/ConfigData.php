@@ -22,7 +22,7 @@ class ConfigData extends ResourceData
 		foreach ( $config as $k => $v ) {
 			if ( is_array( $v ) && $this->isConfigured( [], $v ) ) {
 				return true;
-			} elseif ( isset( $v ) && '' !== $v ) {
+			} elseif ( ! empty( $v ) || is_numeric( $v ) || is_bool( $v ) ) {
 				return true;
 			}
 
