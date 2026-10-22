@@ -5,6 +5,38 @@ import { getEvent } from './useFieldValue';
 import { subscribe, unsubscribe } from '../utils/events';
 import { deepClone } from '../utils/data';
 
+function getFieldDependencies( dependencies = null ) {
+	const fields = new Set();
+	if ( ! isObject( dependencies ) ) {
+		return fields;
+	}
+
+	if ( dependencies.hasOwnProperty( 'conditions' ) ) {
+		return getFieldDependencies( dependencies.conditions ).forEach(
+			( field ) => fields.add( field )
+		);
+	}
+
+	for ( const name in dependencies ) {
+		if ( ! dependencies.hasOwnProperty( name ) ) {
+			continue;
+		}
+
+		const value = dependencies[ name ];
+
+		if ( name === 'conditions' || ( isObject( value ) ) ) {
+			getFieldDependencies( value ).forEach(
+				( field ) => fields.add( field )
+			);
+			continue;
+		}
+
+		fields.add( name );
+	}
+
+	return fields;
+}
+
 /**
  * @param {object} dependencies
  * @param {object} context
@@ -47,7 +79,7 @@ export default function useConditions( dependencies = null, context = null ) {
 			return;
 		}
 
-		for ( const name in dependencies ) {
+		for ( const name of getFieldDependencies( dependencies  ) ) {
 			callbacks.current[ name ] = ( data ) => {
 				//values[]
 				values[ name ] = data.detail;
