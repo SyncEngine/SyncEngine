@@ -1,20 +1,34 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { isEmpty, isObject, validate } from '../utils/conditions';
+import { isArray, isEmpty, isObject, validate } from '../utils/conditions';
 import { FieldsContext } from '../context/FieldsContext';
 import { getEvent } from './useFieldValue';
 import { subscribe, unsubscribe } from '../utils/events';
 import { deepClone } from '../utils/data';
 
+/**
+ * @param {object} dependencies
+ * @returns {Set<string>}
+ */
 function getFieldDependencies( dependencies = null ) {
 	const fields = new Set();
 	if ( ! isObject( dependencies ) ) {
+
+		if ( isArray( dependencies ) ) {
+			dependencies.forEach( ( item ) => {
+				getFieldDependencies( item ).forEach(
+					( field ) => fields.add( field )
+				);
+			} );
+		}
+
 		return fields;
 	}
 
 	if ( dependencies.hasOwnProperty( 'conditions' ) ) {
-		return getFieldDependencies( dependencies.conditions ).forEach(
+		getFieldDependencies( dependencies.conditions ).forEach(
 			( field ) => fields.add( field )
 		);
+		return fields;
 	}
 
 	for ( const name in dependencies ) {
@@ -24,7 +38,8 @@ function getFieldDependencies( dependencies = null ) {
 
 		const value = dependencies[ name ];
 
-		if ( name === 'conditions' || ( isObject( value ) ) ) {
+		// Lists only, not objects.
+		if ( isArray( value ) ) {
 			getFieldDependencies( value ).forEach(
 				( field ) => fields.add( field )
 			);
@@ -75,13 +90,12 @@ export default function useConditions( dependencies = null, context = null ) {
 
 	useEffect( () => {
 
-		if ( ! dependencies ) {
+		if ( isEmpty( dependencies ) ) {
 			return;
 		}
 
-		for ( const name of getFieldDependencies( dependencies  ) ) {
+		for ( const name of getFieldDependencies( dependencies ) ) {
 			callbacks.current[ name ] = ( data ) => {
-				//values[]
 				values[ name ] = data.detail;
 				setChanged( c => c + 1 );
 				setValid( onValidate() );
