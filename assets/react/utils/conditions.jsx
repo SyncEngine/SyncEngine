@@ -103,113 +103,195 @@ function getOperator( operator ) {
 	}
 }
 
-function validate( conditions, resource ) {
-	let valid = true;
-	if ( conditions && Object.keys( conditions ).length ) {
-		for ( let key in conditions ) {
-			if ( ! valid ) {
-				break;
-			}
+function validate( conditions, resource, operator = 'AND' ) {
+	let any = 'OR' === ( operator || '' ).toUpperCase() || '||' === ( operator || '' );
 
-			let data = resource;
-			if ( -1 !== key.indexOf('.') && ! resource.hasOwnProperty( key ) ) {
-				data = {
-					[key]: parseTag( key, data )
-				}
-			}
+	if ( ! conditions || ! Object.keys( conditions ).length ) {
+		return true;
+	}
 
-			const condition = conditions[ key ];
+	if ( Array.isArray( conditions ) ) {
+		return validateList( conditions, resource, operator );
+	}
 
-			let compare = ( condition && condition.hasOwnProperty( 'compare' ) ) ? condition.compare : condition,
-				operator = ( condition && condition.hasOwnProperty( 'operator' ) ) ? getOperator( condition.operator ) : null;
+	if ( conditions.hasOwnProperty( 'conditions' ) ) {
+		conditions.operator ??= operator;
+		return validateRow( conditions, resource );
+	}
 
-			if ( ! operator ) {
-				if ( false === compare ) {
-					operator = OPERATOR_EMPTY;
-				} else if ( true === compare ) {
-					operator = OPERATOR_NOT_EMPTY;
-				} else {
-					operator = ( 'object' === typeof compare ) ? OPERATOR_IN : 'default';
-				}
-			}
-
-			switch ( operator ) {
-				case OPERATOR_SET:
-					valid = data.hasOwnProperty( key );
-					break;
-				case OPERATOR_NOT_SET:
-					valid = ! data.hasOwnProperty( key );
-					break;
-				case OPERATOR_EMPTY:
-					valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
-					break;
-				case OPERATOR_NOT_EMPTY:
-					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
-					break;
-				case OPERATOR_IN:
-				case OPERATOR_IN_STRICT:
-					valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
-					break;
-				case OPERATOR_NOT_IN:
-				case OPERATOR_NOT_IN_STRICT:
-					valid = ! data.hasOwnProperty( key ) || ! hasValue( compare, data[ key ] );
-					break;
-				case OPERATOR_CONTAINS:
-				case OPERATOR_CONTAINS_STRICT:
-					valid = data.hasOwnProperty( key ) && hasValue( data[ key ], compare );
-					break;
-				case OPERATOR_NOT_CONTAINS:
-				case OPERATOR_NOT_CONTAINS_STRICT:
-					valid = ! data.hasOwnProperty( key ) || ! hasValue( data[ key ], compare );
-					break;
-				case OPERATOR_HAS_KEY:
-					valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );
-					break;
-				case OPERATOR_NOT_HAS_KEY:
-					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
-					break;
-				case OPERATOR_STARTS_WITH:
-					valid = data.hasOwnProperty( key ) && startsWith( data[ key ], compare );
-					break;
-				case OPERATOR_NOT_STARTS_WITH:
-					valid = data.hasOwnProperty( key ) && ! startsWith( data[ key ], compare );
-					break;
-				case OPERATOR_ENDS_WITH:
-					valid = data.hasOwnProperty( key ) && endsWith( data[ key ], compare );
-					break;
-				case OPERATOR_NOT_ENDS_WITH:
-					valid = data.hasOwnProperty( key ) && ! endsWith( data[ key ], compare );
-					break;
-				case OPERATOR_REGEX:
-					valid = data.hasOwnProperty( key ) && isMatch( data[ key ], compare );
-					break;
-				case OPERATOR_LESSER:
-					valid = data[ key ] < compare;
-					break;
-				case OPERATOR_GREATER:
-					valid = data[ key ] > compare;
-					break;
-				case OPERATOR_LESSER_OR_EQUAL:
-					valid = data[ key ] <= compare;
-					break;
-				case OPERATOR_GREATER_OR_EQUAL:
-					valid = data[ key ] >= compare;
-					break;
-				case OPERATOR_NOT_EQUAL:
-					valid = data[ key ] != compare;
-					break;
-				case OPERATOR_EQUAL:
-					valid = data[ key ] == compare;
-					break;
-				case OPERATOR_NOT_EQUAL_STRICT:
-					valid = data[ key ] !== compare;
-					break;
-				case OPERATOR_EQUAL_STRICT:
-				default:
-					valid = data[ key ] === compare;
-					break;
-			}
+	let parsedConditions = Object.entries( conditions ).map( ( [ key, condition ] ) => {
+		let compare = condition;
+		let condOperator = null;
+		if ( 'object' === typeof condition && condition !== null && ( condition.hasOwnProperty( 'compare' ) || condition.hasOwnProperty( 'operator' ) ) ) {
+			compare = condition.compare !== undefined ? condition.compare : null;
+			condOperator = condition.operator !== undefined ? condition.operator : null;
+			key = condition.key !== undefined ? condition.key : key;
 		}
+		return { key, compare, operator: condOperator };
+	} );
+
+	let valid = false;
+
+	for ( let i = 0; i < parsedConditions.length; i++ ) {
+		const condition = parsedConditions[ i ];
+		if ( ! condition ) {
+			continue;
+		}
+
+		valid = validateRow( condition, resource );
+
+		if ( ! valid && ! any ) {
+			return false;
+		}
+		if ( valid && any ) {
+			return true;
+		}
+	}
+
+	return valid;
+}
+
+function validateList( conditions, resource, operator = 'AND' ) {
+	let any = 'OR' === ( operator || '' ).toUpperCase() || '||' === ( operator || '' );
+	let valid = false;
+
+	for ( let i = 0; i < conditions.length; i++ ) {
+		const condition = conditions[ i ];
+		if ( ! condition ) {
+			continue;
+		}
+
+		valid = validateRow( condition, resource );
+
+		if ( ! valid && ! any ) {
+			return false;
+		}
+		if ( valid && any ) {
+			return true;
+		}
+	}
+
+	return valid;
+}
+
+function validateRow( row, data ) {
+	if ( row.hasOwnProperty( 'conditions' ) ) {
+		if ( ! row.conditions || ! Object.keys( row.conditions ).length ) {
+			return true;
+		}
+		return validate( row.conditions, data, row.operator ?? 'AND' );
+	}
+
+	return validateCondition( row, data );
+}
+
+function validateCondition( condition, data ) {
+	if ( condition.hasOwnProperty( 'source' ) && ( ! isEmpty( condition.source ) || ! isScalar( condition.source ) ) ) {
+		data = condition.source;
+	}
+
+	let key = condition.key !== undefined ? condition.key : '';
+	if ( isEmpty( key ) ) {
+		if ( isEmpty( condition.operator ) ) {
+			return true;
+		}
+		data = { data: data };
+		key = 'data';
+	} else if ( ! isKey( key ) ) {
+		data = { data: key };
+		key = 'data';
+	}
+
+	let compare = condition.compare !== undefined ? condition.compare : null;
+	let operator = condition.operator !== undefined ? getOperator( condition.operator ) : null;
+
+	if ( ! operator ) {
+		if ( false === compare ) {
+			operator = OPERATOR_EMPTY;
+		} else if ( true === compare ) {
+			operator = OPERATOR_NOT_EMPTY;
+		} else {
+			operator = ( 'object' === typeof compare ) ? OPERATOR_IN : 'default';
+		}
+	}
+
+	let valid = true;
+
+	switch ( operator ) {
+		case OPERATOR_SET:
+			valid = data.hasOwnProperty( key );
+			break;
+		case OPERATOR_NOT_SET:
+			valid = ! data.hasOwnProperty( key );
+			break;
+		case OPERATOR_EMPTY:
+			valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
+			break;
+		case OPERATOR_NOT_EMPTY:
+			valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
+			break;
+		case OPERATOR_IN:
+		case OPERATOR_IN_STRICT:
+			valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
+			break;
+		case OPERATOR_NOT_IN:
+		case OPERATOR_NOT_IN_STRICT:
+			valid = ! data.hasOwnProperty( key ) || ! hasValue( compare, data[ key ] );
+			break;
+		case OPERATOR_CONTAINS:
+		case OPERATOR_CONTAINS_STRICT:
+			valid = data.hasOwnProperty( key ) && hasValue( data[ key ], compare );
+			break;
+		case OPERATOR_NOT_CONTAINS:
+		case OPERATOR_NOT_CONTAINS_STRICT:
+			valid = ! data.hasOwnProperty( key ) || ! hasValue( data[ key ], compare );
+			break;
+		case OPERATOR_HAS_KEY:
+			valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );
+			break;
+		case OPERATOR_NOT_HAS_KEY:
+			valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
+			break;
+		case OPERATOR_STARTS_WITH:
+			valid = data.hasOwnProperty( key ) && startsWith( data[ key ], compare );
+			break;
+		case OPERATOR_NOT_STARTS_WITH:
+			valid = data.hasOwnProperty( key ) && ! startsWith( data[ key ], compare );
+			break;
+		case OPERATOR_ENDS_WITH:
+			valid = data.hasOwnProperty( key ) && endsWith( data[ key ], compare );
+			break;
+		case OPERATOR_NOT_ENDS_WITH:
+			valid = data.hasOwnProperty( key ) && ! endsWith( data[ key ], compare );
+			break;
+		case OPERATOR_REGEX:
+			valid = data.hasOwnProperty( key ) && isMatch( data[ key ], compare );
+			break;
+		case OPERATOR_LESSER:
+			valid = data[ key ] < compare;
+			break;
+		case OPERATOR_GREATER:
+			valid = data[ key ] > compare;
+			break;
+		case OPERATOR_LESSER_OR_EQUAL:
+			valid = data[ key ] <= compare;
+			break;
+		case OPERATOR_GREATER_OR_EQUAL:
+			valid = data[ key ] >= compare;
+			break;
+		case OPERATOR_NOT_EQUAL:
+			valid = data[ key ] != compare;
+			break;
+		case OPERATOR_EQUAL:
+			valid = data[ key ] == compare;
+			break;
+		case OPERATOR_NOT_EQUAL_STRICT:
+			valid = data[ key ] !== compare;
+			break;
+		case OPERATOR_EQUAL_STRICT:
+		default:
+			valid = data[ key ] === compare;
+			break;
 	}
 
 	return valid;
