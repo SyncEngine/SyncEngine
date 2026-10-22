@@ -56,7 +56,10 @@ class Trigger extends TaskModel
 					$this->trans( 'Leave empty to pass root data' ),
 				],
 				'taggable'    => true,
-				'conditions'  => [ 'pass_data' => true ],
+				'conditions'  => [
+					'operator'   => 'OR',
+					'conditions' => [ 'pass_data' => true, 'override_data' => true ]
+				],
 			],
 			'variables' => [
 				'label'       => [
