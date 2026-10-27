@@ -11,7 +11,7 @@ use SyncEngine\Repository\StorageRepository;
 class Storage extends EngineEntity
 {
 	#[ORM\Column( length: 255 )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	private ?string $type = null;
 
 	public function getType(): ?string

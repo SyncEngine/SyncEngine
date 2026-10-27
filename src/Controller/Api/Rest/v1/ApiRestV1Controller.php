@@ -141,7 +141,7 @@ class ApiRestV1Controller extends AbstractApiController
 		try {
 			$modelInstance = $model::create();
 
-			$success = $this->setModelValuesByArray( $modelInstance, $body );
+			$success = $this->setModelValuesByArray( $modelInstance, $body, 'create' );
 			if ( true !== $success ) {
 				return $success;
 			}
@@ -202,7 +202,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		try {
-			$success = $this->setModelValuesByArray( $modelInstance, $body );
+			$success = $this->setModelValuesByArray( $modelInstance, $body, 'edit' );
 			if ( true !== $success ) {
 				return $success;
 			}
@@ -262,15 +262,16 @@ class ApiRestV1Controller extends AbstractApiController
 	 * Set model values from request data, respecting Permissions attributes.
 	 *
 	 * Uses reflection to read #[Permissions] attributes on entity properties
-	 * and only allows updates to fields where write=true.
+	 * and only allows updates to fields with appropriate permissions for the operation.
 	 *
 	 * @param  EngineModel<EngineEntity>  $model
+	 * @param  'create'|'edit' $operation
 	 * @return true|JsonResponse
 	 */
-	private function setModelValuesByArray( EngineModel $model, array $data ): true|JsonResponse
+	private function setModelValuesByArray( EngineModel $model, array $data, string $operation = 'edit' ): true|JsonResponse
 	{
 		$entity = $model->getEntity();
-		$writableFields = $this->getWritableFields( $entity );
+		$writableFields = $this->getWritableFields( $entity, $operation );
 
 		if ( empty( $writableFields ) ) {
 			return $this->json(
@@ -344,7 +345,7 @@ class ApiRestV1Controller extends AbstractApiController
 	 * @param EngineEntity $entity
 	 * @return list<string>
 	 */
-	private function getWritableFields( EngineEntity $entity ): array
+	private function getWritableFields( EngineEntity $entity, string $operation = 'edit' ): array
 	{
 		$writableFields = [];
 		$reflection = new \ReflectionClass( $entity );
@@ -356,7 +357,14 @@ class ApiRestV1Controller extends AbstractApiController
 				/** @var Permissions $permissions */
 				$permissions = $attribute->newInstance();
 
-				if ( $permissions->write ) {
+				// Check operation-specific permission
+				$isWritable = match( $operation ) {
+					'create' => $permissions->create,
+					'edit' => $permissions->edit,
+					default => false,
+				};
+
+				if ( $isWritable ) {
 					$writableFields[] = $property->getName();
 				}
 			}

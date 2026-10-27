@@ -17,7 +17,7 @@ use SyncEngine\Repository\AutomationRepository;
 class Automation extends EngineEntity
 {
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	private ?string $endpoint = null;
 
 	// @todo Verify if we need `cascade: [ "persist", "remove"]` ?

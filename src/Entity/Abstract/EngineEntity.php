@@ -16,52 +16,52 @@ class EngineEntity
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column]
-	#[Permissions( read: true, write: false, export: true )]
+	#[Permissions( read: true, create: false, edit: false, export: true )]
 	protected ?int $id = null;
 
 	#[ORM\Column( length: 255, unique: true )]
-	#[Permissions( read: true, write: false, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected ?string $ref = null;
 
 	#[ORM\Column( type: 'string', length: 32, options: [ 'default' => EntityStatus::ENABLED->value ] )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected string $status = EntityStatus::ENABLED->value;
 
 	#[ORM\Column( type: 'string', length: 32, options: [ 'default' => EntityVisibility::VISIBLE->value ] )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected string $visibility = EntityVisibility::VISIBLE->value;
 
 	#[ORM\Column]
-	#[Permissions( read: true, write: false, export: true )]
+	#[Permissions( read: true, create: false, edit: false, export: true )]
 	protected ?\DateTimeImmutable $createdAt = null;
 
 	#[ORM\Column]
-	#[Permissions( read: true, write: false, export: true )]
+	#[Permissions( read: true, create: false, edit: false, export: true )]
 	protected ?\DateTimeImmutable $updatedAt = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected ?string $icon = null;
 
 	#[ORM\Column( length: 255, unique: true )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected ?string $name = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected ?string $description = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: false )]
 	protected ?string $supervisor = null;
 
 	#[ORM\Column( nullable: true )]
-	#[Permissions( read: true, write: true, export: true )]
+	#[Permissions( read: true, create: true, edit: true, export: true )]
 	protected ?array $config = [];
 
 	#[ORM\Column( nullable: true )]
 	#[NotExportable]
-	#[Permissions( read: true, write: false, export: false )]
+	#[Permissions( read: true, create: true, edit: true, export: false )]
 	protected ?array $data = [];
 
 	public function getId(): ?int
