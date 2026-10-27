@@ -48,6 +48,16 @@ if ( !window.matchMedia ) {
 	} ) );
 }
 
+// Mock the Code component to avoid app.theme.getTheme() issues
+vi.mock('@syncengine/components/fields/Code', () => ({
+	default: ({ label, default: defaultValue }) => (
+		<div data-testid="code-field">
+			{label && <label>{label}</label>}
+			<textarea data-testid="code-textarea" defaultValue={defaultValue} />
+		</div>
+	),
+}));
+
 // Build a realistic SyncEngine mock
 function createSyncEngineMock() {
 	const breakpoints = {
