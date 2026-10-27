@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use SyncEngine\Attribute\NotExportable;
+use SyncEngine\Attribute\Permissions;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Repository\AutomationRepository;
 
@@ -16,6 +17,7 @@ use SyncEngine\Repository\AutomationRepository;
 class Automation extends EngineEntity
 {
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
+	#[Permissions( read: true, write: true, export: true )]
 	private ?string $endpoint = null;
 
 	// @todo Verify if we need `cascade: [ "persist", "remove"]` ?
