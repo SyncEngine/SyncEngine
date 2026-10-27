@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Ignore;
+use SyncEngine\Attribute\ApiProperty;
 use SyncEngine\Attribute\NotExportable;
-use SyncEngine\Attribute\Permissions;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Repository\AutomationRepository;
 
@@ -17,7 +17,7 @@ use SyncEngine\Repository\AutomationRepository;
 class Automation extends EngineEntity
 {
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
-	#[Permissions( read: true, create: true, edit: true, export: true )]
+	#[ApiProperty( readable: true, creatable: true, updatable: true )]
 	private ?string $endpoint = null;
 
 	// @todo Verify if we need `cascade: [ "persist", "remove"]` ?
@@ -25,6 +25,7 @@ class Automation extends EngineEntity
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[ORM\OrderBy(['createdAt' => 'DESC'])]
 	#[NotExportable]
+	#[ApiProperty( readable: false, creatable: false, updatable: false )]
 	#[Ignore]
 	private Collection $traces;
 

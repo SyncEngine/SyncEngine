@@ -3,7 +3,7 @@
 namespace SyncEngine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SyncEngine\Attribute\Permissions;
+use SyncEngine\Attribute\ApiProperty;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Repository\StorageRepository;
 
@@ -11,7 +11,7 @@ use SyncEngine\Repository\StorageRepository;
 class Storage extends EngineEntity
 {
 	#[ORM\Column( length: 255 )]
-	#[Permissions( read: true, create: true, edit: true, export: true )]
+	#[ApiProperty( readable: true, creatable: true, updatable: true )]
 	private ?string $type = null;
 
 	public function getType(): ?string

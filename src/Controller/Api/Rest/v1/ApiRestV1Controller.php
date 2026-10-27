@@ -2,11 +2,12 @@
 
 namespace SyncEngine\Controller\Api\Rest\v1;
 
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Attribute\Permissions;
+use SyncEngine\Attribute\ApiProperty;
 use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Model\Abstract\EngineModel;
@@ -351,16 +352,16 @@ class ApiRestV1Controller extends AbstractApiController
 		$reflection = new \ReflectionClass( $entity );
 
 		foreach ( $reflection->getProperties() as $property ) {
-			$attributes = $property->getAttributes( Permissions::class );
+			$attributes = $property->getAttributes( ApiProperty::class );
 
 			foreach ( $attributes as $attribute ) {
-				/** @var Permissions $permissions */
-				$permissions = $attribute->newInstance();
+				/** @var ApiProperty $apiProperty */
+				$apiProperty = $attribute->newInstance();
 
-				// Check operation-specific permission
+				// Check operation-specific access
 				$isWritable = match( $operation ) {
-					'create' => $permissions->create,
-					'edit' => $permissions->edit,
+					'create' => $apiProperty->creatable,
+					'edit' => $apiProperty->updatable,
 					default => false,
 				};
 
