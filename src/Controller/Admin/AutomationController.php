@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use SyncEngine\Attribute\ActionHandler;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Automation;
@@ -144,6 +145,7 @@ class AutomationController extends EntityController
 	/**
 	 * @return array{success: bool, close: bool, entity: array}
 	 */
+	#[ActionHandler('reset', 'ROLE_VIEWER')]
 	protected function reset( AutomationModel $automation ): array
 	{
 		$automation->reset();

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use SyncEngine\Attribute\ActionHandler;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\EntityStatus;
@@ -190,6 +191,19 @@ abstract class EntityController extends AbstractAdminController
 
 			default:
 				if ( method_exists( $this, $action ) ) {
+					$actionPermission = $this->getActionPermission( $action );
+					if ( $actionPermission === null ) {
+						$return['success'] = false;
+						$return['error']   = $this->trans( 'Action not available: {action}', [ '{action}' => $action ] );
+						break;
+					}
+
+					if ( ! $this->isGranted( $actionPermission ) ) {
+						$return['success'] = false;
+						$return['error']   = $this->trans( 'Access denied.' );
+						break;
+					}
+
 					$return = $this->$action( $model, $request );
 				}
 			break;
@@ -319,5 +333,36 @@ abstract class EntityController extends AbstractAdminController
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Get security expression for an action handler method.
+	 *
+	 * Returns the permission expression if the method has an #[ActionHandler] attribute,
+	 * or null if the method is not a valid action handler.
+	 * The expression is passed directly to isGranted() and can be any security expression
+	 * (e.g., 'ROLE_EDITOR', 'ROLE_ADMIN', or complex expressions like 'ROLE_EDITOR or ROLE_API').
+	 *
+	 * @param string $action Method name
+	 * @return string|null Permission expression or null if not an action handler
+	 */
+	protected function getActionPermission( string $action ): ?string
+	{
+		$reflection = new \ReflectionClass( $this );
+
+		if ( ! $reflection->hasMethod( $action ) ) {
+			return null;
+		}
+
+		$method = $reflection->getMethod( $action );
+		$attributes = $method->getAttributes( ActionHandler::class );
+
+		if ( empty( $attributes ) ) {
+			return null;
+		}
+
+		/** @var ActionHandler $actionHandler */
+		$actionHandler = $attributes[0]->newInstance();
+		return $actionHandler->permission;
 	}
 }

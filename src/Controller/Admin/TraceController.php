@@ -5,6 +5,7 @@ namespace SyncEngine\Controller\Admin;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\ActionHandler;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
@@ -28,6 +29,7 @@ class TraceController extends EntityController
 	/**
 	 * @return array{success:bool, data:array<string, mixed>}
 	 */
+	#[ActionHandler('view', 'ROLE_VIEWER')]
 	protected function view( TraceModel $trace, Request $request ): array
 	{
 		$file = $request->request->get( 'file' );
@@ -65,6 +67,7 @@ class TraceController extends EntityController
 	/**
 	 * @return array{success: bool,close: bool, entity: array}
 	 */
+	#[ActionHandler('kill', 'ROLE_VIEWER')]
 	protected function kill( TraceModel $trace ): array
 	{
 		$trace->kill();
