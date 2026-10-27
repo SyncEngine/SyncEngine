@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\Permissions;
 use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Model\Abstract\EngineModel;
@@ -258,15 +259,39 @@ class ApiRestV1Controller extends AbstractApiController
 	}
 
 	/**
+	 * Set model values from request data, respecting Permissions attributes.
+	 *
+	 * Uses reflection to read #[Permissions] attributes on entity properties
+	 * and only allows updates to fields where write=true.
+	 *
 	 * @param  EngineModel<EngineEntity>  $model
+	 * @return true|JsonResponse
 	 */
 	private function setModelValuesByArray( EngineModel $model, array $data ): true|JsonResponse
 	{
-		$errors  = [];
+		$entity = $model->getEntity();
+		$writableFields = $this->getWritableFields( $entity );
+
+		if ( empty( $writableFields ) ) {
+			return $this->json(
+				[ 'message' => 'Model type does not support field updates.' ],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		$errors = [];
 		$unknown = [];
+		$notAllowed = [];
+
 		foreach ( $data as $key => $value ) {
+			// Check if field is writable
+			if ( ! in_array( $key, $writableFields, true ) ) {
+				$notAllowed[] = $key;
+				continue;
+			}
+
 			$setter = 'set' . ucfirst( $key );
-			if ( method_exists( $model->getEntity(), $setter ) ) {
+			if ( method_exists( $entity, $setter ) ) {
 				try {
 					$model->$setter( $value );
 				} catch ( \Throwable $e ) {
@@ -277,24 +302,67 @@ class ApiRestV1Controller extends AbstractApiController
 			}
 		}
 
-		if ( $unknown ) {
+		// Check for fields not allowed to be written (security concern)
+		if ( ! empty( $notAllowed ) ) {
+			return $this->json(
+				[
+					'message' => 'Fields cannot be updated: ' . implode( ', ', $notAllowed ),
+					'errors' => [ 'not_allowed' => $notAllowed ],
+				],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		// Check for unknown fields (field doesn't exist on entity)
+		if ( ! empty( $unknown ) ) {
 			return $this->json(
 				[ 'message' => 'Unknown fields: ' . implode( ', ', $unknown ) ],
 				Response::HTTP_BAD_REQUEST
 			);
 		}
 
-		if ( $errors ) {
+		// Check for validation errors
+		if ( ! empty( $errors ) ) {
 			return $this->json(
 				[
-					'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
-					'errors' => $errors
+					'message' => 'Invalid field values: ' . implode( ', ', array_keys( $errors ) ),
+					'errors' => $errors,
 				],
 				Response::HTTP_BAD_REQUEST
 			);
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get list of writable field names for an entity.
+	 *
+	 * Inspects the entity class for properties with #[Permissions] attributes
+	 * where write=true and returns a list of field names that can be written to.
+	 *
+	 * @param EngineEntity $entity
+	 * @return list<string>
+	 */
+	private function getWritableFields( EngineEntity $entity ): array
+	{
+		$writableFields = [];
+		$reflection = new \ReflectionClass( $entity );
+
+		foreach ( $reflection->getProperties() as $property ) {
+			$attributes = $property->getAttributes( Permissions::class );
+
+			foreach ( $attributes as $attribute ) {
+				/** @var Permissions $permissions */
+				$permissions = $attribute->newInstance();
+
+				if ( $permissions->write ) {
+					$writableFields[] = $property->getName();
+				}
+			}
+		}
+
+		return $writableFields;
 	}
 
 	private function resolveModel( string $entity ): ?string
