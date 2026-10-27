@@ -118,7 +118,7 @@ class DefaultController extends AbstractController
 		);
 	}
 
-	protected function logException( \Exception $e, string $message = 'An error occurred' ): void
+	protected function logException( \Throwable $e, string $message = 'An error occurred' ): void
 	{
 		$this->get( 'logger' )->error(
 			$message,
