@@ -132,4 +132,46 @@ class DefaultController extends AbstractController
 			]
 		);
 	}
+
+	/**
+	 * Create a safe error response that logs full exception details server-side
+	 * but only exposes them to the client in debug mode.
+	 *
+	 * @param \Throwable $e
+	 * @param string $defaultMessage Generic message to show in production
+	 * @param int $statusCode HTTP status code
+	 * @param string $logContext Message to log with exception details
+	 *
+	 * @return JsonResponse
+	 */
+	protected function errorResponse( \Throwable $e, string $defaultMessage = 'An error occurred', int $statusCode = 500, string $logContext = 'An error occurred' ): JsonResponse
+	{
+		// Always log full exception server-side
+		$this->logException( $e, $logContext );
+
+		// In debug mode, return detailed error info
+		if ( $this->isDebug() ) {
+			return $this->json(
+				[
+					'success' => false,
+					'message' => $e->getMessage(),
+					'type'    => get_class( $e ),
+					'code'    => $e->getCode(),
+					'file'    => $e->getFile(),
+					'line'    => $e->getLine(),
+					'trace'   => $e->getTraceAsString(),
+				],
+				$statusCode
+			);
+		}
+
+		// In production, return safe generic message
+		return $this->json(
+			[
+				'success' => false,
+				'message' => $defaultMessage,
+			],
+			$statusCode
+		);
+	}
 }

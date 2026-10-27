@@ -66,9 +66,11 @@ class ApiRestV1Controller extends AbstractApiController
 			}
 			unset( $entityItem ); // Remove reference to avoid accidental modifications.
 		} catch ( \Exception $e ) {
-			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
-				Response::HTTP_INTERNAL_SERVER_ERROR
+			return $this->errorResponse(
+				$e,
+				'An error occurred while retrieving entities',
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				'Error in list_entities'
 			);
 		}
 
@@ -105,9 +107,11 @@ class ApiRestV1Controller extends AbstractApiController
 				);
 			}
 		} catch ( \Exception $e ) {
-			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
-				Response::HTTP_INTERNAL_SERVER_ERROR
+			return $this->errorResponse(
+				$e,
+				'An error occurred while retrieving the entity',
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				'Error in get_entity'
 			);
 		}
 
@@ -150,17 +154,21 @@ class ApiRestV1Controller extends AbstractApiController
 			try {
 				$modelInstance->save( true );
 			} catch ( \Throwable $e ) {
-				return $this->json(
-					[ 'message' => 'Could not create entity: ' . $e->getMessage() ],
-					Response::HTTP_BAD_REQUEST
+				return $this->errorResponse(
+					$e,
+					'Could not create entity',
+					Response::HTTP_BAD_REQUEST,
+					'Error saving entity in create_entity'
 				);
 			}
 
 			return $this->json( $modelInstance->normalize(), Response::HTTP_CREATED );
 		} catch ( \Throwable $e ) {
-			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
-				Response::HTTP_INTERNAL_SERVER_ERROR
+			return $this->errorResponse(
+				$e,
+				'An error occurred while creating the entity',
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				'Error in create_entity'
 			);
 		}
 	}
@@ -211,17 +219,21 @@ class ApiRestV1Controller extends AbstractApiController
 			try {
 				$modelInstance->update( true );
 			} catch ( \Throwable $e ) {
-				return $this->json(
-					[ 'message' => 'Could not update entity: ' . $e->getMessage() ],
-					Response::HTTP_BAD_REQUEST
+				return $this->errorResponse(
+					$e,
+					'Could not update entity',
+					Response::HTTP_BAD_REQUEST,
+					'Error updating entity in update_entity'
 				);
 			}
 
 			return $this->json( $modelInstance->normalize() );
 		} catch ( \Throwable $e ) {
-			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
-				Response::HTTP_INTERNAL_SERVER_ERROR
+			return $this->errorResponse(
+				$e,
+				'An error occurred while updating the entity',
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				'Error in update_entity'
 			);
 		}
 	}
@@ -252,9 +264,11 @@ class ApiRestV1Controller extends AbstractApiController
 
 			return $this->json( [ 'message' => $this->trans( 'Entity deleted' ) ], Response::HTTP_OK );
 		} catch ( \Exception $e ) {
-			return $this->json(
-				[ 'message' => $this->trans( $e->getMessage() ) ],
-				Response::HTTP_INTERNAL_SERVER_ERROR
+			return $this->errorResponse(
+				$e,
+				'Could not delete entity',
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				'Error deleting entity in delete_entity'
 			);
 		}
 	}

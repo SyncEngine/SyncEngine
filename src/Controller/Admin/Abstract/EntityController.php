@@ -37,16 +37,12 @@ abstract class EntityController extends AbstractAdminController
 				return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 			}
 		} catch ( \Exception $e ) {
-			$response = [
-				'success' => false,
-				'error'   => $e->getMessage(),
-			];
-
-			if ( $this->isDebug() ) {
-				$response['exception'] = $e;
-			} else {
-				$this->logException( $e, 'An error occurred while handling request' );
-			}
+			return $this->errorResponse(
+				$e,
+				'An error occurred while handling your request',
+				500,
+				'An error occurred while handling request'
+			);
 		}
 
 		return $this->json( $response );
@@ -301,7 +297,6 @@ abstract class EntityController extends AbstractAdminController
 
 	/**
 	 * @todo Create a Query DTO
-	 * @phpstan-ignore missingType.iterableValue, missingType.iterableValue
 	 */
 	public function _getListQuery( EntityModel $model, Request $request, array $query = [] ): array
 	{
