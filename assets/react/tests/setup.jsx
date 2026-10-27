@@ -17,19 +17,27 @@ vi.mock('@syncengine/hooks/useTranslator', () => ({
 // Mock react-bootstrap to avoid portal/DOM issues in tests
 vi.mock('react-bootstrap', async () => {
 	const actual = await vi.importActual('react-bootstrap');
+	
+	// Create simple wrapper components for Bootstrap Modal sub-components
+	const createModalComponent = ( name ) => {
+		return ({ children, ...props }) => (
+			<div {...props} data-testid={`${name.toLowerCase()}`}>{children}</div>
+		);
+	};
+
+	const ModalWrapper = createModalComponent( 'Modal' );
+	ModalWrapper.Header = createModalComponent( 'ModalHeader' );
+	ModalWrapper.Body = createModalComponent( 'ModalBody' );
+	ModalWrapper.Footer = createModalComponent( 'ModalFooter' );
+	ModalWrapper.Dialog = createModalComponent( 'ModalDialog' );
+
 	return {
 		...actual,
 		Accordion: actual.Accordion || actual,
-		Modal: ({ children, ...props }) => (
-			<div {...props} data-testid="modal-wrapper">
-				{children}
-			</div>
-		),
+		Modal: ModalWrapper,
 		Form: {
 			Check: ({ children, ...props }) => (
-				<div {...props} data-testid="form-check">
-					{children}
-				</div>
+				<div {...props} data-testid="form-check">{children}</div>
 			),
 			...actual.Form,
 		},
