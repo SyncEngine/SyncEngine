@@ -66,6 +66,7 @@ class ModelExporter
 		$this->start( $currentRef );
 
 		foreach ( $classRef->getProperties() as $property ) {
+			// Skip fields marked as NotExportable
 			if ( $property->getAttributes( NotExportable::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
 				continue;
 			}

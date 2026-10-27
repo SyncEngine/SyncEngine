@@ -38,10 +38,10 @@ security:
                 password_path: security.credentials.password
 
             remember_me:
-              secret: '%kernel.secret%'
-              lifetime: 604800
-              path: /
-              always_remember_me: true
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
 
             two_factor:
                 auth_form_path: /login/2fa
