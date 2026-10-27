@@ -110,11 +110,14 @@ function createSyncEngineMock() {
 }
 
 beforeEach(() => {
+	vi.clearAllMocks();
+	vi.clearAllTimers();
 	window.SyncEngine = createSyncEngineMock();
 });
 
 afterEach(() => {
 	cleanup();
 	vi.clearAllMocks();
+	vi.clearAllTimers();
 	delete window.SyncEngine;
 });
