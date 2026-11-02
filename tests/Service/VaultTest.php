@@ -13,7 +13,7 @@ class VaultTest extends KernelTestCase
 	{
 		self::bootKernel();
 		$this->vault = static::getContainer()->get( Vault::class );
-		$this->vault->generateKeys( false );
+		$this->vault->generateKeys( true );
 	}
 
 	public function testStoreAndFetchSecret(): void
