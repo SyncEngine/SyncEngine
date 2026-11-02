@@ -29,19 +29,20 @@ class ModelNormalizer
 	private ?Serializer $serializer = null;
 	private static ?string $runningRef = null;
 	private static array $normalized = [];
+	private static array $errors = [];
 
 	private function start( string $ref ): void
 	{
-		if ( ! self::$runningRef ) {
-			self::$runningRef = $ref;
+		if ( ! $this->runningRef ) {
+			$this->runningRef = $ref;
 		}
 	}
 
 	private function reset( string $ref ): void
 	{
-		if ( $ref === self::$runningRef ) {
-			self::$runningRef = null;
-			self::$normalized = [];
+		if ( $ref === $this->runningRef ) {
+			$this->runningRef = null;
+			$this->normalized = [];
 		}
 	}
 
@@ -54,112 +55,120 @@ class ModelNormalizer
 
 		$currentRef = ( method_exists( $model, 'getRef' ) ) ? $model->getRef() : '_';
 
-		if ( $currentRef === self::$runningRef ) {
+		if ( $currentRef === $this->runningRef ) {
 			return [];
 		}
 
 		// Should not be possible but verify anyway.
-		if ( ! empty( static::$normalized[ $currentRef ] ) ) {
-			return static::$normalized[ $currentRef ];
+		if ( ! empty( $this->normalized[ $currentRef ] ) ) {
+			return $this->normalized[ $currentRef ];
 		}
 
 		$this->start( $currentRef );
+		try {
+			$propertyAccess = new PropertyAccessor();
+			$modelRef       = new \ReflectionClass( $model );
 
-		// Get entity without ref.
-		$entity = clone $model->getEntity();
+			// Get entity without ref.
+			$entity   = clone $model->getEntity();
+			$classRef = EntityModel::getEntityReflection( $entity );
 
-		$classRef       = EntityModel::getEntityReflection( $entity );
-		$propertyAccess = new PropertyAccessor();
+			$data = [
+				'_entity' => $classRef->getShortName(),
+				'_supports' => [
+					'config'     => $model instanceof Configurable,
+					'tags'       => $model instanceof Taggable,
+					'supervisor' => $model instanceof Supervisable,
+					'blueprints' => $model instanceof Supervisable && $model->supportsSupervisor( 'blueprint' ),
+				],
+			];
 
-		$data = [
-			'_entity' => $classRef->getShortName(),
-			'_supports' => [
-				'config'     => $model instanceof Configurable,
-				'tags'       => $model instanceof Taggable,
-				'supervisor' => $model instanceof Supervisable,
-				'blueprints' => $model instanceof Supervisable && $model->supportsSupervisor( 'blueprint' ),
-			],
-		];
+			foreach ( $classRef->getProperties() as $propertyRef ) {
+				try {
+					$name   = $propertyRef->getName();
+					$getter = 'get' . ucfirst( $name );
 
-		foreach ( $classRef->getProperties() as $propertyRef ) {
-			$name   = $propertyRef->getName();
-			$getter = 'get' . ucfirst( $name );
-
-			if ( $propertyRef->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
-				continue;
-			}
-
-			$modelRef = new \ReflectionClass( $model );
-			$useModel = $modelRef->hasMethod( $getter ) && match( $name ) {
-					'supervisor' => $includeDependencies,
-					default => is_callable( [ $model, $getter ] ),
-				};
-
-			if ( $useModel ) {
-				if ( ! $classRef->hasMethod( $getter ) ) {
-					continue;
-				}
-				if ( $classRef->getMethod( $getter )?->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
-					continue;
-				}
-				if ( $modelRef->getMethod( $getter )?->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
-					continue;
-				}
-
-				// Call Model method instead of entity to allow context overrides.
-				$value = call_user_func( [ $model, $getter ] );
-			} else {
-				$value = $propertyAccess->getValue( $entity, $name );
-			}
-
-			if ( $value instanceof \DateTimeInterface ) {
-				$value = $value->getTimestamp();
-			}
-
-			if ( is_object( $value ) ) {
-				$valueRef = new \ReflectionClass( $value );
-				if ( $valueRef->isEnum() ) {
-					$value = $value->value;
-				} elseif ( $valueRef->isCloneable() ) {
-					// Remove ref.
-					$value = clone $value;
-				} elseif ( $value instanceof ResourceData ) {
-					$value = $value->normalize();
-				}
-			}
-
-			if ( is_iterable( $value ) ) {
-				$value = ResourceData::create( $value )->normalize();
-			} elseif ( $value instanceof Normalizable ) {
-				if ( $value instanceof EntityModel ) {
-					if ( $includeDependencies ) {
-						$value = $value->normalize( $includeDependencies, $includeDependents );
-					} else {
-						$value = $value->getId();
+					if ( $propertyRef->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+						continue;
 					}
-				} else {
-					$value = $value->normalize();
+
+					$useModel = $modelRef->hasMethod( $getter ) && match( $name ) {
+						'supervisor' => $includeDependencies,
+						default => is_callable( [ $model, $getter ] ),
+					};
+
+					if ( $useModel ) {
+						if ( ! $classRef->hasMethod( $getter ) ) {
+							continue;
+						}
+						if ( $classRef->getMethod( $getter )?->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+							continue;
+						}
+						if ( $modelRef->getMethod( $getter )?->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+							continue;
+						}
+
+						// Call Model method instead of entity to allow context overrides.
+						$value = call_user_func( [ $model, $getter ] );
+					} else {
+						$value = $propertyAccess->getValue( $entity, $name );
+					}
+
+					if ( $value instanceof \DateTimeInterface ) {
+						$value = $value->getTimestamp();
+					}
+
+					if ( is_object( $value ) ) {
+						$valueRef = new \ReflectionClass( $value );
+						if ( $valueRef->isEnum() ) {
+							$value = $value->value;
+						} elseif ( $valueRef->isCloneable() ) {
+							// Remove ref.
+							$value = clone $value;
+						} elseif ( $value instanceof ResourceData ) {
+							$value = $value->normalize();
+						}
+					}
+
+					if ( is_iterable( $value ) ) {
+						$value = ResourceData::create( $value )->normalize();
+					} elseif ( $value instanceof Normalizable ) {
+						if ( $value instanceof EntityModel ) {
+							if ( $includeDependencies ) {
+								$value = $value->normalize( $includeDependencies, $includeDependents );
+							} else {
+								$value = $value->getId();
+							}
+						} else {
+							$value = $value->normalize();
+						}
+					}
+				} catch ( \Throwable $e ) {
+					$this->errors[] = $e;
+					$value = null;
 				}
+
+				$data[ $name ] = $value;
 			}
 
-			$data[ $name ] = $value;
+			if ( $model instanceof Taggable ) {
+				$data['tags'] = $model->getTags();
+			}
+
+			if ( $includeDependencies && method_exists( $model, 'getConfigDependencies' ) ) {
+				$data['_dependencies'] = $this->getDependencies( $model );
+			}
+
+			if ( $includeDependents ) {
+				$data['_dependents'] = $this->getDependents( $model );
+			}
+
+			$normalized = $this->getSerializer()->normalize( $data );
+		} finally {
+			$this->reset( $currentRef );
 		}
 
-		if ( $model instanceof Taggable ) {
-			$data['tags'] = $model->getTags();
-		}
-
-		if ( $includeDependencies && method_exists( $model, 'getConfigDependencies' ) ) {
-			$data['_dependencies'] = $this->getDependencies( $model );
-		}
-
-		if ( $includeDependents ) {
-			$data['_dependents'] = $this->getDependents( $model );
-		}
-
-		$this->reset( $currentRef );
-
-		return $this->getSerializer()->normalize( $data );
+		return $normalized;
 	}
 
 	public function getDependencies( $model ): array
@@ -173,10 +182,10 @@ class ModelNormalizer
 		/** @var EngineModel $dependency */
 		foreach ( $dependencies as $key => $dependency ) {
 			$ref = $dependency->getRef();
-			if ( ! isset( static::$normalized[ $ref ] ) ) {
-				static::$normalized[ $ref ] = $dependency->normalize( false, false );
+			if ( ! isset( $this->normalized[ $ref ] ) ) {
+				$this->normalized[ $ref ] = $dependency->normalize( false, false );
 			}
-			$dependencies[ $key ] = static::$normalized[ $ref ];
+			$dependencies[ $key ] = $this->normalized[ $ref ];
 		}
 
 		return $dependencies;
@@ -190,10 +199,10 @@ class ModelNormalizer
 		/** @var EngineModel $dependent */
 		foreach ( $dependents as $key => $dependent ) {
 			$ref = $dependent->getRef();
-			if ( ! isset( static::$normalized[ $ref ] ) ) {
-				static::$normalized[ $ref ] = $dependent->normalize( false, false );
+			if ( ! isset( $this->normalized[ $ref ] ) ) {
+				$this->normalized[ $ref ] = $dependent->normalize( false, false );
 			}
-			$dependents[ $key ] = static::$normalized[ $ref ];
+			$dependents[ $key ] = $this->normalized[ $ref ];
 		}
 
 		return $dependents;
