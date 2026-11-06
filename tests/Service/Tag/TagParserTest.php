@@ -478,4 +478,66 @@ class TagParserTest extends BaseTestCase
 
 		$this->assertEquals( 'bar', $tagParser->parseString( '{{ array.""quote.with.dots."".foo }}' ) );
 	}
+
+	public function testOnlyTagFilterMethodsAreAllowed(): void
+	{
+		$parser = new TagParser( [ 'data' => [ 'name' => 'alice', 'list' => [ 'a', 'b' ] ] ] );
+
+		// Built-in TagFilter filters work (case-insensitive first letter).
+		$this->assertSame( 2, $parser->parseString( '{{ data.list|count }}' ) );
+		$this->assertSame( 'a;b', $parser->parseString( '{{ data.list|string(";") }}' ) );
+
+		// Arbitrary PHP callables must not be executed; the value is returned unfiltered.
+		$this->assertSame( 'alice', $parser->parseString( '{{ data.name|strtoupper }}' ) );
+		$this->assertSame( 'alice', $parser->parseString( '{{ data.name|system }}' ) );
+		$this->assertSame( 'alice', $parser->parseString( '{{ data.name|SyncEngine\\Foo::bar }}' ) );
+	}
+
+	public function testLiteralFallbackQuotes(): void
+	{
+		$parser = new TagParser( [ 'data' => [ 'name' => 'alice' ], 'variables' => [ 'id' => 7 ] ] );
+
+		$this->assertSame( 'dflt', $parser->parseString( '{{ data.nope ?? "dflt" }}' ) );
+		$this->assertSame( 'dflt', $parser->parseString( "{{ data.nope ?? 'dflt' }}" ) );
+		$this->assertSame( 'two words', $parser->parseString( "{{ data.nope ?? 'two words' }}" ) );
+		$this->assertSame( '', $parser->parseString( "{{ data.nope ?? '' }}" ) );
+		$this->assertSame( 'alice', $parser->parseString( "{{ data.name ?? 'dflt' }}" ) );
+		$this->assertSame( 7, $parser->parseString( "{{ data.nope ?? variables.id ?? 'dflt' }}" ) );
+		$this->assertSame( 'dflt', $parser->parseString( "{{ data.nope ?? variables.nope ?? 'dflt' }}" ) );
+		$this->assertSame( 'Hi dflt!', $parser->parseString( "Hi {{ data.nope ?? 'dflt' }}!" ) );
+	}
+
+	public function testEmptyFallbackOperator(): void
+	{
+		$parser = new TagParser( [
+			'data' => [
+				'empty_string' => '', 'zero' => 0, 'zero_string' => '0', 'false' => false, 'empty_list' => [],
+				'null' => null, 'name' => 'alice', 'spaces' => ' ', 'list' => [ 'a' ],
+			],
+		] );
+
+		// `?:` falls back on PHP empty() values.
+		foreach ( [ 'empty_string', 'zero', 'zero_string', 'false', 'empty_list', 'null', 'missing' ] as $key ) {
+			$this->assertSame( 'dflt', $parser->parseString( '{{ data.' . $key . ' ?: "dflt" }}' ), $key );
+		}
+		foreach ( [ 'name' => 'alice', 'spaces' => ' ', 'list' => [ 'a' ] ] as $key => $expected ) {
+			$this->assertSame( $expected, $parser->parseString( '{{ data.' . $key . ' ?: "dflt" }}' ), $key );
+		}
+
+		// `??` only falls back on null.
+		$this->assertSame( '', $parser->parseString( '{{ data.empty_string ?? "dflt" }}' ) );
+		$this->assertSame( 0, $parser->parseString( '{{ data.zero ?? "dflt" }}' ) );
+		$this->assertSame( 'dflt', $parser->parseString( '{{ data.null ?? "dflt" }}' ) );
+
+		// Chains are evaluated left to right; literals and tags can be mixed at any position.
+		$this->assertSame( 'alice', $parser->parseString( '{{ data.empty_string ?: data.missing ?? data.name }}' ) );
+		$this->assertSame( 'x', $parser->parseString( "{{ data.missing ?? data.zero ?: 'x' }}" ) );
+		$this->assertSame( 'x', $parser->parseString( '{{ data.missing ?? "x" ?? data.name }}' ) );
+		$this->assertSame( 'alice', $parser->parseString( '{{ data.zero ?: data.empty_string ?: data.name }}' ) );
+
+		// Filters apply per operand; in text the result is cast to string.
+		$this->assertSame( 'none', $parser->parseString( '{{ data.empty_list|count ?: "none" }}' ) );
+		$this->assertSame( 'Hi alice!', $parser->parseString( 'Hi {{ data.empty_string ?: data.name }}!' ) );
+		$this->assertSame( 'Hi !', $parser->parseString( 'Hi {{ data.empty_string ?: data.missing }}!' ) );
+	}
 }
