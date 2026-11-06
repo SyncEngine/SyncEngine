@@ -112,7 +112,8 @@ class Execute
 			$requestConfig = $automation->getConfig( 'request' );
 			// @todo Parse data?
 
-			if ( ! empty( $requestConfig['format'] ) ) {
+			// Only raw request bodies (HTTP) need decoding. Data passed as ExecuteData (preview, Trigger) is already structured.
+			if ( ! empty( $requestConfig['format'] ) && is_string( $data ) ) {
 				$data = ( new DataFormatter() )->decodeFormat( $requestConfig['format'], $data );
 			}
 			if ( ! empty( $requestConfig['param'] ) ) {
