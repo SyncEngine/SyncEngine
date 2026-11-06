@@ -407,9 +407,10 @@ class Execute
 			$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $stepsResource ] ) );
 		}
 
-		$variables = $step->getVariablesConfig();
-		if ( $variables->hasValues() ) {
-			$variables   = $this->parseConfig( $variables->filter()->normalize(), $context, $data, null, [ 'step' => $stepsResource ] );
+		// Only configured variables (decided on the raw config, before parsing) override context variables.
+		$variables = $step->getVariablesConfig()->filterConfigured();
+		if ( ! $variables->isEmpty() ) {
+			$variables   = $this->parseConfig( $variables->normalize(), $context, $data, null, [ 'step' => $stepsResource ] );
 			$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
 		}
 
