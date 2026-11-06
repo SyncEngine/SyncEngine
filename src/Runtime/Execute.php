@@ -403,7 +403,7 @@ class Execute
 		$stepsResource = $context->getCurrent( 'step' ) ?: ResourceData::create();
 
 		$input = $step->getInputConfig();
-		if ( $input->hasValues() ) {
+		if ( $input->isConfigured() ) {
 			$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $stepsResource ] ) );
 		}
 
