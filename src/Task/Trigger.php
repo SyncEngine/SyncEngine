@@ -211,8 +211,9 @@ class Trigger extends TaskModel
 						$input    = $routineConfig['input'] ?? null;
 						$rawInput = $rawRoutineConfig['input'] ?? $input;
 						if ( $input && ConfigData::create( (array) $rawInput )->isConfigured( $action->getInputSchema()->getFields() ) ) {
+							// Parse the raw input once; untouched input fields ("") become null first.
 							$request = ExecuteData::create(
-								$service->parseConfig( $input, $context, $data )
+								$service->parseConfig( ConfigData::create( (array) $rawInput )->nullUnconfigured()->normalize(), $context, $data )
 							);
 						}
 

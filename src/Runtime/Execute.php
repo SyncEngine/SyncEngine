@@ -404,7 +404,8 @@ class Execute
 
 		$input = $step->getInputConfig();
 		if ( $input->isConfigured() ) {
-			$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $stepsResource ] ) );
+			// Untouched input fields ("") become null before parsing; see ConfigData::nullUnconfigured().
+			$data = ExecuteData::create( $this->parseConfig( $input->nullUnconfigured()->normalize(), $context, $data, null, [ 'step' => $stepsResource ] ) );
 		}
 
 		// Only configured variables (decided on the raw config, before parsing) override context variables.
