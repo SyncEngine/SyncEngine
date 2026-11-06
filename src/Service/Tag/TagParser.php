@@ -24,6 +24,9 @@ class TagParser
 	public string $tagSubStartChar = '<{';
 	public string $tagSubEndChar = '}>';
 
+	public const OPERATOR_NULL_COALESCE = '??';
+	public const OPERATOR_EMPTY_FALLBACK = '?:';
+
 	public function __construct(
 		array|object $resource = [],
 		bool $clean = true,
@@ -168,18 +171,60 @@ class TagParser
 		return implode( '', $parts );
 	}
 
+	/**
+	 * Parse a tag expression (without the enclosing braces).
+	 *
+	 * Supports fallback operators, evaluated left to right:
+	 * - `a ?? b`: use `b` when `a` is null (not set).
+	 * - `a ?: b`: use `b` when `a` is empty (PHP `empty()`: null, "", 0, "0", 0.0, false, []).
+	 * Operands are tag paths (optionally with a filter) or literals in double or single quotes.
+	 */
 	public function parseTag( string $tag = '' ): mixed
 	{
 		if ( str_contains( $tag, $this->tagSubStartChar ) ) {
 			$tag = $this->parseSubTag( $tag );
 		}
 
-		$tags     = array_map( 'trim', explode( '??', $tag ) );
-		$tag      = array_shift( $tags );
-		$fallback = implode( ' ?? ', $tags );
-
 		// @todo Fix incorrect fallback in case a resource is not set and a whitelist is enabled.
 		// Example: {{ row.foo.bar ?? 'test' }} would result in 'test' and therefore doesn't take a whitelist into account.
+
+		$pattern  = '/\s*(' . preg_quote( self::OPERATOR_NULL_COALESCE, '/' ) . '|' . preg_quote( self::OPERATOR_EMPTY_FALLBACK, '/' ) . ')\s*/';
+		$operands = preg_split( $pattern, trim( $tag ), -1, PREG_SPLIT_DELIM_CAPTURE ) ?: [ $tag ];
+
+		$value = $this->parseTagOperand( (string) array_shift( $operands ), false );
+
+		while ( count( $operands ) >= 2 ) {
+			$operator = array_shift( $operands );
+			$operand  = (string) array_shift( $operands );
+
+			$useFallback = match ( $operator ) {
+				self::OPERATOR_EMPTY_FALLBACK => $this->isEmptyTagValue( $value ),
+				default                       => ! isset( $value ),
+			};
+
+			if ( $useFallback && '' !== $operand ) {
+				$value = $this->parseTagOperand( $operand );
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Resolve a single operand: a quoted literal (fallback positions only) or a tag path with an optional filter.
+	 */
+	protected function parseTagOperand( string $tag, bool $allowLiteral = true ): mixed
+	{
+		$tag = trim( $tag );
+
+		if ( $allowLiteral ) {
+			// Literal: enclosed in double or single quotes.
+			foreach ( [ $this->tagEnclosureChar, "'" ] as $enclosure ) {
+				if ( 2 <= strlen( $tag ) && str_starts_with( $tag, $enclosure ) && str_ends_with( $tag, $enclosure ) ) {
+					return substr( $tag, 1, -1 );
+				}
+			}
+		}
 
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
@@ -240,14 +285,16 @@ class TagParser
 			$value = $this->filterTag( $value, $tag[1] );
 		}
 
-		if ( ! isset( $value ) && $fallback ) {
-			if ( str_starts_with( $fallback, $this->tagEnclosureChar ) && str_ends_with( $fallback, $this->tagEnclosureChar ) ) {
-				return trim( $fallback, $this->tagEnclosureChar );
-			}
-			return $this->parseTag( $fallback );
+		return $value;
+	}
+
+	protected function isEmptyTagValue( mixed $value ): bool
+	{
+		if ( $value instanceof ResourceData ) {
+			$value = $value->get();
 		}
 
-		return $value;
+		return empty( $value );
 	}
 
 	protected function parseSubTag( string $tag ): string
