@@ -11,6 +11,73 @@ use SyncEngine\Service\ConditionsValidator;
 
 class ConfigData extends ResourceData
 {
+	/**
+	 * Whether a raw (unparsed) config value counts as configured by the user.
+	 *
+	 * - Scalars: configured when non-empty, numeric (`0`, `"0"`) or boolean (`false`).
+	 * - Tags (`{{ ... }}`) are non-empty strings, so they are configured even if they resolve to nothing at runtime.
+	 * - Arrays: configured when at least one nested value is configured. An array without values (e.g. an empty
+	 *   schema form structure like `{ "query": { "$filter": "" } }`) is not configured.
+	 *
+	 * Always evaluate this on the raw config, before tag parsing.
+	 */
+	public static function isConfiguredValue( mixed $value ): bool
+	{
+		if ( $value instanceof \Traversable ) {
+			$value = iterator_to_array( $value );
+		}
+
+		if ( is_array( $value ) ) {
+			foreach ( $value as $item ) {
+				if ( self::isConfiguredValue( $item ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		return ! empty( $value ) || is_numeric( $value ) || is_bool( $value );
+	}
+
+	/**
+	 * Keep only the top-level keys whose value is configured (see isConfiguredValue()).
+	 */
+	public function filterConfigured(): static
+	{
+		return new static( array_filter( $this->getArrayCopy(), [ self::class, 'isConfiguredValue' ] ) );
+	}
+
+	/**
+	 * Normalize unconfigured user input: raw empty strings (untouched form fields) become null.
+	 *
+	 * Intended for schema-driven user input only (currently routine input in Flow steps and Trigger routines).
+	 * Keys are kept so the input keeps its shape. Tags, `0`, `false` and `[]` are kept as-is.
+	 * Apply to the raw config, before tag parsing, so tags that resolve to "" keep their value.
+	 */
+	public function nullUnconfigured(): static
+	{
+		return new static( self::nullEmptyStrings( $this->getArrayCopy() ) );
+	}
+
+	/**
+	 * @param  array<mixed>  $config
+	 *
+	 * @return array<mixed>
+	 */
+	private static function nullEmptyStrings( array $config ): array
+	{
+		foreach ( $config as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$config[ $key ] = self::nullEmptyStrings( $value );
+			} elseif ( '' === $value ) {
+				$config[ $key ] = null;
+			}
+		}
+
+		return $config;
+	}
+
 	public function isConfigured( array|FieldCollection $fields = [], ?iterable $config = null ): bool
 	{
 		if ( ! empty( $fields ) ) {
@@ -19,17 +86,7 @@ class ConfigData extends ResourceData
 			$config ??= $this->normalize();
 		}
 
-		foreach ( $config as $k => $v ) {
-			if ( is_array( $v ) && $this->isConfigured( [], $v ) ) {
-				return true;
-			} elseif ( ! empty( $v ) || is_numeric( $v ) || is_bool( $v ) ) {
-				return true;
-			}
-
-			unset( $config[ $k ] );
-		}
-
-		return ! empty( $config );
+		return self::isConfiguredValue( $config );
 	}
 
 	public function sanitize( array|FieldCollection $fields, ?iterable $config = null ): array
