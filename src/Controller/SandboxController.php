@@ -189,10 +189,13 @@ class SandboxController extends DefaultController
 				'fields'      => $fields,
 				'example'     => [
 					'config' => [
-						'_class' => 'Http',
-						'url'    => 'https://api.example.com/data',
-						'method' => 'GET',
+						'_class' => 'Set',
+						'_ref'   => 'set_full_name',
+						'params' => [
+							[ 'key' => 'full_name', 'value' => '{{ data.first_name }} {{ data.last_name }}' ],
+						],
 					],
+					'data'   => [ 'first_name' => 'Ann', 'last_name' => 'Smit' ],
 					'mode'   => 'safe',
 				],
 			],
@@ -203,11 +206,24 @@ class SandboxController extends DefaultController
 				'fields'      => $fields,
 				'example'     => [
 					'config' => [
-						'_ref'  => 'my_routine',
 						'tasks' => [
 							[
-								'_class' => 'Http',
-								'url'    => 'https://api.example.com/data',
+								'_class'     => 'Retrieve',
+								'_ref'       => 'fetch_items',
+								'connection' => [
+									'_class'   => 'Http',
+									'host'     => 'https://api.example.com',
+									'endpoint' => 'items',
+									'method'   => 'GET',
+								],
+								'response'   => [ 'action' => 'replace', 'key' => 'items' ],
+							],
+							[
+								'_class' => 'Set',
+								'_ref'   => 'count_items',
+								'params' => [
+									[ 'key' => 'item_count', 'value' => '{{ data.items|count }}' ],
+								],
 							],
 						],
 					],
@@ -221,11 +237,11 @@ class SandboxController extends DefaultController
 				'fields'      => $fields,
 				'example'     => [
 					'config' => [
-						'_ref' => 'my_step',
-						'routine' => [
-							'_ref' => 'my_routine',
-							'input' => [],
-							'variables' => [],
+						'_ref'    => 'my_step',
+						'routine' => 1, // Routine entity ID.
+						'config'  => [
+							'input'     => [],
+							'variables' => [ 'order_id' => '{{ data.id }}' ],
 						],
 					],
 					'mode'   => 'safe',
@@ -238,12 +254,9 @@ class SandboxController extends DefaultController
 				'fields'      => $fields,
 				'example'     => [
 					'config' => [
-						'_ref'  => 'my_flow',
 						'steps' => [
-							[
-								'_ref'    => 'step_1',
-								'routine' => [ '_ref' => 'my_routine' ],
-							],
+							[ '_ref' => 'step_1', 'routine' => 1, 'config' => [] ], // Routine entity IDs.
+							[ '_ref' => 'step_2', 'routine' => 2, 'config' => [] ],
 						],
 					],
 					'mode'   => 'safe',
@@ -256,10 +269,18 @@ class SandboxController extends DefaultController
 				'fields'      => $fields,
 				'example'     => [
 					'config' => [
-						'source'  => 'request',
-						'request' => [],
-						'actions' => [],
+						'source'  => [ 'request' ],
+						'request' => [ 'param' => '' ],
+						'actions' => 'tasks',
+						'tasks'   => [
+							[
+								'_class' => 'Set',
+								'_ref'   => 'mark_received',
+								'params' => [ [ 'key' => 'received', 'value' => true ] ],
+							],
+						],
 					],
+					'data'   => [ 'id' => 1 ],
 					'mode'   => 'safe',
 				],
 			],
