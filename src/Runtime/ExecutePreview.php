@@ -447,6 +447,18 @@ class ExecutePreview extends Execute
 			return;
 		}
 
+		if ( empty( $config['_ref'] ) ) {
+			// Nested tasks are identified by `_ref` (see Execute::removeNestedModelConfig()).
+			throw new ExecutePreviewException(
+				sprintf(
+					'Task "%s"%s has no "_ref". Every nested task needs a unique "_ref".',
+					$config['_class'] ?? '?',
+					! empty( $config['_label'] ) ? ' (' . $config['_label'] . ')' : ''
+				),
+				$config
+			);
+		}
+
 		$this->parsedConfig = $this->setConfigByRef( $this->parsedConfig, $parsedConfig, $config['_ref'] );
 	}
 
