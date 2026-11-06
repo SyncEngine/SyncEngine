@@ -9,6 +9,7 @@ use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
+use SyncEngine\Runtime\ExecuteResult;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
@@ -243,6 +244,11 @@ class Trigger extends TaskModel
 			}
 
 			$return = $service->$method( $action, $context, $request );
+
+			if ( $return instanceof ExecuteResult ) {
+				// Triggered automations return a result object; only its data flows back.
+				$return = $return->getData() ?? [];
+			}
 
 			if ( ! empty( $config['override_data'] ) ) {
 				$data->set( $return instanceof ResourceData ? $return->get() : $return, $key );
