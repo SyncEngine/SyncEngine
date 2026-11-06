@@ -33,17 +33,22 @@ class ModelNormalizer
 
 	private function start( string $ref ): void
 	{
-		if ( ! $this->runningRef ) {
-			$this->runningRef = $ref;
+		if ( ! self::$runningRef ) {
+			self::$runningRef = $ref;
 		}
 	}
 
 	private function reset( string $ref ): void
 	{
-		if ( $ref === $this->runningRef ) {
-			$this->runningRef = null;
-			$this->normalized = [];
+		if ( $ref === self::$runningRef ) {
+			self::$runningRef = null;
+			self::$normalized = [];
 		}
+	}
+
+	public function getErrors(): array
+	{
+		return self::$errors;
 	}
 
 	public function normalize( $model, $includeDependencies = false, $includeDependents = false ): array
@@ -55,13 +60,13 @@ class ModelNormalizer
 
 		$currentRef = ( method_exists( $model, 'getRef' ) ) ? $model->getRef() : '_';
 
-		if ( $currentRef === $this->runningRef ) {
+		if ( $currentRef === self::$runningRef ) {
 			return [];
 		}
 
 		// Should not be possible but verify anyway.
-		if ( ! empty( $this->normalized[ $currentRef ] ) ) {
-			return $this->normalized[ $currentRef ];
+		if ( ! empty( self::$normalized[ $currentRef ] ) ) {
+			return self::$normalized[ $currentRef ];
 		}
 
 		$this->start( $currentRef );
@@ -144,7 +149,7 @@ class ModelNormalizer
 						}
 					}
 				} catch ( \Throwable $e ) {
-					$this->errors[] = $e;
+					self::$errors[] = $e;
 					$value = null;
 				}
 
@@ -182,10 +187,10 @@ class ModelNormalizer
 		/** @var EngineModel $dependency */
 		foreach ( $dependencies as $key => $dependency ) {
 			$ref = $dependency->getRef();
-			if ( ! isset( $this->normalized[ $ref ] ) ) {
-				$this->normalized[ $ref ] = $dependency->normalize( false, false );
+			if ( ! isset( self::$normalized[ $ref ] ) ) {
+				self::$normalized[ $ref ] = $dependency->normalize( false, false );
 			}
-			$dependencies[ $key ] = $this->normalized[ $ref ];
+			$dependencies[ $key ] = self::$normalized[ $ref ];
 		}
 
 		return $dependencies;
@@ -199,10 +204,10 @@ class ModelNormalizer
 		/** @var EngineModel $dependent */
 		foreach ( $dependents as $key => $dependent ) {
 			$ref = $dependent->getRef();
-			if ( ! isset( $this->normalized[ $ref ] ) ) {
-				$this->normalized[ $ref ] = $dependent->normalize( false, false );
+			if ( ! isset( self::$normalized[ $ref ] ) ) {
+				self::$normalized[ $ref ] = $dependent->normalize( false, false );
 			}
-			$dependents[ $key ] = $this->normalized[ $ref ];
+			$dependents[ $key ] = self::$normalized[ $ref ];
 		}
 
 		return $dependents;
