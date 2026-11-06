@@ -167,4 +167,35 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 		$this->assertIsArray( $result['data']['Trace'] );
 		$this->assertNotEmpty( $result['data']['Trace'] );
 	}
+
+	public function testNestedTaskWithoutRefReturnsReadableError(): void
+	{
+		$result = $this->executePreview(
+			'routine',
+			[
+				'config' => [
+					'tasks' => [
+						[
+							'_class' => 'Loop',
+							'_ref'   => 'loop',
+							'key'    => 'lines',
+							'action' => 'tasks',
+							'tasks'  => [
+								[
+									'_class' => Set::_getClassLocator(),
+									'_label' => 'No ref',
+									'params' => [ [ 'key' => 'x', 'value' => '1' ] ],
+								],
+							],
+						],
+					],
+				],
+				'data'   => [ 'lines' => [ [ 'v' => 'a' ] ] ],
+			]
+		);
+
+		$this->assertFalse( $result['success'] );
+		$this->assertStringContainsString( 'has no "_ref"', $this->getLastErrorMessage( $result ) );
+		$this->assertStringContainsString( 'No ref', $this->getLastErrorMessage( $result ) );
+	}
 }
