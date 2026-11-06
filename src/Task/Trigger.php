@@ -198,19 +198,32 @@ class Trigger extends TaskModel
 					$action = RoutineModel::get( $routine );
 
 					if ( $action ) {
-						$input = $routineConfig['input'] ?? null;
-						if ( $input && ConfigData::create( $input )->isConfigured( $action->getInputSchema()->getFields() ) ) {
+						/**
+						 * Whether input/variables are configured is decided on the raw (unparsed) config:
+						 * a tag counts as configured, even when it does not resolve.
+						 * @see ConfigData::isConfiguredValue()
+						 */
+						$rawRoutineConfig = $this->getConfig( 'routine' );
+						if ( ! is_array( $rawRoutineConfig ) ) {
+							$rawRoutineConfig = (array) $routineConfig;
+						}
+
+						$input    = $routineConfig['input'] ?? null;
+						$rawInput = $rawRoutineConfig['input'] ?? $input;
+						if ( $input && ConfigData::create( (array) $rawInput )->isConfigured( $action->getInputSchema()->getFields() ) ) {
 							$request = ExecuteData::create(
 								$service->parseConfig( $input, $context, $data )
 							);
 						}
+
+						// Configured routine variables override context variables, with their parsed value (even null).
+						$configuredKeys = ConfigData::create( (array) ( $rawRoutineConfig['variables'] ?? [] ) )
+							->filterConfigured()
+							->getArrayCopy();
+
 						$variables = array_merge(
 							$variables,
-							// @todo VariablesData object?
-							array_filter(
-								$routineConfig['variables'] ?? [],
-								fn ( $v ) => isset( $v ) && '' !== $v
-							)
+							array_intersect_key( (array) ( $routineConfig['variables'] ?? [] ), $configuredKeys )
 						);
 					}
 				} else {
