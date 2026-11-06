@@ -270,16 +270,14 @@ class TagParser
 	{
 		[ $filter, $args ] = $this->resource->parseKeyArgs( $filter );
 
+		// Only filters defined in TagFilter are allowed; never fall back to arbitrary PHP callables for security.
 		$callable = [ $this, 'filter' . ucfirst( $filter ) ];
-		if ( ! is_callable( $callable ) ) {
-			$callable = is_callable( $filter ) ? $filter : null;
+		if ( ! preg_match( '/^\w+$/', $filter ) || ! is_callable( $callable ) ) {
+			return $value;
 		}
 
-		if ( $callable ) {
-			array_unshift( $args, $value );
-			$value = call_user_func_array( $callable, $args );
-		}
+		array_unshift( $args, $value );
 
-		return $value;
+		return call_user_func_array( $callable, $args );
 	}
 }
