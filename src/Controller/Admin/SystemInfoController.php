@@ -216,7 +216,12 @@ class SystemInfoController extends AbstractAdminController
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Info' ),
 				'icon'        => 'system-info',
-				'cards'       => $cards,
+				'cards'       => [
+					'_config' => [
+						'columns' => 1,
+					],
+					...$cards
+				],
 				'breadcrumbs' => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_system_index' ),
