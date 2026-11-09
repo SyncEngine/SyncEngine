@@ -1,47 +1,54 @@
 {% if cards is defined and cards is iterable %}
-	<div class="row row-cols-1 row-cols-md-2 g-4">
+
+	{% set config = cards._config ?? {} %}
+	{% set cards = cards|filter((v, k) => k != '_config') %}
+
+	{% set row_class = row_class ?? 'row-cols-1 row-cols-md-' ~ (config.columns ?? 2) %}
+	<div class="row {{ row_class }} g-4">
 		{% for card in cards %}
-			<div class="col">
-				<div class="card">
-					<h5 class="card-header d-flex gap-2">
-						{% if card.icon is defined %}
-							{% include '_partials/icon.html.twig' with { icon: card.icon } %}
-						{% endif %}
-						{{ card.header }}
-						{% if card.badge is defined %}
-							<span class="badge bg-{{ card.badge.variant ?? 'info' }} float-end">{{ card.badge.text }}</span>
-						{% endif %}
-					</h5>
-					{% if card.body is defined or card.link is defined %}
-					<div class="card-body">
-						{% if card.body is defined %}
-							<p class="card-text">{{ card.body }}</p>
-						{% endif %}
-						{% if card.link is defined %}
-							{% if card.link is iterable %}
-								<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}{% if card.link.url is empty %} disabled{% endif%}">{{ card.link.text ?? 'More...'|trans }}</a>
-							{% else %}
-								<a href="{{ card.link }}" class="btn btn-primary{% if card.link is empty %} disabled{% endif%}">{{ card.link_text ?? 'More...'|trans }}</a>
+			{% if card is iterable %}
+				<div class="col">
+					<div class="card">
+						<h5 class="card-header d-flex gap-2 gradient-glow glow-primary-subtle glow-opacity-10">
+							{% if card.icon is defined %}
+								{% include '_partials/icon.html.twig' with { icon: card.icon } %}
 							{% endif %}
+							{{ card.header }}
+							{% if card.badge is defined %}
+								<span class="badge bg-{{ card.badge.variant ?? 'info' }} float-end">{{ card.badge.text }}</span>
+							{% endif %}
+						</h5>
+						{% if card.body is defined or card.link is defined %}
+							<div class="card-body">
+								{% if card.body is defined %}
+									<p class="card-text">{{ card.body }}</p>
+								{% endif %}
+								{% if card.link is defined %}
+									{% if card.link is iterable %}
+										<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}{% if card.link.url is empty %} disabled{% endif%}">{{ card.link.text ?? 'More...'|trans }}</a>
+									{% else %}
+										<a href="{{ card.link }}" class="btn btn-primary{% if card.link is empty %} disabled{% endif%}">{{ card.link_text ?? 'More...'|trans }}</a>
+									{% endif %}
+								{% endif %}
+							</div>
+						{% endif %}
+						{% if card.table is defined %}
+							{% include 'admin/_partials/table.html.twig' with { rows: card.table, classes: 'm-0', column_classes: 'px-3' } %}
+						{% endif %}
+						{% if card.list is defined %}
+							{% include 'admin/_partials/list.html.twig' with { items: card.list, classes: 'list-group-flush' } %}
+						{% endif %}
+						{% if card.form is defined %}
+							<div class="card-body">
+								{% include '_partials/form.html.twig' with { form: card.form } %}
+							</div>
+						{% endif %}
+						{% if card.footer is defined %}
+							<div class="card-footer">{{ card.footer }}</div>
 						{% endif %}
 					</div>
-					{% endif %}
-					{% if card.table is defined %}
-						{% include 'admin/_partials/table.html.twig' with { rows: card.table, classes: 'm-0', column_classes: 'px-3' } %}
-					{% endif %}
-					{% if card.list is defined %}
-						{% include 'admin/_partials/list.html.twig' with { items: card.list, classes: 'list-group-flush' } %}
-					{% endif %}
-					{% if card.form is defined %}
-						<div class="card-body">
-							{% include '_partials/form.html.twig' with { form: card.form } %}
-						</div>
-					{% endif %}
-					{% if card.footer is defined %}
-						<div class="card-footer">{{ card.footer }}</div>
-					{% endif %}
 				</div>
-			</div>
+			{% endif %}
 		{% endfor %}
 	</div>
 {% endif %}
