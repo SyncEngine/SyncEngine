@@ -13,7 +13,7 @@ class Kernel extends BaseKernel
 {
 	use MicroKernelTrait;
 
-	const VERSION = '0.1.0-beta.7';
+	const VERSION = '0.1.0-beta.8';
 
 	private function refreshModuleRegistry(): void
 	{
