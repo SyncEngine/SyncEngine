@@ -11,24 +11,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Admin\Abstract\AbstractAdminController;
 use SyncEngine\Form\EnvironmentFormType;
+use SyncEngine\Kernel;
 use SyncEngine\Service\Env;
 use SyncEngine\Service\ModelImporter;
+use SyncEngine\Service\Requirements;
 use SyncEngine\Service\System;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/system')]
 class SystemController extends AbstractAdminController
 {
-	public function __construct(
-		private readonly KernelInterface $kernel,
-	) {}
-
 	#[Route( '/', name: 'system_index' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'system' )]
 	public function renderSystemIndex( Request $request ): Response
@@ -174,12 +171,17 @@ class SystemController extends AbstractAdminController
 	}
 
 	#[Route( '/info', name: 'system_info' )]
-	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
+	public function renderSystemInfo( Request $request, ?Connection $connection, Requirements $requirements ): Response
 	{
+		$requirementsData      = $requirements->load();
+		$phpVersion            = $requirements->getPhpVersion();
+		$extensionRequirements = $requirements->getExtensions();
+		$iniRequirements       = $requirements->getIniSettings();
+
 		$core   = [
 			[
 				'text'  => 'SyncEngine Core',
-				'badge' => $this->kernel::VERSION,
+				'badge' => Kernel::VERSION,
 			],
 		];
 		$server = [
@@ -189,11 +191,11 @@ class SystemController extends AbstractAdminController
 			],
 			[
 				'text'  => 'Server Version',
-				'badge' => $_SERVER['SERVER_SOFTWARE'],
+				'badge' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
 			],
 			[
 				'text'  => 'Server Host',
-				'badge' => $_SERVER['SERVER_NAME'],
+				'badge' => $_SERVER['SERVER_NAME'] ?? 'Unknown',
 			],
 			[
 				'text'  => 'Server IP',
@@ -201,24 +203,82 @@ class SystemController extends AbstractAdminController
 			],
 		];
 
+		$hasPhpVersionRequirement = ! empty( $requirementsData['php']['version'] );
+
 		$php = [
 			[
-				'text'  => 'PHP Version',
-				'badge' => PHP_VERSION,
-			],
-			[
-				'text'  => 'PHP Memory Limit',
-				'badge' => ini_get( 'memory_limit' ),
-			],
-			[
-				'text'  => 'PHP Max Execution time',
-				'badge' => ini_get( 'max_execution_time' ),
-			],
-			[
-				'text'  => 'PHP Max Upload Size',
-				'badge' => ini_get( 'upload_max_filesize' ),
+				'text'  => 'PHP Version' . ( $hasPhpVersionRequirement ? $this->formatRequirement( $phpVersion['minimum'], $phpVersion['recommended'], $phpVersion['maximum'] ) : '' ),
+				'badge' => $hasPhpVersionRequirement ? [
+					'text'    => $phpVersion['current'],
+					'variant' => $this->statusVariant( $phpVersion['status'] ),
+				] : $phpVersion['current'],
 			],
 		];
+
+		$hasUploadMaxFilesize = false;
+
+		foreach ( $iniRequirements as $ini ) {
+			if ( 'upload_max_filesize' === $ini['key'] ) {
+				$hasUploadMaxFilesize = true;
+			}
+
+			$php[] = [
+				'text'  => $this->getIniLabel( $ini['key'] ) . $this->formatRequirement( $ini['minimum'], $ini['recommended'], $ini['maximum'] ),
+				'badge' => [
+					'text'    => $ini['current'],
+					'variant' => $this->statusVariant( $ini['status'] ),
+				],
+			];
+		}
+
+		if ( empty( $iniRequirements ) ) {
+			$php[] = [
+				'text'  => 'PHP Memory Limit',
+				'badge' => ini_get( 'memory_limit' ),
+			];
+			$php[] = [
+				'text'  => 'PHP Max Execution time',
+				'badge' => ini_get( 'max_execution_time' ),
+			];
+		}
+
+		if ( ! $hasUploadMaxFilesize ) {
+			$php[] = [
+				'text'  => 'PHP Max Upload Size',
+				'badge' => ini_get( 'upload_max_filesize' ),
+			];
+		}
+
+		$extensions         = [];
+		$loadedCount        = 0;
+		$missingRequired    = 0;
+		$missingRecommended = 0;
+
+		foreach ( $extensionRequirements as $extension ) {
+			if ( $extension['loaded'] ) {
+				++$loadedCount;
+				$badgeText = $extension['loadedVia'] !== $extension['name']
+					? 'Loaded via ' . $extension['loadedVia']
+					: 'Loaded';
+			} else {
+				$badgeText = 'Missing';
+				if ( $extension['required'] ) {
+					++$missingRequired;
+					$badgeText .= ' (required)';
+				} elseif ( $extension['recommended'] ) {
+					++$missingRecommended;
+					$badgeText .= ' (recommended)';
+				}
+			}
+
+			$extensions[] = [
+				'text'  => $extension['label'],
+				'badge' => [
+					'text'    => $badgeText,
+					'variant' => $this->statusVariant( $extension['status'] ),
+				],
+			];
+		}
 
 		$database = [];
 		if ( $connection?->isConnected() ) {
@@ -274,30 +334,44 @@ class SystemController extends AbstractAdminController
 			];
 		}
 
+		$cards = [
+			[
+				'header' => 'Core',
+				'list'   => $core,
+			],
+			[
+				'header' => 'Server',
+				'list'   => $server,
+			],
+			[
+				'header' => 'PHP',
+				'list'   => $php,
+			],
+		];
+
+		if ( $extensions ) {
+			$cards[] = [
+				'header' => 'PHP Extensions',
+				'badge'  => [
+					'text'    => $loadedCount . '/' . count( $extensions ) . ' loaded',
+					'variant' => $missingRequired ? 'danger' : ( $missingRecommended ? 'warning' : 'success' ),
+				],
+				'list'   => $extensions,
+			];
+		}
+
+		$cards[] = [
+			'header' => 'Database',
+			'list'   => $database,
+		];
+
 		return $this->render(
 			'admin/system/index.html.twig',
 			[
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Info' ),
 				'icon'        => 'system-info',
-				'cards'       => [
-					[
-						'header' => 'Core',
-						'list'   => $core,
-					],
-					[
-						'header' => 'Server',
-						'list'   => $server,
-					],
-					[
-						'header' => 'PHP',
-						'list'   => $php,
-					],
-					[
-						'header' => 'Database',
-						'list'   => $database,
-					],
-				],
+				'cards'       => $cards,
 				'breadcrumbs' => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_system_index' ),
@@ -412,5 +486,45 @@ class SystemController extends AbstractAdminController
 			}
 		}
 		$env->persist();
+	}
+
+	private function statusVariant( string $status ): string
+	{
+		return match ( $status ) {
+			'ok'      => 'success',
+			'warning' => 'warning',
+			'error'   => 'danger',
+			default   => 'secondary',
+		};
+	}
+
+	private function formatRequirement( mixed $minimum, mixed $recommended, mixed $maximum = null ): string
+	{
+		$parts = [];
+		$add   = static function ( string $label, mixed $value ) use ( &$parts ): void {
+			if ( null === $value || '' === $value ) {
+				return;
+			}
+			if ( is_bool( $value ) ) {
+				$value = $value ? 'On' : 'Off';
+			}
+			$parts[] = $label . ' ' . $value;
+		};
+
+		$add( 'min', $minimum );
+		$add( 'recommended', $recommended );
+		$add( 'max', $maximum );
+
+		return $parts ? ' (' . implode( ', ', $parts ) . ')' : '';
+	}
+
+	private function getIniLabel( string $key ): string
+	{
+		return match ( $key ) {
+			'memory_limit'        => 'PHP Memory Limit',
+			'max_execution_time'  => 'PHP Max Execution time',
+			'upload_max_filesize' => 'PHP Max Upload Size',
+			default               => 'PHP ' . ucwords( str_replace( '_', ' ', $key ) ),
+		};
 	}
 }

@@ -1,0 +1,54 @@
+{
+	"php": {
+		"version": {
+			"minimum": "1.0",
+			"recommended": "999.0"
+		},
+		"extensions": [
+			{
+				"name": "json",
+				"required": true
+			},
+			{
+				"name": "syncengine_missing_required_ext",
+				"required": true
+			},
+			{
+				"name": "syncengine_missing_recommended_ext",
+				"required": false,
+				"recommended": true
+			},
+			{
+				"name": "syncengine_missing_optional_ext",
+				"required": false
+			},
+			{
+				"name": "syncengine_fake_group",
+				"required": true,
+				"alternatives": [
+					"json",
+					"syncengine_missing_required_ext"
+				]
+			},
+			{
+				"name": "syncengine_missing_group",
+				"required": false,
+				"recommended": true,
+				"alternatives": [
+					"syncengine_missing_a",
+					"syncengine_missing_b"
+				]
+			}
+		],
+		"ini": {
+			"memory_limit": {
+				"minimum": "128M",
+				"recommended": "256M"
+			},
+			"max_execution_time": {
+				"minimum": 30,
+				"recommended": 300
+			}
+		}
+	}
+}

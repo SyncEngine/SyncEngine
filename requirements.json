@@ -1,0 +1,179 @@
+{
+	"php": {
+		"version": {
+			"minimum": "8.2",
+			"recommended": "8.4",
+			"help": "https://docs.syncengine.io/user/installation/#system-requirements"
+		},
+		"extensions": [
+			{
+				"name": "ctype",
+				"required": true
+			},
+			{
+				"name": "curl",
+				"required": true
+			},
+			{
+				"name": "date",
+				"required": true
+			},
+			{
+				"name": "dom",
+				"required": true
+			},
+			{
+				"name": "fileinfo",
+				"required": true
+			},
+			{
+				"name": "filter",
+				"required": true
+			},
+			{
+				"name": "gd",
+				"required": true
+			},
+			{
+				"name": "iconv",
+				"required": true
+			},
+			{
+				"name": "intl",
+				"required": true
+			},
+			{
+				"name": "json",
+				"required": true
+			},
+			{
+				"name": "session",
+				"required": true
+			},
+			{
+				"name": "simplexml",
+				"required": true
+			},
+			{
+				"name": "sodium",
+				"required": true
+			},
+			{
+				"name": "tokenizer",
+				"required": true
+			},
+			{
+				"name": "zip",
+				"required": true
+			},
+			{
+				"name": "openssl",
+				"required": false,
+				"recommended": true
+			},
+			{
+				"name": "ftp",
+				"required": false,
+				"recommended": true
+			},
+			{
+				"name": "deepclone",
+				"required": false,
+				"recommended": true,
+				"note": "Improves performance on ORM's native lazy objects"
+			},
+			{
+				"name": "mbstring",
+				"required": false,
+				"recommended": true,
+				"note": "Improves performance"
+			},
+			{
+				"name": "bcmath",
+				"required": false,
+				"recommended": true,
+				"note": "Improves IPv4 parsing performance"
+			},
+			{
+				"name": "sqlite",
+				"required": false,
+				"recommended": true,
+				"alternatives": [
+					"pdo_sqlite",
+					"sqlite3"
+				],
+				"note": "Required for SQLite support"
+			},
+			{
+				"name": "mysql",
+				"required": false,
+				"recommended": true,
+				"alternatives": [
+					"pdo_mysql",
+					"mysqli"
+				],
+				"note": "Required for MySQL/MariaDB support"
+			},
+			{
+				"name": "pdo_pgsql",
+				"required": false,
+				"recommended": true,
+				"note": "Required for PostgreSQL support"
+			}
+		],
+		"ini": {
+			"memory_limit": {
+				"minimum": "256M",
+				"recommended": "512M",
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			},
+			"max_execution_time": {
+				"minimum": 30,
+				"recommended": 300,
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			}
+		}
+	},
+	"server": {
+		"web_server": {
+			"rewrite_support": {
+				"required": true,
+				"description": "URL rewriting must be supported by the web server. This cannot be detected automatically, verify it manually."
+			}
+		},
+		"directories": [
+			{
+				"label": "Public Web Root",
+				"path": "public",
+				"required": true
+			}
+		],
+		"databases": {
+			"mysql": {
+				"minimum": "8.0",
+				"recommended": "8.4",
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			},
+			"mariadb": {
+				"minimum": "10.5.2",
+				"recommended": "10.11",
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			},
+			"postgresql": {
+				"minimum": "12",
+				"recommended": "16/17",
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			},
+			"sqlite": {
+				"minimum": "any",
+				"recommended": "stable",
+				"help": "https://docs.syncengine.io/user/installation#system-requirements"
+			}
+		},
+		"disk_space_mb": {
+			"minimum": 500,
+			"recommended": 1000,
+			"help": "https://docs.syncengine.io/user/installation#system-requirements"
+		}
+	}
+}
