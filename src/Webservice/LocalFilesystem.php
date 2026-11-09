@@ -30,11 +30,21 @@ class LocalFilesystem extends WebserviceModel
 				'label' => $this->trans( 'Root path' ),
 				'type'  => 'text',
 			],
+			'relative' => [
+				'label' => $this->trans( 'Relative path?' ),
+				'description' => $this->trans( 'Makes the root path relative to the SyncEngine installation' ),
+				'type'  => 'checkbox',
+			],
 		] );
 	}
 
 	public function getRequestUrl( array $config ): string
 	{
+		if ( ! empty( $config['relative'] ) ) {
+			$root = $this->getParameter( 'dir.root' ) . '/';
+			return $root . ltrim( $config['root'] ?? '', '/' );
+		}
+
 		return $config['root'] ?? '';
 	}
 
